@@ -728,6 +728,9 @@ function injectUI() {
   // ── Insertar en el DOM ─────────────────────────────────────────────────
   const genderRow = document.querySelector("[id='user-gender']")?.closest("div");
   const recRow    = document.getElementById("record-btn")?.closest("div");
+  // Marcar botó com "no llest" fins que carregui la DB
+  const recBtnEl = document.getElementById("record-btn");
+  if (recBtnEl) { recBtnEl.style.opacity = "0.7"; recBtnEl.title = "Cargando base de datos..."; }
   if (genderRow && recRow) {
     // Ocultar el select original (lo mantenemos para compatibilidad)
     if (genderRow) genderRow.style.display = "none";
@@ -1064,7 +1067,7 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
 async function analyzeAudio() {
   const gender = document.getElementById("user-gender")?.value;
   if (!gender)    { showStatus(tr("_err_gender"),"err"); return; }
-  if (!audioBlob) { showStatus(tr("_err_gender"),"err"); return; }
+  if (!audioBlob) { showStatus(tr("_err_short"),"err"); return; }
   if (!singersDb.length){ showStatus(tr("_err_db"),"err"); return; }
   showStatus(tr("_analyzing"));
   try {
@@ -2604,12 +2607,21 @@ function _searchKaraoke() {
 async function loadDB() {
   try {
     const r = await fetch(DB_PATH);
-    if (!r.ok) throw new Error();
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const d = await r.json();
     singersDb = d.singers || [];
-    console.log(`✓ DB: ${singersDb.length} cantantes`);
+    console.log(`✓ DB cargada: ${singersDb.length} cantantes`);
+    // Actualizar el botón para indicar que está listo
+    const recBtn = document.getElementById("record-btn");
+    if (recBtn) recBtn.style.opacity = "1";
+    if (singersDb.length === 0) console.warn("⚠️ DB vacía — revisa harmiq_db_vectores.json");
   } catch(e) {
-    console.warn("DB no disponible");
+    console.error("❌ DB no disponible:", e.message);
+    // Mostrar aviso suave al usuario solo si lleva mucho tiempo
+    setTimeout(() => {
+      if (!singersDb.length) showStatus("Base de datos cargando... Espera un momento.", "ok");
+      setTimeout(() => showStatus(""), 3000);
+    }, 2000);
   }
 }
 
