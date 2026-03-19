@@ -487,29 +487,74 @@ function getInitialsAvatar(name) {
   return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="120" height="120" rx="60" fill="${color}"/><text x="60" y="75" font-family="Arial" font-weight="bold" font-size="42" fill="white" text-anchor="middle">${initials}</text></svg>`)}`;
 }
 
+// ── Spotify token (Client Credentials) ──────────────────────────────────
+// Rellena con tus credenciales de Spotify Developer
+// https://developer.spotify.com/dashboard
+const SPOTIFY_CLIENT_ID     = "6971b826b6fb43e09153530e9d84bae0";  // ← Tu Client ID aquí
+const SPOTIFY_CLIENT_SECRET = "21e386d8eb5545c18530898f3267b4d4";  // ← Tu Client Secret aquí
+let _spToken = null, _spExpiry = 0;
+
+async function getSpotifyToken() {
+  if (_spToken && Date.now() < _spExpiry) return _spToken;
+  if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) return null;
+  try {
+    const r = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: {
+        "Content-Type":  "application/x-www-form-urlencoded",
+        "Authorization": "Basic " + btoa(SPOTIFY_CLIENT_ID + ":" + SPOTIFY_CLIENT_SECRET),
+      },
+      body: "grant_type=client_credentials",
+      signal: AbortSignal.timeout(5000),
+    });
+    const d = await r.json();
+    if (d.access_token) {
+      _spToken  = d.access_token;
+      _spExpiry = Date.now() + (d.expires_in - 30) * 1000;
+      return _spToken;
+    }
+  } catch(_) {}
+  return null;
+}
+
 async function getArtistImage(name) {
   if (imgCache[name]) return imgCache[name];
-  // 1. Buscar en el mapa local (Wikipedia, sin CORS)
+
+  // 1. Mapa local Wikipedia (instantáneo, sin red)
   if (MONO_IMGS[name]) {
     imgCache[name] = MONO_IMGS[name];
     return MONO_IMGS[name];
   }
-  // 2. Intentar MusicBrainz (permite CORS)
+
+  // 2. Spotify API (si hay credenciales configuradas)
+  const spToken = await getSpotifyToken();
+  if (spToken) {
+    try {
+      const q = encodeURIComponent(name);
+      const r = await fetch(
+        `https://api.spotify.com/v1/search?q=${q}&type=artist&limit=1`,
+        { headers:{"Authorization":"Bearer "+spToken}, signal: AbortSignal.timeout(4000) }
+      );
+      const d = await r.json();
+      const img = d.artists?.items?.[0]?.images?.[1]?.url   // 300px
+               || d.artists?.items?.[0]?.images?.[0]?.url;  // original
+      if (img) { imgCache[name] = img; return img; }
+    } catch(_) {}
+  }
+
+  // 3. Deezer API pública (no requiere auth, permite CORS)
   try {
     const q = encodeURIComponent(name);
-    const r = await fetch(`https://musicbrainz.org/ws/2/artist/?query=artist:${q}&fmt=json&limit=1`,
-      { headers:{"Accept":"application/json"}, signal: AbortSignal.timeout(4000) });
+    const r = await fetch(
+      `https://api.deezer.com/search/artist?q=${q}&limit=1`,
+      { signal: AbortSignal.timeout(4000) }
+    );
     const d = await r.json();
-    const mbid = d.artists?.[0]?.id;
-    if (mbid) {
-      // Buscar imagen en fanart.tv (sin key en fallback)
-      // o usar el avatar de iniciales directamente
-      const initImg = getInitialsAvatar(name);
-      imgCache[name] = initImg;
-      return initImg;
-    }
+    const img = d.data?.[0]?.picture_medium || d.data?.[0]?.picture;
+    if (img) { imgCache[name] = img; return img; }
   } catch(_) {}
-  // 3. Fallback: avatar con iniciales
+
+  // 4. Fallback: avatar con iniciales coloreadas
   const initImg = getInitialsAvatar(name);
   imgCache[name] = initImg;
   return initImg;
@@ -1151,7 +1196,7 @@ async function renderResults({feat,vt,conf,matches,gender}) {
   // Scroll al resultado
   resEl.scrollIntoView({ behavior:"smooth", block:"start" });
 
-  // ── Sección karaoke y eventos (en #events-area) ───────────────────────
+  // ── Sección karaoke y eventos (en #events-area) ──────────────────────────
   const evEl = document.getElementById("events-area");
   if (evEl) {
     const vtSlug = {
@@ -1159,61 +1204,140 @@ async function renderResults({feat,vt,conf,matches,gender}) {
       "tenor":"tenor","soprano":"soprano","mezzo-soprano":"mezzo-soprano",
       "contralto":"contralto","countertenor":"tenor"
     }[vt] || "baritono";
-    evEl.innerHTML = `
-      <div style="margin-top:1.5rem;padding:1.25rem;background:rgba(255,255,255,.04);
-        border-radius:16px;border:1px solid rgba(255,255,255,.08)">
-        <h3 style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:1rem;
-          margin-bottom:.9rem;color:#A5B4FC">🎤 Practica y conéctate con otros cantantes</h3>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.6rem">
-          <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(vtName+' karaoke')}"
-            target="_blank" rel="noopener"
-            style="display:flex;gap:.5rem;align-items:center;padding:.7rem;background:rgba(255,0,0,.08);
-            border:1px solid rgba(255,0,0,.18);border-radius:10px;text-decoration:none;color:#E5E7EB">
-            <span style="font-size:1.1rem">▶</span>
-            <div><div style="font-size:.8rem;font-weight:700">Karaoke YouTube</div>
-              <div style="font-size:.68rem;color:#6B7280">Pistas para ${vtName}</div></div>
-          </a>
-          <a href="https://www.smule.com/" target="_blank" rel="noopener"
-            style="display:flex;gap:.5rem;align-items:center;padding:.7rem;background:rgba(124,77,255,.08);
-            border:1px solid rgba(124,77,255,.18);border-radius:10px;text-decoration:none;color:#E5E7EB">
-            <span style="font-size:1.1rem">🎙️</span>
-            <div><div style="font-size:.8rem;font-weight:700">Smule</div>
-              <div style="font-size:.68rem;color:#6B7280">Karaoke social</div></div>
-          </a>
-          <a href="https://www.instagram.com/explore/tags/${vtSlug}singing/"
-            target="_blank" rel="noopener"
-            style="display:flex;gap:.5rem;align-items:center;padding:.7rem;background:rgba(255,79,163,.08);
-            border:1px solid rgba(255,79,163,.18);border-radius:10px;text-decoration:none;color:#E5E7EB">
-            <span style="font-size:1.1rem">📱</span>
-            <div><div style="font-size:.8rem;font-weight:700">Instagram</div>
-              <div style="font-size:.68rem;color:#6B7280">#${vtSlug}singing</div></div>
-          </a>
-          <a href="https://www.tiktok.com/tag/${vtSlug}voice"
-            target="_blank" rel="noopener"
-            style="display:flex;gap:.5rem;align-items:center;padding:.7rem;background:rgba(0,0,0,.2);
-            border:1px solid rgba(255,255,255,.1);border-radius:10px;text-decoration:none;color:#E5E7EB">
-            <span style="font-size:1.1rem">🎵</span>
-            <div><div style="font-size:.8rem;font-weight:700">TikTok</div>
-              <div style="font-size:.68rem;color:#6B7280">#${vtSlug}voice</div></div>
-          </a>
-          <a href="https://www.meetup.com/find/?keywords=karaoke+canto"
-            target="_blank" rel="noopener"
-            style="display:flex;gap:.5rem;align-items:center;padding:.7rem;background:rgba(255,159,28,.08);
-            border:1px solid rgba(255,159,28,.18);border-radius:10px;text-decoration:none;color:#E5E7EB">
-            <span style="font-size:1.1rem">🗓️</span>
-            <div><div style="font-size:.8rem;font-weight:700">Meetup</div>
-              <div style="font-size:.68rem;color:#6B7280">Jam sessions locales</div></div>
-          </a>
-          <a href="/voz/${vtSlug}"
-            style="display:flex;gap:.5rem;align-items:center;padding:.7rem;background:rgba(128,185,24,.08);
-            border:1px solid rgba(128,185,24,.18);border-radius:10px;text-decoration:none;color:#E5E7EB">
-            <span style="font-size:1.1rem">📖</span>
-            <div><div style="font-size:.8rem;font-weight:700">Guía completa</div>
-              <div style="font-size:.68rem;color:#6B7280">Ejercicios para ${vtName}</div></div>
-          </a>
-        </div>
-      </div>`;
+    evEl.innerHTML = buildKaraokeSection(vtName, vtSlug);
   }
+}
+
+// ── Constructor de sección karaoke (reutilizable en resultado y páginas SEO) ──
+function buildKaraokeSection(vtName, vtSlug) {
+  return `
+  <div style="margin-top:1.5rem">
+    <div style="background:rgba(255,255,255,.04);border-radius:18px;
+      border:1px solid rgba(255,255,255,.08);overflow:hidden">
+
+      <!-- Header karaoke -->
+      <div style="padding:1.1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.06);
+        display:flex;align-items:center;gap:.7rem">
+        <span style="font-size:1.5rem">🎤</span>
+        <div>
+          <h3 style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:1rem;margin-bottom:.1rem">
+            Karaoke — Encuentra dónde cantar
+          </h3>
+          <p style="font-size:.75rem;color:#6B7280">
+            Karaokes, open mics, jam sessions y plataformas online
+          </p>
+        </div>
+      </div>
+
+      <div style="padding:1.1rem 1.25rem">
+
+        <!-- Buscador de locales -->
+        <div style="margin-bottom:1.1rem">
+          <div style="font-size:.8rem;font-weight:700;color:#A5B4FC;margin-bottom:.5rem">
+            📍 Busca locales y eventos cerca de ti
+          </div>
+          <div style="display:flex;gap:.4rem">
+            <input id="_karaoke_city" placeholder="Tu ciudad (ej: Madrid)"
+              style="flex:1;background:#13102a;border:1px solid rgba(255,255,255,.15);color:#E5E7EB;
+              font-size:.85rem;padding:.5rem .8rem;border-radius:10px;font-family:'Nunito',sans-serif;
+              outline:none" />
+            <button onclick="_searchKaraoke()" 
+              style="background:linear-gradient(135deg,#7C4DFF,#FF4FA3);color:#fff;border:none;
+              padding:.5rem 1rem;border-radius:10px;font-weight:700;font-size:.82rem;cursor:pointer;
+              white-space:nowrap">Buscar</button>
+          </div>
+        </div>
+
+        <!-- Resultados de búsqueda -->
+        <div id="_karaoke_results" style="display:none;margin-bottom:1rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem">
+            <a id="_kr_bars" href="#" target="_blank" rel="noopener"
+              style="padding:.7rem;background:rgba(255,159,28,.08);border:1px solid rgba(255,159,28,.2);
+              border-radius:10px;text-decoration:none;color:#E5E7EB;display:flex;flex-direction:column;gap:.2rem">
+              <span style="font-size:1rem">🍺</span>
+              <span style="font-size:.78rem;font-weight:700">Bares de karaoke</span>
+              <span style="font-size:.65rem;color:#6B7280">Ver en Google Maps →</span>
+            </a>
+            <a id="_kr_mics" href="#" target="_blank" rel="noopener"
+              style="padding:.7rem;background:rgba(124,77,255,.08);border:1px solid rgba(124,77,255,.2);
+              border-radius:10px;text-decoration:none;color:#E5E7EB;display:flex;flex-direction:column;gap:.2rem">
+              <span style="font-size:1rem">🎸</span>
+              <span style="font-size:.78rem;font-weight:700">Open mics & jams</span>
+              <span style="font-size:.65rem;color:#6B7280">Ver en Google Maps →</span>
+            </a>
+            <a id="_kr_companies" href="#" target="_blank" rel="noopener"
+              style="padding:.7rem;background:rgba(29,185,84,.08);border:1px solid rgba(29,185,84,.2);
+              border-radius:10px;text-decoration:none;color:#E5E7EB;display:flex;flex-direction:column;gap:.2rem">
+              <span style="font-size:1rem">🏢</span>
+              <span style="font-size:.78rem;font-weight:700">Empresas karaoke</span>
+              <span style="font-size:.65rem;color:#6B7280">Ver en Google Maps →</span>
+            </a>
+            <a id="_kr_events" href="#" target="_blank" rel="noopener"
+              style="padding:.7rem;background:rgba(255,79,163,.08);border:1px solid rgba(255,79,163,.2);
+              border-radius:10px;text-decoration:none;color:#E5E7EB;display:flex;flex-direction:column;gap:.2rem">
+              <span style="font-size:1rem">🎭</span>
+              <span style="font-size:.78rem;font-weight:700">Concursos canto</span>
+              <span style="font-size:.65rem;color:#6B7280">Ver en Eventbrite →</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Karaoke online -->
+        <div style="margin-bottom:1rem">
+          <div style="font-size:.78rem;font-weight:700;color:#A5B4FC;margin-bottom:.6rem">
+            💻 Karaoke online — Desde casa o con amigos
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.4rem">
+            ${[
+              {icon:"▶️",name:"YouTube Karaoke",desc:"La mayor biblioteca gratuita",url:"https://www.youtube.com/results?search_query=karaoke+"+encodeURIComponent(vtName),color:"rgba(255,0,0,.15)",border:"rgba(255,0,0,.25)"},
+              {icon:"🌟",name:"Singa",desc:"Catálogo actualizado",url:"https://singa.com",color:"rgba(255,159,28,.1)",border:"rgba(255,159,28,.25)"},
+              {icon:"🎤",name:"Smule",desc:"Karaoke social con duetos",url:"https://www.smule.com",color:"rgba(124,77,255,.1)",border:"rgba(124,77,255,.25)"},
+              {icon:"⭐",name:"StarMaker",desc:"Efectos de voz y comunidad",url:"https://www.starmaker.us",color:"rgba(255,215,0,.1)",border:"rgba(255,215,0,.25)"},
+              {icon:"🎵",name:"KaraFun",desc:"+50.000 canciones",url:"https://www.karafun.es",color:"rgba(29,185,84,.1)",border:"rgba(29,185,84,.25)"},
+              {icon:"📱",name:"Yokee",desc:"Karaoke gratis en móvil",url:"https://yokee.tv",color:"rgba(0,153,255,.1)",border:"rgba(0,153,255,.25)"},
+            ].map(p=>`
+              <a href="${p.url}" target="_blank" rel="noopener"
+                style="display:flex;align-items:center;gap:.5rem;padding:.6rem;
+                background:${p.color};border:1px solid ${p.border};border-radius:10px;
+                text-decoration:none;color:#E5E7EB;transition:opacity .15s"
+                onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+                <span style="font-size:1rem">${p.icon}</span>
+                <div>
+                  <div style="font-size:.75rem;font-weight:700">${p.name}</div>
+                  <div style="font-size:.62rem;color:#6B7280">${p.desc}</div>
+                </div>
+              </a>`).join("")}
+          </div>
+        </div>
+
+        <!-- Consejos para cantar en público -->
+        <details style="border-top:1px solid rgba(255,255,255,.06);padding-top:.9rem">
+          <summary style="font-size:.8rem;font-weight:700;color:#A5B4FC;cursor:pointer;
+            list-style:none;display:flex;align-items:center;gap:.4rem">
+            <span>💡</span> Consejos para cantar en público <span style="margin-left:auto;font-size:.7rem;color:#6B7280">▼ Ver</span>
+          </summary>
+          <div style="margin-top:.75rem;display:flex;flex-direction:column;gap:.5rem">
+            ${[
+              ["🎙️","Elige canciones dentro de tu rango","No elijas la canción más difícil. Elige una que domines bien — el público lo agradece más que un intento fallido de un hit imposible."],
+              ["🌡️","Calienta la voz antes","5 minutos de escalas suaves antes de subir al escenario marcan una diferencia enorme. El humming (boca cerrada) es perfecto."],
+              ["🎤","Domina el micrófono","Mantén el micro a 5-10 cm de la boca. Aléjalo un poco en los agudos, acércalo en los graves. No lo tapes con la mano."],
+              ["👀","Mira al público","No te claves en la pantalla. Léela de reojo y conecta con el público. Una sonrisa vale más que la nota perfecta."],
+              ["🍵","Hidratación y temperatura","Agua a temperatura ambiente, no fría. El alcohol reseca las cuerdas vocales. Un té con miel es tu mejor aliado."],
+            ].map(([ico,tit,desc])=>`
+              <div style="display:flex;gap:.6rem;padding:.6rem;background:rgba(255,255,255,.03);
+                border-radius:10px;border:1px solid rgba(255,255,255,.05)">
+                <span style="font-size:1rem;flex-shrink:0">${ico}</span>
+                <div>
+                  <div style="font-size:.78rem;font-weight:700;margin-bottom:.15rem">${tit}</div>
+                  <div style="font-size:.72rem;color:#6B7280;line-height:1.4">${desc}</div>
+                </div>
+              </div>`).join("")}
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </div>`;
 }
 
 function _btnStyle(bg, border="none") {
@@ -1244,114 +1368,194 @@ function showViralCard() {
   };
   const color = vtColors[vt] || "#7C4DFF";
 
-  // Motivational phrases
   const phrases = {
-    "baritone":["Tu voz tiene el poder de un clásico","El barítono es la voz más versátil del mundo","Freddie Mercury era barítono. ¿Y tú?"],
-    "tenor":["Tu voz llega donde otros no pueden","Los tenores hacen historia","El Do de pecho es tu territorio"],
-    "soprano":["Tu voz es pura magia","Las sopranos conquistan el mundo","Mariah Carey empezó como tú"],
-    "mezzo-soprano":["La voz más expresiva del espectro","Adele cambió el mundo siendo mezzosoprano","Tu timbre es único e irrepetible"],
-    "contralto":["Una voz de contralto es una rareza privilegiada","Nina Simone tenía tu voz","Tu registro grave es tu superpoder"],
-    "bass":["Los graves más profundos son los más poderosos","Johnny Cash tenía tu voz","Tu voz hace temblar el escenario"],
-    "bass-baritone":["Entre los graves y la versatilidad","Una voz imponente y única","Tu rango es el envidia de muchos"],
-    "countertenor":["Una rareza vocal extraordinaria","Tu falsetto es tu mayor tesoro","La voz más sorprendente del mundo"],
+    "baritone":["Tu voz tiene el poder de un clásico 🎭","Freddie Mercury era barítono. ¿Y tú? 🤘","La voz más versátil del mundo. Úsala 🎤"],
+    "tenor":   ["Tu voz llega donde otros no pueden ✨","El Do de pecho es tu territorio 🏆","Los tenores hacen historia 🎼"],
+    "soprano": ["Tu voz es pura magia ✨","Mariah Carey empezó como tú 🌟","Las sopranos conquistan el mundo 👑"],
+    "mezzo-soprano":["Adele cambió el mundo con esta voz 💜","La más expresiva del espectro 🎶","Tu timbre es único e irrepetible 🔥"],
+    "contralto":["Una rareza vocal privilegiada 🌿","Nina Simone tenía tu voz 🎹","Tu registro grave es tu superpoder 💚"],
+    "bass":    ["Los graves más poderosos del mundo 🎸","Johnny Cash tenía tu voz 🖤","Tu voz hace temblar el escenario ⚡"],
+    "bass-baritone":["Voz imponente y única 💙","Entre los graves y la versatilidad 🎵","Tu rango es la envidia de muchos 🎭"],
+    "countertenor":["La voz más sorprendente del mundo 🌈","Tu falsetto es tu mayor tesoro 💎","Una rareza vocal extraordinaria ⭐"],
   };
-  const phraseArr = phrases[vt] || ["Tu voz es única", "Nadie canta como tú", "El mundo necesita tu voz"];
+  const phraseArr = phrases[vt] || ["Tu voz es única 🎤","Nadie canta como tú 🌟","El mundo necesita tu voz 🎵"];
   const phrase = phraseArr[Math.floor(Math.random() * phraseArr.length)];
 
+  // Top artista para foto grande
+  const top1 = top3[0];
+  const top1Img = MONO_IMGS[top1?.name] || imgCache[top1?.name] || getInitialsAvatar(top1?.name||"?");
+
   const artistRows = top3.map((m,i) => {
-    const img = MONO_IMGS[m.name] || imgCache[m.name];
-    const initSvg = getInitialsAvatar(m.name);
+    const img = MONO_IMGS[m.name] || imgCache[m.name] || getInitialsAvatar(m.name);
     const pct = Math.round(m.score);
     const medals = ["🥇","🥈","🥉"];
+    const sizes = ["18px","14px","13px"];
     return `
-      <div style="display:flex;align-items:center;gap:10px;padding:8px;
-        background:rgba(255,255,255,.08);border-radius:12px;margin-bottom:8px">
-        <span style="font-size:20px">${medals[i]}</span>
-        <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0;background:rgba(124,77,255,.3)">
-          <img src="${img||initSvg}" style="width:100%;height:100%;object-fit:cover"
-            onerror="this.src='${initSvg}'">
+      <div style="display:flex;align-items:center;gap:10px;padding:${i===0?'10px 12px':'7px 12px'};
+        background:${i===0?'rgba(255,255,255,.13)':'rgba(255,255,255,.06)'};
+        border-radius:14px;margin-bottom:7px;
+        ${i===0?'border:1px solid rgba(255,255,255,.2);':''} ">
+        <span style="font-size:${i===0?'22px':'17px'}">${medals[i]}</span>
+        <div style="width:${i===0?'48px':'38px'};height:${i===0?'48px':'38px'};
+          border-radius:50%;overflow:hidden;flex-shrink:0;
+          border:2px solid ${i===0?color:'rgba(255,255,255,.2)'}">
+          <img src="${img}" alt="${m.name}" style="width:100%;height:100%;object-fit:cover"
+            onerror="this.src='${getInitialsAvatar(m.name)}'">
         </div>
         <div style="flex:1;min-width:0">
-          <div style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.name}</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.6)">${trV("_vt_names",m.voice_type)}</div>
+          <div style="font-weight:${i===0?'800':'700'};font-size:${sizes[i]};
+            white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+            color:${i===0?'#fff':'rgba(255,255,255,.85)'}">${m.name}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.5);text-transform:capitalize">
+            ${trV("_vt_names",m.voice_type)}</div>
         </div>
-        <div style="font-weight:800;font-size:18px;background:linear-gradient(135deg,#fff,${color});
-          -webkit-background-clip:text;-webkit-text-fill-color:transparent">${pct}%</div>
+        <div style="text-align:right">
+          <div style="font-weight:800;font-size:${i===0?'22px':'16px'};
+            background:linear-gradient(135deg,#fff,${color});
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent">${pct}%</div>
+        </div>
       </div>`;
   }).join("");
 
+  // Texto para compartir
+  const shareText = `🎤 Mi voz es de ${vtName} y me parezco a ${top1?.name} con ${Math.round(top1?.score||0)}% de similitud. ¡Descubre el tuyo! 👉 harmiq.app`;
+
   const modal = document.createElement("div");
   modal.id = "_viral_modal";
-  modal.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;";
+  modal.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;";
+
   modal.innerHTML = `
-    <div style="max-width:380px;width:100%">
-      <!-- Tarjeta viral vertical (formato Stories/RRSS) -->
+    <div style="max-width:360px;width:100%;margin:auto">
+
+      <!-- TARJETA VIRAL -->
       <div id="_viral_card" style="
-        background:linear-gradient(160deg,#0A0818 0%,#1a0a2e 40%,#0a1628 100%);
-        border-radius:24px;padding:28px 24px;color:#fff;
-        border:1px solid rgba(255,255,255,.12);
-        box-shadow:0 20px 60px rgba(0,0,0,.5);
+        background:linear-gradient(170deg,#0f0820 0%,#1a0a35 35%,#0a1228 70%,#050510 100%);
+        border-radius:28px;padding:24px 20px 20px;color:#fff;
+        border:1px solid rgba(255,255,255,.15);
+        box-shadow:0 24px 80px rgba(0,0,0,.7), 0 0 0 1px ${color}44;
         font-family:'Nunito',sans-serif;
-        position:relative;overflow:hidden;
-        aspect-ratio:9/16;display:flex;flex-direction:column;justify-content:space-between;">
+        position:relative;overflow:hidden;">
 
-        <!-- Fondo decorativo -->
-        <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;
-          border-radius:50%;background:${color}20;pointer-events:none"></div>
-        <div style="position:absolute;bottom:-40px;left:-40px;width:150px;height:150px;
-          border-radius:50%;background:#FF4FA3" + "15;pointer-events:none"></div>
+        <!-- Destellos de fondo -->
+        <div style="position:absolute;top:-80px;right:-50px;width:220px;height:220px;
+          border-radius:50%;background:radial-gradient(circle,${color}35 0%,transparent 70%);pointer-events:none"></div>
+        <div style="position:absolute;bottom:-60px;left:-40px;width:180px;height:180px;
+          border-radius:50%;background:radial-gradient(circle,#FF4FA355 0%,transparent 70%);pointer-events:none"></div>
+        <div style="position:absolute;top:50%;left:-30px;width:100px;height:100px;
+          border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.03) 0%,transparent 70%);pointer-events:none"></div>
 
-        <!-- Header -->
-        <div style="text-align:center;position:relative">
-          <div style="font-size:11px;font-weight:800;letter-spacing:.15em;color:rgba(255,255,255,.5);
-            text-transform:uppercase;margin-bottom:8px">¿A QUÉ CANTANTE TE PARECES?</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:16px">harmiq.app</div>
+        <!-- Top bar -->
+        <div style="display:flex;align-items:center;justify-content:space-between;
+          margin-bottom:18px;position:relative">
+          <div>
+            <div style="font-size:9px;font-weight:800;letter-spacing:.18em;
+              color:rgba(255,255,255,.4);text-transform:uppercase">¿A QUÉ CANTANTE</div>
+            <div style="font-size:9px;font-weight:800;letter-spacing:.18em;
+              color:rgba(255,255,255,.4);text-transform:uppercase">TE PARECES?</div>
+          </div>
+          <div style="background:linear-gradient(135deg,${color},#FF4FA3);
+            padding:4px 12px;border-radius:20px;font-size:10px;font-weight:800;
+            letter-spacing:.05em">harmiq.app</div>
         </div>
 
-        <!-- Tipo de voz -->
-        <div style="text-align:center;position:relative;margin-bottom:4px">
-          <div style="font-size:11px;color:rgba(255,255,255,.55);text-transform:uppercase;
-            letter-spacing:.1em;margin-bottom:4px">Tu tipo de voz</div>
-          <div style="font-family:'Baloo 2',sans-serif;font-weight:900;font-size:38px;
-            background:linear-gradient(135deg,#fff,${color});
+        <!-- Tipo de voz grande -->
+        <div style="text-align:center;margin-bottom:16px;position:relative">
+          <div style="font-size:10px;color:rgba(255,255,255,.45);text-transform:uppercase;
+            letter-spacing:.12em;margin-bottom:2px">Tu tipo de voz</div>
+          <div style="font-family:'Baloo 2',sans-serif;font-weight:900;
+            font-size:clamp(36px,10vw,48px);line-height:1;
+            background:linear-gradient(135deg,#ffffff 30%,${color} 70%,#FF4FA3 100%);
             -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            text-transform:capitalize;line-height:1.1">${vtName}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:4px">${conf}% confianza</div>
+            text-transform:capitalize;margin-bottom:4px">${vtName}</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;
+            background:rgba(255,255,255,.08);padding:3px 10px;border-radius:20px">
+            <div style="width:6px;height:6px;border-radius:50%;background:${color}"></div>
+            <span style="font-size:11px;color:rgba(255,255,255,.6)">${conf}% confianza</span>
+          </div>
         </div>
 
-        <!-- Top artistas -->
-        <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 4px">
+        <!-- Artistas top 3 -->
+        <div style="margin-bottom:14px;position:relative">
           ${artistRows}
         </div>
 
         <!-- Frase motivadora -->
-        <div style="text-align:center;position:relative;margin-top:8px">
-          <div style="font-size:13px;color:rgba(255,255,255,.75);font-style:italic;
-            line-height:1.4;margin-bottom:12px">"${phrase}"</div>
-          <div style="background:linear-gradient(135deg,${color},#FF4FA3);
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            font-weight:800;font-size:14px">🎙️ Analiza tu voz en harmiq.app</div>
+        <div style="text-align:center;padding:12px 8px;
+          background:rgba(255,255,255,.05);border-radius:14px;
+          border:1px solid rgba(255,255,255,.08);position:relative;margin-bottom:14px">
+          <div style="font-size:12px;color:rgba(255,255,255,.8);
+            font-style:italic;line-height:1.5">${phrase}</div>
+        </div>
+
+        <!-- Footer CTA -->
+        <div style="text-align:center;position:relative">
+          <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px">
+            Descubre el tuyo gratis en
+          </div>
+          <div style="font-family:'Baloo 2',sans-serif;font-weight:900;font-size:18px;
+            background:linear-gradient(135deg,${color},#FF4FA3);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent">
+            🎙️ harmiq.app
+          </div>
         </div>
       </div>
 
-      <!-- Botones -->
-      <div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap">
-        <button onclick="_shareCard('wa')"
-          style="flex:1;background:#25D366;color:#fff;border:none;padding:.6rem;border-radius:10px;
-          font-weight:700;font-size:.82rem;cursor:pointer">💬 WhatsApp</button>
-        <button onclick="_shareCard('x')"
-          style="flex:1;background:#000;color:#fff;border:1px solid #333;padding:.6rem;border-radius:10px;
-          font-weight:700;font-size:.82rem;cursor:pointer">🐦 Twitter</button>
-        <button onclick="_shareCard('cp')"
-          style="flex:1;background:rgba(124,77,255,.3);color:#fff;border:1px solid rgba(124,77,255,.4);
-          padding:.6rem;border-radius:10px;font-weight:700;font-size:.82rem;cursor:pointer">📋 Texto</button>
-        <button onclick="document.getElementById('_viral_modal').remove()"
-          style="flex:1;background:rgba(255,255,255,.08);color:#9CA3AF;border:1px solid rgba(255,255,255,.1);
-          padding:.6rem;border-radius:10px;font-weight:700;font-size:.82rem;cursor:pointer">✕ Cerrar</button>
+      <!-- BOTONES COMPARTIR -->
+      <div style="margin-top:12px;background:rgba(255,255,255,.05);
+        border-radius:20px;padding:14px;border:1px solid rgba(255,255,255,.08)">
+        <p style="text-align:center;font-size:.75rem;color:#6B7280;margin-bottom:10px;font-weight:600">
+          📲 Comparte tu resultado
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.45rem">
+          <button onclick="_shareCard('wa')"
+            style="background:#25D366;color:#fff;border:none;padding:.6rem .5rem;border-radius:12px;
+            font-weight:700;font-size:.8rem;cursor:pointer;display:flex;align-items:center;
+            justify-content:center;gap:.3rem;transition:opacity .2s"
+            onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+            💬 WhatsApp
+          </button>
+          <button onclick="_shareCard('tg')"
+            style="background:#229ED9;color:#fff;border:none;padding:.6rem .5rem;border-radius:12px;
+            font-weight:700;font-size:.8rem;cursor:pointer;display:flex;align-items:center;
+            justify-content:center;gap:.3rem"
+            onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+            ✈️ Telegram
+          </button>
+          <button onclick="_shareCard('x')"
+            style="background:#000;color:#fff;border:1px solid #333;padding:.6rem .5rem;border-radius:12px;
+            font-weight:700;font-size:.8rem;cursor:pointer;display:flex;align-items:center;
+            justify-content:center;gap:.3rem"
+            onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+            🐦 Twitter/X
+          </button>
+          <button onclick="_shareCard('ig')"
+            style="background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+            color:#fff;border:none;padding:.6rem .5rem;border-radius:12px;
+            font-weight:700;font-size:.8rem;cursor:pointer;display:flex;align-items:center;
+            justify-content:center;gap:.3rem"
+            onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+            📸 Instagram
+          </button>
+          <button onclick="_shareCard('cp')"
+            style="background:rgba(124,77,255,.25);color:#a89fff;
+            border:1px solid rgba(124,77,255,.35);padding:.6rem .5rem;border-radius:12px;
+            font-weight:700;font-size:.8rem;cursor:pointer;display:flex;align-items:center;
+            justify-content:center;gap:.3rem"
+            onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+            📋 Copiar texto
+          </button>
+          <button onclick="document.getElementById('_viral_modal').remove()"
+            style="background:rgba(255,255,255,.06);color:#6B7280;
+            border:1px solid rgba(255,255,255,.08);padding:.6rem .5rem;border-radius:12px;
+            font-weight:700;font-size:.8rem;cursor:pointer;display:flex;align-items:center;
+            justify-content:center;gap:.3rem">
+            ✕ Cerrar
+          </button>
+        </div>
+        <p style="text-align:center;font-size:.68rem;color:#4B5563;margin-top:8px">
+          💡 Haz captura de pantalla para compartir la tarjeta como imagen
+        </p>
       </div>
-      <p style="text-align:center;font-size:.72rem;color:#4B5563;margin-top:.5rem">
-        Captura pantalla para compartir la tarjeta como imagen
-      </p>
     </div>`;
 
   document.body.appendChild(modal);
@@ -1363,10 +1567,25 @@ function _shareCard(p) {
   const m   = lastResult.matches[0];
   const pct = Math.round(m.score);
   const vtn = trV("_vt_names", lastResult.vt);
-  const txt = `🎤 Tengo voz de ${vtn} y me parezco a ${m.name} con ${pct}% de similitud. ¡Analiza la tuya gratis en harmiq.app!`;
+  const url = "https://harmiq.app";
+  const txt = `🎤 Tengo voz de ${vtn} y me parezco a ${m.name} con un ${pct}% de similitud. ¿A qué cantante te pareces tú? 👉 ${url}`;
   if (p==="wa") window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank");
+  if (p==="tg") window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(txt)}`, "_blank");
   if (p==="x")  window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(txt)}`, "_blank");
-  if (p==="cp") navigator.clipboard.writeText(txt).then(()=>{ showStatus("✅ Texto copiado"); setTimeout(()=>showStatus(""),2e3); });
+  if (p==="ig") {
+    // Instagram no tiene API de compartir directa; copiar texto y abrir Instagram
+    navigator.clipboard.writeText(txt).then(()=>{
+      showStatus("✅ Texto copiado — pégalo en Instagram Stories");
+      setTimeout(()=>{
+        window.open("https://www.instagram.com/", "_blank");
+      }, 800);
+      setTimeout(()=>showStatus(""),4000);
+    });
+  }
+  if (p==="cp") navigator.clipboard.writeText(txt).then(()=>{
+    showStatus("✅ Texto copiado al portapapeles");
+    setTimeout(()=>showStatus(""),2500);
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1375,7 +1594,7 @@ function _shareCard(p) {
 const VOZ_DATA = {
   baritono: {
     emoji:"🎭", color:"#7C4DFF", range:"Sol2 – Sol4", hz:"98 – 392 Hz",
-    ytId: "TYBBMNoVFVU",
+    ytId: "E_h-T5ZKZDU", ytId2: "rmopMoKJo34",
     artists:["Frank Sinatra","Elvis Presley","Michael Bublé","David Bowie","Freddie Mercury","Alejandro Sanz","Joaquín Sabina","Serrat"],
     artistImgs:{
       "Frank Sinatra":"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Frank_Sinatra_-_publicity.jpg/220px-Frank_Sinatra_-_publicity.jpg",
@@ -1420,7 +1639,7 @@ const VOZ_DATA = {
 
   tenor: {
     emoji:"🎤", color:"#118AB2", range:"Do3 – Do5", hz:"131 – 523 Hz",
-    ytId: "XC8dTMnAzGY",
+    ytId: "9fTGr5e5Ksk", ytId2: "KVLtTX3d0Kk",
     artists:["Luciano Pavarotti","Andrea Bocelli","Benson Boone","Camilo Sesto","Alejandro Fernández","Roberto Carlos","Il Volo","Plácido Domingo"],
     artistImgs:{
       "Pavarotti":"https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Luciano_Pavarotti_with_Tommy_Tune_%28cropped%29.jpg/220px-Luciano_Pavarotti_with_Tommy_Tune_%28cropped%29.jpg",
@@ -1464,7 +1683,7 @@ const VOZ_DATA = {
 
   soprano: {
     emoji:"✨", color:"#FF4FA3", range:"Do4 – Do6", hz:"261 – 1047 Hz",
-    ytId: "VuN_FkWzIMs",
+    ytId: "5hR8-YSfFvI", ytId2: "bAsXMCiB5nQ",
     artists:["Mariah Carey","Whitney Houston","Celine Dion","Ariana Grande","Sabrina Carpenter","María Callas","Montserrat Caballé","Isabel Pantoja"],
     artistImgs:{
       "Mariah Carey":"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Mariah_Carey_2019_by_Glenn_Francis.jpg/220px-Mariah_Carey_2019_by_Glenn_Francis.jpg",
@@ -1854,19 +2073,35 @@ function renderVozPage(slug) {
   <div style="margin-bottom:2.5rem">
     <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.5rem;margin-bottom:.3rem;
       background:linear-gradient(135deg,${data.color},#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
-      🎬 Aprende de los mejores expertos en voz de ${capSlug}
+      🎬 Aprende de los mejores expertos en canto
     </h2>
     <p style="color:#6B7280;font-size:.85rem;margin-bottom:1rem">
-      Vídeo seleccionado de vocal coaches especializados en este tipo de voz.
+      Clases de canto seleccionadas de los mejores vocal coaches del mundo.
     </p>
     <div style="border-radius:16px;overflow:hidden;aspect-ratio:16/9;background:#000;
-      box-shadow:0 8px 32px rgba(0,0,0,.4)">
-      <iframe width="100%" height="100%"
+      box-shadow:0 8px 32px rgba(0,0,0,.4)" id="_yt_wrap_${slug}">
+      <iframe id="_yt_iframe_${slug}" width="100%" height="100%"
         src="https://www.youtube.com/embed/${data.ytId}?rel=0&modestbranding=1"
-        title="Ejercicios vocales para ${capSlug}"
+        title="Clases de canto - Vocal coaching"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen></iframe>
+        allowfullscreen
+        onerror="this.src='https://www.youtube.com/embed/${data.ytId2||'rmopMoKJo34'}?rel=0&modestbranding=1'">
+      </iframe>
+    </div>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem">
+      <a href="https://www.youtube.com/results?search_query=clases+de+canto+tecnica+vocal"
+        target="_blank" rel="noopener"
+        style="font-size:.78rem;color:#7C4DFF;text-decoration:none;padding:.3rem .7rem;
+        background:rgba(124,77,255,.1);border-radius:8px;border:1px solid rgba(124,77,255,.2)">
+        🔍 Ver más clases en YouTube →
+      </a>
+      <a href="https://www.youtube.com/results?search_query=vocal+exercises+${encodeURIComponent(capSlug)}"
+        target="_blank" rel="noopener"
+        style="font-size:.78rem;color:#FF4FA3;text-decoration:none;padding:.3rem .7rem;
+        background:rgba(255,79,163,.1);border-radius:8px;border:1px solid rgba(255,79,163,.2)">
+        🎤 Ejercicios específicos para ${capSlug} →
+      </a>
     </div>
   </div>
 
@@ -2069,6 +2304,25 @@ function showStatus(msg, type="ok") {
 // ═══════════════════════════════════════════════════════════════════════════════
 // 13. CARGAR DB
 // ═══════════════════════════════════════════════════════════════════════════════
+// ── Buscador de karaoke por ciudad ────────────────────────────────────────────
+function _searchKaraoke() {
+  const city = document.getElementById("_karaoke_city")?.value?.trim();
+  if (!city) return;
+  const enc = encodeURIComponent(city);
+  const resDiv = document.getElementById("_karaoke_results");
+  if (resDiv) resDiv.style.display = "block";
+
+  const barsEl = document.getElementById("_kr_bars");
+  const micsEl = document.getElementById("_kr_mics");
+  const compEl = document.getElementById("_kr_companies");
+  const evtEl  = document.getElementById("_kr_events");
+
+  if (barsEl) barsEl.href = `https://www.google.com/maps/search/karaoke+bares+${enc}`;
+  if (micsEl) micsEl.href = `https://www.google.com/maps/search/open+mic+jam+session+${enc}`;
+  if (compEl) compEl.href = `https://www.google.com/maps/search/empresa+karaoke+${enc}`;
+  if (evtEl)  evtEl.href  = `https://www.eventbrite.es/d/${enc}/concurso-canto-karaoke/`;
+}
+
 async function loadDB() {
   try {
     const r = await fetch(DB_PATH);
