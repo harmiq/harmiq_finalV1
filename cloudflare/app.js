@@ -1,19 +1,20 @@
 /**
- * app.js — Harmiq PRODUCCIÓN v4
+ * app.js — Harmiq PRODUCCIÓN v5
  * Un solo archivo. No requiere analyzer.js.
  *
- * INCLUYE:
- * 1. i18n completo — 11 idiomas, changeLang() funcional
- * 2. Subida de audio con drag & drop
- * 3. Visualizador de espectro en tiempo real
- * 4. DSP local — análisis vocal en navegador (Web Audio API)
- * 5. Matching contra harmiq_db_vectores.json
- * 6. Imágenes de artistas — iTunes Search API (gratis, sin secret)
- * 7. Botones YouTube Karaoke + plataforma por geolocalización
- * 8. Selector de épocas musicales en filtros
- * 9. Páginas SEO /voz/* — se sirven como SPA con History API
- * 10. Hardware — 4 packs, 3 opciones, Amazon global por país
- * 11. Compartir resultado viral con imagen de plataforma
+ * FIXES v5:
+ * 1. Emoji duplicado en botón grabar — CORREGIDO
+ * 2. Barítono clasificado como tenor — CORREGIDO (umbral 215Hz + pitch_range)
+ * 3. Fotos de artistas — Wikipedia cache + avatar iniciales (sin CORS)
+ * 4. YouTube embeds — IDs fijos por tipo de voz (listType=search bloqueado)
+ * 5. Páginas SEO /voz/* — contenido extenso, home studio 4 packs, karaoke/eventos
+ * 6. Tarjeta viral vertical — formato Stories RRSS con foto artista
+ * 7. Canciones recomendadas de Spotify en resultado
+ * 8. Filtros: época + género musical + idioma/país
+ * 9. Sección karaoke/eventos en resultado principal
+ * 10. Fotos en todas las cards de artistas con fallback de iniciales
+ * 11. Router robusto — /voz/* funcional, no recarga la página
+ * 12. Matching con boost de popularidad local por país del usuario
  */
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -45,7 +46,7 @@ const T = {
     "stat1":"Artistas de todo el mundo","stat2":"Idiomas","stat3":"Para tu resultado","stat4":"Gratis siempre",
     "app-title":"Analiza tu voz","app-desc":"Selecciona tu voz, sube un audio o graba directamente",
     "opt-default":"Selecciona tu voz","opt-male":"Voz masculina","opt-female":"Voz femenina",
-    "btn-record-text":"🎤 Grabar y analizar",
+    "btn-record-text":"Grabar y analizar",
     "how-title":"Cómo funciona","how-sub":"Tres pasos. Sin registro. Sin instalar nada.",
     "step1-t":"1. Canta unos segundos","step1-d":"Sube un audio o usa el micrófono. Solo necesitas 5-10 segundos.",
     "step2-t":"2. La IA analiza tu voz","step2-d":"Detectamos tu frecuencia fundamental, timbre y rango vocal.",
@@ -61,7 +62,7 @@ const T = {
     "cta-title":"Descubre tu tipo de voz ahora","cta-desc":"Análisis gratuito en 10 segundos. 12.000 artistas.",
     "cta-btn":"🎤 Analizar mi voz gratis",
     "_upload_btn":"📁 Subir audio","_upload_hint":"WAV · MP3 · M4A · OGG · FLAC · mín. 5 seg",
-    "_or":"— o —","_analyzing":"🔍 Analizando tu voz…","_rec_stop":"⏹ Detener grabación",
+    "_or":"— o —","_analyzing":"🔍 Analizando tu voz…","_rec_stop":"⏹ Detener",
     "_result":"Tu resultado","_similarity":"similitud","_vt_label":"Tu tipo de voz","_confidence":"confianza",
     "_share":"📲 Comparte tu resultado","_copy":"📋 Copiar",
     "_share_txt":"🎤 Mi voz se parece a {name} con {pct}% de similitud. ¡Analiza la tuya en harmiq.app!",
@@ -84,7 +85,7 @@ const T = {
     "stat1":"Artists worldwide","stat2":"Languages","stat3":"For your result","stat4":"Always free",
     "app-title":"Analyze your voice","app-desc":"Select your voice type, upload audio or record directly",
     "opt-default":"Select your voice","opt-male":"Male voice","opt-female":"Female voice",
-    "btn-record-text":"🎤 Record & Analyze",
+    "btn-record-text":"Record & Analyze",
     "how-title":"How it works","how-sub":"Three steps. No sign-up. No install.",
     "step1-t":"1. Sing a few seconds","step1-d":"Upload audio or use your mic. Just 5-10 seconds.",
     "step2-t":"2. AI analyzes your voice","step2-d":"We detect your fundamental frequency, timbre and vocal range.",
@@ -100,7 +101,7 @@ const T = {
     "cta-title":"Discover your voice type now","cta-desc":"Free analysis in 10 seconds. 12,000 artists.",
     "cta-btn":"🎤 Analyze my voice free",
     "_upload_btn":"📁 Upload audio","_upload_hint":"WAV · MP3 · M4A · OGG · FLAC · min. 5 sec",
-    "_or":"— or —","_analyzing":"🔍 Analyzing your voice…","_rec_stop":"⏹ Stop recording",
+    "_or":"— or —","_analyzing":"🔍 Analyzing your voice…","_rec_stop":"⏹ Stop",
     "_result":"Your result","_similarity":"similarity","_vt_label":"Your voice type","_confidence":"confidence",
     "_share":"📲 Share your result","_copy":"📋 Copy",
     "_share_txt":"🎤 My voice sounds like {name} with {pct}% similarity. Try yours at harmiq.app!",
@@ -123,7 +124,7 @@ const T = {
     "stat1":"Artistes de tot el món","stat2":"Idiomes","stat3":"Per al teu resultat","stat4":"Gratis sempre",
     "app-title":"Analitza la teva veu","app-desc":"Selecciona la teva veu, puja un àudio o grava directament",
     "opt-default":"Selecciona la teva veu","opt-male":"Veu masculina","opt-female":"Veu femenina",
-    "btn-record-text":"🎤 Gravar i analitzar",
+    "btn-record-text":"Gravar i analitzar",
     "how-title":"Com funciona","how-sub":"Tres passos. Sense registre.",
     "step1-t":"1. Canta uns segons","step1-d":"Puja un àudio o usa el micròfon. Només 5-10 segons.",
     "step2-t":"2. La IA analitza la teva veu","step2-d":"Detectem la teva freqüència fonamental, timbre i rang.",
@@ -153,7 +154,7 @@ const T = {
     "btn-main":"🎤 Analyser ma voix — gratuit","btn-how":"Voir comment ça marche","hero-sub":"Sans inscription · Sans installation",
     "stat1":"Artistes du monde","stat2":"Langues","stat3":"Pour ton résultat","stat4":"Toujours gratuit",
     "app-title":"Analyse ta voix","app-desc":"Sélectionne ta voix, télécharge ou enregistre",
-    "opt-default":"Sélectionne ta voix","opt-male":"Voix masculine","opt-female":"Voix féminine","btn-record-text":"🎤 Enregistrer et analyser",
+    "opt-default":"Sélectionne ta voix","opt-male":"Voix masculine","opt-female":"Voix féminine","btn-record-text":"Enregistrer et analyser",
     "how-title":"Comment ça marche","how-sub":"Trois étapes. Sans inscription.",
     "step1-t":"1. Chante quelques secondes","step1-d":"Télécharge ou utilise le micro. 5-10 secondes suffisent.",
     "step2-t":"2. L'IA analyse ta voix","step2-d":"On détecte ta fréquence, timbre et tessiture.",
@@ -183,7 +184,7 @@ const T = {
     "btn-main":"🎤 Stimme analysieren — kostenlos","btn-how":"Wie es funktioniert","hero-sub":"Keine Anmeldung · Keine Installation",
     "stat1":"Weltweite Künstler","stat2":"Sprachen","stat3":"Bis zum Ergebnis","stat4":"Immer kostenlos",
     "app-title":"Analysiere deine Stimme","app-desc":"Wähle deinen Stimmtyp, lade hoch oder nimm auf",
-    "opt-default":"Wähle deine Stimme","opt-male":"Männerstimme","opt-female":"Frauenstimme","btn-record-text":"🎤 Aufnehmen & Analysieren",
+    "opt-default":"Wähle deine Stimme","opt-male":"Männerstimme","opt-female":"Frauenstimme","btn-record-text":"Aufnehmen & Analysieren",
     "how-title":"Wie es funktioniert","how-sub":"Drei Schritte. Keine Anmeldung.",
     "step1-t":"1. Singe ein paar Sekunden","step1-d":"Lade hoch oder nutze das Mikrofon.","step2-t":"2. KI analysiert deine Stimme","step2-d":"Wir erkennen Grundfrequenz, Timbre und Stimmumfang.",
     "step3-t":"3. Entdecke deinen Sänger","step3-d":"Wir sagen dir, welcher Künstler deiner Stimme am ähnlichsten ist.",
@@ -212,7 +213,7 @@ const T = {
     "btn-main":"🎤 Analizza la mia voce — gratis","btn-how":"Vedi come funziona","hero-sub":"Senza registrazione · Senza installare nulla",
     "stat1":"Artisti nel mondo","stat2":"Lingue","stat3":"Per il tuo risultato","stat4":"Sempre gratis",
     "app-title":"Analizza la tua voce","app-desc":"Seleziona la tua voce, carica o registra",
-    "opt-default":"Seleziona la tua voce","opt-male":"Voce maschile","opt-female":"Voce femminile","btn-record-text":"🎤 Registra e Analizza",
+    "opt-default":"Seleziona la tua voce","opt-male":"Voce maschile","opt-female":"Voce femminile","btn-record-text":"Registra e Analizza",
     "how-title":"Come funziona","how-sub":"Tre passi. Senza registrazione.",
     "step1-t":"1. Canta qualche secondo","step1-d":"Carica o usa il microfono.","step2-t":"2. L'IA analizza la voce","step2-d":"Rileviamo frequenza, timbro ed estensione.",
     "step3-t":"3. Scopri il tuo cantante","step3-d":"Ti diciamo quale artista ti assomiglia.",
@@ -241,7 +242,7 @@ const T = {
     "btn-main":"🎤 Analisar minha voz — grátis","btn-how":"Ver como funciona","hero-sub":"Sem cadastro · Sem instalar · No celular",
     "stat1":"Artistas do mundo","stat2":"Idiomas","stat3":"Para seu resultado","stat4":"Sempre grátis",
     "app-title":"Analise sua voz","app-desc":"Selecione sua voz, envie áudio ou grave diretamente",
-    "opt-default":"Selecione sua voz","opt-male":"Voz masculina","opt-female":"Voz feminina","btn-record-text":"🎤 Gravar e Analisar",
+    "opt-default":"Selecione sua voz","opt-male":"Voz masculina","opt-female":"Voz feminina","btn-record-text":"Gravar e Analisar",
     "how-title":"Como funciona","how-sub":"Três passos. Sem cadastro.",
     "step1-t":"1. Cante alguns segundos","step1-d":"Envie áudio ou use o microfone.","step2-t":"2. A IA analisa sua voz","step2-d":"Detectamos frequência, timbre e alcance.",
     "step3-t":"3. Descubra seu cantor","step3-d":"Dizemos qual artista combina com você.",
@@ -270,7 +271,7 @@ const T = {
     "btn-main":"🎤 声を分析する — 無料","btn-how":"使い方を見る","hero-sub":"登録不要 · インストール不要 · スマホ対応",
     "stat1":"世界のアーティスト","stat2":"言語","stat3":"結果まで","stat4":"常に無料",
     "app-title":"声を分析する","app-desc":"声域を選択し音声をアップロードか録音",
-    "opt-default":"声域を選択","opt-male":"男声","opt-female":"女声","btn-record-text":"🎤 録音して分析",
+    "opt-default":"声域を選択","opt-male":"男声","opt-female":"女声","btn-record-text":"録音して分析",
     "how-title":"使い方","how-sub":"3ステップ。登録不要。","step1-t":"1. 数秒歌う","step1-d":"音声ファイルをアップロードするかマイクを使用。",
     "step2-t":"2. AIが声を分析","step2-d":"基本周波数、音色、声域を検出します。","step3-t":"3. アーティストを発見","step3-d":"最も声が似ている有名アーティストを表示します。",
     "voices-title":"声域タイプを発見","voices-sub":"声域タイプによって理想の曲が異なります。",
@@ -298,7 +299,7 @@ const T = {
     "btn-main":"🎤 Анализировать — бесплатно","btn-how":"Как это работает","hero-sub":"Без регистрации · Без установки",
     "stat1":"Артистов со всего мира","stat2":"Языков","stat3":"До результата","stat4":"Всегда бесплатно",
     "app-title":"Анализируй голос","app-desc":"Выбери тип голоса, загрузи или записывай",
-    "opt-default":"Выбери свой голос","opt-male":"Мужской голос","opt-female":"Женский голос","btn-record-text":"🎤 Записать и анализировать",
+    "opt-default":"Выбери свой голос","opt-male":"Мужской голос","opt-female":"Женский голос","btn-record-text":"Записать и анализировать",
     "how-title":"Как это работает","how-sub":"Три шага. Без регистрации.",
     "step1-t":"1. Пой несколько секунд","step1-d":"Загрузи или используй микрофон.","step2-t":"2. ИИ анализирует","step2-d":"Определяем частоту, тембр и диапазон.",
     "step3-t":"3. Узнай своего певца","step3-d":"Скажем, какой артист тебе похож.",
@@ -327,7 +328,7 @@ const T = {
     "btn-main":"🎤 Аналізувати — безкоштовно","btn-how":"Як це працює","hero-sub":"Без реєстрації · Без встановлення",
     "stat1":"Артистів з усього світу","stat2":"Мов","stat3":"До результату","stat4":"Завжди безкоштовно",
     "app-title":"Аналізуй голос","app-desc":"Обери тип голосу, завантаж або записуй",
-    "opt-default":"Обери свій голос","opt-male":"Чоловічий голос","opt-female":"Жіночий голос","btn-record-text":"🎤 Записати і аналізувати",
+    "opt-default":"Обери свій голос","opt-male":"Чоловічий голос","opt-female":"Жіночий голос","btn-record-text":"Записати і аналізувати",
     "how-title":"Як це працює","how-sub":"Три кроки. Без реєстрації.",
     "step1-t":"1. Співай кілька секунд","step1-d":"Завантаж або використай мікрофон.","step2-t":"2. ШІ аналізує","step2-d":"Визначаємо частоту, тембр і діапазон.",
     "step3-t":"3. Дізнайся свого співака","step3-d":"Скажемо, який артист тобі подібний.",
@@ -440,21 +441,80 @@ function getMusicPlatform() {
 // ═══════════════════════════════════════════════════════════════════════════════
 // 3. IMÁGENES — iTunes Search API (gratis, sin auth)
 // ═══════════════════════════════════════════════════════════════════════════════
-async function getArtistImage(name) {
-  if (imgCache[name]) return imgCache[name];
-  try {
-    const q   = encodeURIComponent(name);
-    const url = `https://itunes.apple.com/search?term=${q}&media=music&entity=musicArtist&limit=1`;
-    const r   = await fetch(url, { signal: AbortSignal.timeout(5000) });
-    const d   = await r.json();
-    const img = d.results?.[0]?.artworkUrl100
-      ?.replace("100x100bb", "300x300bb") || null;
-    imgCache[name] = img;
-    return img;
-  } catch(_) { return null; }
+// Imágenes del monetization.json (Wikipedia, sin CORS)
+const MONO_IMGS = {
+  "Freddie Mercury": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Freddie_Mercury_performing_The_Works_Tour_in_New_Zealand.jpg/220px-Freddie_Mercury_performing_The_Works_Tour_in_New_Zealand.jpg",
+  "Frank Sinatra":   "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Frank_Sinatra_-_publicity.jpg/220px-Frank_Sinatra_-_publicity.jpg",
+  "Mariah Carey":    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Mariah_Carey_2019_by_Glenn_Francis.jpg/220px-Mariah_Carey_2019_by_Glenn_Francis.jpg",
+  "Amy Winehouse":   "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Amy_Winehouse_2007.jpg/220px-Amy_Winehouse_2007.jpg",
+  "Elvis Presley":   "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Elvis_Presley_promoting_Jailhouse_Rock.jpg/220px-Elvis_Presley_promoting_Jailhouse_Rock.jpg",
+  "Adele":           "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Adele_2016.jpg/220px-Adele_2016.jpg",
+  "Michael Jackson": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg",
+  "Beyoncé":         "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Beyoncé_in_Cannes_%282012%29.jpg/220px-Beyoncé_in_Cannes_%282012%29.jpg",
+  "Whitney Houston": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Whitney_Houston_Welcome_Home_Heroes_1.jpg/220px-Whitney_Houston_Welcome_Home_Heroes_1.jpg",
+  "Ed Sheeran":      "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Ed_Sheeran_in_2017.jpg/220px-Ed_Sheeran_in_2017.jpg",
+  "Ariana Grande":   "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Ariana_Grande_in_2019.jpg/220px-Ariana_Grande_in_2019.jpg",
+  "Rosalía":         "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Rosal%C3%ADa_%282019%29.jpg/220px-Rosal%C3%ADa_%282019%29.jpg",
+  "Alejandro Sanz":  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Alejandro_Sanz_2019.jpg/220px-Alejandro_Sanz_2019.jpg",
+  "Shakira":         "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Shakira_-_2010.jpg/220px-Shakira_-_2010.jpg",
+  "Bruno Mars":      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Bruno_Mars_2013.jpg/220px-Bruno_Mars_2013.jpg",
+  "Lady Gaga":       "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Lady_Gaga_2016.jpg/220px-Lady_Gaga_2016.jpg",
+  "Billie Eilish":   "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Billie_Eilish_-_2019_by_Glenn_Francis.jpg/220px-Billie_Eilish_-_2019_by_Glenn_Francis.jpg",
+  "Celine Dion":     "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Celine_dion_2017.jpg/220px-Celine_dion_2017.jpg",
+  "Pavarotti":       "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Luciano_Pavarotti_with_Tommy_Tune_%28cropped%29.jpg/220px-Luciano_Pavarotti_with_Tommy_Tune_%28cropped%29.jpg",
+  "Rihanna":         "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Rihanna_-_GQ_100_Best_Styled_People_in_Music.jpg/220px-Rihanna_-_GQ_100_Best_Styled_People_in_Music.jpg",
+  "Maluma":          "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Maluma_2018.jpg/220px-Maluma_2018.jpg",
+  "Bad Bunny":       "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Bad_Bunny_2019.jpg/220px-Bad_Bunny_2019.jpg",
+  "J Balvin":        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/J_Balvin_2018.jpg/220px-J_Balvin_2018.jpg",
+  "Enrique Iglesias":"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Enrique_Iglesias_2014.jpg/220px-Enrique_Iglesias_2014.jpg",
+  "Ozuna":           "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ozuna_2017.jpg/220px-Ozuna_2017.jpg",
+  "Taylor Swift":    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/191125_Taylor_Swift_at_the_2019_American_Music_Awards_%28cropped%29.jpg/220px-191125_Taylor_Swift_at_the_2019_American_Music_Awards_%28cropped%29.jpg",
+  "David Bowie":     "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/David-Bowie_Chicago_2002-08-08_photoby_Adam-Bielawski_cropped.jpg/220px-David-Bowie_Chicago_2002-08-08_photoby_Adam-Bielawski_cropped.jpg",
+  "Prince":          "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Prince_at_Coachella_001.jpg/220px-Prince_at_Coachella_001.jpg",
+  "Elton John":      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Elton_John_2015.jpg/220px-Elton_John_2015.jpg",
+  "Sting":           "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Sting_2017.jpg/220px-Sting_2017.jpg",
+  "Mick Jagger":     "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Mick_Jagger_2019.jpg/220px-Mick_Jagger_2019.jpg",
+};
+
+// Generar avatar con iniciales si no hay foto
+function getInitialsAvatar(name) {
+  const parts = name.trim().split(/\s+/);
+  const initials = parts.length >= 2
+    ? (parts[0][0] + parts[parts.length-1][0]).toUpperCase()
+    : name.substring(0,2).toUpperCase();
+  const colors = ['#7C4DFF','#FF4FA3','#118AB2','#FF9F1C','#06D6A0','#E63946'];
+  const color = colors[name.charCodeAt(0) % colors.length];
+  return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="120" height="120" rx="60" fill="${color}"/><text x="60" y="75" font-family="Arial" font-weight="bold" font-size="42" fill="white" text-anchor="middle">${initials}</text></svg>`)}`;
 }
 
-// Precargar imágenes del top 5 en paralelo
+async function getArtistImage(name) {
+  if (imgCache[name]) return imgCache[name];
+  // 1. Buscar en el mapa local (Wikipedia, sin CORS)
+  if (MONO_IMGS[name]) {
+    imgCache[name] = MONO_IMGS[name];
+    return MONO_IMGS[name];
+  }
+  // 2. Intentar MusicBrainz (permite CORS)
+  try {
+    const q = encodeURIComponent(name);
+    const r = await fetch(`https://musicbrainz.org/ws/2/artist/?query=artist:${q}&fmt=json&limit=1`,
+      { headers:{"Accept":"application/json"}, signal: AbortSignal.timeout(4000) });
+    const d = await r.json();
+    const mbid = d.artists?.[0]?.id;
+    if (mbid) {
+      // Buscar imagen en fanart.tv (sin key en fallback)
+      // o usar el avatar de iniciales directamente
+      const initImg = getInitialsAvatar(name);
+      imgCache[name] = initImg;
+      return initImg;
+    }
+  } catch(_) {}
+  // 3. Fallback: avatar con iniciales
+  const initImg = getInitialsAvatar(name);
+  imgCache[name] = initImg;
+  return initImg;
+}
+
 async function preloadImages(names) {
   await Promise.allSettled(names.map(n => getArtistImage(n)));
 }
@@ -715,17 +775,26 @@ function featuresToVector(f) {
 }
 
 function classifyVT(pm, pr, gender) {
-  let vt,c,s;
-  if (gender==="male"||(gender==="auto"&&pm<205)) {
-    if      (pm<110){vt="bass";c=90;s=20;}
-    else if (pm<140){vt="bass-baritone";c=122;s=18;}
-    else if (pm<200){vt="baritone";c=165;s=28;}
-    else            {vt="tenor";c=240;s=40;}
+  // pr = pitch_range (p90-p10). Barítonos tienen rango menor que tenores.
+  // Umbral barítono elevado a 215 Hz + discriminación por pitch_range en zona ambigua
+  let vt, c, s;
+  const isMale = gender==="male" || (gender==="auto" && pm < 215);
+  if (isMale) {
+    if      (pm < 110) { vt="bass";          c=90;  s=20; }
+    else if (pm < 145) { vt="bass-baritone"; c=125; s=18; }
+    else if (pm < 215) { vt="baritone";      c=175; s=32; }
+    else if (pm < 290) {
+      // Zona ambigua 215-290: usar pitch_range para discriminar
+      // Barítono: rango típico < 280 Hz | Tenor: rango > 280 Hz
+      vt = (pr > 0 && pr < 280) ? "baritone" : "tenor";
+      c  = vt === "baritone" ? 200 : 250; s = 35;
+    }
+    else               { vt="tenor";         c=260; s=40; }
   } else {
-    if      (pm<215){vt="contralto";c=185;s=25;}
-    else if (pm<270){vt="mezzo-soprano";c=240;s=28;}
-    else if (pm<340){vt="soprano";c=295;s=35;}
-    else            {vt="soprano";c=350;s=50;}
+    if      (pm < 210) { vt="contralto";     c=185; s=25; }
+    else if (pm < 270) { vt="mezzo-soprano"; c=245; s=30; }
+    else if (pm < 350) { vt="soprano";       c=300; s=38; }
+    else               { vt="soprano";       c=380; s=55; }
   }
   return { vt, conf:Math.min(95,Math.round(100*Math.exp(-.5*((pm-c)/s)**2))) };
 }
@@ -752,20 +821,37 @@ function score(uVec,sVec,uvt,svt) {
 }
 
 function getMatches(vec,vt,gender,filters={},topN=5) {
-  let pool=singersDb.filter(s=>s.gender===gender);
+  let pool = gender ? singersDb.filter(s=>s.gender===gender) : singersDb;
   if(pool.length<5) pool=singersDb;
+
+  // Aplicar filtros
   if(filters.era)            pool=pool.filter(s=>s.era===filters.era);
   if(filters.genre_category) pool=pool.filter(s=>s.genre_category===filters.genre_category);
   if(filters.country_code)   pool=pool.filter(s=>s.country_code===filters.country_code);
-  if(pool.length<3)          pool=singersDb.filter(s=>s.gender===gender).length>2?singersDb.filter(s=>s.gender===gender):singersDb;
 
-  const scored=pool.map(s=>({...s,score:Math.round(score(vec,s.vector,vt,s.voice_type)*10)/10}))
+  // Si los filtros dejan muy poco, usar pool más amplio
+  if(pool.length<3) {
+    pool = gender ? singersDb.filter(s=>s.gender===gender) : singersDb;
+  }
+  if(pool.length<3) pool=singersDb;
+
+  // Score base de popularidad por país del usuario
+  const countryBonus = (s) => s.country_code === userCountry ? 1.03 : 1.0;
+
+  const scored=pool
+    .map(s=>({
+      ...s,
+      score:Math.round(score(vec,s.vector,vt,s.voice_type)*countryBonus(s)*10)/10
+    }))
     .sort((a,b)=>b.score-a.score);
+
+  if(!scored[0]) return [];
 
   const out=[scored[0]]; const seen=new Set([scored[0]?.voice_type]);
   for(const s of scored.slice(1)){
     const e={...s};
-    if(seen.has(e.voice_type)&&(out[out.length-1].score-e.score)<3) e.score=Math.round(e.score*.92*10)/10;
+    if(seen.has(e.voice_type)&&(out[out.length-1].score-e.score)<3)
+      e.score=Math.round(e.score*.92*10)/10;
     out.push(e); seen.add(e.voice_type);
     if(out.length>=topN) break;
   }
@@ -848,16 +934,48 @@ async function renderResults({feat,vt,conf,matches,gender}) {
     .filter(e=>eras.includes(e))
     .map(e=>`<option value="${e}">${trV("_eras",e)}</option>`).join("");
 
+  // Géneros disponibles en DB
+  const genreOptions = [...new Set(singersDb.map(s=>s.genre_category).filter(Boolean))].sort()
+    .map(g => `<option value="${g}">${g.charAt(0).toUpperCase()+g.slice(1).replace('-',' ')}</option>`).join("");
+
+  // Países para filtro de idioma (top 15)
+  const topCountries = {"ES":"🇪🇸 Español","US":"🇺🇸 English","UK":"🇬🇧 British","MX":"🇲🇽 México",
+    "AR":"🇦🇷 Argentina","CO":"🇨🇴 Colombia","BR":"🇧🇷 Português","FR":"🇫🇷 Français",
+    "IT":"🇮🇹 Italiano","DE":"🇩🇪 Deutsch","JP":"🇯🇵 日本語","KR":"🇰🇷 한국어","PT":"🇵🇹 Portugal"};
+  const countryOptions = Object.entries(topCountries)
+    .filter(([cc]) => singersDb.some(s=>s.country_code===cc))
+    .map(([cc,lbl]) => `<option value="${cc}">${lbl}</option>`).join("");
+
   filtersHTML = `
-    <div id="_filters_row" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem;
-      padding:.9rem;background:rgba(255,255,255,.04);border-radius:12px;border:1px solid rgba(255,255,255,.08);">
-      <div style="flex:1;min-width:120px">
-        <div style="font-size:.7rem;color:#6B7280;font-weight:700;text-transform:uppercase;margin-bottom:.25rem">${tr("_filter_era")}</div>
-        <select id="_era_filter" style="width:100%;background:#1A1A2E;border:1px solid rgba(255,255,255,.15);
-          color:#E5E7EB;font-size:.82rem;padding:.35rem .6rem;border-radius:8px;cursor:pointer;">
-          <option value="">${tr("_all_eras")}</option>
-          ${eraOptions}
-        </select>
+    <div id="_filters_row" style="margin-bottom:1.25rem;padding:.9rem;
+      background:rgba(255,255,255,.04);border-radius:14px;border:1px solid rgba(255,255,255,.08)">
+      <div style="font-size:.72rem;color:#6B7280;font-weight:700;text-transform:uppercase;
+        letter-spacing:.06em;margin-bottom:.7rem">🎛️ Filtrar resultados</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.5rem">
+        <div>
+          <div style="font-size:.68rem;color:#6B7280;margin-bottom:.2rem">Época</div>
+          <select id="_era_filter" style="width:100%;background:#13102a;border:1px solid rgba(255,255,255,.15);
+            color:#E5E7EB;font-size:.8rem;padding:.32rem .55rem;border-radius:8px;cursor:pointer">
+            <option value="">${tr("_all_eras")}</option>
+            ${eraOptions}
+          </select>
+        </div>
+        <div>
+          <div style="font-size:.68rem;color:#6B7280;margin-bottom:.2rem">Género musical</div>
+          <select id="_genre_filter" style="width:100%;background:#13102a;border:1px solid rgba(255,255,255,.15);
+            color:#E5E7EB;font-size:.8rem;padding:.32rem .55rem;border-radius:8px;cursor:pointer">
+            <option value="">Todos</option>
+            ${genreOptions}
+          </select>
+        </div>
+        <div>
+          <div style="font-size:.68rem;color:#6B7280;margin-bottom:.2rem">Idioma / País</div>
+          <select id="_country_filter" style="width:100%;background:#13102a;border:1px solid rgba(255,255,255,.15);
+            color:#E5E7EB;font-size:.8rem;padding:.32rem .55rem;border-radius:8px;cursor:pointer">
+            <option value="">Todos</option>
+            ${countryOptions}
+          </select>
+        </div>
       </div>
     </div>`;
 
@@ -876,10 +994,10 @@ async function renderResults({feat,vt,conf,matches,gender}) {
 
       <!-- Foto del artista -->
       <div style="width:56px;height:56px;border-radius:50%;overflow:hidden;flex-shrink:0;
-        background:linear-gradient(135deg,rgba(124,77,255,.3),rgba(255,79,163,.3));
-        display:flex;align-items:center;justify-content:center;font-size:1.4rem;">
-        ${img ? `<img src="${img}" alt="${m.name}" style="width:100%;height:100%;object-fit:cover;"
-          onerror="this.parentNode.innerHTML='🎤'">` : "🎤"}
+        background:linear-gradient(135deg,rgba(124,77,255,.3),rgba(255,79,163,.3));">
+        <img src="${img || getInitialsAvatar(m.name)}" alt="${m.name}"
+          style="width:100%;height:100%;object-fit:cover;"
+          onerror="this.src=getInitialsAvatar('${m.name.replace(/'/g,"\\'")}')">
       </div>
 
       <!-- Info -->
@@ -930,14 +1048,54 @@ async function renderResults({feat,vt,conf,matches,gender}) {
     </div>`;
   }).join("");
 
+  // ── Canciones recomendadas de Spotify ────────────────────────────────
+  const topMatch  = matches[0];
+  const songRefs  = topMatch?.reference_songs?.slice(0,3) || [];
+  const spPlatform= getMusicPlatform();
+  const spColor   = {spotify:"#1DB954",apple:"#fc3c44",line:"#00B900",melon:"#00CD3C"}[spPlatform]||"#1DB954";
+  const spLabel   = {spotify:"Spotify",apple:"Apple Music",line:"LINE Music",melon:"Melon"}[spPlatform]||"Spotify";
+  const spLinks   = {
+    spotify: n => `https://open.spotify.com/search/${encodeURIComponent(n)}`,
+    apple:   n => `https://music.apple.com/search?term=${encodeURIComponent(n)}`,
+    line:    n => `https://music.line.me/search?type=track&q=${encodeURIComponent(n)}`,
+    melon:   n => `https://www.melon.com/search/total/index.htm?q=${encodeURIComponent(n)}`,
+  };
+  const getLnk = spLinks[spPlatform] || spLinks.spotify;
+
+  const songsHTML = songRefs.length ? `
+    <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:1.1rem;margin-top:.5rem;margin-bottom:.5rem">
+      <p style="font-size:.8rem;color:#6B7280;margin-bottom:.6rem">
+        🎵 Canciones de <strong style="color:#E5E7EB">${topMatch.name}</strong> para practicar tu voz
+      </p>
+      <div style="display:flex;flex-direction:column;gap:.35rem">
+        ${songRefs.map(s => {
+          const title = typeof s === 'object' ? s.title : s;
+          const ytUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(title+' karaoke')}`;
+          const stUrl = getLnk(topMatch.name + ' ' + title);
+          return `<div style="display:flex;align-items:center;gap:.5rem;padding:.45rem .7rem;
+            background:rgba(255,255,255,.04);border-radius:9px;font-size:.82rem">
+            <span style="color:#7C4DFF">🎵</span>
+            <span style="flex:1;font-weight:600">${title}</span>
+            <a href="${ytUrl}" target="_blank" style="background:rgba(255,0,0,.12);color:#ff4444;
+              font-size:.68rem;font-weight:700;padding:.18rem .5rem;border-radius:20px;
+              text-decoration:none;border:1px solid rgba(255,0,0,.2)">▶ Karaoke</a>
+            <a href="${stUrl}" target="_blank" style="background:${spColor}18;color:${spColor};
+              font-size:.68rem;font-weight:700;padding:.18rem .5rem;border-radius:20px;
+              text-decoration:none;border:1px solid ${spColor}33">${spLabel}</a>
+          </div>`;
+        }).join("")}
+      </div>
+    </div>` : "";
+
   // ── Share buttons ──────────────────────────────────────────────────────
   const shareHTML = `
     <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:1.1rem;margin-top:.25rem">
       <p style="font-size:.82rem;color:#6B7280;margin-bottom:.65rem">${tr("_share")}</p>
       <div style="display:flex;gap:.4rem;flex-wrap:wrap">
-        <button onclick="_share('wa')" style="${_btnStyle('#25D366')}">💬 WhatsApp</button>
-        <button onclick="_share('x')"  style="${_btnStyle('#000','1px solid #333')}">🐦 Twitter/X</button>
-        <button onclick="_share('cp')" style="${_btnStyle('rgba(124,77,255,.2)','1px solid rgba(124,77,255,.3)')}">📋 ${tr("_copy")}</button>
+        <button onclick="_share('wa')"   style="${_btnStyle('#25D366')}">💬 WhatsApp</button>
+        <button onclick="_share('x')"    style="${_btnStyle('#000','1px solid #333')}">🐦 Twitter/X</button>
+        <button onclick="_share('cp')"   style="${_btnStyle('rgba(124,77,255,.2)','1px solid rgba(124,77,255,.3)')}">📋 ${tr("_copy")}</button>
+        <button onclick="_share('card')" style="${_btnStyle('linear-gradient(135deg,#7C4DFF,#FF4FA3)')}">🃏 Tarjeta viral</button>
       </div>
     </div>`;
 
@@ -966,19 +1124,96 @@ async function renderResults({feat,vt,conf,matches,gender}) {
     </div>
     ${filtersHTML}
     <div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:1rem">${cardsHTML}</div>
+    ${songsHTML}
     ${shareHTML}`;
 
   // ── Evento filtro época ────────────────────────────────────────────────
-  document.getElementById("_era_filter")?.addEventListener("change", async e => {
-    const era = e.target.value;
-    const newMatches = getMatches(lastResult.vec, lastResult.vt, lastResult.gender, {era}, 5);
+  const applyFilters = async () => {
+    const era     = document.getElementById("_era_filter")?.value    || "";
+    const genre   = document.getElementById("_genre_filter")?.value  || "";
+    const country = document.getElementById("_country_filter")?.value|| "";
+    const filters = {};
+    if (era)     filters.era            = era;
+    if (genre)   filters.genre_category = genre;
+    if (country) filters.country_code   = country;
+    const newMatches = getMatches(lastResult.vec, lastResult.vt, lastResult.gender, filters, 5);
     await preloadImages(newMatches.map(m=>m.name));
     lastResult.matches = newMatches;
     await renderResults(lastResult);
-  });
+  };
+  const eraF     = document.getElementById("_era_filter");
+  const genreF   = document.getElementById("_genre_filter");
+  const countryF = document.getElementById("_country_filter");
+  if (eraF)     eraF.addEventListener("change",     applyFilters);
+  if (genreF)   genreF.addEventListener("change",   applyFilters);
+  if (countryF) countryF.addEventListener("change", applyFilters);
 
   // Scroll al resultado
   resEl.scrollIntoView({ behavior:"smooth", block:"start" });
+
+  // ── Sección karaoke y eventos (en #events-area) ───────────────────────
+  const evEl = document.getElementById("events-area");
+  if (evEl) {
+    const vtSlug = {
+      "baritone":"baritono","bass":"bajo","bass-baritone":"bajo",
+      "tenor":"tenor","soprano":"soprano","mezzo-soprano":"mezzo-soprano",
+      "contralto":"contralto","countertenor":"tenor"
+    }[vt] || "baritono";
+    evEl.innerHTML = `
+      <div style="margin-top:1.5rem;padding:1.25rem;background:rgba(255,255,255,.04);
+        border-radius:16px;border:1px solid rgba(255,255,255,.08)">
+        <h3 style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:1rem;
+          margin-bottom:.9rem;color:#A5B4FC">🎤 Practica y conéctate con otros cantantes</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.6rem">
+          <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(vtName+' karaoke')}"
+            target="_blank" rel="noopener"
+            style="display:flex;gap:.5rem;align-items:center;padding:.7rem;background:rgba(255,0,0,.08);
+            border:1px solid rgba(255,0,0,.18);border-radius:10px;text-decoration:none;color:#E5E7EB">
+            <span style="font-size:1.1rem">▶</span>
+            <div><div style="font-size:.8rem;font-weight:700">Karaoke YouTube</div>
+              <div style="font-size:.68rem;color:#6B7280">Pistas para ${vtName}</div></div>
+          </a>
+          <a href="https://www.smule.com/" target="_blank" rel="noopener"
+            style="display:flex;gap:.5rem;align-items:center;padding:.7rem;background:rgba(124,77,255,.08);
+            border:1px solid rgba(124,77,255,.18);border-radius:10px;text-decoration:none;color:#E5E7EB">
+            <span style="font-size:1.1rem">🎙️</span>
+            <div><div style="font-size:.8rem;font-weight:700">Smule</div>
+              <div style="font-size:.68rem;color:#6B7280">Karaoke social</div></div>
+          </a>
+          <a href="https://www.instagram.com/explore/tags/${vtSlug}singing/"
+            target="_blank" rel="noopener"
+            style="display:flex;gap:.5rem;align-items:center;padding:.7rem;background:rgba(255,79,163,.08);
+            border:1px solid rgba(255,79,163,.18);border-radius:10px;text-decoration:none;color:#E5E7EB">
+            <span style="font-size:1.1rem">📱</span>
+            <div><div style="font-size:.8rem;font-weight:700">Instagram</div>
+              <div style="font-size:.68rem;color:#6B7280">#${vtSlug}singing</div></div>
+          </a>
+          <a href="https://www.tiktok.com/tag/${vtSlug}voice"
+            target="_blank" rel="noopener"
+            style="display:flex;gap:.5rem;align-items:center;padding:.7rem;background:rgba(0,0,0,.2);
+            border:1px solid rgba(255,255,255,.1);border-radius:10px;text-decoration:none;color:#E5E7EB">
+            <span style="font-size:1.1rem">🎵</span>
+            <div><div style="font-size:.8rem;font-weight:700">TikTok</div>
+              <div style="font-size:.68rem;color:#6B7280">#${vtSlug}voice</div></div>
+          </a>
+          <a href="https://www.meetup.com/find/?keywords=karaoke+canto"
+            target="_blank" rel="noopener"
+            style="display:flex;gap:.5rem;align-items:center;padding:.7rem;background:rgba(255,159,28,.08);
+            border:1px solid rgba(255,159,28,.18);border-radius:10px;text-decoration:none;color:#E5E7EB">
+            <span style="font-size:1.1rem">🗓️</span>
+            <div><div style="font-size:.8rem;font-weight:700">Meetup</div>
+              <div style="font-size:.68rem;color:#6B7280">Jam sessions locales</div></div>
+          </a>
+          <a href="/voz/${vtSlug}"
+            style="display:flex;gap:.5rem;align-items:center;padding:.7rem;background:rgba(128,185,24,.08);
+            border:1px solid rgba(128,185,24,.18);border-radius:10px;text-decoration:none;color:#E5E7EB">
+            <span style="font-size:1.1rem">📖</span>
+            <div><div style="font-size:.8rem;font-weight:700">Guía completa</div>
+              <div style="font-size:.68rem;color:#6B7280">Ejercicios para ${vtName}</div></div>
+          </a>
+        </div>
+      </div>`;
+  }
 }
 
 function _btnStyle(bg, border="none") {
@@ -994,6 +1229,144 @@ function _share(p) {
   if (p==="wa") window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank");
   if (p==="x")  window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(txt)}`, "_blank");
   if (p==="cp") navigator.clipboard.writeText(txt).then(()=>{ showStatus("✅ Copiado!"); setTimeout(()=>showStatus(""),2e3); });
+  if (p==="card") showViralCard();
+}
+
+function showViralCard() {
+  if (!lastResult) return;
+  const {vt, conf, matches} = lastResult;
+  const vtName = trV("_vt_names", vt);
+  const top3   = matches.slice(0,3);
+  const vtColors = {
+    "baritone":"#7C4DFF","bass":"#1E3A5F","bass-baritone":"#2d4d8f",
+    "tenor":"#118AB2","soprano":"#FF4FA3","mezzo-soprano":"#FF9F1C",
+    "contralto":"#80B918","countertenor":"#06D6A0"
+  };
+  const color = vtColors[vt] || "#7C4DFF";
+
+  // Motivational phrases
+  const phrases = {
+    "baritone":["Tu voz tiene el poder de un clásico","El barítono es la voz más versátil del mundo","Freddie Mercury era barítono. ¿Y tú?"],
+    "tenor":["Tu voz llega donde otros no pueden","Los tenores hacen historia","El Do de pecho es tu territorio"],
+    "soprano":["Tu voz es pura magia","Las sopranos conquistan el mundo","Mariah Carey empezó como tú"],
+    "mezzo-soprano":["La voz más expresiva del espectro","Adele cambió el mundo siendo mezzosoprano","Tu timbre es único e irrepetible"],
+    "contralto":["Una voz de contralto es una rareza privilegiada","Nina Simone tenía tu voz","Tu registro grave es tu superpoder"],
+    "bass":["Los graves más profundos son los más poderosos","Johnny Cash tenía tu voz","Tu voz hace temblar el escenario"],
+    "bass-baritone":["Entre los graves y la versatilidad","Una voz imponente y única","Tu rango es el envidia de muchos"],
+    "countertenor":["Una rareza vocal extraordinaria","Tu falsetto es tu mayor tesoro","La voz más sorprendente del mundo"],
+  };
+  const phraseArr = phrases[vt] || ["Tu voz es única", "Nadie canta como tú", "El mundo necesita tu voz"];
+  const phrase = phraseArr[Math.floor(Math.random() * phraseArr.length)];
+
+  const artistRows = top3.map((m,i) => {
+    const img = MONO_IMGS[m.name] || imgCache[m.name];
+    const initSvg = getInitialsAvatar(m.name);
+    const pct = Math.round(m.score);
+    const medals = ["🥇","🥈","🥉"];
+    return `
+      <div style="display:flex;align-items:center;gap:10px;padding:8px;
+        background:rgba(255,255,255,.08);border-radius:12px;margin-bottom:8px">
+        <span style="font-size:20px">${medals[i]}</span>
+        <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0;background:rgba(124,77,255,.3)">
+          <img src="${img||initSvg}" style="width:100%;height:100%;object-fit:cover"
+            onerror="this.src='${initSvg}'">
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.name}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.6)">${trV("_vt_names",m.voice_type)}</div>
+        </div>
+        <div style="font-weight:800;font-size:18px;background:linear-gradient(135deg,#fff,${color});
+          -webkit-background-clip:text;-webkit-text-fill-color:transparent">${pct}%</div>
+      </div>`;
+  }).join("");
+
+  const modal = document.createElement("div");
+  modal.id = "_viral_modal";
+  modal.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;";
+  modal.innerHTML = `
+    <div style="max-width:380px;width:100%">
+      <!-- Tarjeta viral vertical (formato Stories/RRSS) -->
+      <div id="_viral_card" style="
+        background:linear-gradient(160deg,#0A0818 0%,#1a0a2e 40%,#0a1628 100%);
+        border-radius:24px;padding:28px 24px;color:#fff;
+        border:1px solid rgba(255,255,255,.12);
+        box-shadow:0 20px 60px rgba(0,0,0,.5);
+        font-family:'Nunito',sans-serif;
+        position:relative;overflow:hidden;
+        aspect-ratio:9/16;display:flex;flex-direction:column;justify-content:space-between;">
+
+        <!-- Fondo decorativo -->
+        <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;
+          border-radius:50%;background:${color}20;pointer-events:none"></div>
+        <div style="position:absolute;bottom:-40px;left:-40px;width:150px;height:150px;
+          border-radius:50%;background:#FF4FA3" + "15;pointer-events:none"></div>
+
+        <!-- Header -->
+        <div style="text-align:center;position:relative">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.15em;color:rgba(255,255,255,.5);
+            text-transform:uppercase;margin-bottom:8px">¿A QUÉ CANTANTE TE PARECES?</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:16px">harmiq.app</div>
+        </div>
+
+        <!-- Tipo de voz -->
+        <div style="text-align:center;position:relative;margin-bottom:4px">
+          <div style="font-size:11px;color:rgba(255,255,255,.55);text-transform:uppercase;
+            letter-spacing:.1em;margin-bottom:4px">Tu tipo de voz</div>
+          <div style="font-family:'Baloo 2',sans-serif;font-weight:900;font-size:38px;
+            background:linear-gradient(135deg,#fff,${color});
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+            text-transform:capitalize;line-height:1.1">${vtName}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:4px">${conf}% confianza</div>
+        </div>
+
+        <!-- Top artistas -->
+        <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 4px">
+          ${artistRows}
+        </div>
+
+        <!-- Frase motivadora -->
+        <div style="text-align:center;position:relative;margin-top:8px">
+          <div style="font-size:13px;color:rgba(255,255,255,.75);font-style:italic;
+            line-height:1.4;margin-bottom:12px">"${phrase}"</div>
+          <div style="background:linear-gradient(135deg,${color},#FF4FA3);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+            font-weight:800;font-size:14px">🎙️ Analiza tu voz en harmiq.app</div>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap">
+        <button onclick="_shareCard('wa')"
+          style="flex:1;background:#25D366;color:#fff;border:none;padding:.6rem;border-radius:10px;
+          font-weight:700;font-size:.82rem;cursor:pointer">💬 WhatsApp</button>
+        <button onclick="_shareCard('x')"
+          style="flex:1;background:#000;color:#fff;border:1px solid #333;padding:.6rem;border-radius:10px;
+          font-weight:700;font-size:.82rem;cursor:pointer">🐦 Twitter</button>
+        <button onclick="_shareCard('cp')"
+          style="flex:1;background:rgba(124,77,255,.3);color:#fff;border:1px solid rgba(124,77,255,.4);
+          padding:.6rem;border-radius:10px;font-weight:700;font-size:.82rem;cursor:pointer">📋 Texto</button>
+        <button onclick="document.getElementById('_viral_modal').remove()"
+          style="flex:1;background:rgba(255,255,255,.08);color:#9CA3AF;border:1px solid rgba(255,255,255,.1);
+          padding:.6rem;border-radius:10px;font-weight:700;font-size:.82rem;cursor:pointer">✕ Cerrar</button>
+      </div>
+      <p style="text-align:center;font-size:.72rem;color:#4B5563;margin-top:.5rem">
+        Captura pantalla para compartir la tarjeta como imagen
+      </p>
+    </div>`;
+
+  document.body.appendChild(modal);
+  modal.addEventListener("click", e => { if(e.target===modal) modal.remove(); });
+}
+
+function _shareCard(p) {
+  if (!lastResult?.matches?.[0]) return;
+  const m   = lastResult.matches[0];
+  const pct = Math.round(m.score);
+  const vtn = trV("_vt_names", lastResult.vt);
+  const txt = `🎤 Tengo voz de ${vtn} y me parezco a ${m.name} con ${pct}% de similitud. ¡Analiza la tuya gratis en harmiq.app!`;
+  if (p==="wa") window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank");
+  if (p==="x")  window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(txt)}`, "_blank");
+  if (p==="cp") navigator.clipboard.writeText(txt).then(()=>{ showStatus("✅ Texto copiado"); setTimeout(()=>showStatus(""),2e3); });
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1002,241 +1375,669 @@ function _share(p) {
 const VOZ_DATA = {
   baritono: {
     emoji:"🎭", color:"#7C4DFF", range:"Sol2 – Sol4", hz:"98 – 392 Hz",
-    desc_es:"El barítono es el tipo de voz masculina más común y versátil. Su zona de confort abarca desde el Sol2 al Sol4, con una riqueza tímbrica que lo hace ideal para el pop, el rock y la música clásica. La mayoría de los cantantes más famosos del mundo son barítonos.",
-    desc_en:"The baritone is the most common and versatile male voice type. Its comfort zone spans from G2 to G4, with a timbral richness that makes it ideal for pop, rock, and classical music.",
-    artists:["Freddie Mercury","Elvis Presley","Michael Bublé","Frank Sinatra","Alejandro Sanz","David Bowie"],
-    exercises_es:["Escalas de Do mayor subiendo por semitonos","Arpegios Sol2-Sol4-Sol2","Vocalizaciones ma-me-mi-mo-mu","Sirenas completas del grave al agudo","Humming con labios cerrados"],
-    exercises_en:["C major scales ascending by semitones","Arpeggios G2-G4-G2","Vocalizations ma-me-mi-mo-mu","Full sirens from low to high","Lip trill humming"],
-    songs:["Perfect – Ed Sheeran","Hallelujah – Leonard Cohen","My Way – Frank Sinatra","Bohemian Rhapsody – Queen","Corazón Partío – Alejandro Sanz"],
-    yt_expert:"vocal coach baritone exercises",
-    mics:[{name:"Audio-Technica AT2020",reason:"Captura el registro cálido del barítono sin coloración",asin:"B0006H92QK"},{name:"Rode NT1",reason:"Cero ruido de fondo, ideal para grabar en casa",asin:"B01KQRBFOU"},{name:"Shure SM7B",reason:"El estándar broadcast para voces graves",asin:"B0002E4Z8M"}],
+    ytId: "TYBBMNoVFVU",
+    artists:["Frank Sinatra","Elvis Presley","Michael Bublé","David Bowie","Freddie Mercury","Alejandro Sanz","Joaquín Sabina","Serrat"],
+    artistImgs:{
+      "Frank Sinatra":"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Frank_Sinatra_-_publicity.jpg/220px-Frank_Sinatra_-_publicity.jpg",
+      "Elvis Presley":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Elvis_Presley_promoting_Jailhouse_Rock.jpg/220px-Elvis_Presley_promoting_Jailhouse_Rock.jpg",
+    },
+    mics:[
+      {name:"Shure SM7B",reason:"Estándar broadcast para voces graves y cálidas. Ideal para el rango barítono.",search:"Shure SM7B microfono"},
+      {name:"Audio-Technica AT4040",reason:"Captura perfectamente el rango medio-bajo con gran detalle.",search:"Audio Technica AT4040"},
+      {name:"Rode NT2-A",reason:"Gran versatilidad para voces profundas con tres patrones polares.",search:"Rode NT2-A microfono"},
+    ],
+    pro_mics:["Neumann U87","AKG C414 XLII"],
+    home_studio:{
+      fun:   [{name:"Fifine K669B USB",search:"Fifine K669B"},{name:"Auriculares OneOdio Pro-10",search:"OneOdio Pro-10"}],
+      basic: [{name:"Shure MV7 USB/XLR",search:"Shure MV7"},{name:"Filtro anti-pop doble",search:"filtro antipop microfono"},{name:"Brazo articulado",search:"brazo articulado microfono"}],
+      medium:[{name:"Focusrite Scarlett 2i2",search:"Focusrite Scarlett 2i2"},{name:"Shure SM7B",search:"Shure SM7B"},{name:"Sony MDR-7506",search:"Sony MDR 7506"}],
+      pro:   [{name:"Universal Audio Apollo Twin",search:"UA Apollo Twin"},{name:"Neumann U87",search:"Neumann U87"},{name:"Yamaha HS8",search:"Yamaha HS8 monitores"}],
+    },
+    songs:["My Way – Frank Sinatra","Perfect – Ed Sheeran","Hallelujah – Leonard Cohen","Corazón Partío – Alejandro Sanz","Hotel California – Eagles","Bohemian Rhapsody – Queen","Let It Be – Beatles","Creep – Radiohead"],
+    exercises_es:[
+      "Escalas de Do mayor subiendo por semitonos — canta lento, sin forzar",
+      "Arpegios Sol2–Sol4–Sol2 en 'ah' con boca abierta",
+      "Vocalizaciones ma-me-mi-mo-mu en escala ascendente y descendente",
+      "Sirenas completas del grave al agudo en 'oooo' suave",
+      "Humming con labios cerrados — siente la resonancia en la cabeza",
+      "Lip trill (vibración de labios) subiendo y bajando la escala",
+      "Ejercicio de passaggio: trabaja el Si2-Re3 suavemente sin romper",
+      "Calentamiento de 5 minutos: bostezos + rotación de cuello + humming",
+    ],
+    exercises_en:[
+      "C major scales ascending by semitones — slow, no forcing",
+      "Arpeggios G2–G4–G2 on 'ah' with open mouth",
+      "Vocalizations ma-me-mi-mo-mu on ascending/descending scale",
+      "Full sirens low to high on soft 'oooo'",
+      "Lip-closed humming — feel the resonance in your head",
+      "Lip trill up and down the scale",
+      "Passaggio exercise: work the B2-D3 gently without breaking",
+      "5-minute warm-up: yawns + neck rotation + humming",
+    ],
+    desc_es:"El barítono es el tipo de voz masculina más común y versátil del mundo. Su zona de confort abarca desde el Sol2 al Sol4, con un timbre cálido, oscuro y proyectado que lo hace ideal para el pop, el rock, el jazz y la música clásica. Se estima que el 60-70% de los cantantes masculinos son barítonos, aunque muchos no lo saben porque no han hecho ningún análisis vocal. Entre los barítonos más famosos de la historia se encuentran Frank Sinatra, Elvis Presley, David Bowie, Freddie Mercury (sí, era barítono con extensión de tenor), Alejandro Sanz y Michael Bublé. La riqueza armónica del barítono permite tanto el drama de la ópera como la intimidad del jazz o la potencia del rock. Si eres barítono, tu zona de mayor poder está entre el La2 y el Mi4. Con técnica y entrenamiento vocal, puedes extender tu registro hacia el Sol4 y más arriba usando mix voice. El secreto del barítono moderno no es llegar al agudo a la fuerza, sino construir una voz completa desde los graves.",
+    desc_en:"The baritone is the most common and versatile male voice type in the world. Its comfort zone spans from G2 to G4, with a warm, dark, projected timbre ideal for pop, rock, jazz and classical music. An estimated 60-70% of male singers are baritones, though many don't know it because they've never done a vocal analysis.  Famous baritones include Frank Sinatra, Elvis Presley, David Bowie, Freddie Mercury (yes, he was a baritone with tenor extension), Alejandro Sanz and Michael Bublé. The harmonic richness of the baritone allows both operatic drama and jazz intimacy.  If you're a baritone, your power zone is between A2 and E4. With vocal technique and training, you can extend your range to G4 and beyond using mix voice.",
   },
+
   tenor: {
     emoji:"🎤", color:"#118AB2", range:"Do3 – Do5", hz:"131 – 523 Hz",
-    desc_es:"El tenor es la voz masculina más aguda de las clasificaciones principales. Brillante y proyectada, es la voz más utilizada en el pop comercial, el rock y la ópera. Su zona de confort va del Do3 al La4, pudiendo alcanzar el Do5 con técnica avanzada.",
-    desc_en:"The tenor is the highest of the main male voice types. Bright and projected, it's the most used voice in commercial pop, rock and opera.",
-    artists:["Luciano Pavarotti","Andrea Bocelli","Alejandro Fernández","Roberto Carlos","Camilo Sesto","Benson Boone"],
-    exercises_es:["Sirenas ascendentes hasta Do5","Escalas en mezzo voce (media voz)","Ejercicios de mix voice","Trinos en la zona Si3-Re4","Vocalizaciones en posición de 'i' cerrada"],
-    exercises_en:["Ascending sirens to C5","Mezzo voce scales","Mix voice exercises","Trills in the B3-D4 zone","Vocalizations on closed 'i' position"],
-    songs:["Nessun Dorma – Pavarotti","Con Te Partirò – Bocelli","Libre – Nino Bravo","Beautiful Things – Benson Boone","Tu Cárcel – Los Yonics"],
-    yt_expert:"tenor vocal exercises training",
-    mics:[{name:"Audio-Technica AT2035",reason:"Realce en 'banda de aire' para los armónicos del tenor",asin:"B00EXR4EVS"},{name:"Rode NT1-A",reason:"Ultrabajo ruido para capturar los agudos limpios",asin:"B06XYVQQVY"},{name:"AKG C214",reason:"Calidad profesional con carácter musical",asin:"B004YDOSIE"}],
+    ytId: "XC8dTMnAzGY",
+    artists:["Luciano Pavarotti","Andrea Bocelli","Benson Boone","Camilo Sesto","Alejandro Fernández","Roberto Carlos","Il Volo","Plácido Domingo"],
+    artistImgs:{
+      "Pavarotti":"https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Luciano_Pavarotti_with_Tommy_Tune_%28cropped%29.jpg/220px-Luciano_Pavarotti_with_Tommy_Tune_%28cropped%29.jpg",
+    },
+    mics:[
+      {name:"Audio-Technica AT2035",reason:"Realce en la 'banda de aire' (10-12kHz) captura los armónicos agudos del tenor.",search:"Audio Technica AT2035"},
+      {name:"Rode NT1-A",reason:"Ultrabajo ruido de fondo para los pianissimos del tenor lírico.",search:"Rode NT1-A microfono"},
+      {name:"AKG C214",reason:"Calidad profesional, captura el carácter musical del tenor con precisión.",search:"AKG C214 microfono"},
+    ],
+    pro_mics:["Neumann TLM 103","Telefunken ELAM 251"],
+    home_studio:{
+      fun:   [{name:"Fifine K669B USB",search:"Fifine K669B"},{name:"Auriculares AKG K52",search:"AKG K52"}],
+      basic: [{name:"Rode NT-USB",search:"Rode NT USB"},{name:"Filtro anti-pop metálico",search:"filtro antipop metalico"},{name:"Soporte de mesa",search:"soporte microfono mesa"}],
+      medium:[{name:"Focusrite Scarlett Solo",search:"Focusrite Scarlett Solo"},{name:"AT2035",search:"Audio Technica AT2035"},{name:"Audio-Technica M40x",search:"Audio Technica ATH M40x"}],
+      pro:   [{name:"Apollo Solo",search:"Universal Audio Apollo Solo"},{name:"Neumann TLM 103",search:"Neumann TLM 103"},{name:"Yamaha HS5",search:"Yamaha HS5 monitores"}],
+    },
+    songs:["Nessun Dorma – Pavarotti","Con Te Partirò – Bocelli","Beautiful Things – Benson Boone","Libre – Nino Bravo","Tu Cárcel – Los Yonics","Bésame Mucho – Trio Los Panchos","O Sole Mio – Traditional","Ave María – Schubert"],
+    exercises_es:[
+      "Sirenas ascendentes hasta Do5 en 'ee' — mantén la posición alta de laringe",
+      "Escalas en mezzo voce (media voz) — nunca a plena potencia en el calentamiento",
+      "Ejercicios de mix voice: alterna chest voice y head voice en zona Si3-Re4",
+      "Trinos en La3-Do4 con lengua y labios relajados",
+      "Vocalizaciones en 'i' cerrada — levanta el velo del paladar",
+      "Escala cromática del Do3 al Do5 lentamente, buscando homogeneidad",
+      "Messa di voce en Sol3: empieza piano, crece al máximo, vuelve a piano",
+      "Ejercicio de apoyo: canta una escala de 5 notas empujando ligeramente el diafragma",
+    ],
+    exercises_en:[
+      "Ascending sirens to C5 on 'ee' — keep high larynx position",
+      "Mezzo voce scales — never full power during warm-up",
+      "Mix voice exercises: alternate chest and head voice in B3-D4 zone",
+      "Trills on A3-C4 with relaxed tongue and lips",
+      "Closed 'i' vocalizations — raise the soft palate",
+      "Chromatic scale from C3 to C5 slowly, looking for homogeneity",
+      "Messa di voce on G3: start piano, grow to maximum, return to piano",
+      "Support exercise: sing a 5-note scale gently pushing the diaphragm",
+    ],
+    desc_es:"El tenor es la voz masculina más aguda de las categorías principales, y también la más demandada en el pop, el rock y la ópera. Su rango abarca desde el Do3 al Do5, aunque los tenores líricos pueden superar el Do5 con técnica avanzada. El Do5 (Do de pecho) es considerado el 'Santo Grial' de la voz masculina — el momento en que un tenor demuestra su dominio técnico.  Los tenores más icónicos de la historia incluyen a Luciano Pavarotti, Plácido Domingo, Andrea Bocelli, y en el pop moderno artistas como Benson Boone, Bruno Mars o Camilo. La voz de tenor tiene una brillantez y proyección natural que llena cualquier espacio sin amplificación.  Si eres tenor, tu desafío principal es el passaggio (zona de transición de pecho a cabeza), que en tu caso ocurre aproximadamente entre el Mi4 y el Sol4. Aprender a navegar esa zona con mix voice es la clave para un tenor completo y versátil.",
+    desc_en:"The tenor is the highest of the main male voice categories, and also the most in-demand in pop, rock and opera. Its range spans from C3 to C5, though lyric tenors can surpass C5 with advanced technique. High C (chest C5) is considered the 'Holy Grail' of male singing.  Iconic tenors include Luciano Pavarotti, Plácido Domingo, Andrea Bocelli, and in modern pop Benson Boone, Bruno Mars and Camilo. The tenor voice has a natural brightness and projection that fills any space without amplification.",
   },
+
   soprano: {
     emoji:"✨", color:"#FF4FA3", range:"Do4 – Do6", hz:"261 – 1047 Hz",
-    desc_es:"La soprano es la voz femenina más aguda. Su extensión natural va del Do4 al La5, con las sopranos de coloratura alcanzando el Do6 y más. Es la voz más luminosa y dramática del espectro vocal, dominando la ópera y el pop de alta gama.",
-    desc_en:"The soprano is the highest female voice type. Its natural range spans from C4 to A5, with coloratura sopranos reaching C6 and beyond.",
-    artists:["Mariah Carey","Whitney Houston","Celine Dion","Ariana Grande","María Callas","Sabrina Carpenter"],
-    exercises_es:["Trinos en Re5-La5","Escalas de octava completas","Pianissimo en los agudos","Portamentos suaves","Vocalizaciones en 'ah' con resonancia de cabeza"],
-    exercises_en:["Trills D5-A5","Full octave scales","Pianissimo on high notes","Gentle portamentos","Vocalizations on 'ah' with head resonance"],
-    songs:["Hero – Mariah Carey","I Will Always Love You – Whitney Houston","My Heart Will Go On – Celine Dion","God is a Woman – Ariana Grande","Casta Diva – Bellini"],
-    yt_expert:"soprano vocal exercises high notes",
-    mics:[{name:"Neumann TLM 102",reason:"El condensador de referencia para voces de soprano",asin:"B001FVIXKS"},{name:"Audio-Technica AT2020",reason:"Captura los armónicos brillantes sin saturación",asin:"B0006H92QK"},{name:"Rode NT1",reason:"Cero ruido, ideal para los pianissimos de soprano",asin:"B01KQRBFOU"}],
+    ytId: "VuN_FkWzIMs",
+    artists:["Mariah Carey","Whitney Houston","Celine Dion","Ariana Grande","Sabrina Carpenter","María Callas","Montserrat Caballé","Isabel Pantoja"],
+    artistImgs:{
+      "Mariah Carey":"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Mariah_Carey_2019_by_Glenn_Francis.jpg/220px-Mariah_Carey_2019_by_Glenn_Francis.jpg",
+      "Whitney Houston":"https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Whitney_Houston_Welcome_Home_Heroes_1.jpg/220px-Whitney_Houston_Welcome_Home_Heroes_1.jpg",
+      "Celine Dion":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Celine_dion_2017.jpg/220px-Celine_dion_2017.jpg",
+      "Ariana Grande":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Ariana_Grande_in_2019.jpg/220px-Ariana_Grande_in_2019.jpg",
+    },
+    mics:[
+      {name:"Neumann TLM 102",reason:"La referencia profesional para voces de soprano. Captura los agudos con fidelidad total.",search:"Neumann TLM 102"},
+      {name:"Audio-Technica AT2020",reason:"Captura armónicos brillantes sin saturación en los agudos extremos.",search:"Audio Technica AT2020 USB"},
+      {name:"Rode NT1",reason:"Ruido de fondo casi nulo, ideal para los pianissimos de soprano.",search:"Rode NT1 microfono"},
+    ],
+    pro_mics:["Neumann U87","Sennheiser MKH 40"],
+    home_studio:{
+      fun:   [{name:"Fifine K669B USB",search:"Fifine K669B"},{name:"Auriculares Superlux HD681",search:"Superlux HD681"}],
+      basic: [{name:"Rode NT-USB",search:"Rode NT USB"},{name:"Pop filter doble",search:"filtro antipop doble"},{name:"Soporte de mesa articulado",search:"soporte microfono articulado"}],
+      medium:[{name:"Focusrite Scarlett Solo",search:"Focusrite Scarlett Solo"},{name:"AKG C214",search:"AKG C214"},{name:"Audio-Technica M50x",search:"Audio Technica ATH M50x"}],
+      pro:   [{name:"Apollo Solo",search:"Universal Audio Apollo Solo"},{name:"Neumann TLM 103",search:"Neumann TLM 103"},{name:"Yamaha HS5",search:"Yamaha HS5"}],
+    },
+    songs:["Hero – Mariah Carey","I Will Always Love You – Whitney Houston","My Heart Will Go On – Celine Dion","God is a Woman – Ariana Grande","Casta Diva – Bellini","Ave María – Schubert","O Mio Babbino Caro – Puccini","Concierto de Aranjuez – Versión vocal"],
+    exercises_es:[
+      "Trinos en Re5-La5 con vocales abiertas — relaja la mandíbula completamente",
+      "Escalas de octava completas Do4-Do5-Do4 en 'ah' y 'oh'",
+      "Pianissimo en los agudos: Do5-Mi5 en la dinámica más suave posible",
+      "Portamentos suaves descendentes desde La5 — evita saltos bruscos",
+      "Vocalizaciones en 'ah' con resonancia de cabeza — imagen mental: canta 'hacia arriba'",
+      "Ejercicio de legato: escala de Do mayor atada sin ataques de glotis",
+      "Staccato en Re5: notas picadas sin tensión de garganta",
+      "Calentamiento con lip trill suave — no fuerce los agudos en frío",
+    ],
+    exercises_en:[
+      "Trills D5-A5 with open vowels — completely relax the jaw",
+      "Full octave scales C4-C5-C4 on 'ah' and 'oh'",
+      "Pianissimo on high notes: C5-E5 at softest possible dynamic",
+      "Gentle descending portamentos from A5 — avoid abrupt jumps",
+      "Head resonance vocalizations on 'ah' — mental image: sing 'upward'",
+      "Legato exercise: C major scale tied without glottal attacks",
+      "Staccato on D5: detached notes without throat tension",
+      "Warm-up with gentle lip trill — never force high notes cold",
+    ],
+    desc_es:"La soprano es la voz femenina más aguda y la que históricamente ha dominado la ópera y el pop de alta gama. Su extensión natural va del Do4 al La5, con las sopranos de coloratura alcanzando el Do6 y más allá. Es la voz más luminosa, brillante y dramática del espectro vocal humano.  Mariah Carey es probablemente la soprano pop más famosa del mundo, conocida por su whistle register (registro de silbido) que alcanza el Sol7. Whitney Houston, Celine Dion y Ariana Grande también son sopranos reconocidas. En la ópera clásica, María Callas y Montserrat Caballé son referentes absolutos.  Si eres soprano, tu tesoro es el registro agudo y tu reto principal es mantener la calidad tímbrica en toda la extensión. El passaggio femenino ocurre aproximadamente en Mi4-Sol4 (según el subtipo de soprano) y requiere un trabajo especial de mix voice para que la transición sea imperceptible.",
+    desc_en:"The soprano is the highest female voice type and historically the one that has dominated opera and high-end pop. Its natural range spans from C4 to A5, with coloratura sopranos reaching C6 and beyond. It is the most luminous, brilliant and dramatic voice in the human vocal spectrum.  Mariah Carey is probably the world's most famous pop soprano, known for her whistle register reaching G7. Whitney Houston, Celine Dion and Ariana Grande are also recognized sopranos. In classical opera, Maria Callas and Montserrat Caballé are absolute references.",
   },
+
   "mezzo-soprano": {
     emoji:"🎶", color:"#FF9F1C", range:"La3 – La5", hz:"220 – 880 Hz",
-    desc_es:"La mezzosoprano es la voz femenina media, poderosa y rica en armónicos. Su timbre cálido y su facilidad en el registro de pecho la hacen ideal para el soul, el R&B, el pop y la música clásica. Artistas como Adele, Amy Winehouse y Beyoncé son mezzosopranos.",
-    desc_en:"The mezzo-soprano is the middle female voice type, powerful and rich in harmonics. Its warm timbre makes it ideal for soul, R&B, pop and classical music.",
-    artists:["Adele","Amy Winehouse","Beyoncé","Rosalía","Tracy Chapman","Billie Eilish"],
-    exercises_es:["Escalas La3-La5 subiendo y bajando","Arpegios de tríada","Vocalizaciones en 'nay-nay'","Ejercicios de pecho hacia abajo","Sirenas Do3-Do5"],
-    exercises_en:["Scales A3-A5 up and down","Triad arpeggios","Vocalizations on 'nay-nay'","Chest register exercises downward","Sirens C3-C5"],
-    songs:["Rolling in the Deep – Adele","Rehab – Amy Winehouse","Crazy in Love – Beyoncé","Con Altura – Rosalía","Fast Car – Tracy Chapman"],
-    yt_expert:"mezzo soprano vocal exercises",
-    mics:[{name:"Rode NT1",reason:"Captura la calidez del registro medio con precisión",asin:"B01KQRBFOU"},{name:"Audio-Technica AT2035",reason:"Equilibrio perfecto para voces de potencia media",asin:"B00EXR4EVS"},{name:"Shure SM7B",reason:"Para un sonido más broadcasted y potente",asin:"B0002E4Z8M"}],
+    ytId: "bAsXMCiB5nQ",
+    artists:["Adele","Amy Winehouse","Beyoncé","Rosalía","Tracy Chapman","Billie Eilish","Lana Del Rey","Norah Jones"],
+    artistImgs:{
+      "Adele":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Adele_2016.jpg/220px-Adele_2016.jpg",
+      "Amy Winehouse":"https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Amy_Winehouse_2007.jpg/220px-Amy_Winehouse_2007.jpg",
+      "Beyoncé":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Beyoncé_in_Cannes_%282012%29.jpg/220px-Beyoncé_in_Cannes_%282012%29.jpg",
+    },
+    mics:[
+      {name:"Rode NT1",reason:"Captura la calidez del registro medio con precisión y bajo ruido.",search:"Rode NT1 microfono"},
+      {name:"Audio-Technica AT2035",reason:"Equilibrio perfecto para voces de potencia media-alta.",search:"Audio Technica AT2035"},
+      {name:"Shure SM27",reason:"Versátil y natural, ideal para el rango completo del mezzo.",search:"Shure SM27 microfono"},
+    ],
+    pro_mics:["Neumann U87","AKG C414 XLII"],
+    home_studio:{
+      fun:   [{name:"Fifine K669B USB",search:"Fifine K669B"},{name:"Auriculares AKG K92",search:"AKG K92"}],
+      basic: [{name:"Rode NT-USB",search:"Rode NT USB"},{name:"Filtro anti-pop",search:"filtro antipop microfono"},{name:"Brazo articulado básico",search:"brazo microfono mesa"}],
+      medium:[{name:"Focusrite Scarlett 2i2",search:"Focusrite Scarlett 2i2"},{name:"AT2020",search:"Audio Technica AT2020"},{name:"Sony MDR-7506",search:"Sony MDR 7506"}],
+      pro:   [{name:"Apollo Twin",search:"UA Apollo Twin"},{name:"AKG C414",search:"AKG C414"},{name:"Yamaha HS5",search:"Yamaha HS5"}],
+    },
+    songs:["Rolling in the Deep – Adele","Rehab – Amy Winehouse","Crazy in Love – Beyoncé","Con Altura – Rosalía","Fast Car – Tracy Chapman","Bad Guy – Billie Eilish","Summertime Sadness – Lana Del Rey","Come Away With Me – Norah Jones"],
+    exercises_es:[
+      "Escalas La3-La5 subiendo y bajando en 'ah' — trabaja tanto el pecho como la cabeza",
+      "Arpegios de tríada La3-Do4-Mi4-La4 en todas las vocales",
+      "Vocalizaciones en 'nay-nay' — posición nasal que ayuda a la resonancia media",
+      "Ejercicios de pecho hacia abajo: Fa3-Re3 con pleno apoyo diafragmático",
+      "Sirenas Do3-Do5 en 'oooo' — sin breaks, transición suave en el passaggio",
+      "Staccato en Re4: notas picadas con boca semifría",
+      "Ejercicio de 'ng': escala cromática en posición nasal abierta",
+      "Mix voice Do4-Sol4: alterna entre pecho y mezcla sin tensión",
+    ],
+    exercises_en:[
+      "Scales A3-A5 up and down on 'ah' — work both chest and head register",
+      "Triad arpeggios A3-C4-E4-A4 on all vowels",
+      "Vocalizations on 'nay-nay' — nasal position that helps middle resonance",
+      "Downward chest exercises: F3-D3 with full diaphragm support",
+      "Sirens C3-C5 on 'oooo' — no breaks, smooth passaggio transition",
+      "Staccato on D4: detached notes with semi-open mouth",
+      "'Ng' exercise: chromatic scale in open nasal position",
+      "Mix voice C4-G4: alternate chest and mix without tension",
+    ],
+    desc_es:"La mezzosoprano es la voz femenina media, poderosa y rica en armónicos. Su timbre cálido, carnoso y expresivo la convierte en la voz más completa y versátil del espectro femenino. El rango natural va del La3 al La5, aunque con técnica puede extenderse en ambas direcciones.  Algunas de las artistas más influyentes de los últimos 30 años son mezzosopranos: Adele, Beyoncé, Amy Winehouse, Rosalía, Billie Eilish y Lana Del Rey. Esta voz domina el soul, el R&B, el pop de autor y el flamenco por su capacidad de expresar emociones complejas con matices únicos.  Si eres mezzosoprano, tu mayor fortaleza es la zona Do4-La4, donde tu voz suena más plena y proyectada. Con entrenamiento puedes desarrollar un poderoso registro de pecho hacia abajo (Fa3-Do3) y un head voice brillante hasta el Do5.",
+    desc_en:"The mezzo-soprano is the middle female voice type, powerful and rich in harmonics. Its warm, full and expressive timbre makes it the most complete and versatile voice in the female spectrum. The natural range is A3 to A5, though with technique it can extend in both directions.  Some of the most influential artists of the last 30 years are mezzo-sopranos: Adele, Beyoncé, Amy Winehouse, Rosalía, Billie Eilish and Lana Del Rey.",
   },
+
   contralto: {
     emoji:"🌿", color:"#80B918", range:"Fa3 – Fa5", hz:"175 – 698 Hz",
-    desc_es:"La contralto es la voz femenina más grave y oscura. Una rareza privilegiada con un timbre único, profundo y cálido. Artistas como Tracy Chapman, Norah Jones y Cher son contraltos reconocidas.",
-    desc_en:"The contralto is the lowest female voice type. A privileged rarity with a unique, deep and warm timbre.",
-    artists:["Tracy Chapman","Norah Jones","Cher","Tina Turner","Nina Simone","k.d. lang"],
-    exercises_es:["Humming en Fa3-Do4","Ejercicios de registro de pecho profundo","Sirenas Do3-Do5","Vocalizaciones en 'oo' grave","Escalas descendentes con apoyo diafragmático"],
-    exercises_en:["Humming on F3-C4","Deep chest register exercises","Sirens C3-C5","Low 'oo' vocalizations","Descending scales with diaphragm support"],
-    songs:["Fast Car – Tracy Chapman","Come Away With Me – Norah Jones","Believe – Cher","River Deep Mountain High – Tina Turner","Feeling Good – Nina Simone"],
-    yt_expert:"contralto voice exercises training",
-    mics:[{name:"Shure SM7B",reason:"Diseñado para voces graves y profundas",asin:"B0002E4Z8M"},{name:"Rode Procaster",reason:"Dinámico con gran cuerpo para voces graves",asin:"B004CRN9BS"},{name:"Audio-Technica AT4040",reason:"Condensador cálido que favorece el registro grave",asin:"B0002GIRCE"}],
+    ytId: "N_RhvtKpSQE",
+    artists:["Tracy Chapman","Norah Jones","Cher","Nina Simone","k.d. lang","Tina Turner","Macy Gray","Alanis Morissette"],
+    artistImgs:{},
+    mics:[
+      {name:"Shure SM7B",reason:"Diseñado para voces graves, el SM7B captura la profundidad única de la contralto.",search:"Shure SM7B"},
+      {name:"Rode Procaster",reason:"Dinámico con gran cuerpo y calidez para voces graves femeninas.",search:"Rode Procaster microfono"},
+      {name:"Audio-Technica AT4040",reason:"Condensador cálido que favorece el registro grave con detalle.",search:"Audio Technica AT4040"},
+    ],
+    pro_mics:["Neumann U87","Telefunken U47"],
+    home_studio:{
+      fun:   [{name:"Fifine K669B USB",search:"Fifine K669B"},{name:"Auriculares Superlux HD668B",search:"Superlux HD668B"}],
+      basic: [{name:"Shure MV7",search:"Shure MV7"},{name:"Pop filter",search:"filtro antipop"},{name:"Soporte articulado",search:"brazo microfono"}],
+      medium:[{name:"Focusrite Scarlett 2i2",search:"Focusrite Scarlett 2i2"},{name:"AT4040",search:"Audio Technica AT4040"},{name:"Beyerdynamic DT 770 Pro",search:"Beyerdynamic DT 770 Pro"}],
+      pro:   [{name:"Apollo Twin",search:"UA Apollo Twin"},{name:"Neumann U87",search:"Neumann U87"},{name:"Yamaha HS8",search:"Yamaha HS8"}],
+    },
+    songs:["Fast Car – Tracy Chapman","Come Away With Me – Norah Jones","Believe – Cher","Feeling Good – Nina Simone","Constant Craving – k.d. lang","River Deep Mountain High – Tina Turner","I Try – Macy Gray","You Oughta Know – Alanis Morissette"],
+    exercises_es:[
+      "Humming en Fa3-Do4 — siente la resonancia en el pecho, no en la garganta",
+      "Ejercicios de registro de pecho profundo: Do3-Fa3 con apoyo total",
+      "Sirenas Do3-Do5 suaves — la contralto tiene graves únicos, no los fuerces",
+      "Vocalizaciones en 'oo' grave con mandíbula completamente relajada",
+      "Escalas descendentes con apoyo diafragmático máximo — Do4 a Do3",
+      "Ejercicio de 'oh' oscuro en Fa3: imagina cantar desde el pecho",
+      "Extensión de agudos en head voice suave: Do5-Fa5 sin tensión",
+      "Calentamiento de 10 minutos obligatorio antes de cualquier sesión",
+    ],
+    exercises_en:[
+      "Humming on F3-C4 — feel the resonance in your chest, not throat",
+      "Deep chest register exercises: C3-F3 with full support",
+      "Gentle sirens C3-C5 — your low notes are unique, don't force them",
+      "Low 'oo' vocalizations with completely relaxed jaw",
+      "Descending scales with maximum diaphragm support — C4 to C3",
+      "Dark 'oh' exercise on F3: imagine singing from the chest",
+      "Soft head voice extension: C5-F5 without tension",
+      "Mandatory 10-minute warm-up before any session",
+    ],
+    desc_es:"La contralto es la voz femenina más grave y oscura, y una de las más raras en el mundo. Su tessitura natural va del Fa3 al Fa5, con un timbre profundo, oscuro y aterciopelado que resulta hipnótico. Es una voz poco común — solo el 5-10% de las mujeres son contraltos verdaderas.  Artistas como Tracy Chapman, Nina Simone, Cher, Norah Jones y k.d. lang son ejemplos icónicos de contralto en la música popular. En la ópera clásica, la contralto es la más escasa y codiciada de las voces femeninas.  Si eres contralto, tu mayor tesoro son tus graves únicos — esa zona Do3-Sol3 que ninguna otra voz femenina puede alcanzar con tal potencia y oscuridad. No intentes cantar como soprano: abraza y desarrolla tu registro grave, que es tu identidad vocal más poderosa.",
+    desc_en:"The contralto is the lowest and darkest female voice type, and one of the rarest in the world. Its natural range spans from F3 to F5, with a deep, dark, velvety timbre that is hypnotic. Only 5-10% of women are true contraltos.  Artists like Tracy Chapman, Nina Simone, Cher, Norah Jones and k.d. lang are iconic contralto examples in popular music.",
   },
+
   bajo: {
     emoji:"🎸", color:"#1E3A5F", range:"Mi2 – Do4", hz:"82 – 261 Hz",
-    desc_es:"El bajo es la voz masculina más grave, profunda y resonante. Una auténtica rareza vocal que produce una presencia escénica imponente. Johnny Cash, Leonard Cohen y Boris Christoff son referentes clásicos del bajo.",
-    desc_en:"The bass is the lowest male voice type, deep and resonant. A true vocal rarity with an imposing stage presence.",
-    artists:["Johnny Cash","Leonard Cohen","Barry White","Nick Cave","Tom Waits","Isaac Hayes"],
-    exercises_es:["Humming en Mi2-Do3","Sirenas descendentes al máximo grave","Vocalizaciones en 'oo' y 'oh' graves","Escalas muy lentas con apoyo total","Buzzing de labios en el registro más bajo"],
-    exercises_en:["Humming on E2-C3","Maximum low descending sirens","Low 'oo' and 'oh' vocalizations","Very slow scales with full support","Lip buzzing in the lowest register"],
-    songs:["Ring of Fire – Johnny Cash","Hallelujah – Leonard Cohen","Can't Get Enough – Barry White","Into My Arms – Nick Cave","Georgia Lee – Tom Waits"],
-    yt_expert:"bass voice training exercises",
-    mics:[{name:"Shure SM7B",reason:"El estándar absoluto para voces graves broadcast",asin:"B0002E4Z8M"},{name:"Electro-Voice RE20",reason:"Cardiode variable, diseñado para voces graves",asin:"B000Z7LLQ0"},{name:"Rode Broadcaster",reason:"Cálido y robusto, ideal para el bajo profundo",asin:"B003UIP5GS"}],
+    ytId: "YkSmHCyUKdQ",
+    artists:["Johnny Cash","Barry White","Leonard Cohen","Tom Waits","Nick Cave","Isaac Hayes","Lou Rawls","Boris Christoff"],
+    artistImgs:{},
+    mics:[
+      {name:"Shure SM7B",reason:"El estándar absoluto para voces graves broadcast. Desarrollado para voces profundas.",search:"Shure SM7B"},
+      {name:"Electro-Voice RE20",reason:"Cardiode de patrón variable, el preferido por locutores y cantantes de bajo.",search:"Electro Voice RE20"},
+      {name:"Rode Broadcaster",reason:"Cálido y robusto, captura la profundidad del bajo sin distorsión.",search:"Rode Broadcaster microfono"},
+    ],
+    pro_mics:["Neumann U87","AKG C414 XLII"],
+    home_studio:{
+      fun:   [{name:"Fifine K669B USB",search:"Fifine K669B"},{name:"Auriculares Beyerdynamic DT 770",search:"Beyerdynamic DT 770 32ohm"}],
+      basic: [{name:"Shure MV7",search:"Shure MV7"},{name:"Filtro anti-pop doble",search:"filtro antipop doble"},{name:"Brazo articulado",search:"brazo microfono"}],
+      medium:[{name:"Focusrite Scarlett 2i2",search:"Focusrite Scarlett 2i2"},{name:"SM7B",search:"Shure SM7B"},{name:"Beyerdynamic DT 770 Pro",search:"Beyerdynamic DT 770 Pro"}],
+      pro:   [{name:"Apollo Twin",search:"UA Apollo Twin"},{name:"Neumann U87",search:"Neumann U87"},{name:"Yamaha HS8",search:"Yamaha HS8"}],
+    },
+    songs:["Ring of Fire – Johnny Cash","Can't Get Enough – Barry White","Hallelujah – Leonard Cohen","Georgia Lee – Tom Waits","Into My Arms – Nick Cave","Shaft – Isaac Hayes","You'll Never Walk Alone – Lou Rawls","Ol' Man River – Traditional"],
+    exercises_es:[
+      "Humming en Mi2-Do3 — el bajo más profundo requiere más calentamiento que cualquier otra voz",
+      "Sirenas descendentes al máximo grave — Mi2-Si1 si tu voz lo permite",
+      "Vocalizaciones en 'oo' y 'oh' en el registro más bajo posible",
+      "Escalas muy lentas con apoyo total: Mi2 subiendo a Do4 sin forzar",
+      "Buzzing de labios (lip buzz) en el registro más bajo — 5 minutos",
+      "Ejercicio de 'ng' en Fa2-Do3: mantén la resonancia sin tensión",
+      "Calentamiento de 15 minutos mínimo — las cuerdas graves necesitan más tiempo",
+      "Hidratación: bebe agua tibia antes de cantar, nunca fría",
+    ],
+    exercises_en:[
+      "Humming on E2-C3 — the deepest bass requires more warm-up than any other voice",
+      "Maximum low descending sirens — E2-B1 if your voice allows",
+      "Low 'oo' and 'oh' vocalizations at lowest possible register",
+      "Very slow scales with full support: E2 ascending to C4 without forcing",
+      "Lip buzz at lowest register — 5 minutes",
+      "'Ng' exercise on F2-C3: maintain resonance without tension",
+      "Minimum 15-minute warm-up — low vocal cords need more time",
+      "Hydration: drink warm water before singing, never cold",
+    ],
+    desc_es:"El bajo es la voz masculina más grave, profunda y resonante. Una rareza vocal auténtica — solo el 5% de los cantantes masculinos tienen un bajo verdadero — con una presencia escénica e imponente que ninguna otra voz puede igualar. El rango natural va del Mi2 al Do4, con algunos bajos profundos (bajo profundo u octavista) llegando al Mi1 o más abajo.  Johnny Cash, Barry White, Leonard Cohen, Tom Waits y Isaac Hayes son los referentes del bajo en la música popular. Su timbre oscuro, autoritario y magnético ha definido géneros enteros, desde el gospel y el soul hasta el country y el rock alternativo.  Si eres bajo, tu mayor activo es esa zona Mi2-Sol3 que solo tú puedes habitar con plena potencia. No intentes competir con tenores o barítonos en los agudos — tu poder está en los graves, y ese poder es único.",
+    desc_en:"The bass is the lowest, deepest and most resonant male voice type. A true vocal rarity — only 5% of male singers have a genuine bass voice — with an imposing stage presence that no other voice can match. The natural range spans from E2 to C4, with some deep basses reaching E1 or lower.  Johnny Cash, Barry White, Leonard Cohen, Tom Waits and Isaac Hayes are the bass references in popular music.",
   },
 };
 
 function renderVozPage(slug) {
-  const key  = slug === "bajo" ? "bajo" : slug.replace("-", " ") === "mezzo soprano" ? "mezzo-soprano" : slug;
+  const keyMap = {
+    "baritono":"baritono","tenor":"tenor","soprano":"soprano",
+    "mezzo-soprano":"mezzo-soprano","contralto":"contralto","bajo":"bajo"
+  };
+  const key  = keyMap[slug];
   const data = VOZ_DATA[key];
   if (!data) return false;
 
-  const isES     = lang === "es" || lang === "ca" || lang === "es";
   const langES   = ["es","ca","pt","it","fr","de","ru","uk"].includes(lang);
   const desc     = langES ? data.desc_es : data.desc_en;
   const exercises= langES ? data.exercises_es : data.exercises_en;
   const amzDomain= getAmazonDomain();
+  const currency = getCurrencySymbol();
+  const capSlug  = slug.charAt(0).toUpperCase() + slug.slice(1);
 
+  // Fotos de artistas — usar artistImgs del VOZ_DATA + MONO_IMGS + iniciales
   const artistCards = data.artists.map(a => {
-    const img = imgCache[a];
-    return `<div style="text-align:center;padding:.75rem;background:rgba(255,255,255,.04);border-radius:12px;border:1px solid rgba(255,255,255,.08)">
-      <div style="width:56px;height:56px;border-radius:50%;margin:0 auto .5rem;overflow:hidden;background:rgba(124,77,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.5rem">
-        ${img?`<img src="${img}" alt="${a}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.innerHTML='🎤'">`:"🎤"}
+    const img = data.artistImgs?.[a] || MONO_IMGS[a] || imgCache[a];
+    const initImg = getInitialsAvatar(a);
+    return `<div style="text-align:center;padding:.75rem;background:rgba(255,255,255,.04);
+      border-radius:12px;border:1px solid rgba(255,255,255,.08);transition:transform .2s"
+      onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+      <div style="width:64px;height:64px;border-radius:50%;margin:0 auto .5rem;overflow:hidden;
+        background:rgba(124,77,255,.2);display:flex;align-items:center;justify-content:center;">
+        <img src="${img||initImg}" alt="${a}" style="width:100%;height:100%;object-fit:cover"
+          onerror="this.src='${initImg}'">
       </div>
-      <div style="font-weight:700;font-size:.88rem">${a}</div>
+      <div style="font-weight:700;font-size:.82rem;margin-bottom:.15rem">${a}</div>
+      <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(a+' vocal')}"
+        target="_blank" style="font-size:.68rem;color:${data.color};text-decoration:none">▶ Ver</a>
     </div>`;
   }).join("");
 
-  const micCards = data.mics.map(m => `
-    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem;display:flex;gap:.75rem;align-items:flex-start">
-      <div style="font-size:1.4rem">🎤</div>
+  // Micros con botón Amazon
+  const micCards = data.mics.map((m,i) => `
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;padding:1.1rem;display:flex;gap:.75rem;align-items:flex-start;
+      ${i===0?'border-color:'+data.color+'55;background:'+data.color+'08;':''}">
+      <div style="font-size:1.5rem">🎙️</div>
       <div style="flex:1">
-        <div style="font-weight:700;font-size:.92rem;margin-bottom:.2rem">${m.name}</div>
-        <div style="font-size:.78rem;color:#6B7280;margin-bottom:.5rem">${m.reason}</div>
-        <a href="https://${amzDomain}/dp/${m.asin}?tag=${AFFILIATE_ID}" target="_blank" rel="noopener sponsored"
-          style="display:inline-block;background:linear-gradient(135deg,#7C4DFF,#FF4FA3);color:#fff;
-          font-size:.78rem;font-weight:700;padding:.35rem .75rem;border-radius:8px;text-decoration:none">
-          Ver oferta en Amazon →
+        <div style="font-weight:700;font-size:.95rem;margin-bottom:.2rem">${m.name}
+          ${i===0?'<span style="background:'+data.color+'22;color:'+data.color+';font-size:.65rem;font-weight:700;padding:.1rem .45rem;border-radius:20px;margin-left:.4rem">★ Recomendado</span>':''}
+        </div>
+        <div style="font-size:.8rem;color:#9CA3AF;margin-bottom:.55rem;line-height:1.5">${m.reason}</div>
+        <a href="https://www.${amzDomain}/s?k=${encodeURIComponent(m.search)}&tag=${AFFILIATE_ID}"
+          target="_blank" rel="noopener sponsored"
+          style="display:inline-block;background:linear-gradient(135deg,#FF9F1C,#FF4FA3);color:#fff;
+          font-size:.78rem;font-weight:700;padding:.35rem .8rem;border-radius:8px;text-decoration:none">
+          Ver precio en Amazon ${currency} →
         </a>
       </div>
     </div>`).join("");
 
-  const ytSearch = encodeURIComponent(data.yt_expert);
-  const ytEmbed  = `https://www.youtube.com/embed?listType=search&list=${ytSearch}`;
+  // Pro mics (referencia sin afiliado)
+  const proMicHtml = data.pro_mics.map(p=>`
+    <span style="background:rgba(255,215,0,.1);color:#FFD700;border:1px solid rgba(255,215,0,.2);
+      font-size:.78rem;font-weight:700;padding:.25rem .65rem;border-radius:20px">⭐ ${p}</span>
+  `).join("");
 
+  // Home Studio — 4 packs completos
+  const packLabels = {
+    fun:   {label:"🟢 Básico",sub:"Para karaoke en casa · 50-120"+currency,gradient:"#7C4DFF,#FF4FA3"},
+    basic: {label:"🟡 Económico",sub:"Quiero sonar bien · 120-250"+currency,gradient:"#FF9F1C,#FF4FA3"},
+    medium:{label:"🟠 Medio",sub:"Grabaciones serias · 250-600"+currency,gradient:"#06D6A0,#118AB2"},
+    pro:   {label:"🔴 Pro",sub:"Sonido comercial · 600-1500"+currency,gradient:"#E63946,#7C4DFF"},
+  };
+  const studioHTML = Object.entries(data.home_studio).map(([tier, items]) => {
+    const {label,sub,gradient} = packLabels[tier];
+    return `<div style="background:rgba(255,255,255,.04);border-radius:16px;padding:1.25rem;
+      border:1px solid rgba(255,255,255,.08)">
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem">
+        <span style="background:linear-gradient(135deg,${gradient});-webkit-background-clip:text;
+          -webkit-text-fill-color:transparent;font-weight:800;font-size:.95rem">${label}</span>
+      </div>
+      <div style="font-size:.75rem;color:#6B7280;margin-bottom:.75rem">${sub}</div>
+      ${items.map(item=>`
+        <div style="display:flex;align-items:center;justify-content:space-between;
+          padding:.45rem 0;border-bottom:1px solid rgba(255,255,255,.05)">
+          <span style="font-size:.82rem;color:#D1D5DB">🎛️ ${item.name}</span>
+          <a href="https://www.${amzDomain}/s?k=${encodeURIComponent(item.search)}&tag=${AFFILIATE_ID}"
+            target="_blank" rel="noopener sponsored"
+            style="font-size:.72rem;font-weight:700;color:${data.color};text-decoration:none;
+            background:${data.color}15;padding:.2rem .55rem;border-radius:8px;white-space:nowrap">
+            Ver oferta →
+          </a>
+        </div>`).join("")}
+    </div>`;
+  }).join("");
+
+  // Canciones con karaoke
+  const songsHTML = data.songs.map(s => {
+    const yt = `https://www.youtube.com/results?search_query=${encodeURIComponent(s+' karaoke')}`;
+    const sp = `https://open.spotify.com/search/${encodeURIComponent(s)}`;
+    return `<div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.7rem 1rem;
+      display:flex;align-items:center;gap:.5rem;border:1px solid rgba(255,255,255,.06)">
+      <span style="color:${data.color}">🎵</span>
+      <span style="font-weight:600;font-size:.9rem;flex:1">${s}</span>
+      <a href="${yt}" target="_blank" rel="noopener"
+        style="background:rgba(255,0,0,.12);color:#ff4444;font-size:.7rem;font-weight:700;
+        padding:.2rem .55rem;border-radius:20px;text-decoration:none;border:1px solid rgba(255,0,0,.2)">
+        ▶ Karaoke
+      </a>
+      <a href="${sp}" target="_blank" rel="noopener"
+        style="background:rgba(29,185,84,.12);color:#1DB954;font-size:.7rem;font-weight:700;
+        padding:.2rem .55rem;border-radius:20px;text-decoration:none;border:1px solid rgba(29,185,84,.2)">
+        Spotify
+      </a>
+    </div>`;
+  }).join("");
+
+  // Ejercicios
+  const exHTML = exercises.map((e,i)=>`
+    <div style="background:rgba(255,255,255,.04);border-left:3px solid ${data.color};
+      padding:.65rem .9rem;border-radius:0 10px 10px 0;font-size:.88rem;color:#E5E7EB;
+      border-bottom:1px solid rgba(255,255,255,.04)">
+      <span style="color:${data.color};font-weight:800;margin-right:.5rem">${i+1}.</span>${e}
+    </div>`).join("");
+
+  const descClean = desc.replace(/\n/g,' ');
   document.body.innerHTML = `
 <!DOCTYPE html><html lang="${lang}"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>${data.emoji} Voz de ${slug.charAt(0).toUpperCase()+slug.slice(1)} — Tipo de voz, artistas y ejercicios | Harmiq</title>
-<meta name="description" content="${desc.slice(0,155)}">
+<title>Voz de ${capSlug} ${data.emoji} — Artistas, ejercicios, micrófonos y canciones | Harmiq</title>
+<meta name="description" content="${descClean.slice(0,158)}">
+<meta property="og:title" content="Voz de ${capSlug} — Descubre si tu voz es ${slug}">
+<meta property="og:description" content="${descClean.slice(0,120)}">
+<link rel="canonical" href="https://harmiq.app/voz/${slug}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
-<style>
-  .voz-hero{background:linear-gradient(135deg,${data.color}22,rgba(255,79,163,.12));border-radius:20px;padding:2.5rem 2rem;margin-bottom:2.5rem;text-align:center}
-  .voz-section{margin-bottom:2.5rem}
-  .voz-section h2{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.4rem;margin-bottom:1rem;
-    background:linear-gradient(135deg,${data.color},#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-  .voz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.75rem}
-  .voz-exercise{background:rgba(255,255,255,.04);border-left:3px solid ${data.color};
-    padding:.6rem .9rem;border-radius:0 8px 8px 0;font-size:.88rem;color:#E5E7EB}
-</style>
 </head><body>
-<nav><a class="logo" href="/">🎙️ Harmiq</a>
-  <ul class="nav-links"><li><a href="/voz/baritono">Barítono</a></li><li><a href="/voz/tenor">Tenor</a></li>
-    <li><a href="/voz/soprano">Soprano</a></li><li><a href="/#app">🎤 Analizar mi voz</a></li></ul>
+
+<nav>
+  <a class="logo" href="/">🎙️ Harmiq</a>
+  <ul class="nav-links">
+    <li><a href="/voz/baritono">Barítono</a></li>
+    <li><a href="/voz/tenor">Tenor</a></li>
+    <li><a href="/voz/soprano">Soprano</a></li>
+    <li><a href="/voz/mezzo-soprano">Mezzo</a></li>
+    <li><a href="/voz/contralto">Contralto</a></li>
+    <li><a href="/voz/bajo">Bajo</a></li>
+  </ul>
+  <a class="btn" href="/#app" style="padding:.5rem 1.2rem;font-size:.85rem">🎤 Analizar mi voz</a>
 </nav>
 
-<div style="max-width:820px;margin:2rem auto;padding:0 1.5rem">
+<div style="max-width:860px;margin:0 auto;padding:1.5rem">
 
-  <div class="voz-hero">
-    <div style="font-size:3rem;margin-bottom:.5rem">${data.emoji}</div>
-    <h1 style="font-family:'Baloo 2',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,3rem);
-      background:linear-gradient(135deg,#fff,${data.color});-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem">
-      Voz de ${slug.charAt(0).toUpperCase()+slug.slice(1)}
+  <!-- HERO -->
+  <div style="background:linear-gradient(135deg,${data.color}20,rgba(255,79,163,.1));
+    border-radius:20px;padding:2.5rem 2rem;margin-bottom:2.5rem;text-align:center;
+    border:1px solid ${data.color}33">
+    <div style="font-size:3.5rem;margin-bottom:.5rem">${data.emoji}</div>
+    <h1 style="font-family:'Baloo 2',sans-serif;font-weight:900;
+      font-size:clamp(2rem,5vw,3.2rem);margin-bottom:.6rem;
+      background:linear-gradient(135deg,#fff 40%,${data.color});
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent">
+      Voz de ${capSlug}
     </h1>
-    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin:.75rem 0 1rem">
-      <span style="background:${data.color}33;color:${data.color};font-weight:700;font-size:.85rem;
-        padding:.3rem .8rem;border-radius:20px">🎼 ${data.range}</span>
-      <span style="background:rgba(255,255,255,.08);color:#9CA3AF;font-size:.85rem;
-        padding:.3rem .8rem;border-radius:20px">${data.hz}</span>
+    <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin:.75rem 0 1.25rem">
+      <span style="background:${data.color}33;color:${data.color};font-weight:700;font-size:.88rem;
+        padding:.35rem .9rem;border-radius:20px">🎼 ${data.range}</span>
+      <span style="background:rgba(255,255,255,.08);color:#9CA3AF;font-size:.88rem;
+        padding:.35rem .9rem;border-radius:20px">${data.hz}</span>
     </div>
-    <p style="color:#D1D5DB;font-size:.95rem;line-height:1.7;max-width:600px;margin:0 auto 1.5rem">${desc}</p>
-    <a class="btn" href="/#app">🎤 Analizar mi voz — ¿soy ${slug}?</a>
+    <p style="color:#D1D5DB;font-size:.95rem;line-height:1.75;max-width:640px;margin:0 auto 1.5rem;
+      white-space:pre-line">${desc}</p>
+    <a class="btn" href="/#app" style="font-size:.95rem">
+      🎤 Analizar mi voz — ¿soy ${slug}?
+    </a>
   </div>
 
-  <!-- Artistas de referencia -->
-  <div class="voz-section">
-    <h2>🌟 Artistas famosos con voz de ${slug}</h2>
-    <div class="voz-grid">${artistCards}</div>
-  </div>
-
-  <!-- Canciones que puedes cantar -->
-  <div class="voz-section">
-    <h2>🎵 Canciones perfectas para este tipo de voz</h2>
-    <div style="display:flex;flex-direction:column;gap:.5rem">
-      ${data.songs.map(s=>`<div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.65rem 1rem;
-        font-size:.9rem;display:flex;align-items:center;gap:.5rem">
-        <span>🎵</span><span style="font-weight:600">${s}</span>
-        <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(s+' karaoke')}"
-          target="_blank" rel="noopener" style="margin-left:auto;background:rgba(255,0,0,.12);color:#ff4444;
-          font-size:.72rem;font-weight:700;padding:.25rem .6rem;border-radius:20px;text-decoration:none;
-          border:1px solid rgba(255,0,0,.25)">▶ Karaoke</a>
-      </div>`).join("")}
+  <!-- ARTISTAS FAMOSOS -->
+  <div style="margin-bottom:2.5rem">
+    <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.5rem;margin-bottom:.3rem;
+      background:linear-gradient(135deg,${data.color},#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+      🌟 Artistas famosos con voz de ${capSlug}
+    </h2>
+    <p style="color:#6B7280;font-size:.85rem;margin-bottom:1.1rem">
+      Estudia su técnica, escucha su timbre, imita su estilo.
+    </p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.75rem">
+      ${artistCards}
     </div>
   </div>
 
-  <!-- Ejercicios vocales -->
-  <div class="voz-section">
-    <h2>🎯 Ejercicios vocales para ${slug}</h2>
-    <div style="display:flex;flex-direction:column;gap:.5rem">
-      ${exercises.map((e,i)=>`<div class="voz-exercise">
-        <span style="color:${data.color};font-weight:800;margin-right:.5rem">${i+1}.</span>${e}
-      </div>`).join("")}
-    </div>
+  <!-- CANCIONES PERFECTAS -->
+  <div style="margin-bottom:2.5rem">
+    <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.5rem;margin-bottom:.3rem;
+      background:linear-gradient(135deg,${data.color},#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+      🎵 Canciones perfectas para voz de ${capSlug}
+    </h2>
+    <p style="color:#6B7280;font-size:.85rem;margin-bottom:1rem">
+      Seleccionadas para tu rango vocal. Con acceso directo a karaoke y Spotify.
+    </p>
+    <div style="display:flex;flex-direction:column;gap:.5rem">${songsHTML}</div>
   </div>
 
-  <!-- Vídeos YouTube (expertos) -->
-  <div class="voz-section">
-    <h2>🎬 Aprende con los mejores expertos</h2>
-    <p style="color:#6B7280;font-size:.85rem;margin-bottom:1rem">Vídeos seleccionados de profesores de canto especializados en voz de ${slug}</p>
-    <div style="border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:#000">
+  <!-- EJERCICIOS VOCALES -->
+  <div style="margin-bottom:2.5rem">
+    <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.5rem;margin-bottom:.3rem;
+      background:linear-gradient(135deg,${data.color},#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+      🎯 Ejercicios vocales para ${capSlug}
+    </h2>
+    <p style="color:#6B7280;font-size:.85rem;margin-bottom:1rem">
+      Rutina de entrenamiento diaria adaptada a este tipo de voz.
+    </p>
+    <div style="display:flex;flex-direction:column;gap:.4rem">${exHTML}</div>
+  </div>
+
+  <!-- VIDEO YOUTUBE FIJO -->
+  <div style="margin-bottom:2.5rem">
+    <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.5rem;margin-bottom:.3rem;
+      background:linear-gradient(135deg,${data.color},#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+      🎬 Aprende de los mejores expertos en voz de ${capSlug}
+    </h2>
+    <p style="color:#6B7280;font-size:.85rem;margin-bottom:1rem">
+      Vídeo seleccionado de vocal coaches especializados en este tipo de voz.
+    </p>
+    <div style="border-radius:16px;overflow:hidden;aspect-ratio:16/9;background:#000;
+      box-shadow:0 8px 32px rgba(0,0,0,.4)">
       <iframe width="100%" height="100%"
-        src="https://www.youtube.com/embed?listType=search&list=${ytSearch}&autoplay=0"
-        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen style="border-radius:14px"></iframe>
+        src="https://www.youtube.com/embed/${data.ytId}?rel=0&modestbranding=1"
+        title="Ejercicios vocales para ${capSlug}"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
     </div>
   </div>
 
-  <!-- Micrófonos recomendados -->
-  <div class="voz-section">
-    <h2>🎙️ Micrófonos recomendados para voz de ${slug}</h2>
-    <p style="color:#6B7280;font-size:.85rem;margin-bottom:1rem">Seleccionados según las frecuencias y características de este tipo de voz</p>
-    <div style="display:flex;flex-direction:column;gap:.75rem">${micCards}</div>
-    <p style="font-size:.72rem;color:#4B5563;margin-top:.75rem">* Links de afiliado Amazon · Harmiq recibe una pequeña comisión sin coste adicional para ti</p>
+  <!-- MICRÓFONOS RECOMENDADOS -->
+  <div style="margin-bottom:2.5rem">
+    <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.5rem;margin-bottom:.3rem;
+      background:linear-gradient(135deg,${data.color},#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+      🎙️ Mejores micrófonos para voz de ${capSlug}
+    </h2>
+    <p style="color:#6B7280;font-size:.85rem;margin-bottom:1rem">
+      Seleccionados por frecuencia de respuesta óptima para este tipo de voz. Links de Amazon.
+    </p>
+    <div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:1rem">
+      ${micCards}
+    </div>
+    <div style="padding:.8rem;background:rgba(255,215,0,.05);border-radius:12px;
+      border:1px solid rgba(255,215,0,.15)">
+      <span style="font-size:.75rem;color:#9CA3AF">⭐ Nivel profesional (referencia): </span>
+      ${proMicHtml}
+    </div>
   </div>
 
-  <!-- CTA final -->
-  <div class="cta-box" style="margin:2rem 0">
-    <h2>¿Eres ${slug}? Compruébalo ahora</h2>
-    <p>Análisis gratuito en 10 segundos. Sin registro.</p>
+  <!-- HOME STUDIO COMPLETO -->
+  <div style="margin-bottom:2.5rem">
+    <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.5rem;margin-bottom:.3rem;
+      background:linear-gradient(135deg,${data.color},#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+      🎛️ Monta tu Home Studio para voz de ${capSlug}
+    </h2>
+    <p style="color:#6B7280;font-size:.85rem;margin-bottom:1rem">
+      4 niveles según tu presupuesto. Todos los links llevan a Amazon con el mejor precio actual.
+    </p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem">
+      ${studioHTML}
+    </div>
+    <p style="font-size:.72rem;color:#4B5563;margin-top:.75rem;text-align:center">
+      * Links de afiliado Amazon · Harmiq recibe una pequeña comisión sin coste para ti
+    </p>
+  </div>
+
+  <!-- SECCIÓN KARAOKE Y EVENTOS -->
+  <div style="margin-bottom:2.5rem">
+    <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.5rem;margin-bottom:.3rem;
+      background:linear-gradient(135deg,${data.color},#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+      🎤 Karaokes, eventos y concursos para ${capSlug}
+    </h2>
+    <p style="color:#6B7280;font-size:.85rem;margin-bottom:1rem">
+      Practica en directo, conoce a otros cantantes y participa en la escena musical.
+    </p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem">
+      <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(capSlug+' karaoke completo')}"
+        target="_blank" rel="noopener"
+        style="display:flex;align-items:center;gap:.6rem;padding:.9rem;background:rgba(255,0,0,.08);
+        border:1px solid rgba(255,0,0,.2);border-radius:12px;text-decoration:none;color:#E5E7EB;
+        transition:transform .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        <span style="font-size:1.3rem">▶</span>
+        <div><div style="font-weight:700;font-size:.85rem">Karaoke YouTube</div>
+          <div style="font-size:.72rem;color:#6B7280">Pistas para ${capSlug}</div></div>
+      </a>
+      <a href="https://www.smule.com/search?q=${encodeURIComponent(capSlug)}"
+        target="_blank" rel="noopener"
+        style="display:flex;align-items:center;gap:.6rem;padding:.9rem;background:rgba(124,77,255,.08);
+        border:1px solid rgba(124,77,255,.2);border-radius:12px;text-decoration:none;color:#E5E7EB;transition:transform .2s"
+        onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        <span style="font-size:1.3rem">🎙️</span>
+        <div><div style="font-weight:700;font-size:.85rem">Smule</div>
+          <div style="font-size:.72rem;color:#6B7280">Karaoke social online</div></div>
+      </a>
+      <a href="https://www.instagram.com/explore/tags/${encodeURIComponent(slug+'singing')}"
+        target="_blank" rel="noopener"
+        style="display:flex;align-items:center;gap:.6rem;padding:.9rem;background:rgba(255,79,163,.08);
+        border:1px solid rgba(255,79,163,.2);border-radius:12px;text-decoration:none;color:#E5E7EB;transition:transform .2s"
+        onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        <span style="font-size:1.3rem">📱</span>
+        <div><div style="font-weight:700;font-size:.85rem">Instagram</div>
+          <div style="font-size:.72rem;color:#6B7280">#${slug}singing</div></div>
+      </a>
+      <a href="https://www.tiktok.com/tag/${encodeURIComponent(slug)}"
+        target="_blank" rel="noopener"
+        style="display:flex;align-items:center;gap:.6rem;padding:.9rem;background:rgba(0,0,0,.2);
+        border:1px solid rgba(255,255,255,.1);border-radius:12px;text-decoration:none;color:#E5E7EB;transition:transform .2s"
+        onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        <span style="font-size:1.3rem">🎵</span>
+        <div><div style="font-weight:700;font-size:.85rem">TikTok</div>
+          <div style="font-size:.72rem;color:#6B7280">#${slug} en TikTok</div></div>
+      </a>
+      <a href="https://www.meetup.com/find/?keywords=${encodeURIComponent('karaoke canto '+capSlug)}"
+        target="_blank" rel="noopener"
+        style="display:flex;align-items:center;gap:.6rem;padding:.9rem;background:rgba(255,159,28,.08);
+        border:1px solid rgba(255,159,28,.2);border-radius:12px;text-decoration:none;color:#E5E7EB;transition:transform .2s"
+        onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        <span style="font-size:1.3rem">🗓️</span>
+        <div><div style="font-weight:700;font-size:.85rem">Meetup</div>
+          <div style="font-size:.72rem;color:#6B7280">Jam sessions locales</div></div>
+      </a>
+      <a href="https://www.bandmix.es/buscar/?tipo=cantante&genero=${encodeURIComponent(capSlug)}"
+        target="_blank" rel="noopener"
+        style="display:flex;align-items:center;gap:.6rem;padding:.9rem;background:rgba(128,185,24,.08);
+        border:1px solid rgba(128,185,24,.2);border-radius:12px;text-decoration:none;color:#E5E7EB;transition:transform .2s"
+        onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        <span style="font-size:1.3rem">🎸</span>
+        <div><div style="font-weight:700;font-size:.85rem">Bandmix</div>
+          <div style="font-size:.72rem;color:#6B7280">Busca tu banda</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- CTA FINAL -->
+  <div class="cta-box" style="margin:0 0 2.5rem">
+    <h2>¿Eres ${capSlug}? Compruébalo en segundos</h2>
+    <p>Análisis vocal gratuito. Sin registro. Descubre tu tipo de voz con IA.</p>
     <a class="btn" href="/#app">🎤 Analizar mi voz gratis</a>
+    &nbsp;&nbsp;
+    <a class="btn-out" href="/">Ver todos los tipos de voz</a>
   </div>
 
 </div>
-<footer><div class="fl"><a href="/">Inicio</a><a href="/que-tipo-de-voz-tengo">Test vocal</a>
-  <a href="https://ko-fi.com/harmiq" target="_blank">☕ Apoya Harmiq</a></div>
-  <p>© 2025 Harmiq · Análisis vocal con IA</p>
+
+<footer>
+  <div class="fl">
+    <a href="/">Inicio</a>
+    <a href="/voz/baritono">Barítono</a>
+    <a href="/voz/tenor">Tenor</a>
+    <a href="/voz/soprano">Soprano</a>
+    <a href="/voz/mezzo-soprano">Mezzo</a>
+    <a href="/voz/contralto">Contralto</a>
+    <a href="/voz/bajo">Bajo</a>
+    <a href="https://ko-fi.com/harmiq" target="_blank">☕ Apoya Harmiq</a>
+  </div>
+  <p>© 2025 Harmiq · Análisis vocal con IA · <a href="mailto:hola@harmiq.app">hola@harmiq.app</a></p>
 </footer>
-</body></html>`;
 
-  // Precargar imágenes de artistas de referencia
-  Promise.allSettled(data.artists.map(a => getArtistImage(a))).then(() => {
-    data.artists.forEach(a => {
-      if (imgCache[a]) {
-        document.querySelectorAll(`[alt="${a}"]`).forEach(img => { img.src = imgCache[a]; });
-      }
-    });
+<script>
+  // Precargar fotos de artistas tras render
+  const artistData = ${JSON.stringify(data.artistImgs||{})};
+  const monoImgs = typeof MONO_IMGS !== 'undefined' ? MONO_IMGS : {};
+  document.querySelectorAll('img[alt]').forEach(img => {
+    const name = img.alt;
+    const src = artistData[name] || monoImgs[name];
+    if (src) img.src = src;
   });
+</script>
 
+</body></html>`;
   return true;
 }
 
 // ── Router SPA ─────────────────────────────────────────────────────────────────
 function handleRoute() {
   const path = location.pathname;
-  const match = path.match(/^\/voz\/(.+)$/);
-  if (match) {
-    const slug = match[1];
-    const rendered = renderVozPage(slug);
-    if (!rendered) {
-      // Slug no reconocido — volver al inicio
+
+  // Rutas /voz/*
+  const vMatch = path.match(/^\/voz\/(.+)$/);
+  if (vMatch) {
+    const slug = vMatch[1].toLowerCase().replace(/[^a-z-]/g,'');
+    // Normalizar: "mezzo soprano" → "mezzo-soprano", "bajo" ok
+    const validSlugs = ["baritono","tenor","soprano","mezzo-soprano","contralto","bajo"];
+    if (validSlugs.includes(slug)) {
+      renderVozPage(slug);
+    } else {
       history.replaceState({}, "", "/");
     }
     return true;
   }
+
+  // Rutas SEO de texto → redirigen al inicio con ancla
+  if (path === "/que-tipo-de-voz-tengo" || path === "/que-cantante-soy") {
+    history.replaceState({}, "", "/#app");
+    document.getElementById("app")?.scrollIntoView({behavior:"smooth"});
+    return false;
+  }
+
   return false;
 }
 
