@@ -1,5 +1,6 @@
 /**
- * app.js — Harmiq PRODUCCIÓN v5
+ * app.js — Harmiq PRODUCCIÓN v6
+ * SEGURIDAD: Sin secrets en frontend. Spotify via HF backend.
  * Un solo archivo. No requiere analyzer.js.
  *
  * FIXES v5:
@@ -23,6 +24,10 @@
 const AMAZON_DOMAINS = { ES:"es",US:"com",MX:"com.mx",UK:"co.uk",DE:"de",FR:"fr",IT:"it",CA:"ca",BR:"com.br",JP:"co.jp" };
 const AFFILIATE_ID   = "harmiqapp-20";
 const DB_PATH        = "/harmiq_db_vectores.json";
+
+// Backend HuggingFace — los secrets de Spotify viven aquí (NUNCA en frontend)
+// El frontend solo llama a /artist-image?name=XXX y recibe una URL de imagen
+const HF_API_URL = "https://hamiq-harmiq-backend1.hf.space/analyze";
 
 // Plataformas musicales por país (geolocalización)
 const MUSIC_PLATFORM = {
@@ -611,10 +616,8 @@ function getInitialsAvatar(name) {
   return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="120" height="120" rx="60" fill="${color}"/><text x="60" y="75" font-family="Arial" font-weight="bold" font-size="42" fill="white" text-anchor="middle">${initials}</text></svg>`)}`;
 }
 
-// ── Spotify token (Client Credentials) ──────────────────────────────────
-// Rellena con tus credenciales de Spotify Developer
-// https://developer.spotify.com/dashboard
-const HF_IMG_CACHE = {};  // cache imágenes vía backend HF
+// Cache de imágenes vía backend HF
+const HF_IMG_CACHE = {};
 
 // Fotos de artistas vía backend HF — los secrets de Spotify están en HF, NUNCA aquí
 async function getSpotifyImageFromBackend(name) {
@@ -798,6 +801,13 @@ async function toggleRecording() {
   const txt  = document.getElementById("btn-record-text");
   const gender = document.getElementById("user-gender")?.value;
   if (!gender) { showStatus(tr("_err_gender"), "err"); return; }
+
+  // Aviso legal de audio (primera vez)
+  if (!sessionStorage.getItem("harmiq_audio_ok") && !isRec) {
+    sessionStorage.setItem("harmiq_audio_ok", "1");
+    showStatus("🔒 Tu audio se analiza localmente y NO se almacena en ningún servidor.");
+    await new Promise(r => setTimeout(r, 2200));
+  }
 
   if (!isRec) {
     try {
@@ -1291,7 +1301,12 @@ async function renderResults({feat,vt,conf,matches,gender}) {
           ☕ Apoya Harmiq
         </a>
       </div>
-    </div>`;
+      <p style="font-size:.65rem;color:#4B5563;margin:.5rem 0 0;line-height:1.4">
+        🔗 <em>Harmiq es miembro del Programa de Afiliados de Amazon EU. Los links a Amazon
+        pueden generar una pequeña comisión sin coste adicional para ti.
+        <a href="/politica-privacidad" style="color:#6B7280">Política de privacidad y cookies</a></em>
+      </p>
+    </div>`;;
 
   // ── Canciones recomendadas de Spotify ────────────────────────────────
   const topMatch  = matches[0];
@@ -2565,10 +2580,68 @@ async function loadDB() {
   }
 }
 
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// LEGAL — Cookie & Privacy Banner (GDPR/RGPD + LSSI-CE)
+// ═══════════════════════════════════════════════════════════════════════════════
+function showCookieBanner() {
+  if (localStorage.getItem("harmiq_consent") === "1") return;
+  if (document.getElementById("_cookie_banner")) return;
+
+  const banner = document.createElement("div");
+  banner.id = "_cookie_banner";
+  banner.style.cssText = `
+    position:fixed;bottom:0;left:0;right:0;z-index:99999;
+    background:#0f0c1f;border-top:1px solid rgba(124,77,255,.4);
+    padding:1rem 1.5rem;display:flex;align-items:center;
+    flex-wrap:wrap;gap:.75rem;justify-content:space-between;
+    box-shadow:0 -4px 20px rgba(0,0,0,.5);
+    font-family:'Nunito',sans-serif;
+  `;
+  banner.innerHTML = `
+    <div style="flex:1;min-width:260px">
+      <p style="font-size:.82rem;color:#D1D5DB;margin:0;line-height:1.5">
+        🍪 <strong style="color:#fff">Cookies y privacidad</strong> —
+        Usamos <em>localStorage</em> solo para guardar tus preferencias de idioma y resultado vocal.
+        Tu audio <strong style="color:#06D6A0">no se almacena</strong> en ningún servidor.
+        Detectamos tu país via <a href="https://ipapi.co/privacy" target="_blank" 
+          style="color:#A5B4FC">ipapi.co</a> para personalizar la experiencia.
+        <a href="/politica-privacidad" style="color:#A5B4FC;text-decoration:underline">
+          Política de privacidad
+        </a>
+      </p>
+    </div>
+    <div style="display:flex;gap:.5rem;flex-shrink:0">
+      <button id="_cookie_accept"
+        style="background:linear-gradient(135deg,#7C4DFF,#FF4FA3);color:#fff;border:none;
+        padding:.5rem 1.2rem;border-radius:8px;font-weight:700;font-size:.82rem;cursor:pointer;
+        font-family:'Nunito',sans-serif">
+        ✓ Aceptar
+      </button>
+      <a href="/politica-privacidad"
+        style="background:rgba(255,255,255,.08);color:#9CA3AF;border:1px solid rgba(255,255,255,.15);
+        padding:.5rem .9rem;border-radius:8px;font-weight:600;font-size:.75rem;
+        text-decoration:none;display:flex;align-items:center">
+        Más info
+      </a>
+    </div>`;
+
+  document.body.appendChild(banner);
+  document.getElementById("_cookie_accept").addEventListener("click", () => {
+    localStorage.setItem("harmiq_consent", "1");
+    banner.style.transition = "opacity .3s";
+    banner.style.opacity = "0";
+    setTimeout(() => banner.remove(), 300);
+  });
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // 14. INIT
 // ═══════════════════════════════════════════════════════════════════════════════
 document.addEventListener("DOMContentLoaded", async () => {
+  // Banner cookies/GDPR (mostrar si no hay consentimiento)
+  showCookieBanner();
+
   // Idioma
   const saved   = localStorage.getItem("harmiq_lang");
   const urlLang = new URLSearchParams(location.search).get("lang");
