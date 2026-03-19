@@ -4,7 +4,7 @@
    + plataformas por región + compartir viral
    ===================================================== */
 
-const HF_API_URL = "https://hamiq-harmiq-api-v1.hf.space/analyze";
+const HF_API_URL = "https://hamiq-harmiq-backend1.hf.space/analyze";
 const AFFILIATE_ID = "harmiqapp-20";
 
 let monetization = null;
