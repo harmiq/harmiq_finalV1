@@ -908,7 +908,12 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
   if(pool.length<5) pool=singersDb;
 
   // Aplicar filtros
-  if(filters.era)            pool=pool.filter(s=>s.era===filters.era);
+  if(filters.era) {
+    // "1970s" y "1980s" ambos mapean a "1970s-80s" en la DB
+    const eraMap = {"1970s":"1970s-80s","1980s":"1970s-80s","2020s":"2010s+"};
+    const dbEra  = eraMap[filters.era] || filters.era;
+    pool = pool.filter(s => s.era === dbEra || s.era === filters.era);
+  }
   if(filters.genre_category) pool=pool.filter(s=>s.genre_category===filters.genre_category);
   if(filters.country_code)   pool=pool.filter(s=>s.country_code===filters.country_code);
 
@@ -1030,20 +1035,23 @@ async function renderResults({feat,vt,conf,matches,gender}) {
   let filtersHTML = "";
   const eras       = [...new Set(singersDb.map(s=>s.era).filter(Boolean))];
   // Épocas mostradas al usuario (incluye mapeos de DB)
+  // Épocas disponibles en DB (mostramos todas las que existen)
   const ERA_DISPLAY = [
-    {val:"pre-1960s", db:"pre-1960s"},
-    {val:"1960s",     db:"1960s"},
-    {val:"1970s",     db:"1970s-80s"},  // mapea a 1970s-80s en DB
-    {val:"1980s",     db:"1970s-80s"},  // mapea a 1970s-80s en DB
-    {val:"1990s",     db:"1990s"},
-    {val:"2000s+",    db:"2000s+"},
-    {val:"2010s+",    db:"2010s+"},
-    {val:"2020s",     db:"2010s+"},     // mapea a 2010s+ (más recientes)
-    {val:"2026",      db:"2010s+"},     // últimos éxitos
+    {val:"pre-1960s",  label:"Clásicos pre-60"},
+    {val:"1950s",      label:"Los 50"},
+    {val:"1960s",      label:"Los 60"},
+    {val:"1970s",      label:"Los 70"},
+    {val:"1970s-80s",  label:"70s y 80s"},
+    {val:"1980s",      label:"Los 80"},
+    {val:"1990s",      label:"Los 90"},
+    {val:"2000s+",     label:"Años 2000"},
+    {val:"2010s+",     label:"Años 2010"},
+    {val:"2020s",      label:"Años 2020"},
   ];
+  // Solo mostrar épocas que realmente tienen artistas en la DB
   const eraOptions = ERA_DISPLAY
-    .filter(e => singersDb.some(s => s.era === e.db))
-    .map(e => `<option value="${e.val}">${trV("_eras",e.val)}</option>`).join("");
+    .filter(e => singersDb.some(s => s.era === e.val))
+    .map(e => `<option value="${e.val}">${e.label}</option>`).join("");
 
   // Géneros disponibles en DB
   const genreOptions = [...new Set(singersDb.map(s=>s.genre_category).filter(Boolean))].sort()
@@ -1051,7 +1059,7 @@ async function renderResults({feat,vt,conf,matches,gender}) {
 
   // Países para filtro de idioma (top 15)
   const topCountries = {
-    "ES":"🇪🇸 Español","CA":"🏴 Català","EU":"Euskera","GL":"Galego",
+    "ES":"🇪🇸 Español","CAT":"🏴 Català","EU":"🇪🇺 Euskera","GL":"🏳️ Galego",
     "US":"🇺🇸 English","UK":"🇬🇧 British","MX":"🇲🇽 México",
     "AR":"🇦🇷 Argentina","CO":"🇨🇴 Colombia","BR":"🇧🇷 Português",
     "FR":"🇫🇷 Français","IT":"🇮🇹 Italiano","DE":"🇩🇪 Deutsch",
@@ -2176,12 +2184,12 @@ function renderVozPage(slug) {
     <!-- Videos de vocal coaching seleccionados -->
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.75rem;margin-bottom:1rem">
       ${[
-        {id:"xKpT8V9EGUc", title:"Cómo cantar mejor en 5 minutos", channel:"Brett Manning"},
-        {id:"KVLtTX3d0Kk", title:"Cómo cantar notas altas", channel:"Ken Tamplin"},
-        {id:"rmopMoKJo34", title:"Calentamiento vocal completo", channel:"Vocal Coach"},
-        {id:"Hk_S7F4SQUE", title:"Clase de canto para principiantes", channel:"Cheryl Porter"},
-        {id:"zHSHjVMxX-E", title:"Mix voice y técnica vocal", channel:"Eric Arceneaux"},
-        {id:"q_EQFHwX0_U", title:"5 mejores ejercicios vocales", channel:"Felicia Ricci"},
+        {id:"BjpEZ2f1j6E", title:"Cómo cantar mejor en 5 minutos", channel:"Brett Manning"},
+        {id:"A8vZuFNLqyo", title:"Cómo cantar notas altas", channel:"Ken Tamplin"},
+        {id:"QXSY_FiLBYk", title:"Calentamiento vocal completo", channel:"Cheryl Porter"},
+        {id:"bqCPDEm2K8s", title:"Clase de canto para principiantes", channel:"Justin Stoney"},
+        {id:"hzNEHAJRevk", title:"Mix voice y técnica vocal", channel:"Eric Arceneaux"},
+        {id:"PgJYSJVfO04", title:"5 mejores ejercicios vocales", channel:"Felicia Ricci"},
       ].map(v=>`
         <div style="border-radius:14px;overflow:hidden;background:#000;
           box-shadow:0 4px 16px rgba(0,0,0,.4);cursor:pointer"
@@ -2303,31 +2311,45 @@ function renderVozPage(slug) {
   return true;
 }
 
-// ── Cargador de páginas estáticas SPA ────────────────────────────────────────
+// ── Cargador de páginas SPA con preservación de resultado ─────────────────────
 async function loadStaticPage(url, title) {
+  // Guardar resultado actual en sessionStorage antes de navegar
+  if (lastResult?.matches?.length) {
+    try {
+      const toSave = {
+        vt: lastResult.vt, conf: lastResult.conf, gender: lastResult.gender,
+        feat: lastResult.feat,
+        matches: lastResult.matches.map(m => ({
+          id:m.id, name:m.name, voice_type:m.voice_type,
+          genre_category:m.genre_category, country_code:m.country_code,
+          era:m.era, score:m.score, reference_songs:m.reference_songs?.slice(0,3)||[]
+        }))
+      };
+      sessionStorage.setItem("harmiq_result", JSON.stringify(toSave));
+    } catch(_) {}
+  }
   try {
     document.title = title || "Harmiq";
-    const main = document.querySelector("main") || document.body;
-    main.innerHTML = `<div style="text-align:center;padding:4rem;color:#A5B4FC;">
-      <div style="font-size:2rem;margin-bottom:1rem">⏳</div>
-      <div>Cargando...</div>
-    </div>`;
+    // Mostrar spinner
+    const wrap = document.getElementById("app") || document.querySelector(".app-box")?.closest("section");
+    if (wrap) wrap.innerHTML = `<div style="text-align:center;padding:4rem;color:#A5B4FC">
+      <div style="font-size:2.5rem;margin-bottom:1rem">⏳</div><div>Cargando...</div></div>`;
     const r = await fetch(url);
-    if (!r.ok) throw new Error("404");
+    if (!r.ok) { location.href = url; return; }
     const html = await r.text();
-    // Extraer solo el body
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
-    const bodyContent = doc.body.innerHTML;
-    main.innerHTML = bodyContent;
-    // Re-ejecutar scripts inline
-    main.querySelectorAll("script").forEach(old => {
+    // Reemplazar body manteniendo scripts de app.js
+    document.body.innerHTML = doc.body.innerHTML;
+    document.title = doc.title || title;
+    // Re-ejecutar scripts inline del nuevo HTML
+    document.body.querySelectorAll("script:not([src])").forEach(old => {
       const s = document.createElement("script");
       s.textContent = old.textContent;
       old.replaceWith(s);
     });
+    window.scrollTo(0,0);
   } catch(e) {
-    // Si falla la carga dinámica, navegar normalmente
     location.href = url;
   }
 }
@@ -2350,13 +2372,11 @@ function handleRoute() {
     return true;
   }
 
-  // Ruta home studio → cargar dinámicamente sin recargar
+  // Rutas páginas internas SPA
   if (path === "/home-studio") {
     loadStaticPage("/home-studio.html", "🎛️ Home Studio | Harmiq");
     return true;
   }
-
-  // Ruta karaoke-eventos → cargar dinámicamente sin recargar
   if (path === "/karaoke-eventos") {
     loadStaticPage("/karaoke-eventos.html", "🎤 Karaoke & Eventos | Harmiq");
     return true;
@@ -2372,7 +2392,7 @@ function handleRoute() {
   return false;
 }
 
-// Interceptar clicks en links SPA (/voz/*, /home-studio, /karaoke-eventos)
+// Interceptar clicks SPA
 document.addEventListener("click", e => {
   const a = e.target.closest("a[href]");
   if (!a) return;
