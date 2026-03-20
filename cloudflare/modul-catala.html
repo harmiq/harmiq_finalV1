@@ -161,7 +161,7 @@ footer a{color:var(--m)}
   </div>
   <div style="display:flex;align-items:center;gap:.7rem">
     <span style="font-size:1.1rem">🏴</span>
-    <button class="nav-back" onclick="window.location.href='/'\">← Tornar</button>
+    <button class="nav-back" onclick="location.href=document.referrer&&document.referrer.includes('harmiq')?document.referrer:'/'">← Tornar</button>
   </div>
 </nav>
 
@@ -190,7 +190,7 @@ footer a{color:var(--m)}
   <div class="mc-tab" onclick="showTab('recursos',this)">🏛️ Recursos Culturals</div>
   <div class="mc-tab" onclick="showTab('cerca',this)">🔍 Cerca</div>
   <div class="mc-tab" onclick="showTab('analisi',this)">🎙️ Analitza la Veu</div>
-  <a href="/exitos-decada" class="mc-tab" style="text-decoration:none">🎵 Èxits Dècades</a>
+  <a href="/exitos-decada" class="mc-tab" style="text-decoration:none">🎵 Exits Decades</a>
 </div>
 
 <main class="mc-content">
@@ -406,14 +406,14 @@ footer a{color:var(--m)}
     <h4>🗺️ Troba recursos per comarca</h4>
     <p style="font-size:.82rem;color:var(--m);margin-bottom:.8rem">Selecciona la teva comarca per veure els recursos específics del teu territori:</p>
     <div class="comarca-row">
-      <span class="comarca-chip" onclick=\"showComarca('barcelones',this)\">El Barcelonès</span>
-      <span class="comarca-chip" onclick=\"showComarca('girones',this)\">El Gironès</span>
-      <span class="comarca-chip" onclick=\"showComarca('emporda',this)\">L'Empordà</span>
-      <span class="comarca-chip" onclick=\"showComarca('valles',this)\">El Vallès</span>
-      <span class="comarca-chip" onclick=\"showComarca('penedes',this)\">El Penedès</span>
-      <span class="comarca-chip" onclick=\"showComarca('tarragonès',this)\">El Tarragonès</span>
-      <span class="comarca-chip" onclick=\"showComarca('lleida',this)\">El Segrià</span>
-      <span class="comarca-chip" onclick=\"showComarca('osona',this)\">Osona</span>
+      <span class="comarca-chip" onclick="showComarca('barcelones',this)">El Barcelonès</span>
+      <span class="comarca-chip" onclick="showComarca('girones',this)">El Gironès</span>
+      <span class="comarca-chip" onclick="showComarca('emporda',this)">L'Empordà</span>
+      <span class="comarca-chip" onclick="showComarca('valles',this)">El Vallès</span>
+      <span class="comarca-chip" onclick="showComarca('penedes',this)">El Penedès</span>
+      <span class="comarca-chip" onclick="showComarca('tarragonès',this)">El Tarragonès</span>
+      <span class="comarca-chip" onclick="showComarca('lleida',this)">El Segrià</span>
+      <span class="comarca-chip" onclick="showComarca('osona',this)">Osona</span>
     </div>
     <div class="comarca-result" id="comarca-result"></div>
   </div>

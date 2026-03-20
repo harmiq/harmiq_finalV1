@@ -621,15 +621,20 @@ const HF_IMG_CACHE = {};  // cache imágenes vía backend HF
 // Fotos de artistas vía backend HF — los secrets de Spotify están en HF, NUNCA aquí
 async function getSpotifyImageFromBackend(name) {
   if (HF_IMG_CACHE[name]) return HF_IMG_CACHE[name];
-  try {
-    const base = HF_API_URL.replace("/analyze", "");
-    const r = await fetch(`${base}/artist-image?name=${encodeURIComponent(name)}`, {
-      signal: AbortSignal.timeout(3500)
-    });
-    if (!r.ok) return null;
-    const d = await r.json();
-    if (d.url) { HF_IMG_CACHE[name] = d.url; return d.url; }
-  } catch(_) {}
+  // Intentar 2 veces con timeout mayor (el Space HF puede estar arrancando)
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const base = HF_API_URL.replace("/analyze", "");
+      const r = await fetch(`${base}/artist-image?name=${encodeURIComponent(name)}`, {
+        signal: AbortSignal.timeout(attempt === 0 ? 4000 : 7000)
+      });
+      if (!r.ok) continue;
+      const d = await r.json();
+      if (d.url) { HF_IMG_CACHE[name] = d.url; return d.url; }
+    } catch(_) {
+      if (attempt === 0) await new Promise(r => setTimeout(r, 1000));
+    }
+  }
   return null;
 }
 
@@ -1032,11 +1037,17 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
   if(filters.genre_category) pool=pool.filter(s=>s.genre_category===filters.genre_category);
   if(filters.country_code)   pool=pool.filter(s=>s.country_code===filters.country_code);
 
-  // Si los filtros dejan muy poco, usar pool más amplio
-  if(pool.length<3) {
-    pool = gender ? singersDb.filter(s=>s.gender===gender) : singersDb;
+  // Si los filtros de era/género dejan muy poco, ampliar solo por género/gender
+  // NO resetear a toda la DB - eso ignora los filtros del usuario
+  if(pool.length<2 && (filters.era || filters.genre_category)) {
+    // Solo quitar el filtro más restrictivo, mantener género/país si lo hay
+    const poolGenre = filters.country_code 
+      ? singersDb.filter(s=>s.country_code===filters.country_code)
+      : (gender ? singersDb.filter(s=>s.gender===gender) : singersDb);
+    if(poolGenre.length >= 2) pool = poolGenre;
+    else pool = gender ? singersDb.filter(s=>s.gender===gender) : singersDb;
   }
-  if(pool.length<3) pool=singersDb;
+  if(pool.length<2) pool = singersDb;
 
   // Score base de popularidad por país del usuario
   const countryBonus = (s) => s.country_code === userCountry ? 1.03 : 1.0;
@@ -2206,12 +2217,13 @@ function renderVozPage(slug) {
 
   // Canciones con karaoke
   const songsHTML = data.songs.map(s => {
-    const yt = `https://www.youtube.com/results?search_query=${encodeURIComponent(s+' karaoke')}`;
-    const sp = `https://open.spotify.com/search/${encodeURIComponent(s)}`;
+    const sTitle = typeof s === 'object' ? (s.title || s.name || JSON.stringify(s)) : String(s);
+    const yt = `https://www.youtube.com/results?search_query=${encodeURIComponent(sTitle+' karaoke')}`;
+    const sp = `https://open.spotify.com/search/${encodeURIComponent(sTitle)}`;
     return `<div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.7rem 1rem;
       display:flex;align-items:center;gap:.5rem;border:1px solid rgba(255,255,255,.06)">
       <span style="color:${data.color}">🎵</span>
-      <span style="font-weight:600;font-size:.9rem;flex:1">${s}</span>
+      <span style="font-weight:600;font-size:.9rem;flex:1">${sTitle}</span>
       <a href="${yt}" target="_blank" rel="noopener"
         style="background:rgba(255,0,0,.12);color:#ff4444;font-size:.7rem;font-weight:700;
         padding:.2rem .55rem;border-radius:20px;text-decoration:none;border:1px solid rgba(255,0,0,.2)">
