@@ -161,7 +161,7 @@ footer a{color:var(--m)}
   </div>
   <div style="display:flex;align-items:center;gap:.7rem">
     <span style="font-size:1.1rem">🏴</span>
-    <button class="nav-back" onclick="history.back()">← Tornar</button>
+    <button class="nav-back" onclick="location.href=document.referrer&&document.referrer.includes('harmiq')?document.referrer:'/'">← Tornar</button>
   </div>
 </nav>
 
@@ -671,7 +671,7 @@ function renderGrid(elId, artistes){
     var fotoHtml = '';
     if(a.foto){
       fotoHtml = '<img class="art-photo" src="'+esc(a.foto)+'" alt="'+esc(a.nom)+'" loading="lazy" '
-               + 'onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">';
+               + 'onerror="this.onerror=null;this.src='';">';
     }
     var placeholderStyle = a.foto ? 'display:none' : '';
     var tagsHtml = (a.cançons||[]).slice(0,3).map(function(c){
@@ -680,7 +680,7 @@ function renderGrid(elId, artistes){
     var emergentBadge = a.emergent ? '<span class="badge-em">⭐ Emergent</span>' : '';
     var vtC = vtColor(a.vt);
     var nomEsc = esc(a.nom);
-    return '<div class="art-card '+(a.emergent?'emergent':'')+'" onclick='openArt('+JSON.stringify(a.nom)+')'>'+
+    return '<div class="art-card '+(a.emergent?'emergent':'')+' js-art-card" data-nom="'+a.nom.replace(/"/g,'&quot;')+'">' +
       fotoHtml+
       '<div class="art-photo-placeholder" style="background:'+avatarColor(a.nom)+';'+placeholderStyle+'">'+avatarInits(a.nom)+'</div>'+
       '<div class="art-body">'+
@@ -704,7 +704,7 @@ function renderGrid(elId, artistes){
 
 function openArt(nom){
   var all=Object.values(ARTISTES).reduce(function(acc,arr){return acc.concat(arr);},[]);
-  var a=all.find(function(x){return x.nom===nom;});
+  var a=all.find(function(x){return x.nom===nom||x.nom===nom.replace(/&quot;/g,'"');});
   if(!a){console.warn("Artista no trobat:",nom);return;}
   var vtC=vtColor(a.vt);
   var fotoHtml='';
@@ -793,9 +793,9 @@ function cercaArt(query){
   }
   var cardsHtml=res.map(function(a){
     var vtC=vtColor(a.vt);
-    var fotoHtml=a.foto?'<img class="art-photo" src="'+esc(a.foto)+'" alt="'+esc(a.nom)+'" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">':'';
+    var fotoHtml=a.foto?'<img class="art-photo" src="'+esc(a.foto)+'" alt="'+esc(a.nom)+'" loading="lazy" onerror="this.onerror=null;this.src='';">':'';
     var placeholderStyle=a.foto?'display:none':'';
-    return '<div class="art-card '+(a.emergent?'emergent':'')+'" onclick='openArt('+JSON.stringify(a.nom)+')'>'+
+    return '<div class="art-card '+(a.emergent?'emergent':'')+' js-art-card" data-nom="'+a.nom.replace(/"/g,'&quot;')+'">' +
       fotoHtml+
       '<div class="art-photo-placeholder" style="background:'+avatarColor(a.nom)+';'+placeholderStyle+'">'+avatarInits(a.nom)+'</div>'+
       '<div class="art-body">'+
@@ -821,6 +821,15 @@ function showTab(id,el){
   if(el) el.classList.add("active");
   window.scrollTo({top:0,behavior:"smooth"});
 }
+
+// ═══════ EVENT DELEGATION para cards de artistes ═══════════════════════════════
+document.addEventListener('click', function(e){
+  var card = e.target.closest('.js-art-card');
+  if(card){
+    var nom = card.getAttribute('data-nom');
+    if(nom) openArt(nom);
+  }
+});
 
 // ═══════ INIT ═════════════════════════════════════════════════════════════════
 function init(){
