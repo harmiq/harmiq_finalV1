@@ -23,12 +23,15 @@
         .hero p{max-width:800px;margin:0 auto;color:var(--m);font-size:1.1rem}
 
         /* Tabs con Scroll */
-        .tabs-wrapper{position:sticky;top:70px;background:var(--dark);z-index:900;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,0.05)}
-        .tabs-container{display:flex;gap:1.2rem;overflow-x:auto;padding:0 5% 1rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+        .tabs-wrapper{position:sticky;top:70px;background:var(--dark);z-index:900;padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+        .tabs-container{display:flex;gap:.6rem;overflow-x:auto;padding:.3rem 4% .6rem;scrollbar-width:none;-webkit-overflow-scrolling:touch;flex-wrap:wrap}
         .tabs-container::-webkit-scrollbar{display:none}
-        @media(min-width: 1000px){ .tabs-container{justify-content:center} }
-        .tab{flex-shrink:0;padding:.8rem 1.8rem;border-radius:50px;font-weight:800;cursor:pointer;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);transition:0.4s;white-space:nowrap;color:var(--m)}
+        @media(max-width: 900px){ .tabs-container{flex-wrap:nowrap} }
+        @media(min-width: 1000px){ .tabs-container{justify-content:center;flex-wrap:wrap} }
+        .tab{flex-shrink:0;padding:.55rem 1.1rem;border-radius:50px;font-weight:700;font-size:.82rem;cursor:pointer;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);transition:0.4s;white-space:nowrap;color:var(--m)}
         .tab.active{color:#fff;border-color:transparent}
+        /* Affiliate disclaimer */
+        .afil-bar{background:rgba(255,153,0,.07);border:1px solid rgba(255,153,0,.2);border-radius:12px;padding:.6rem 1.2rem;font-size:.72rem;color:rgba(255,153,0,.8);text-align:center;margin:.5rem 4% 0;line-height:1.4}
         
         .tab.active{color:#fff;border-color:transparent;box-shadow:0 0 20px rgba(124,77,255,0.4)}
         /* numbered tabs override the generic one — these must come AFTER */
@@ -276,15 +279,70 @@
                 </div>
                 <a href="#" class="btn-amz" data-asin="B0886S1SWH">Ver en Amazon</a>
             </div>
-        </div>
-        <div style="margin-top:3rem; display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:1.5rem">
-            <div style="background:rgba(255,255,255,0.05); padding:1.5rem; border-radius:15px; text-align:center">
-                <h4 style="color:var(--a)">Auto-Tune Pro</h4>
-                <p style="font-size:0.8rem">El sonido del éxito moderno.</p>
+        <div class="prod-grid">
+            <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="https://images.sweetwater.com/contentimages/products/headGallery/450/MPKmini3-1595258384.jpg" alt="Akai MPK Mini MK3"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="img-placeholder"><span class="img-placeholder-icon">🎹</span>akaimini.png</div>
+                </div>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:var(--a)">🏆 Top Ventas</span></div>
+                    <h2 class="card-title">Akai MPK Mini MK3</h2>
+                    <p class="analysis-text">Teclado de 25 teclas sensitivas y 8 MPC Pads. El cerebro indiscutible de los productores de Trap, Hip-Hop y Urbano.</p>
+                    <div class="history-box" style="margin-top:1rem; border-left-color:var(--a)">
+                        <strong>📖 Curiosidad:</strong> Fíjate en los vídeos de Bizarrap, Metro Boomin o Tay Keith; es rarísimo el productor de hits urbanos que no tenga o haya tenido uno de estos en su mesa.
+                    </div>
+                </div>
+                <a href="#" class="btn-amz" data-asin="B0886S1SWH">Ver en Amazon</a>
             </div>
-            <div style="background:rgba(255,255,255,0.05); padding:1.5rem; border-radius:15px; text-align:center">
-                <h4 style="color:var(--p)">Serum VST</h4>
-                <p style="font-size:0.8rem">Sintetizadores infinitos.</p>
+
+            <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="https://images.sweetwater.com/contentimages/products/headGallery/450/LaunchK3mini-1591888496.jpg" alt="Novation Launchkey Mini"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="img-placeholder"><span class="img-placeholder-icon">🎹</span>launchkey.png</div>
+                </div>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:var(--blue)">Ableton Ready</span></div>
+                    <h2 class="card-title">Novation Launchkey Mini Mk3</h2>
+                    <p class="analysis-text">El rival directo del Akai. Su integración nativa con Ableton Live es magia pura para controlar clips, efectos y sintes sin tocar el ratón.</p>
+                </div>
+                <a href="#" class="btn-amz" data-asin="B07WLZXTBZ">Ver en Amazon</a>
+            </div>
+
+            <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="https://images.sweetwater.com/contentimages/products/headGallery/450/MaschineMik3-1536676156.jpg" alt="Maschine Mikro MK3"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="img-placeholder"><span class="img-placeholder-icon">🥁</span>maschine.png</div>
+                </div>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:var(--p)">🔥 Pro Groove</span></div>
+                    <h2 class="card-title">NI Maschine Mikro Mk3</h2>
+                    <p class="analysis-text">El estándar para <em>Finger Drumming</em> y creación de ritmos (Beatmaking). Incluye librerías de sonidos profesionales espectaculares de Native Instruments.</p>
+                </div>
+                <a href="#" class="btn-amz" data-asin="B07H831P6H">Ver en Amazon</a>
+            </div>
+        </div>
+        
+        <h3 style="margin: 3rem 0 1.5rem; text-align:center">Plugins Esenciales (VSTs y Efectos)</h3>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:1.5rem">
+            <div style="background:rgba(255,255,255,0.05); padding:1.5rem; border-radius:15px; text-align:center; border: 1px solid rgba(124,77,255,0.3)">
+                <h4 style="color:var(--a); margin-bottom:.5rem; font-size:1.2rem">Auto-Tune Pro</h4>
+                <p style="font-size:0.9rem; color:var(--m)">El sonido del éxito moderno. Desde T-Pain y Cher hasta el Trap y Reggaeton actual. Esculpido vocal en tiempo real.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); padding:1.5rem; border-radius:15px; text-align:center; border: 1px solid rgba(124,77,255,0.3)">
+                <h4 style="color:var(--p); margin-bottom:.5rem; font-size:1.2rem">Serum (Xfer Records)</h4>
+                <p style="font-size:0.9rem; color:var(--m)">Sintetizador Wavetable por excelencia. Si escuchas un bajo agresivo de EDM o un pluck cristalino de Pop, muy probablemente sea Serum.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); padding:1.5rem; border-radius:15px; text-align:center; border: 1px solid rgba(124,77,255,0.3)">
+                <h4 style="color:var(--green); margin-bottom:.5rem; font-size:1.2rem">FabFilter Pro-Q 3</h4>
+                <p style="font-size:0.9rem; color:var(--m)">El ecualizador definitivo. Su interfaz gráfica cambió las reglas del juego para limpiar resonancias y frecuencias molestas en las voces.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); padding:1.5rem; border-radius:15px; text-align:center; border: 1px solid rgba(124,77,255,0.3)">
+                <h4 style="color:var(--amber); margin-bottom:.5rem; font-size:1.2rem">Valhalla DSP Reverbs</h4>
+                <p style="font-size:0.9rem; color:var(--m)">Las Reverbs más mágicas y utilizadas (VintageVerb, Shimmer). Crean espacios tridimensionales increíbles sin enbarrar la mezcla.</p>
             </div>
         </div>
     </section>
@@ -305,19 +363,43 @@
 
     <section id="sec-daw" class="content-section">
         <div class="prod-grid">
-            <div class="prod-card" style="border: 2px solid var(--green)">
-                <div class="info-body">
-                    <div class="tag-row"><span class="tag" style="background:var(--green); color:#000">Gratis (Windows)</span></div>
-                    <h2 class="card-title">Cakewalk by BandLab</h2>
-                    <p class="analysis-text">Un DAW profesional completo, gratis. Ideal si estás empezando en Windows.</p>
-                </div>
-                <a href="https://www.bandlab.com/products/cakewalk" class="btn-amz" style="background:#fff">Descargar Gratis</a>
-            </div>
             <div class="prod-card">
                 <div class="info-body">
-                    <h2 class="card-title">FL Studio / Ableton</h2>
-                    <p class="analysis-text">Los reyes de la producción urbana y electrónica.</p>
+                    <div class="tag-row"><span class="tag" style="background:var(--amazon); color:#000">🎧 Rey Electrónico</span></div>
+                    <h2 class="card-title">Ableton Live</h2>
+                    <p class="analysis-text">El rey absoluto de la música electrónica, pop moderno y directo. Su vista de <em>Sesión</em> para lanzar clips en vivo es revolucionaria.</p>
+                    <div class="history-box" style="margin-top:1rem; border-left-color:var(--amazon)">
+                        <strong>📖 Dato:</strong> Fue creado en 1999 por dos músicos de Berlín (Gerhard Behles y Robert Henke) porque no existía ningún software que les permitiera tocar música electrónica en directo como ellos querían.
+                    </div>
                 </div>
+                <a href="https://www.ableton.com/en/trial/" class="btn-amz" style="background:transparent; border: 1px solid var(--t); color: var(--t)">Prueba Gratis 30 Días</a>
+            </div>
+
+            <div class="prod-card">
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:#ff6b6b; color:#fff">🍊 Rey Urbano</span></div>
+                    <h2 class="card-title">FL Studio (Fruity Loops)</h2>
+                    <p class="analysis-text">Su secuenciador de pasos (Step Sequencer) y <em>Piano Roll</em> son legendarios. Si hay baterías de Trap, Drill o Reggaeton rápidas, seguro nacieron aquí.</p>
+                </div>
+                <!-- FL Studio in Amazon if available, or just generic link -->
+                <a href="#" class="btn-amz" data-asin="B07D3M6S7X">Ver Ediciones en Amazon</a>
+            </div>
+
+            <div class="prod-card">
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:#5C9AE5; color:#000">🎙️ Rey Grabación Vocal</span></div>
+                    <h2 class="card-title">Logic Pro (Mac) / Pro Tools</h2>
+                    <p class="analysis-text">Los estándares de la industria en los grandes estudios para mezcla y mastering. Logic Pro es exclusivo de Apple y viene repleto de instrumentos soberbios de fábrica.</p>
+                </div>
+            </div>
+
+            <div class="prod-card" style="border: 2px solid var(--green)">
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:var(--green); color:#000">⭐ Gratis Total (Windows)</span></div>
+                    <h2 class="card-title">Cakewalk by BandLab</h2>
+                    <p class="analysis-text">No es una demo, es un DAW profesional completo y gratuito tras la compra por BandLab. No hay excusa para no empezar hoy en Windows.</p>
+                </div>
+                <a href="https://www.bandlab.com/products/cakewalk" class="btn-amz" style="background:#fff">Descargar Gratis</a>
             </div>
         </div>
     </section>
@@ -325,32 +407,91 @@
     <section id="sec-karaoke" class="content-section">
         <div class="prod-grid">
             <div class="prod-card">
-                <div class="img-wrap"><img src="jbl-party.jpg" alt="JBL"></div>
-                <div class="info-body">
-                    <h2 class="card-title">JBL PartyBox Encore</h2>
-                    <p class="analysis-text">Altavoz con 2 micros inalámbricos. La fiesta empieza aquí.</p>
+                <div class="img-wrap">
+                    <img src="karaoke-shell-s2.png" alt="Máquina de Karaoke Shell S2"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">📺</span>karaoke-shell-s2.png</div>
                 </div>
-                <a href="#" class="btn-amz" data-asin="B0D6F6V2YZ">Ver en Amazon</a>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:var(--a); color:#fff">🔥 Equipo Total</span></div>
+                    <h2 class="card-title">Shell S2 Karaoke (Con Pantalla)</h2>
+                    <p class="analysis-text">Máquina brutal de 140W para adultos. Incluye 2 micrófonos inalámbricos que se cargan solos y pantalla integrada para las letras, por lo que no necesitas tablet.</p>
+                    <div class="history-box" style="margin-top:1rem; border-left-color:var(--a)">
+                        <strong>📖 Noches Épicas:</strong> Al tener salida para TV, puedes pasar el vídeo y audio a una pantalla grande en fiestas. Los 140W te aseguran un volumen tronador para montar el festival en casa o terrazas.
+                    </div>
+                </div>
+                <a href="#" class="btn-amz" data-asin="B0DPSCFM7T">Ver en Amazon</a>
             </div>
+
+            <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="jbl-partybox.png" alt="JBL PartyBox"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">🎵</span>jbl-partybox.png</div>
+                </div>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:var(--p); color:#fff">Graves Profundos</span></div>
+                    <h2 class="card-title">JBL PartyBox Encore (con 2 micros)</h2>
+                    <p class="analysis-text">Altavoz con batería de hasta 10 horas de autonomía y 2 micrófonos inalámbricos JBL incluidos. Los graves (Bass Boost) de JBL no decepcionan para géneros contundentes.</p>
+                </div>
+                <a href="https://www.amazon.es/s?k=JBL+PartyBox+Encore+Microfonos" class="btn-amz">Buscar en Amazon</a>
+            </div>
+            
         </div>
     </section>
 
     <section id="sec-gear" class="content-section">
         <div class="prod-grid">
             <div class="prod-card">
-                <div class="img-wrap"><img src="yamaha-hs5.jpg" alt="HS5"></div>
-                <div class="info-body">
-                    <h2 class="card-title">Yamaha HS5</h2>
-                    <p class="analysis-text">El estándar del cono blanco. Escucha la verdad de tu mezcla.</p>
+                <div class="img-wrap">
+                    <img src="yamaha-hs5.png" alt="Yamaha HS5"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">🔊</span>yamaha-hs5.png</div>
                 </div>
-                <a href="#" class="btn-amz" data-asin="B00C0XEA8E">Ver en Amazon</a>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:#fff; color:#000">El Cono Blanco</span></div>
+                    <h2 class="card-title">Yamaha HS5 / HS7</h2>
+                    <p class="analysis-text">Los descendientes casi directos de los legendarios NS-10 de los años 80. Revelan la verdad de tu mezcla: si suena bien en unos Yamaha, suena bien en todas partes.</p>
+                    <div class="history-box" style="margin-top:1rem; border-left-color:#fff; color: #fff; background: rgba(255,255,255,0.05)">
+                        <strong>📖 Curiosidad Histórica:</strong> El cono blanco icónico es reconocible en millones de estudios. Sus medios están pensados quirúrgicamente para revelar cualquier error en tu equlibrado de frecuencias vocales.
+                    </div>
+                </div>
+                <a href="https://www.amazon.es/s?k=Yamaha+HS5+Monitor" class="btn-amz">Ver en Amazon</a>
             </div>
+            
             <div class="prod-card">
-                <div class="info-body">
-                    <h2 class="card-title">Tratamiento Acústico</h2>
-                    <p class="analysis-text">Filtros antipop y paneles de espuma. Lo que separa un audio de baño de un audio de estudio.</p>
+                <div class="img-wrap">
+                    <img src="krk-rokit5.png" alt="KRK Rokit 5"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">🔊</span>krk-rokit5.png</div>
                 </div>
-                <a href="https://www.amazon.es/s?k=acustica+estudio" class="btn-amz">Ver en Amazon</a>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:#EAB308; color:#000">El Cono Amarillo</span></div>
+                    <h2 class="card-title">KRK Rokit 5 G4</h2>
+                    <p class="analysis-text">Tremendamente populares en la producción de electrónica, DJ y música urbana gracias a su respuesta pronunciada en graves (Puchy Bass).</p>
+                </div>
+                <a href="#" class="btn-amz" data-asin="B07TR1Z3DT">Ver en Amazon</a>
+            </div>
+
+            <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="focusrite-isa.png" alt="Hardware Compresores"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">🎛️</span>hardware-outboard.png</div>
+                </div>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:var(--p)">Hardware Analógico</span></div>
+                    <h2 class="card-title">Previos y Compresores Externos</h2>
+                    <p class="analysis-text">Para los puristas del sonido (1176, LA-2A, Previos Neve, Focusrite ISA). Grabar y saturar la señal pasando la voz por válvulas reales o transformadores antes de entrar al software aporta un color inigualable, calor armónico y control de picos mágico "printado" en pista.</p>
+                </div>
+            </div>
+
+            <div class="prod-card" style="border:1px dashed var(--a)">
+                <div class="info-body">
+                    <h2 class="card-title" style="color:var(--a)">Tratamiento Acústico</h2>
+                    <p class="analysis-text">Filtros antipop, mantas absorbentes, trampas de graves y paneles de espuma de alta densidad. Comprar un micro de 1000€ y grabar en una sala sin tratar es peor que un micro de 100€ en una buena sala tratada acústicamente. Invierte en parar la reflexion (eco/reverb de baño).</p>
+                </div>
+                <a href="https://www.amazon.es/s?k=acustica+estudio+paneles" class="btn-amz">Ver Paneles en Amazon</a>
             </div>
         </div>
     </section>
@@ -363,15 +504,22 @@
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById('sec-' + id).classList.add('active');
         event.currentTarget.classList.add('active');
-        window.scrollTo({top: 0, behavior: 'smooth'});
+        window.scrollTo({top:70, behavior:'smooth'});
     }
 
-    // Automatización de Amazon ID
+    // Amazon affiliate links — SIEMPRE abren en pestaña nueva
     document.addEventListener('DOMContentLoaded', () => {
-        const amzId = 'harmiqapp-20'; // Cambia esto por tu ID real
+        const amzId = 'harmiqapp-20';
         document.querySelectorAll('.btn-amz').forEach(btn => {
             const asin = btn.getAttribute('data-asin');
             if(asin) btn.href = `https://www.amazon.es/dp/${asin}/?tag=${amzId}`;
+            btn.target = '_blank';
+            btn.rel = 'noopener sponsored';
+        });
+        // Direct href links (no asin) also open in new tab
+        document.querySelectorAll('a[href*="amazon"]').forEach(a => {
+            a.target = '_blank';
+            a.rel = 'noopener sponsored';
         });
     });
 </script>
