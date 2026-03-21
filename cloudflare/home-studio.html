@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="referrer" content="no-referrer"> <!-- Clave para bypass protección Amazon -->
     <title>Master Home Studio 2026 | Harmiq - Tu ADN Vocal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -520,6 +521,33 @@
         document.querySelectorAll('a[href*="amazon"]').forEach(a => {
             a.target = '_blank';
             a.rel = 'noopener sponsored';
+        });
+    });
+</script>
+<script>
+    // Automatización de Imágenes de Amazon vía ASIN (La opción "Tiempo Real" con IA)
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.prod-card').forEach(card => {
+            const btn = card.querySelector('.btn-amz');
+            const img = card.querySelector('.img-wrap img');
+            if(btn && img) {
+                const asin = btn.getAttribute('data-asin');
+                // Si el producto tiene ASIN y su imagen era un PNG local de placeholder
+                if(asin && img.getAttribute('src').endsWith('.png')) {
+                    // Pedimos la imagen directa a Amazon (el meta no-referrer permite saltar el bloqueo)
+                    const amzImageUrl = `https://m.media-amazon.com/images/P/${asin}.01._SCLZZZZZZZ_.jpg`;
+                    img.src = amzImageUrl;
+                    
+                    // Manejo de error: Si Amazon falla o no tiene esa foto, mantenemos el placeholder
+                    img.onerror = function() {
+                        this.style.display = 'none';
+                        if(this.nextElementSibling) {
+                            this.nextElementSibling.style.display = 'flex';
+                            this.nextElementSibling.innerHTML += '<br><small>(Amazon img blocked)</small>';
+                        }
+                    };
+                }
+            }
         });
     });
 </script>
