@@ -4,50 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Tipos de Voz — Soprano, Mezzo, Tenor, Barítono, Bajo, Contralto | Harmiq</title>
-    <meta name="description" content="Descubre los 6 tipos de voz: soprano, mezzosoprano, contralto, tenor, barítono y bajo. Rangos de notas, artistas famosos y cómo identificar el tuyo gratis con IA.">
-    <meta name="keywords" content="tipos de voz, soprano, mezzo soprano, contralto, tenor, barítono, bajo, qué tipo de voz tengo, rango vocal, vocal range test">
+    <meta name="description" content="Descubre los 6 tipos de voz: soprano, mezzosoprano, contralto, tenor, barítono y bajo. Rangos de notas, artistas famosos, canciones en YouTube, Spotify, Apple Music y Amazon Music.">
+    <meta name="keywords" content="tipos de voz, soprano, mezzo soprano, contralto, tenor, barítono, bajo, qué tipo de voz tengo, rango vocal, vocal range test, Maria Callas, Pavarotti, Freddie Mercury">
     <link rel="canonical" href="https://harmiq.app/tipos-de-voz">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    
     <style>
-        :root{--p:#7C4DFF;--a:#FF4FA3;--dark:#0A0818;--card:#130F2A;--t:#E5E7EB;--m:#6B7280;--green:#06D6A0}
+        :root{--p:#7C4DFF;--a:#FF4FA3;--dark:#0A0818;--card:#130F2A;--t:#E5E7EB;--m:#6B7280;--green:#06D6A0;--yt:#FF0000;--sp:#1DB954;--am:#FC3C44;--amz:#FF9900}
         *{margin:0;padding:0;box-sizing:border-box}
-        body{background:var(--dark);color:var(--t);font-family:'Outfit',sans-serif;line-height:1.6}
+        body{background:var(--dark);color:var(--t);font-family:'Outfit',sans-serif;line-height:1.7}
         a{text-decoration:none;color:inherit}
         nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 5%;background:rgba(10,8,24,0.9);backdrop-filter:blur(10px);position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(255,255,255,0.05)}
         .logo{font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:900}
-        .grad{background:linear-gradient(135deg, var(--p), #FFFFFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .grad{background:linear-gradient(135deg, var(--p), #FFFFFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
         .btn-back{background:rgba(255,255,255,0.05);padding:0.5rem 1rem;border-radius:20px;font-size:0.8rem;border:1px solid rgba(255,255,255,0.1);color:var(--m);cursor:pointer;font-weight:700}
-        .nav-links{display:flex;list-style:none;gap:1.5rem}
-        .nav-links a{font-weight:600;font-size:0.95rem;transition:color 0.2s}
-        .nav-links a:hover{color:var(--a)}
 
-        .container{max-width:900px;margin:0 auto;padding:3rem 5%}
-        h1{font-family:'Outfit',sans-serif;font-size:2.8rem;line-height:1.1;margin-bottom:1.5rem;text-align:center}
-        
-        .intro-card{background:linear-gradient(135deg, rgba(124,77,255,0.2), rgba(255,79,163,0.1));padding:2rem;border-radius:2rem;margin-bottom:3rem;border:1px solid rgba(255,255,255,0.1);text-align:center}
-        
-        h2{font-family:'Outfit';color:var(--a);margin:2.5rem 0 1rem;font-size:1.8rem}
-        
-        /* Tabla Comparativa */
+        .container{max-width:960px;margin:0 auto;padding:3rem 5%}
+        h1{font-size:clamp(2.2rem, 5vw, 3.2rem);line-height:1.1;margin-bottom:1.5rem;text-align:center}
+        .intro-card{background:linear-gradient(135deg, rgba(124,77,255,0.15), rgba(255,79,163,0.08));padding:2rem;border-radius:2rem;margin-bottom:3rem;border:1px solid rgba(255,255,255,0.1);text-align:center}
+
+        /* Table */
         .table-wrap{width:100%;overflow-x:auto;background:var(--card);border-radius:1.5rem;margin:2rem 0;border:1px solid rgba(255,255,255,0.05)}
         table{width:100%;border-collapse:collapse;min-width:600px}
-        th{background:rgba(124,77,255,0.2);color:var(--p);text-align:left;padding:1.2rem;font-family:'Outfit'}
-        td{padding:1.2rem;border-bottom:1px solid rgba(255,255,255,0.03);font-size:0.9rem}
+        th{background:rgba(124,77,255,0.2);color:var(--p);text-align:left;padding:1rem;font-family:'Outfit'}
+        td{padding:1rem;border-bottom:1px solid rgba(255,255,255,0.03);font-size:0.9rem}
         tr:last-child td{border-bottom:none}
+
+        /* Voice Sections */
+        .voice-section{background:var(--card);border-radius:2rem;padding:2.5rem;margin:3rem 0;border:1px solid rgba(255,255,255,0.06);border-top:5px solid var(--accent, var(--p))}
+        .voice-section h2{font-size:1.8rem;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.8rem}
+        .range-badge{background:rgba(124,77,255,0.15);border:1px solid rgba(124,77,255,0.3);padding:.3rem .8rem;border-radius:1rem;font-size:.75rem;font-weight:700;color:var(--p)}
+        .voice-desc{margin:1rem 0 1.5rem;color:var(--m);font-size:1rem}
         
-        .voice-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));gap:1.5rem;margin:2rem 0}
-        .voice-card{background:var(--card);padding:1.5rem;border-radius:1.5rem;border-left:4px solid var(--p)}
-        .voice-card h3{font-family:'Outfit';margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem}
+        /* Artists row */
+        .artists-row{display:flex;flex-wrap:wrap;gap:.8rem;margin:1rem 0}
+        .artist-chip{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:.4rem 1rem;border-radius:2rem;font-size:.85rem;font-weight:600}
+        
+        /* Songs with links */
+        .songs-list{display:flex;flex-direction:column;gap:1rem;margin-top:1.5rem}
+        .song-item{background:rgba(255,255,255,0.03);border-radius:1.2rem;padding:1.2rem 1.5rem;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;flex-wrap:wrap;gap:1rem;justify-content:space-between}
+        .song-info{flex:1;min-width:200px}
+        .song-title{font-weight:800;font-size:1rem}
+        .song-artist{color:var(--m);font-size:.82rem}
+        .stream-links{display:flex;gap:.6rem;flex-wrap:wrap}
+        .stream-btn{padding:.35rem .9rem;border-radius:12px;font-size:.75rem;font-weight:800;text-decoration:none;white-space:nowrap;transition:.2s}
+        .stream-btn:hover{filter:brightness(1.2);transform:scale(1.05)}
+        .btn-yt{background:rgba(255,0,0,.12);color:var(--yt);border:1px solid rgba(255,0,0,.3)}
+        .btn-kara{background:rgba(255,80,80,.06);color:#ff6666;border:1px solid rgba(255,80,80,.2)}
+        .btn-sp{background:rgba(29,185,84,.1);color:var(--sp);border:1px solid rgba(29,185,84,.25)}
+        .btn-am{background:rgba(252,60,68,.1);color:var(--am);border:1px solid rgba(252,60,68,.25)}
+        .btn-amz{background:rgba(255,153,0,.1);color:var(--amz);border:1px solid rgba(255,153,0,.25)}
 
-        .cta-inline{background:var(--card);padding:2.5rem;border-radius:2rem;text-align:center;border:2px dashed var(--p);margin-top:3rem}
-        .btn{background:linear-gradient(135deg,#7C4DFF,#FF4FA3);padding:1rem 2rem;border-radius:3rem;font-weight:800;display:inline-block;margin-top:1rem;transition:transform 0.2s}
+        .cta-inline{background:var(--card);padding:2.5rem;border-radius:2rem;text-align:center;border:2px dashed var(--p);margin-top:4rem}
+        .btn{background:linear-gradient(135deg,#7C4DFF,#FF4FA3);padding:1rem 2rem;border-radius:3rem;font-weight:800;display:inline-block;margin-top:1rem;transition:transform 0.2s;color:#fff}
         .btn:hover{transform:scale(1.05)}
-
         footer{padding:3rem 5%;background:#05040d;text-align:center;color:var(--m);font-size:0.85rem;margin-top:4rem}
-        @media (max-width:768px){ .nav-links{display:none} h1{font-size:2.2rem} }
+        @media (max-width:768px) { h1{font-size:2rem} .song-item{flex-direction:column; gap:.5rem} }
     </style>
 </head>
 <body>
@@ -57,12 +69,10 @@
         <button class="btn-back" onclick="location.href='/'">← Volver al Inicio</button>
         <a href="/" class="logo"><span class="grad">Harmiq</span></a>
     </div>
-    <ul class="nav-links">
-        <li><a href="/">Inicio</a></li>
-        <li><a href="/exitos-decada">Éxitos</a></li>
-        <li><a href="/home-studio">Home Studio</a></li>
-        <li><a href="/tipos-de-voz" style="color:var(--a); font-weight:800">Tipos de Voz</a></li>
-        <li><a href="/modul-catala">🏴 Català</a></li>
+    <ul style="display:flex;list-style:none;gap:1.5rem">
+        <li><a href="/exitos-decada" style="font-weight:600;font-size:.95rem;color:#9CA3AF">Éxitos</a></li>
+        <li><a href="/home-studio" style="font-weight:600;font-size:.95rem;color:#9CA3AF">Home Studio</a></li>
+        <li><a href="/tipos-de-voz" style="font-weight:800; color:var(--a)">Tipos de Voz</a></li>
     </ul>
 </nav>
 
@@ -70,7 +80,7 @@
     <header>
         <h1>Los 6 <span class="grad">Tipos de Voz</span> Humana</h1>
         <div class="intro-card">
-            <p>¿Alguna vez te has preguntado por qué algunas canciones te resultan imposibles de cantar? Todo depende de tu <strong>tesitura</strong> y <strong>timbre</strong>. La clasificación clásica divide las voces en seis categorías principales.</p>
+            <p>¿Por qué algunas canciones te resultan imposibles de cantar? Todo depende de tu <strong>tesitura</strong> (rango de notas) y <strong>timbre</strong> (color de la voz). La clasificación clásica divide las voces en seis categorías: tres femeninas y tres masculinas. <strong>¡Descubre la tuya con nuestra IA!</strong></p>
         </div>
     </header>
 
@@ -78,63 +88,286 @@
         <table>
             <thead>
                 <tr>
-                    <th>Tipo</th>
-                    <th>Género</th>
-                    <th>Rango Notas</th>
-                    <th>Frecuencia (Hz)</th>
-                    <th>Timbre</th>
+                    <th>Tipo</th><th>Género</th><th>Rango Notas</th><th>Frecuencia (Hz)</th><th>Timbre</th>
                 </tr>
             </thead>
             <tbody>
-                <tr><td>✨ Soprano</td><td>Femenino</td><td>Do4 – Do6</td><td>261 – 1047 Hz</td><td>Brillante, agudo</td></tr>
-                <tr><td>🎶 Mezzosoprano</td><td>Femenino</td><td>La3 – La5</td><td>220 – 880 Hz</td><td>Cálido, rico</td></tr>
+                <tr><td>✨ Soprano</td><td>Femenino</td><td>Do4 – Do6</td><td>261 – 1047 Hz</td><td>Brillante, etéreo</td></tr>
+                <tr><td>🎶 Mezzosoprano</td><td>Femenino</td><td>La3 – La5</td><td>220 – 880 Hz</td><td>Cálido, seductor</td></tr>
                 <tr><td>🌿 Contralto</td><td>Femenino</td><td>Fa3 – Fa5</td><td>175 – 698 Hz</td><td>Profundo, oscuro</td></tr>
-                <tr><td>🎤 Tenor</td><td>Masculino</td><td>Do3 – Do5</td><td>130 – 523 Hz</td><td>Potente, agudo</td></tr>
+                <tr><td>🎤 Tenor</td><td>Masculino</td><td>Do3 – Do5</td><td>130 – 523 Hz</td><td>Potente, luminoso</td></tr>
                 <tr><td>🎭 Barítono</td><td>Masculino</td><td>Sol2 – Sol4</td><td>98 – 392 Hz</td><td>Versátil, redondo</td></tr>
-                <tr><td>🎸 Bajo</td><td>Masculino</td><td>Mi2 – Do4</td><td>82 – 261 Hz</td><td>Muy grave, potente</td></tr>
+                <tr><td>🎸 Bajo</td><td>Masculino</td><td>Mi2 – Do4</td><td>82 – 261 Hz</td><td>Cavernoso, poderoso</td></tr>
             </tbody>
         </table>
     </div>
 
-    <h2>Detalles de cada clasificación</h2>
-    <div class="voice-grid">
-        <div class="voice-card">
-            <h3>Soprano</h3>
-            <p>La voz más aguda. Artistas como <strong>Ariana Grande</strong> o <strong>Sia</strong> destacan en este registro.</p>
+    <!-- ========== SOPRANO ========== -->
+    <div class="voice-section" style="--accent:#FF4FA3">
+        <h2>✨ Soprano <span class="range-badge">Do4 – Do6 · 261–1047 Hz</span></h2>
+        <p class="voice-desc">La voz femenina más aguda y brillante. Capaz de alcanzar notas que literalmente hacen temblar el cristal. La soprano es la reina indiscutible del escenario operístico y la voz más reconocible del repertorio clásico. Su sonido aéreo y penetrante ha fascinado a audiencias desde el Barroco. En el pop moderno, sopranos extremas como <strong>Mariah Carey</strong> y <strong>Ariana Grande</strong> han demostrado que este rango también domina las listas globales. Su control del Registro de Silbato (por encima de Do5) es una de las hazañas más extraordinarias de la voz humana.</p>
+        <div class="artists-row">
+            <span class="artist-chip">María Callas</span>
+            <span class="artist-chip">Montserrat Caballé</span>
+            <span class="artist-chip">Celine Dion</span>
+            <span class="artist-chip">Mariah Carey</span>
+            <span class="artist-chip">Whitney Houston</span>
+            <span class="artist-chip">Ariana Grande</span>
+            <span class="artist-chip">Édith Piaf</span>
+            <span class="artist-chip">Renée Fleming</span>
         </div>
-        <div class="voice-card">
-            <h3>Mezzosoprano</h3>
-            <p>Voz media femenina con cuerpo. Ejemplo: <strong>Adele</strong> o <strong>Beyoncé</strong>.</p>
+        <div class="songs-list">
+            <div class="song-item">
+                <div class="song-info">
+                    <div class="song-title">Barcelona</div>
+                    <div class="song-artist">Montserrat Caballé & Freddie Mercury</div>
+                </div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=Barcelona+Freddie+Mercury+Montserrat+Caballe" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=Barcelona+Freddie+Mercury+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/Barcelona%20Freddie%20Mercury%20Montserrat" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=Barcelona+Freddie+Mercury" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/Barcelona+Freddie+Mercury" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
+            <div class="song-item">
+                <div class="song-info">
+                    <div class="song-title">O Mio Babbino Caro</div>
+                    <div class="song-artist">María Callas (Puccini)</div>
+                </div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=O+mio+babbino+caro+Callas" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=O+mio+babbino+caro+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/O%20Mio%20Babbino%20Caro%20Callas" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=O+Mio+Babbino+Caro" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/O+Mio+Babbino+Caro" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
+            <div class="song-item">
+                <div class="song-info">
+                    <div class="song-title">Emotions</div>
+                    <div class="song-artist">Mariah Carey</div>
+                </div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=Mariah+Carey+Emotions" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=Mariah+Carey+Emotions+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/Emotions%20Mariah%20Carey" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=Emotions+Mariah+Carey" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/Emotions+Mariah+Carey" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
         </div>
-        <div class="voice-card">
-            <h3>Contralto</h3>
-            <p>La más rara y grave en mujeres. Ejemplo: <strong>Amy Winehouse</strong>.</p>
+    </div>
+
+    <!-- ========== MEZZOSOPRANO ========== -->
+    <div class="voice-section" style="--accent:#B338FF">
+        <h2>🎶 Mezzosoprano <span class="range-badge" style="background:rgba(179,56,255,.15);border-color:rgba(179,56,255,.3);color:#B338FF">La3 – La5 · 220–880 Hz</span></h2>
+        <p class="voice-desc">La voz femenina de la seducción y el drama. Ni tan brillante como la soprano ni tan profunda como la contralto, la mezzosoprano tiene el privilegio de poseer el timbre más complejo y versátil de todas las voces femeninas. Capaz de transmitir dolor, erotismo o ironía con una simple variación de color. En la ópera interpreta a los personajes más ambiguos y fascinantes. En el pop, voces como la de <strong>Adele</strong> o <strong>Amy Winehouse</strong> han demostrado que la mezzosoprano suena igual de poderosa en cualquier género.</p>
+        <div class="artists-row">
+            <span class="artist-chip">Adele</span>
+            <span class="artist-chip">Amy Winehouse</span>
+            <span class="artist-chip">Elton John (falsete)</span>
+            <span class="artist-chip">Lady Gaga</span>
+            <span class="artist-chip">Beyoncé</span>
+            <span class="artist-chip">Elina Garança</span>
+            <span class="artist-chip">Susan Boyle</span>
+            <span class="artist-chip">Lana Del Rey</span>
         </div>
-        <div class="voice-card">
-            <h3>Tenor</h3>
-            <p>La voz más aguda natural del hombre. Ejemplo: <strong>Bruno Mars</strong> o <strong>Freddie Mercury</strong>.</p>
+        <div class="songs-list">
+            <div class="song-item">
+                <div class="song-info"><div class="song-title">Someone Like You</div><div class="song-artist">Adele</div></div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=Adele+Someone+Like+You" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=Someone+Like+You+Adele+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/Someone%20Like%20You%20Adele" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=Someone+Like+You+Adele" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/Someone+Like+You+Adele" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
+            <div class="song-item">
+                <div class="song-info"><div class="song-title">Valerie</div><div class="song-artist">Amy Winehouse</div></div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=Valerie+Amy+Winehouse" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=Valerie+Amy+Winehouse+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/Valerie%20Amy%20Winehouse" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=Valerie+Amy+Winehouse" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/Valerie+Amy+Winehouse" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
         </div>
-        <div class="voice-card">
-            <h3>Barítono</h3>
-            <p>La más común en hombres. Ejemplo: <strong>Elvis Presley</strong> o <strong>Frank Sinatra</strong>.</p>
+    </div>
+
+    <!-- ========== CONTRALTO ========== -->
+    <div class="voice-section" style="--accent:#06D6A0">
+        <h2>🌿 Contralto <span class="range-badge" style="background:rgba(6,214,160,.15);border-color:rgba(6,214,160,.3);color:#06D6A0">Fa3 – Fa5 · 175–698 Hz</span></h2>
+        <p class="voice-desc">La voz femenina más grave y rara del mundo. Las verdaderas contraltos son tan escasas que se dice que cuando aparece una, los directores de ópera de toda Europa se enteran en días. Su sonido oscuro, poderoso y casi andrógino ha sido comparado con un violonchelo de madera negra resonando en una catedral. En el jazz, la contralto reina suprema (Tracy Chapman, Nina Simone). En el pop actual, <strong>Billie Eilish</strong> explota esta oscuridad para crear una atmósfera única inimitable. Es la voz que te pone los pelos de punta sin gritar.</p>
+        <div class="artists-row">
+            <span class="artist-chip">Tracy Chapman</span>
+            <span class="artist-chip">Nina Simone</span>
+            <span class="artist-chip">Billie Eilish</span>
+            <span class="artist-chip">Norah Jones</span>
+            <span class="artist-chip">Cher</span>
+            <span class="artist-chip">Alberta Hunter</span>
+            <span class="artist-chip">Clara Butt</span>
         </div>
-        <div class="voice-card">
-            <h3>Bajo</h3>
-            <p>Voces muy profundas y raras. Ejemplo: <strong>Barry White</strong>.</p>
+        <div class="songs-list">
+            <div class="song-item">
+                <div class="song-info"><div class="song-title">Fast Car</div><div class="song-artist">Tracy Chapman</div></div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=Tracy+Chapman+Fast+Car" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=Fast+Car+Tracy+Chapman+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/Fast%20Car%20Tracy%20Chapman" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=Fast+Car+Tracy+Chapman" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/Fast+Car+Tracy+Chapman" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
+            <div class="song-item">
+                <div class="song-info"><div class="song-title">Bad Guy</div><div class="song-artist">Billie Eilish</div></div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=Billie+Eilish+bad+guy" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=bad+guy+Billie+Eilish+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/bad%20guy%20Billie%20Eilish" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=bad+guy+Billie+Eilish" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/bad+guy+Billie+Eilish" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== TENOR ========== -->
+    <div class="voice-section" style="--accent:#FFD166">
+        <h2>🎤 Tenor <span class="range-badge" style="background:rgba(255,209,102,.12);border-color:rgba(255,209,102,.3);color:#FFD166">Do3 – Do5 · 130–523 Hz</span></h2>
+        <p class="voice-desc">El rey del escenario masculino. Los tenores son los héroes y amantes de la ópera —literalmente— y sus voces se diseñan para emocionarte hasta las lágrimas. El "Do di petto" (el Do5 cantado de pecho con todo el cuerpo) es considerado el momento más emocionante de la música en vivo: cuando un gran tenor lo ejecuta, el público estalla literalmente. <strong>Luciano Pavarotti</strong> popularizó la ópera ante millones. En el pop de habla hispana, <strong>Alejandro Sanz</strong> es el baremo. En el rock, <strong>Freddie Mercury</strong> y <strong>Bono</strong> expandieron el rango del tenor a territorios inimaginables.</p>
+        <div class="artists-row">
+            <span class="artist-chip">Luciano Pavarotti</span>
+            <span class="artist-chip">Plácido Domingo</span>
+            <span class="artist-chip">Freddie Mercury</span>
+            <span class="artist-chip">Alejandro Sanz</span>
+            <span class="artist-chip">Andrea Bocelli</span>
+            <span class="artist-chip">Bono</span>
+            <span class="artist-chip">Frank Sinatra</span>
+            <span class="artist-chip">Camilo Sesto</span>
+            <span class="artist-chip">Benson Boone</span>
+        </div>
+        <div class="songs-list">
+            <div class="song-item">
+                <div class="song-info"><div class="song-title">Nessun Dorma</div><div class="song-artist">Luciano Pavarotti</div></div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=Nessun+Dorma+Pavarotti" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=Nessun+Dorma+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/Nessun%20Dorma%20Pavarotti" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=Nessun+Dorma+Pavarotti" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/Nessun+Dorma+Pavarotti" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
+            <div class="song-item">
+                <div class="song-info"><div class="song-title">Bohemian Rhapsody</div><div class="song-artist">Queen (Freddie Mercury)</div></div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=Bohemian+Rhapsody+Queen" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=Bohemian+Rhapsody+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/Bohemian%20Rhapsody%20Queen" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=Bohemian+Rhapsody+Queen" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/Bohemian+Rhapsody+Queen" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
+            <div class="song-item">
+                <div class="song-info"><div class="song-title">Corazón Partío</div><div class="song-artist">Alejandro Sanz</div></div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=Alejandro+Sanz+Corazon+Partio" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=Corazon+partio+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/Coraz%C3%B3n%20Part%C3%ADo%20Alejandro%20Sanz" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=Corazon+Partio+Alejandro+Sanz" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/Corazon+Partio+Alejandro+Sanz" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== BARÍTONO ========== -->
+    <div class="voice-section" style="--accent:#FF6B6B">
+        <h2>🎭 Barítono <span class="range-badge" style="background:rgba(255,107,107,.12);border-color:rgba(255,107,107,.3);color:#FF6B6B">Sol2 – Sol4 · 98–392 Hz</span></h2>
+        <p class="voice-desc">La voz masculina por excelencia: la más común, la más versátil y, según muchos críticos, la más hermosa. El barítono tiene el privilegio de sonar a la vez grave Y agudo, oscuro Y luminoso. Sus posibilidades expresivas son prácticamente infinitas. En la ópera interpreta a los personajes más complejos (el conde, el villano, el héroe ambiguo). En el pop moderno, <strong>Elvis Presley</strong>, <strong>Michael Bublé</strong>, <strong>Joaquín Sabina</strong> y el legendario <strong>David Bowie</strong> —capaz de explorar casi 4 octavas— son barítonos que redefinieron la música popular.</p>
+        <div class="artists-row">
+            <span class="artist-chip">Elvis Presley</span>
+            <span class="artist-chip">David Bowie</span>
+            <span class="artist-chip">Michael Bublé</span>
+            <span class="artist-chip">Joaquín Sabina</span>
+            <span class="artist-chip">Tom Jones</span>
+            <span class="artist-chip">Roberto Carlos</span>
+            <span class="artist-chip">Alejandro Fernández</span>
+            <span class="artist-chip">Sting</span>
+            <span class="artist-chip">Luis Miguel</span>
+        </div>
+        <div class="songs-list">
+            <div class="song-item">
+                <div class="song-info"><div class="song-title">My Way</div><div class="song-artist">Elvis Presley · Frank Sinatra</div></div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=Elvis+Presley+My+Way" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=My+Way+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/My%20Way%20Frank%20Sinatra" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=My+Way+Frank+Sinatra" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/My+Way+Frank+Sinatra" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
+            <div class="song-item">
+                <div class="song-info"><div class="song-title">Pongamos que hablo de Madrid</div><div class="song-artist">Joaquín Sabina</div></div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=Joaquin+Sabina+Pongamos+que+hablo+de+Madrid" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=Joaquin+Sabina+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/Pongamos%20que%20hablo%20de%20Madrid%20Sabina" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=Pongamos+que+hablo+de+Madrid" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/Pongamos+que+hablo+de+Madrid" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== BAJO ========== -->
+    <div class="voice-section" style="--accent:#00AAFF">
+        <h2>🎸 Bajo <span class="range-badge" style="background:rgba(0,170,255,.12);border-color:rgba(0,170,255,.3);color:#00AAFF">Mi2 – Do4 · 82–261 Hz</span></h2>
+        <p class="voice-desc">La voz humana más grave y física del mundo. Cuando un gran bajo canta en sus notas más profundas, sientes la vibración en el pecho antes de que el oído procese el sonido. La rareza del gran bajo es su poder de producir sonidos en el rango del contrabajo. En la música rusa y ortodoxa alcanza frecuencias por debajo de 60Hz que apenas se distinguen del silencio. En el pop, <strong>Barry White</strong> convirtió su voz de bajo profundo en el símbolo máximo de la sensualidad y la intimidad.</p>
+        <div class="artists-row">
+            <span class="artist-chip">Barry White</span>
+            <span class="artist-chip">Johnny Cash</span>
+            <span class="artist-chip">Nick Cave</span>
+            <span class="artist-chip">Leonard Cohen</span>
+            <span class="artist-chip">Tim Storms</span>
+            <span class="artist-chip">Giorgio Tozzi</span>
+            <span class="artist-chip">Paul Robeson</span>
+        </div>
+        <div class="songs-list">
+            <div class="song-item">
+                <div class="song-info"><div class="song-title">Can't Get Enough of Your Love</div><div class="song-artist">Barry White</div></div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=Barry+White+Can't+Get+Enough" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=Barry+White+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/Barry%20White%20Can't%20Get%20Enough" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=Barry+White+Cant+Get+Enough" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/Barry+White+Cant+Get+Enough" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
+            <div class="song-item">
+                <div class="song-info"><div class="song-title">Hurt</div><div class="song-artist">Johnny Cash</div></div>
+                <div class="stream-links">
+                    <a href="https://www.youtube.com/results?search_query=Johnny+Cash+Hurt" target="_blank" rel="noopener" class="stream-btn btn-yt">▶ YouTube</a>
+                    <a href="https://www.youtube.com/results?search_query=Hurt+Johnny+Cash+karaoke" target="_blank" rel="noopener" class="stream-btn btn-kara">🎤 Karaoke</a>
+                    <a href="https://open.spotify.com/search/Hurt%20Johnny%20Cash" target="_blank" rel="noopener" class="stream-btn btn-sp">🎵 Spotify</a>
+                    <a href="https://music.apple.com/search?term=Hurt+Johnny+Cash" target="_blank" rel="noopener" class="stream-btn btn-am">🍎 Apple</a>
+                    <a href="https://music.amazon.com/search/Hurt+Johnny+Cash" target="_blank" rel="noopener" class="stream-btn btn-amz">📦 Amazon</a>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="cta-inline">
-        <h3>¿Cuál es tu tipo de voz exacto?</h3>
-        <p>No lo adivines. Canta 10 segundos y nuestra IA te dirá tu clasificación y rango en Hz automáticamente.</p>
-        <a href="/#app" class="btn">🎤 Analizar mi voz ahora</a>
+        <h2 style="font-size:1.8rem;margin-bottom:1rem">🎤 ¿Cuál es <em>tu</em> tipo de voz?</h2>
+        <p style="color:var(--m);max-width:600px;margin:0 auto">Canta 10 segundos y nuestra IA analiza tu timbre, rango y tesitura para clasificarte en una de estas 6 categorías. Gratis, sin registros, sin instalaciones.</p>
+        <a href="/" class="btn">Descubrir mi tipo de voz IA →</a>
     </div>
 </div>
 
 <footer>
-    <p>© 2026 Harmiq.app — Guía de Técnica Vocal y Análisis con IA</p>
+    <p>© 2026 Harmiq.app — La plataforma global de análisis vocal con IA</p>
 </footer>
-
-<script src="config.js"></script>
 </body>
 </html>
