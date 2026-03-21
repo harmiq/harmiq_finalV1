@@ -63,17 +63,15 @@ function rt(){
   var rk=["🥇","🥈","🥉"];
   el.innerHTML=sorted.map(function(c,i){
     var liked=lk[c.id];
-    var yt="https://www.youtube.com/results?search_query="+encodeURIComponent((c.titol||"")+" "+(c.artista||"")+" karaoke catala");
-    var sp="https://open.spotify.com/search/"+encodeURIComponent((c.titol||"")+" "+(c.artista||""));
-    return '<div class="top-item" onclick="oc(''+c.id+'')">'+
-      '<div class="top-rank">'+(i<3?rk[i]:(i+1))+'</div>'+
-      '<div class="top-info">'+
-        '<div class="top-title">'+ex(c.titol)+'</div>'+
-        '<div class="top-meta">'+ex(c.artista)+' · '+ex(c.genere||'')+(c.any?' · '+c.any:'')+'</div>'+
-      '</div>'+
-      '<div class="top-pop">'+Math.round(c.popularitat||0)+'</div>'+
-      '<button class="like-btn" onclick="event.stopPropagation();tgl(''+c.id+'',this)">'+(liked?"❤️":"🤍")+'</button>'+
-    '</div>';
+    return `<div class="top-item" onclick="oc('${c.id}')">
+      <div class="top-rank">${i<3?rk[i]:(i+1)}</div>
+      <div class="top-info">
+        <div class="top-title">${ex(c.titol)}</div>
+        <div class="top-meta">${ex(c.artista)} · ${ex(c.genere||'')}${c.any?' · '+c.any:''}</div>
+      </div>
+      <div class="top-pop">${Math.round(c.popularitat||0)}</div>
+      <button class="like-btn" onclick="event.stopPropagation();tgl('${c.id}',this)">${liked?"❤️":"🤍"}</button>
+    </div>`;
   }).join("");
 }
 
@@ -85,16 +83,16 @@ function ra(cid,em){
   if(!list.length){el.innerHTML="<p style='color:var(--m);text-align:center;padding:2rem'>Cap artista</p>";return;}
   el.innerHTML=list.map(function(a){
     var emb=a.emergent?"<span class='em-badge'>⭐ Emergent</span>":"";
-    return '<div class="art-card" onclick="oa(''+a.id+'')">'+
-      '<div class="art-av-wrap">'+
-        '<img class="art-photo" id="img-'+a.id+'" src="" alt="'+ex(a.nom)+'" style="display:none;width:56px;height:56px;border-radius:50%;object-fit:cover;" loading="lazy">'+
-        '<div class="art-av" id="av-'+a.id+'" style="background:'+av(a.nom)+'">'+ai(a.nom)+'</div>'+
-      '</div>'+
-      emb+
-      '<div class="art-nom">'+ex(a.nom)+'</div>'+
-      '<div class="art-gen">📍 '+ex(a.origen||'')+' · '+ex(a.genere||'')+'</div>'+
-      '<div class="art-bio">'+ex((a.bio||'').substring(0,120))+'...</div>'+
-    '</div>';
+    return `<div class="art-card" onclick="oa('${a.id}')">
+      <div class="art-av-wrap">
+        <img class="art-photo" id="img-${a.id}" src="" alt="${ex(a.nom)}" style="display:none;width:56px;height:56px;border-radius:50%;object-fit:cover;" loading="lazy">
+        <div class="art-av" id="av-${a.id}" style="background:${av(a.nom)}">${ai(a.nom)}</div>
+      </div>
+      ${emb}
+      <div class="art-nom">${ex(a.nom)}</div>
+      <div class="art-gen">📍 ${ex(a.origen||'')} · ${ex(a.genere||'')}</div>
+      <div class="art-bio">${ex((a.bio||'').substring(0,120))}...</div>
+    </div>`;
   }).join("");
   // Cargar fotos después del render
   list.forEach(function(a){
@@ -195,18 +193,18 @@ function sc(q){
     return (c.titol||"").toLowerCase().includes(q)||(c.artista||"").toLowerCase().includes(q)||(c.genere||"").toLowerCase().includes(q);
   });
   var el=document.getElementById("ce");
-  if(!art.length&&!can.length){el.innerHTML="<div class='cerca-empty'>Cap resultat per ""+ex(q)+""</div>";return;}
+  if(!art.length&&!can.length){el.innerHTML=`<div class='cerca-empty'>Cap resultat per "${ex(q)}"</div>`;return;}
   var h="";
   if(art.length){
-    h+="<div style='font-family:"Baloo 2",cursive;font-weight:800;margin-bottom:.7rem'>🎤 Artistes ("+art.length+")</div>";
+    h+="<div style='font-family:\"Outfit\",sans-serif;font-weight:800;margin-bottom:.7rem'>🎤 Artistes ("+art.length+")</div>";
     h+="<div class='art-grid'>"+art.map(function(a){
-      return '<div class="art-card" onclick="oa(''+a.id+'')">'+
-        '<div class="art-av-wrap">'+
-          '<img class="art-photo" id="si-'+a.id+'" src="" alt="'+ex(a.nom)+'" style="display:none;width:56px;height:56px;border-radius:50%;object-fit:cover;">'+
-          '<div class="art-av" id="sa-'+a.id+'" style="background:'+av(a.nom)+'">'+ai(a.nom)+'</div>'+
-        '</div>'+
-        '<div class="art-nom">'+ex(a.nom)+'</div>'+
-        '<div class="art-gen">'+ex(a.genere||'')+'</div></div>';
+      return `<div class="art-card" onclick="oa('${a.id}')">
+        <div class="art-av-wrap">
+          <img class="art-photo" id="si-${a.id}" src="" alt="${ex(a.nom)}" style="display:none;width:56px;height:56px;border-radius:50%;object-fit:cover;">
+          <div class="art-av" id="sa-${a.id}" style="background:${av(a.nom)}">${ai(a.nom)}</div>
+        </div>
+        <div class="art-nom">${ex(a.nom)}</div>
+        <div class="art-gen">${ex(a.genere||'')}</div></div>`;
     }).join("")+"</div>";
     // Cargar fotos
     setTimeout(function(){
@@ -257,16 +255,16 @@ function filtrar(cat) {
   if(!list.length){el.innerHTML="<p style='color:var(--m);text-align:center;padding:2rem'>Cap resultat.</p>";return;}
   el.innerHTML=list.map(function(a){
     var emb=a.emergent?"<span class='em-badge'>⭐ Emergent</span>":"";
-    return '<div class="art-card" onclick="oa(\''+a.id+'\')">'+
-      '<div class="art-av-wrap">'+
-        '<img class="art-photo" id="fimg-'+a.id+'" src="" alt="'+ex(a.nom)+'" style="display:none;width:56px;height:56px;border-radius:50%;object-fit:cover;" loading="lazy">'+
-        '<div class="art-av" id="fav-'+a.id+'" style="background:'+av(a.nom)+'">'+ai(a.nom)+'</div>'+
-      '</div>'+
-      emb+
-      '<div class="art-nom" style="font-weight: bold;">'+ex(a.nom)+'</div>'+
-      '<div class="art-gen" style="font-size: 0.8rem; color: var(--m);">📍 '+ex(a.origen||'')+' · '+ex(a.genere||'')+'</div>'+
-      '<div class="art-bio" style="font-size: 0.85rem; padding-top: 0.5rem;">'+ex((a.bio||'').substring(0,80))+'...</div>'+
-    '</div>';
+    return `<div class="art-card" onclick="oa('${a.id}')">
+      <div class="art-av-wrap">
+        <img class="art-photo" id="fimg-${a.id}" src="" alt="${ex(a.nom)}" style="display:none;width:56px;height:56px;border-radius:50%;object-fit:cover;" loading="lazy">
+        <div class="art-av" id="fav-${a.id}" style="background:${av(a.nom)}">${ai(a.nom)}</div>
+      </div>
+      ${emb}
+      <div class="art-nom" style="font-weight: bold;">${ex(a.nom)}</div>
+      <div class="art-gen" style="font-size: 0.8rem; color: var(--m);">📍 ${ex(a.origen||'')} · ${ex(a.genere||'')}</div>
+      <div class="art-bio" style="font-size: 0.85rem; padding-top: 0.5rem;">${ex((a.bio||'').substring(0,80))}...</div>
+    </div>`;
   }).join("");
   list.forEach(function(a){
     var imgEl=document.getElementById("fimg-"+a.id);

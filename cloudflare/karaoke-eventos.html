@@ -8,7 +8,7 @@
 
 <meta name="description" content="Busca karaokes, jam sessions, micro abierto y conciertos cerca de ti. La guía definitiva para cantar y disfrutar de la música en vivo sin etiquetas.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* 2. VARIABLES CSS QUE BEBERÁN DEL CONFIG.JS */
 :root{
@@ -22,18 +22,18 @@
     --gold:#FFD700;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--dark);color:var(--t);font-family:'Nunito',sans-serif;line-height:1.6;overflow-x:hidden}
+body{background:var(--dark);color:var(--t);font-family:'Outfit',sans-serif;line-height:1.6;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
-.grad{background:linear-gradient(135deg,var(--a),var(--gold),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.grad{background:linear-gradient(135deg, var(--p), #FFFFFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
 /* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(13,13,26,.95);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.07)}
-.logo{font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:900}
+.logo{font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:900}
 .btn-back{background:rgba(255,255,255,0.05);padding:0.5rem 1rem;border-radius:20px;font-size:0.8rem;border:1px solid rgba(255,255,255,0.1);color:var(--m);cursor:pointer}
 
 /* HERO */
 .hero{text-align:center;padding:4rem 1.5rem 3rem;background:radial-gradient(circle at top right, rgba(124,77,255,0.12), transparent)}
-.hero h1{font-family:'Baloo 2';font-size:clamp(2.2rem,7vw,3.5rem);line-height:1.1;margin-bottom:1rem}
+.hero h1{font-family:'Outfit';font-size:clamp(2.2rem,7vw,3.5rem);line-height:1.1;margin-bottom:1rem}
 .hero p{color:var(--m);max-width:600px;margin:0 auto 2rem}
 
 /* BUSCADOR */
@@ -49,7 +49,7 @@ input:focus{border-color:var(--p)}
 .results-section.visible{display:block}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:2rem}
 .card{background:var(--card);border:1px solid rgba(255,255,255,0.05);padding:1.8rem;border-radius:24px;display:flex;flex-direction:column;transition:0.3s}
-.card h3{font-family:'Baloo 2';font-size:1.3rem;margin-bottom:0.6rem}
+.card h3{font-family:'Outfit';font-size:1.3rem;margin-bottom:0.6rem}
 .card p{color:var(--m);font-size:0.9rem;margin-bottom:1.5rem;flex:1}
 .card-btn{text-align:center;padding:0.8rem;border-radius:14px;font-weight:800;font-size:0.9rem;transition:0.3s;color:#fff}
 .btn-k{background:#EA4335} .btn-j{background:#4285F4} .btn-o{background:#E1306C} .btn-e{background:#FF8A00}
@@ -58,7 +58,7 @@ input:focus{border-color:var(--p)}
 .prep-section{max-width:1000px;margin:5rem auto;padding:0 1.5rem}
 .prep-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
 .prep-card{background:rgba(6,214,160,0.05);border:1px solid rgba(6,214,160,0.2);padding:1.5rem;border-radius:20px}
-.prep-card h4{color:var(--ok);font-family:'Baloo 2';margin-bottom:0.5rem;display:flex;align-items:center;gap:8px}
+.prep-card h4{color:var(--ok);font-family:'Outfit';margin-bottom:0.5rem;display:flex;align-items:center;gap:8px}
 
 /* CTA FINAL */
 .kr-cta{text-align:center;max-width:800px;margin:5rem auto;padding:3rem 1.5rem;background:linear-gradient(135deg,rgba(124,77,255,0.1),rgba(255,79,163,0.1));border-radius:30px;border:1px solid rgba(255,255,255,0.05)}
@@ -88,7 +88,7 @@ footer{text-align:center;padding:4rem;color:var(--m);font-size:0.8rem;border-top
 </div>
 
 <div class="results-section" id="resultsArea">
-    <h2 id="resultsTitle" style="text-align:center; font-family:'Baloo 2'; font-size:1.8rem"></h2>
+    <h2 id="resultsTitle" style="text-align:center; font-family:'Outfit'; font-size:1.8rem"></h2>
     <div class="grid">
         <div class="card">
             <h3>🎤 Karaokes</h3>
@@ -114,7 +114,7 @@ footer{text-align:center;padding:4rem;color:var(--m);font-size:0.8rem;border-top
 </div>
 
 <div class="prep-section">
-    <h2 style="text-align:center; font-family:'Baloo 2'; margin-bottom:2rem">💡 Antes de subir al escenario...</h2>
+    <h2 style="text-align:center; font-family:'Outfit'; margin-bottom:2rem">💡 Antes de subir al escenario...</h2>
     <div class="prep-grid">
         <div class="prep-card">
             <h4>💧 Hidratación Correcta</h4>
