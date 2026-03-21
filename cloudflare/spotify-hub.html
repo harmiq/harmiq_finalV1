@@ -10,8 +10,10 @@
         body { background: var(--dark); color: white; font-family: 'Nunito', sans-serif; margin: 0; padding-bottom: 50px; }
         
         /* Header & Geo-Tag */
-        header { text-align: center; padding: 40px 20px; background: radial-gradient(circle at top, rgba(29, 185, 84, 0.1), transparent); }
+        header { text-align: center; padding: 40px 20px; background: radial-gradient(circle at top, rgba(29, 185, 84, 0.1), transparent); position: relative; }
         .geo-badge { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--sp-green); color: var(--sp-green); padding: 6px 15px; border-radius: 50px; font-size: 0.8rem; font-weight: 800; display: inline-block; margin-bottom: 15px; }
+        .grad{background:linear-gradient(135deg,#1DB954,#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .btn-back-nav{background:rgba(255,255,255,0.05);padding:0.5rem 1rem;border-radius:20px;font-size:0.8rem;border:1px solid rgba(255,255,255,0.1);color:var(--m);cursor:pointer;font-weight:700;position:absolute;left:20px;top:20px}
         
         /* Tabs Premium */
         .nav-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; position: sticky; top: 0; background: rgba(10, 8, 24, 0.9); backdrop-filter: blur(10px); padding: 15px; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -47,8 +49,9 @@
 <body>
 
 <header>
+    <button class="btn-back-nav" onclick="location.href='/'">← Volver al Inicio</button>
     <div id="geo-tag" class="geo-badge">📍 Detectando región...</div>
-    <h1 style="font-family: 'Baloo 2'; font-size: 2.5rem; margin: 10px 0;">Hit <span style="color:var(--sp-green)">Analyzer</span></h1>
+    <h1 style="font-family: 'Baloo 2'; font-size: 2.5rem; margin: 10px 0;">Hit <span class="grad">Analyzer</span></h1>
     <p style="color:var(--m)">Analizamos el ADN técnico de los éxitos actuales.</p>
 </header>
 

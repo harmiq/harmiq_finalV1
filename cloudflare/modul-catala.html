@@ -11,24 +11,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        :root{--p:#7C4DFF;--a:#FF4FA3;--dark:#0A0818;--card:#130F2A;--t:#E5E7EB;--m:#6B7280;--cv:#CF142B;--cg:#FCDD09}
+        :root{--p:#CE1126;--a:#FCDD09;--dark:#0A0818;--card:#130F2A;--t:#E5E7EB;--m:#6B7280;--cv:#CE1126;--cg:#FCDD09}
         *{margin:0;padding:0;box-sizing:border-box}
         body{background:var(--dark);color:var(--t);font-family:'Nunito',sans-serif;line-height:1.6}
         a{text-decoration:none}
         
         nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 5%;background:rgba(10,8,24,0.9);position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(255,255,255,0.05)}
-        .logo{font-family:'Baloo 2',cursive;font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,#7C4DFF,#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .logo{font-family:'Baloo 2',cursive;font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,#CE1126,#FCDD09);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         
-        .mc-hero{padding:3rem 5%;text-align:center;background:linear-gradient(180deg, rgba(124,77,255,0.1) 0%, var(--dark) 100%)}
+        .mc-hero{padding:3rem 5%;text-align:center;background:linear-gradient(180deg, rgba(206,17,38,0.1) 0%, var(--dark) 100%)}
         .senyera{height:6px;width:120px;background:repeating-linear-gradient(90deg, var(--cv) 0, var(--cv) 25%, var(--cg) 25%, var(--cg) 50%);margin:1rem auto;border-radius:3px}
         
         .mc-container{max-width:1100px;margin:0 auto;padding:2rem 5%}
-        .search-box{background:var(--card);padding:2rem;border-radius:2rem;margin-bottom:2rem;border:1px solid rgba(124,77,255,0.2)}
+        .search-box{background:var(--card);padding:2rem;border-radius:2rem;margin-bottom:2rem;border:1px solid rgba(252,221,9,0.3)}
         .mc-input{width:100%;padding:1.2rem;border-radius:1rem;border:none;background:var(--dark);color:#fff;font-size:1.1rem;margin-bottom:1.5rem;border:1px solid rgba(255,255,255,0.1)}
         
         .tabs{display:flex;gap:1rem;overflow-x:auto;padding-bottom:10px}
         .tab{padding:0.7rem 1.5rem;background:var(--dark);border-radius:2rem;cursor:pointer;font-weight:700;border:1px solid rgba(255,255,255,0.1);white-space:nowrap}
-        .tab.active{background:var(--p);border-color:var(--p)}
+        .tab.active{background:var(--p);border-color:var(--p);color:white}
 
         .mc-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:2rem;margin-top:2rem}
         .art-card{background:var(--card);border-radius:1.5rem;padding:1.5rem;text-align:center;transition:0.3s;border:1px solid transparent}
@@ -108,6 +108,54 @@
         <div class="modal-content">
             <button onclick="cm()" style="position:absolute; top:1rem; right:1.5rem; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">×</button>
             <div id="mb"></div>
+        </div>
+    </div>
+
+    <!-- Història i Llegat (Enciclopèdia) -->
+    <div id="tab-historia" class="mc-section" style="margin-top:4rem; padding: 2.5rem; background: rgba(206,17,38,0.05); border-radius: 20px; border: 1px solid rgba(206,17,38,0.3)">
+        <h2 style="font-family:'Baloo 2'; font-size:2rem; border-bottom:1px solid rgba(252,221,9,0.2); padding-bottom:0.8rem; margin-bottom:1.5rem; color:var(--a)">📚 Història i Present de la Música Catalana</h2>
+        <p style="font-size:1.1rem; margin-bottom: 2.5rem; color: var(--t)">Un viatge des dels pioners internacionals fins a les estrelles globals contemporànies per entendre l'ADN del nostre patrimoni sonor.</p>
+        
+        <div class="mc-grid">
+            <div class="art-card" style="border-left: 4px solid var(--a); text-align: left; background:var(--card)">
+                <h3 style="color:var(--a); font-family:'Baloo 2'; font-size:1.3rem">Xavier Cugat</h3>
+                <p style="font-size:0.85rem; color:var(--m); margin-bottom: 1rem">El rei de la rumba a Hollywood</p>
+                <p style="font-size:0.9rem">Músic empordanès que va universalitzar els ritmes llatins i catalans als Estats Units durant els anys 30 i 40, obrint camí al panorama internacional de la música de ball.</p>
+            </div>
+            <div class="art-card" style="border-left: 4px solid var(--p); text-align: left; background:var(--card)">
+                <h3 style="color:var(--p); font-family:'Baloo 2'; font-size:1.3rem">Montserrat Caballé</h3>
+                <p style="font-size:0.85rem; color:var(--m); margin-bottom: 1rem">La veu universal</p>
+                <p style="font-size:0.9rem">Una de les sopranos més grans i prestigioses del segle XX. Va apropar l'òpera al gran públic, especialment amb el seu llegendari himne "Barcelona" junt amb Freddie Mercury.</p>
+            </div>
+            <div class="art-card" style="border-left: 4px solid var(--a); text-align: left; background:var(--card)">
+                <h3 style="color:var(--a); font-family:'Baloo 2'; font-size:1.3rem">La Nova Cançó</h3>
+                <p style="font-size:0.85rem; color:var(--m); margin-bottom: 1rem">Serrat, Llach i Raimon</p>
+                <p style="font-size:0.9rem">Moviment artístic durant els anys 60 on cantautors van modernitzar la cançó catalana, convertint-la en un símbol de resistència democràtica, reivindicació i poètica pura.</p>
+            </div>
+            <div class="art-card" style="border-left: 4px solid var(--p); text-align: left; background:var(--card)">
+                <h3 style="color:var(--p); font-family:'Baloo 2'; font-size:1.3rem">Rosalía</h3>
+                <p style="font-size:0.85rem; color:var(--m); margin-bottom: 1rem">Revolució Global</p>
+                <p style="font-size:0.9rem">L'artista catalana més internacional del segle XXI. Amb 'Fucking Money Man' (Milionària), ha trencat barreres apropant l'idioma català a les pistes de ball i llistes de tot el món.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Karaokes en Català -->
+    <div id="tab-karaokes" class="mc-section" style="margin-top:4rem;">
+        <h2 style="font-family:'Baloo 2'; font-size:1.8rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:0.5rem; margin-bottom:1.5rem; color:#fff">🎤 Canta en Català (Canals de Karaoke)</h2>
+        <p style="margin-bottom: 2rem; color:var(--m)">Practica l'idioma i diverteix-te amb aquests canals recomanats de YouTube especialitzats en versions instrumentals de música catalana.</p>
+        
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem">
+            <a href="https://www.youtube.com/results?search_query=karaokes+en+catala+rock" target="_blank" style="background:#130F2A; border:1px solid var(--p); border-radius: 20px; overflow:hidden; display:flex; flex-direction:column; transition:0.3s" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div style="background:linear-gradient(135deg, var(--p), #990000); color:white; font-family:'Baloo 2'; font-size:1.3rem; padding: 1.5rem; text-align:center; font-weight:800">Cultura Pop & Rock Català</div>
+                <div style="padding:1.5rem; color:var(--t); flex-grow:1; font-size:0.95rem">Centenars de bases instrumentals dels grans clàssics vius: des del rock català dels 90 (Sau, Sopa de Cabra, Els Pets, Lax'n'Busto) fins l'indie de Manel i Txarango.</div>
+                <div style="padding: 1rem; text-align:center; background:rgba(206,17,38,0.1); color:var(--p); font-weight:900">Obrir a YouTube ▶</div>
+            </a>
+            <a href="https://www.youtube.com/results?search_query=karaoke+the+tyets+oques+grasses+mushkaa" target="_blank" style="background:#130F2A; border:1px solid var(--a); border-radius: 20px; overflow:hidden; display:flex; flex-direction:column; transition:0.3s" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div style="background:var(--a); color:black; font-family:'Baloo 2'; font-size:1.3rem; padding: 1.5rem; text-align:center; font-weight:800">Nova Onada Urbana</div>
+                <div style="padding:1.5rem; color:var(--t); flex-grow:1; font-size:0.95rem">El millor karaoke de les cançons més modernes i virals que estan trencant Spotify. Canta els hits de The Tyets, Oques Grasses, Mushkaa i Julieta amb lletres sincronitzades.</div>
+                <div style="padding: 1rem; text-align:center; background:rgba(252,221,9,0.1); color:var(--a); font-weight:900">Obrir a YouTube ▶</div>
+            </a>
         </div>
     </div>
 

@@ -13,7 +13,9 @@
         
         /* Navegación */
         nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 5%;background:rgba(10,8,24,0.95);backdrop-filter:blur(15px);position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(255,255,255,0.08)}
-        .logo{font-family:'Baloo 2';font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,#7C4DFF,#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+        .logo{font-family:'Baloo 2';font-size:1.8rem;font-weight:900;background:none;text-decoration:none;display:flex;align-items:center;gap:0.5rem}
+        .grad{background:linear-gradient(135deg,#7C4DFF,#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .btn-back-nav{background:rgba(255,255,255,0.05);padding:0.5rem 1rem;border-radius:20px;font-size:0.8rem;border:1px solid rgba(255,255,255,0.1);color:var(--m);cursor:pointer;font-weight:700}
         
         /* Hero */
         .hero{text-align:center;padding:5rem 5% 3rem;background:radial-gradient(circle at center, rgba(124,77,255,0.15) 0%, var(--dark) 70%)}
@@ -53,13 +55,16 @@
 </head>
 <body>
 
-<nav>
-    <a href="/" class="logo">🎙️ Harmiq</a>
-    <div style="font-size:0.7rem; color:var(--m); font-weight:800">HOME STUDIO MASTER GUIDE 2026</div>
+<nav style="display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:1rem">
+        <button class="btn-back-nav" onclick="location.href='/'">← Volver al Inicio</button>
+        <a href="/" class="logo">🎙️ <span class="grad">Harmiq</span></a>
+    </div>
+    <div style="font-size:0.7rem; color:var(--m); font-weight:800; text-align:right">HOME STUDIO GUIDE</div>
 </nav>
 
 <header class="hero">
-    <h1>Tu Voz, Tu <span style="color:var(--p)">Legado</span></h1>
+    <h1>Tu Voz, Tu <span class="grad">Legado</span></h1>
     <p>Desde el micro de Michael Jackson hasta el software gratuito más potente de Windows. Todo analizado por expertos.</p>
 </header>
 

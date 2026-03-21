@@ -11,9 +11,9 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--dark);color:var(--t);font-family:'Nunito',sans-serif;line-height:1.7;padding-bottom:5rem}
 .container{max-width:900px;margin:0 auto;padding:2rem}
-.nav-simple{padding:1.5rem 0;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:3rem;display:flex;justify-content:space-between;align-items:center}
-.logo{font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,#FF4FA3,#7C4DFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
-
+h1{font-family:'Baloo 2';font-size:2.8rem;margin-bottom:1rem;color:#fff;line-height:1.1}
+.grad{background:linear-gradient(135deg,#7C4DFF,#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.btn-back-nav{background:rgba(255,255,255,0.05);padding:0.5rem 1rem;border-radius:20px;font-size:0.8rem;border:1px solid rgba(255,255,255,0.1);color:var(--m);cursor:pointer;font-weight:700}
 h1{font-family:'Baloo 2';font-size:2.8rem;margin-bottom:1rem;color:#fff;line-height:1.1}
 h2{font-family:'Baloo 2';font-size:1.8rem;margin-top:2.5rem;margin-bottom:1rem;color:var(--p);border-bottom:1px solid rgba(124,77,255,0.2);display:inline-block;padding-right:50px}
 h3{font-size:1.2rem;color:var(--a);margin-top:1.5rem}
@@ -43,11 +43,14 @@ li{margin-bottom:0.6rem}
 
 <div class="container">
     <nav class="nav-simple">
-        <a href="/" class="logo">🎙️ Harmiq</a>
+        <div style="display:flex;align-items:center;gap:1.5rem">
+            <button class="btn-back-nav" onclick="location.href='/'">← Volver al Inicio</button>
+            <a href="/" class="logo">🎙️ <span class="grad">Harmiq</span></a>
+        </div>
         <span style="font-size:0.8rem; color:var(--m)">Global Privacy Standard v2.1</span>
     </nav>
 
-    <h1>Política de Privacidad <span style="color:var(--p)">Global</span></h1>
+    <h1>Política de Privacidad <span class="grad">Global</span></h1>
     <p>Harmiq es una plataforma global diseñada para amantes del canto de todo el mundo. Nos comprometemos a proteger tu privacidad y tu identidad vocal independientemente de dónde te encuentres.</p>
 
     <h2>1. Datos de Voz e IA</h2>
