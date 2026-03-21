@@ -627,7 +627,7 @@ async function getSpotifyImageFromBackend(name) {
   for (let i = 0; i < 2; i++) {
     try {
       const r = await fetch(`${base}/artist-image?name=${encodeURIComponent(name)}`, {
-        signal: AbortSignal.timeout(i===0 ? 5000 : 9000)
+        signal: AbortSignal.timeout(i===0 ? 30000 : 45000) // Extendido para cold starts
       });
       if (!r.ok) continue;
       const d = await r.json();
@@ -2826,6 +2826,13 @@ async function loadDB() {
 // 14. INIT
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// Función para despertar el backend de manera asíncrona
+async function wakeUpBackend() {
+  try {
+    fetch(HF_API_URL + "/", { signal: AbortSignal.timeout(5000) }).catch(() => {});
+  } catch (e) {}
+}
+
 function showCookieBanner() {
   if (localStorage.getItem("harmiq_consent")==="1") return;
   if (document.getElementById("_cookie_banner")) return;
@@ -2839,6 +2846,7 @@ function showCookieBanner() {
 document.addEventListener("DOMContentLoaded", async () => {
   inicializarSEO();
   showCookieBanner();
+  wakeUpBackend(); // Despierta el Hugging Face Space si está en sleep mode
 
   // Idioma
   const saved   = localStorage.getItem("harmiq_lang");
