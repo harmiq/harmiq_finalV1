@@ -24,7 +24,7 @@
 const AMAZON_DOMAINS = { ES:"es",US:"com",MX:"com.mx",UK:"co.uk",DE:"de",FR:"fr",IT:"it",CA:"ca",BR:"com.br",JP:"co.jp" };
 const AFFILIATE_ID   = "harmiqapp-20";
 const DB_PATH        = "/harmiq_db_vectores.json";
-const HF_API_URL     = "https://hamiq-harmiq-backend1.hf.space/analyze";
+const HF_API_URL     = "https://hamiq-harmiq-backend1.hf.space"; // base — añade /analyze o /artist-image según el endpoint
 
 // Plataformas musicales por país (geolocalización)
 const MUSIC_PLATFORM = {
@@ -623,7 +623,7 @@ const HF_IMG_CACHE = {};  // cache imágenes vía backend HF
 // Fotos de artistas vía backend HF — los secrets de Spotify están en HF, NUNCA aquí
 async function getSpotifyImageFromBackend(name) {
   if (HF_IMG_CACHE[name]) return HF_IMG_CACHE[name];
-  const base = HF_API_URL.replace("/analyze", "");
+  const base = HF_API_URL;
   for (let i = 0; i < 2; i++) {
     try {
       const r = await fetch(`${base}/artist-image?name=${encodeURIComponent(name)}`, {
@@ -2837,6 +2837,7 @@ function showCookieBanner() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  inicializarSEO();
   showCookieBanner();
 
   // Idioma
@@ -2899,3 +2900,66 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch(_) {}
   }
 });
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 15. MENÚ SEO v9 — Botones de tipos de voz (sticky, colores)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * inicializarSEO()
+ * Inyecta en el DOM el menú superior sticky con los 5 tipos de voz.
+ * Cada botón lleva a su página SEO /voz/* con color propio.
+ * Se llama en DOMContentLoaded, antes del handleRoute().
+ */
+function inicializarSEO() {
+  if (document.getElementById("_nav_seo")) return; // evitar duplicados
+
+  // Estilos del menú
+  const style = document.createElement("style");
+  style.textContent = `
+    #_nav_seo {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: #0d0b21;
+      flex-wrap: wrap;
+      border-bottom: 2px solid rgba(255,255,255,.08);
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+    }
+    .btn-vocal {
+      padding: 9px 18px;
+      border-radius: 30px;
+      font-weight: 800;
+      text-decoration: none;
+      color: #fff !important;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      transition: transform .2s, filter .2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,.35);
+      font-family: 'Nunito', sans-serif;
+    }
+    .btn-vocal:hover { transform: scale(1.07); filter: brightness(1.18); }
+    .v-soprano  { background: #FF4FA3; }
+    .v-mezzo    { background: #D44DFF; }
+    .v-tenor    { background: #1DB954; }
+    .v-baritono { background: #FF9800; }
+    .v-bajo     { background: #2196F3; }
+  `;
+  document.head.appendChild(style);
+
+  // HTML del menú
+  const nav = document.createElement("div");
+  nav.id = "_nav_seo";
+  nav.innerHTML = `
+    <a href="/voz/soprano"      class="btn-vocal v-soprano">🎶 Soprano</a>
+    <a href="/voz/mezzosoprano" class="btn-vocal v-mezzo">🎵 Mezzo</a>
+    <a href="/voz/tenor"        class="btn-vocal v-tenor">🎤 Tenor</a>
+    <a href="/voz/baritono"     class="btn-vocal v-baritono">🎸 Barítono</a>
+    <a href="/voz/bajo"         class="btn-vocal v-bajo">🔊 Bajo</a>
+  `;
+  document.body.insertAdjacentElement("afterbegin", nav);
+}
