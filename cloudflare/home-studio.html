@@ -41,10 +41,13 @@
         .tab-3.active{background:linear-gradient(135deg, #FF4FA3, #FF6B6B);box-shadow:0 0 20px rgba(255,79,163,0.5)}
         .tab-4.active{background:linear-gradient(135deg, #FF6B6B, #FF9F1C);box-shadow:0 0 20px rgba(255,107,107,0.5)}
         .tab-5.active{background:linear-gradient(135deg, #FF9F1C, #FFD166);box-shadow:0 0 20px rgba(255,159,28,0.5)}
-        .tab-6.active{background:linear-gradient(135deg, #FFD166, #06D6A0);box-shadow:0 0 20px rgba(255,209,102,0.5)}
-        .tab-7.active{background:linear-gradient(135deg, #06D6A0, #00AAFF);box-shadow:0 0 20px rgba(6,214,160,0.5)}
+        .tabs-wrapper .tab-6.active{background:linear-gradient(135deg,#10B981,#3B82F6);box-shadow:0 0 20px rgba(16,185,129,0.4)}
+        .tabs-wrapper .tab-7.active{background:linear-gradient(135deg,#3B82F6,#8B5CF6);box-shadow:0 0 20px rgba(59,130,246,0.4)}
+        .tabs-wrapper .tab-8.active{background:linear-gradient(135deg,#06D6A0,#118AB2);box-shadow:0 0 20px rgba(6,214,160,0.4)}
+        .tabs-wrapper .tab-9.active{background:linear-gradient(135deg,#118AB2,#073B4C);box-shadow:0 0 20px rgba(17,138,178,0.4)}
+        .tabs-wrapper .tab-10.active{background:linear-gradient(135deg,#FFD166,#EF476F);box-shadow:0 0 20px rgba(239,71,111,0.4)}
 
-        .content-section{max-width:1250px;margin:0 auto;padding:4rem 5%;display:none;animation:slideUp 0.6s ease-out}
+        .content-section{display:none;padding:3rem 5%;animation:slideUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards}
         .content-section.active{display:block}
 
         /* Grid y Cards */
@@ -107,13 +110,19 @@
 
 <div class="tabs-wrapper">
     <div class="tabs-container">
-        <div class="tab tab-1 active" onclick="showSec('micro')">🎤 Micrófonos</div>
-        <div class="tab tab-2" onclick="showSec('interfaz')">🎛️ Interfaces & Previos</div>
-        <div class="tab tab-3" onclick="showSec('midi')">🎹 MIDI & VST</div>
-        <div class="tab tab-4" onclick="showSec('headphones')">🎧 Auriculares</div>
-        <div class="tab tab-5" onclick="showSec('daw')">💻 Software/DAW</div>
-        <div class="tab tab-6" onclick="showSec('karaoke')">🎉 Karaoke & Fiesta</div>
-        <div class="tab tab-7" onclick="showSec('gear')">🔊 Acústica & Monitores</div>
+        <button class="tab tab-1 active" onclick="showSec('micros')">🎙️ Pack Micros</button>
+        <button class="tab tab-2" onclick="showSec('interfaz')">🎛️ Interfaces & Previos</button>
+        <button class="tab tab-3" onclick="showSec('midi')">🎹 MIDI & VST</button>
+        <button class="tab tab-4" onclick="showSec('headphones')">🎧 Auriculares Estudio</button>
+        <button class="tab tab-8" onclick="showSec('inear')">🦻 In-Ears (Directo)</button>
+        <button class="tab tab-5" onclick="showSec('daw')">💻 Software/DAW</button>
+        <button class="tab tab-9" onclick="showSec('pc')">🖥️ Ordenadores (Mac/PC)</button>
+        <button class="tab tab-6" onclick="showSec('karaoke')">🎉 Karaoke & Fiesta</button>
+        <button class="tab tab-7" onclick="showSec('gear')">🔊 Monitores y Acústica</button>
+        <button class="tab tab-10" onclick="showSec('cables')">🔌 Cables & Accesorios</button>
+    </div>
+    <div class="afil-bar">
+        Nota: Algunos enlaces son de afiliados de Amazon. Las compras ayudan a mantener la plataforma gratis, sin coste extra para ti.
     </div>
 </div>
 
@@ -186,10 +195,7 @@
                         <strong>📖 Clásico Homestudio:</strong> Se dice que el 80% de los productores han empezado con un AT2020. Popularizado enormemente en la era de los primeros YouTubers allá por 2011, revolucionó el mercado por ofrecer una cápsula de condensador a precio puramente dinámico.
                     </div>
                 </div>
-                <a href="#" class="btn-amz" data-asin="B0006H92QK">Ver en Amazon</a>
-            </div>
-
-            <!-- BASIC PACK -->
+                <            <!-- BASIC PACK -->
             <div class="prod-card">
                 <div class="img-wrap">
                     <img src="fifine-k669.png" alt="Fifine K669B"
@@ -199,9 +205,10 @@
                 <div class="info-body">
                     <div class="tag-row"><span class="tag" style="background:var(--green); color:#000">🎧 Básico (USB)</span><span class="tag" style="background:var(--m)">Principiantes</span></div>
                     <h2 class="card-title">Fifine K669B</h2>
-                    <p class="analysis-text">Muy barato y sorprendentemente usable. Plug & Play puro para evitar líos técnicos.</p>
+                    <p class="analysis-text">Muy barato y sorprendentemente usable. Suena mil veces mejor que el micro de tus auriculares gaming. No necesita interfaz externa (enchufar y listo).</p>
                 </div>
-                <a href="#" class="btn-amz" data-asin="B06XQVN961">Ver en Amazon</a>
+                <!-- Quitamos data-asin para forzar el PNG local y evitar el bug de la camiseta en Amazon API -->
+                <a href="https://www.amazon.es/dp/B06XQWNKT6/?tag=harmiqapp-20" class="btn-amz">Ver en Amazon</a>
             </div>
 
             <!-- PODCAST MODE -->
@@ -365,6 +372,10 @@
     <section id="sec-daw" class="content-section">
         <div class="prod-grid">
             <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="ableton-logo.png" alt="Ableton Live" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">💻</span>ableton-logo.png</div>
+                </div>
                 <div class="info-body">
                     <div class="tag-row"><span class="tag" style="background:var(--amazon); color:#000">🎧 Rey Electrónico</span></div>
                     <h2 class="card-title">Ableton Live</h2>
@@ -373,28 +384,41 @@
                         <strong>📖 Dato:</strong> Fue creado en 1999 por dos músicos de Berlín (Gerhard Behles y Robert Henke) porque no existía ningún software que les permitiera tocar música electrónica en directo como ellos querían.
                     </div>
                 </div>
-                <a href="https://www.ableton.com/en/trial/" class="btn-amz" style="background:transparent; border: 1px solid var(--t); color: var(--t)">Prueba Gratis 30 Días</a>
+                <a href="https://www.ableton.com/en/trial/" class="btn-amz" style="background:transparent; border: 1px solid var(--t); color: var(--t)">Web Oficial (Prueba 30 Días)</a>
             </div>
 
             <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="flstudio-logo.png" alt="FL Studio" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">🍊</span>flstudio-logo.png</div>
+                </div>
                 <div class="info-body">
                     <div class="tag-row"><span class="tag" style="background:#ff6b6b; color:#fff">🍊 Rey Urbano</span></div>
                     <h2 class="card-title">FL Studio (Fruity Loops)</h2>
-                    <p class="analysis-text">Su secuenciador de pasos (Step Sequencer) y <em>Piano Roll</em> son legendarios. Si hay baterías de Trap, Drill o Reggaeton rápidas, seguro nacieron aquí.</p>
+                    <p class="analysis-text">Su secuenciador de pasos (Step Sequencer) y <em>Piano Roll</em> son legendarios. Famoso por su política de "Actualizaciones gratuitas de por vida". Si hay baterías de Trap, Drill o Reggaeton rápidas, seguro nacieron aquí.</p>
                 </div>
-                <!-- FL Studio in Amazon if available, or just generic link -->
-                <a href="#" class="btn-amz" data-asin="B07D3M6S7X">Ver Ediciones en Amazon</a>
+                <!-- Enlace Oficial para FL Studio porque no está en Amazon directamente -->
+                <a href="https://www.image-line.com/fl-studio-download/" class="btn-amz" style="background:#ff6b6b; color:#fff">Descargar (Web Oficial)</a>
             </div>
 
             <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="logic-logo.png" alt="Logic Pro" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">🍏</span>logic-logo.png</div>
+                </div>
                 <div class="info-body">
                     <div class="tag-row"><span class="tag" style="background:#5C9AE5; color:#000">🎙️ Rey Grabación Vocal</span></div>
-                    <h2 class="card-title">Logic Pro (Mac) / Pro Tools</h2>
-                    <p class="analysis-text">Los estándares de la industria en los grandes estudios para mezcla y mastering. Logic Pro es exclusivo de Apple y viene repleto de instrumentos soberbios de fábrica.</p>
+                    <h2 class="card-title">Logic Pro (Exclusivo Mac)</h2>
+                    <p class="analysis-text">Los estándares de la industria en los grandes estudios para mezcla y mastering vocal. Logic Pro es exclusivo de Apple y viene repleto de compresores legendarios y sintes soberbios de fábrica por un precio único genial.</p>
                 </div>
+                <a href="https://www.apple.com/es/logic-pro/" class="btn-amz" style="background:#5C9AE5; color:#000">Ver en Apple Store</a>
             </div>
 
             <div class="prod-card" style="border: 2px solid var(--green)">
+                <div class="img-wrap">
+                    <img src="cakewalk-logo.png" alt="Cakewalk" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">🎸</span>cakewalk-logo.png</div>
+                </div>
                 <div class="info-body">
                     <div class="tag-row"><span class="tag" style="background:var(--green); color:#000">⭐ Gratis Total (Windows)</span></div>
                     <h2 class="card-title">Cakewalk by BandLab</h2>
@@ -493,6 +517,136 @@
                     <p class="analysis-text">Filtros antipop, mantas absorbentes, trampas de graves y paneles de espuma de alta densidad. Comprar un micro de 1000€ y grabar en una sala sin tratar es peor que un micro de 100€ en una buena sala tratada acústicamente. Invierte en parar la reflexion (eco/reverb de baño).</p>
                 </div>
                 <a href="https://www.amazon.es/s?k=acustica+estudio+paneles" class="btn-amz">Ver Paneles en Amazon</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="sec-inear" class="content-section">
+        <h2 style="font-size:2rem; margin-bottom:1rem">La Magia del Monitoreo <span class="grad">In-Ear</span></h2>
+        <p style="color:var(--m); max-width:800px; margin-bottom:3rem; font-size:1.1rem">
+            ¿Por qué los cantantes llevan "pinganillos" en el escenario? Son los <strong>Monitores In-Ear (IEMs)</strong>. Sirven para tres cosas vitales: <strong>1) Aislar</strong> tus oídos del tremendo ruido de los altavoces y la batería externa (evitando sordera), <strong>2) Escucharte perfectamente</strong> a ti misma/o en tiempo real a través de una mezcla personalizada para afinar sin esfuerzo, y <strong>3) Evitar el acople (feedback)</strong> ya que el sonido de la mezcla no se cuela por el micrófono abierto.
+        </p>
+        <div class="prod-grid">
+            <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="linsoul-zero.png" alt="Linsoul 7Hz" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">🎧</span>linsoul-zero.png</div>
+                </div>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:var(--green); color:#000">⭐ Calidad / Precio Bruta</span></div>
+                    <h2 class="card-title">Linsoul 7Hz Crinacle Zero</h2>
+                    <p class="analysis-text">Increíblemente baratos para la calidad audiófila que ofrecen. Tienen dos drivers dinámicos que separan la mezcla de forma brillante. Su forma ergonómica bloquea el sonido exterior pasivamente.</p>
+                </div>
+                <!-- Quitamos ASIN y pasamos link directo para evitar auto-fetcher bugs -->
+                <a href="https://www.amazon.es/Linsoul-7Hz-Crinacle-Zero-Actualizado/dp/B0CMZVZPCF/?tag=harmiqapp-20" class="btn-amz">Ver en Amazon</a>
+            </div>
+
+            <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="shure-se215.png" alt="Shure SE215" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">🦻</span>shure-se215.png</div>
+                </div>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:var(--p)">Estándar Industria</span></div>
+                    <h2 class="card-title">Shure SE215 PRO</h2>
+                    <p class="analysis-text">El estándar de la industria desde hace una década para bandas y músicos de directo. Bloquean hasta 37 dB de ruido ambiente para proteger el oído. Casi indestructibles.</p>
+                </div>
+                <a href="#" class="btn-amz" data-asin="B004PNZFZ8">Ver en Amazon</a>
+            </div>
+
+            <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="amplificador-inear.png" alt="Amplificador In Ear Petaca" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">📟</span>amplificador-inear.png</div>
+                </div>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:#5C9AE5; color:#000">Amplificador Petaca</span></div>
+                    <h2 class="card-title">Behringer P2 / XVive U4</h2>
+                    <p class="analysis-text">Necesitas empujar volumen a tus In-Ears en el escenario. Puedes usar un pequeño amplificador de petaca por cable (Behringer P2) enganchado al cinturón, o dar el salto a lo inalámbrico total (sistemas XVive).</p>
+                </div>
+                <a href="https://www.amazon.es/s?k=amplificador+in+ear+petaca&tag=harmiqapp-20" class="btn-amz">Ver Petacas en Amazon</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="sec-pc" class="content-section">
+        <h2 style="font-size:2rem; margin-bottom:1rem">El Cerebro: <span class="grad">Mac vs PC Intel/AMD</span></h2>
+        <p style="color:var(--m); max-width:800px; margin-bottom:3rem; font-size:1.1rem">
+            El ordenador es tu estudio virtual. <strong>Características Mínimas para producir en 2026:</strong> 16GB de RAM (absolutamente necesario para VSTs de Kontakt u orquestales), 512GB de SSD NVMe rápido y procesador de 6 a 8 núcleos.
+        </p>
+        <div class="prod-grid">
+            <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="macbook-pro.png" alt="MacBook M series" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">🍏</span>macbook-m.png</div>
+                </div>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:#5C9AE5; color:#000">El Rey Actual</span></div>
+                    <h2 class="card-title">Ecosistema Apple Silicon (M2 / M3 / M4)</h2>
+                    <p class="analysis-text">
+                        <strong>¿Por qué elegirlo?:</strong> La estabilidad masiva de CoreAudio (no necesitas descargar drivers ASIO como en Windows, enchufas y funciona). El chip M es extremadamente silencioso (no arruina tus grabaciones vocales con ruidos de ventilador) y soporta cargas inhumanas de plugins. Además te abre la puerta a Logic Pro X.
+                    </p>
+                </div>
+                <a href="https://www.amazon.es/s?k=MacBook+Pro+M3+16GB&tag=harmiqapp-20" class="btn-amz">Ver MacBooks en Amazon</a>
+            </div>
+
+            <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="pc-ryzen.png" alt="PC Windows AMD Intel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">💻</span>pc-windows.png</div>
+                </div>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:#ff6b6b; color:#fff">Potencia / Precio</span></div>
+                    <h2 class="card-title">Portátiles y Torres Windows (Intel / AMD Ryzen)</h2>
+                    <p class="analysis-text">
+                        <strong>¿Por qué elegirlo?:</strong> Libertad total, juegos, reparabilidad y mucha más RAM por mucho menos dinero. Un Ryzen 7 / 9 o un Intel i7 / i9 te aseguran potencia de sobra. Excelente para FL Studio, Ableton y Cakewalk (que es exclusivo de Windows). Recuerda obligatoriamente descargar ASIO4ALL y los drivers de tu tarjeta.
+                    </p>
+                </div>
+                <a href="https://www.amazon.es/s?k=portatil+creadores+32GB+RAM&tag=harmiqapp-20" class="btn-amz">Ver Portátiles Pro en Amazon</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="sec-cables" class="content-section">
+        <h2 style="font-size:2rem; margin-bottom:2rem; text-align:center">Conexiones: <span class="grad">Cables y Accesorios Vitales</span></h2>
+        <div class="prod-grid">
+            <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="cable-xlr.png" alt="Cable XLR" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">🔌</span>cable-xlr.png</div>
+                </div>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:var(--p)">100% Obligatorio</span></div>
+                    <h2 class="card-title">Cables de Micro (XLR Macho a Hembra)</h2>
+                    <p class="analysis-text">Sin un XLR de calidad, tendrás ruido de parásitos o estática en tus capturas de voz. Marcas como Roland o Mogami (gama alta) tienen conectores Neutrik que duran toda la vida sin crujir.</p>
+                </div>
+                <a href="https://www.amazon.es/s?k=cable+xlr+neutrik&tag=harmiqapp-20" class="btn-amz">Ver XLR en Amazon</a>
+            </div>
+
+            <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="cable-midi.png" alt="Cable USB-B a C MIDI" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">🖨️</span>cable-midi.png</div>
+                </div>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:var(--a)">Conectar Teclados</span></div>
+                    <h2 class="card-title">Cables USB para Interfaces y MIDI</h2>
+                    <p class="analysis-text">Los famosos "cables de impresora" (USB Tipo B a USB Tipo A/C) son lo que envían la señal MIDI desde tus teclados o la interfaz al ordenador.</p>
+                </div>
+                <a href="https://www.amazon.es/s?k=cable+midi+usb+c&tag=harmiqapp-20" class="btn-amz">Ver MIDI en Amazon</a>
+            </div>
+
+            <div class="prod-card">
+                <div class="img-wrap">
+                    <img src="usb-hub.png" alt="Hub USB Activo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div class="img-placeholder"><span class="img-placeholder-icon">Hub</span>usb-hub.png</div>
+                </div>
+                <div class="info-body">
+                    <div class="tag-row"><span class="tag" style="background:var(--amber); color:#000">Solución Problemas USB</span></div>
+                    <h2 class="card-title">HUB Portuarios USB-C Alimentados</h2>
+                    <p class="analysis-text">Si usas un portátil, solo tienes 2-3 puertos USB. Necesitas conectar discos duros, interfaz, teclado MIDI, iLok, etc. Invierte en un Hub USB con su propio cable a la corriente, si no, se irán desenganchando tus dispositivos de la pantalla!</p>
+                </div>
+                <a href="https://www.amazon.es/s?k=hub+usb+c+corriente&tag=harmiqapp-20" class="btn-amz">Ver Hubs AC en Amazon</a>
             </div>
         </div>
     </section>
