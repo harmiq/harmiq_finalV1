@@ -241,3 +241,36 @@ if(document.readyState==="loading"){
 }else{
   mcInit();
 }
+
+// FILTRAR CATEGORÍAS
+function filtrar(cat) {
+  if (window.event && window.event.currentTarget) {
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+    window.event.currentTarget.classList.add('active');
+  }
+  var el = document.getElementById("ag");
+  if(!el) return;
+  var list = MC_DATA.artistes;
+  if (cat !== 'tots') {
+    list = list.filter(function(a){ return (a.genere||"").toLowerCase().includes(cat); });
+  }
+  if(!list.length){el.innerHTML="<p style='color:var(--m);text-align:center;padding:2rem'>Cap resultat.</p>";return;}
+  el.innerHTML=list.map(function(a){
+    var emb=a.emergent?"<span class='em-badge'>⭐ Emergent</span>":"";
+    return '<div class="art-card" onclick="oa(\''+a.id+'\')">'+
+      '<div class="art-av-wrap">'+
+        '<img class="art-photo" id="fimg-'+a.id+'" src="" alt="'+ex(a.nom)+'" style="display:none;width:56px;height:56px;border-radius:50%;object-fit:cover;" loading="lazy">'+
+        '<div class="art-av" id="fav-'+a.id+'" style="background:'+av(a.nom)+'">'+ai(a.nom)+'</div>'+
+      '</div>'+
+      emb+
+      '<div class="art-nom" style="font-weight: bold;">'+ex(a.nom)+'</div>'+
+      '<div class="art-gen" style="font-size: 0.8rem; color: var(--m);">📍 '+ex(a.origen||'')+' · '+ex(a.genere||'')+'</div>'+
+      '<div class="art-bio" style="font-size: 0.85rem; padding-top: 0.5rem;">'+ex((a.bio||'').substring(0,80))+'...</div>'+
+    '</div>';
+  }).join("");
+  list.forEach(function(a){
+    var imgEl=document.getElementById("fimg-"+a.id);
+    var avEl=document.getElementById("fav-"+a.id);
+    if(imgEl&&avEl) loadArtistPhoto(a.nom,imgEl,avEl);
+  });
+}
