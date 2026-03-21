@@ -147,14 +147,18 @@ function rt() {
   el.innerHTML = sorted.map(function (c, i) {
     var yt = "https://www.youtube.com/results?search_query=" + encodeURIComponent(c.titol + " " + c.artista + " karaoke");
     var sp = "https://open.spotify.com/search/" + encodeURIComponent(c.titol + " " + c.artista);
-    return `<div class="top-item" onclick="oc('${c.id}')">
-      <div class="top-rank">${i < 3 ? rk[i] : (i + 1)}</div>
-      <div class="top-info">
-        <div class="top-title">${ex(c.titol)}</div>
-        <div class="top-meta">${ex(c.artista)} · ${ex(c.genere || '')}${c.any ? ' · ' + c.any : ''}</div>
+    return `<div class="top-item" onclick="oc('${c.id}')" style="display:flex; align-items:center; justify-content:space-between; padding:1.2rem 1.5rem; background:linear-gradient(90deg, rgba(206,17,38,0.05), transparent); border:1px solid rgba(255,255,255,0.02); border-left:4px solid ${i<3 ? 'var(--a)' : 'rgba(255,255,255,0.1)'}; margin-bottom:1rem; border-radius:16px; transition:all 0.3s ease; cursor:pointer;" onmouseover="this.style.background='rgba(252,221,9,0.08)';this.style.transform='translateX(8px)';this.style.borderColor='var(--a)'" onmouseout="this.style.background='linear-gradient(90deg, rgba(206,17,38,0.05), transparent)';this.style.transform='translateX(0)';this.style.borderColor='rgba(255,255,255,0.02)'">
+      <div style="display:flex; align-items:center; gap:1.5rem;">
+          <div class="top-rank" style="font-size:1.8rem; font-weight:900; color:white; min-width:40px; text-align:center; filter:drop-shadow(0 2px 5px rgba(0,0,0,0.5))">${i < 3 ? rk[i] : (i + 1)}</div>
+          <div class="top-info">
+            <div class="top-title" style="font-size:1.2rem; font-weight:800; color:white; margin-bottom:0.2rem">${ex(c.titol)}</div>
+            <div class="top-meta" style="font-size:0.85rem; color:#A0AEC0">${ex(c.artista)} · <span style="color:var(--cg)">${ex(c.genere || '')}</span> ${c.any ? ' · ' + c.any : ''}</div>
+          </div>
       </div>
-      <div class="top-pop">${Math.round(c.popularitat || 0)}</div>
-      <button class="like-btn" onclick="event.stopPropagation();tgl('${c.id}',this)">${lk[c.id] ? "❤️" : "🤍"}</button>
+      <div style="display:flex; align-items:center; gap:1.5rem">
+          <div class="top-pop" style="font-family:'Outfit'; font-weight:800; font-size:1rem; color:#FF4FA3; background:rgba(255,79,163,0.1); padding:0.4rem 0.8rem; border-radius:12px; border:1px solid rgba(255,79,163,0.2)">🔥 ${Math.round(c.popularitat || 0)}</div>
+          <button class="like-btn" onclick="event.stopPropagation();tgl('${c.id}',this)" style="background:none; border:none; font-size:1.8rem; cursor:pointer; transition:0.2s; filter:drop-shadow(0 4px 6px rgba(0,0,0,0.4))" onmouseover="this.style.transform='scale(1.2) rotate(5deg)'" onmouseout="this.style.transform='scale(1) rotate(0deg)'">${lk[c.id] ? "❤️" : "🤍"}</button>
+      </div>
     </div>`;
   }).join("");
 }
