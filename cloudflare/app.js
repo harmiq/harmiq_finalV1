@@ -699,7 +699,7 @@ function injectUI() {
   uploadWrap.innerHTML = `
     <div id="_drop_zone" style="border:2px dashed rgba(255,255,255,.18);border-radius:14px;padding:1.4rem;
       text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.02);">
-      <input type="file" id="_file_inp" accept="audio/*" style="display:none">
+      <input type="file" id="_file_inp" accept="audio/*,video/mp4,video/quicktime,.m4a,.mp3,.wav,.mp4,.mov" style="display:none">
       <div style="font-size:1.6rem;margin-bottom:.4rem">🎵</div>
       <div id="_upload_btn_el" style="font-weight:700;color:#7C4DFF;font-size:.95rem;">${tr("_upload_btn")}</div>
       <div id="_upload_hint_el" style="font-size:.75rem;color:#6B7280;margin-top:.2rem;">${tr("_upload_hint")}</div>
@@ -760,7 +760,7 @@ function injectUI() {
   dz.addEventListener("drop", e => {
     e.preventDefault(); dz.style.borderColor="rgba(255,255,255,.18)"; dz.style.background="rgba(255,255,255,.02)";
     const f = e.dataTransfer.files[0];
-    if (f?.type?.startsWith("audio/")) setFile(f);
+    if (f) setFile(f);
   });
   fi.addEventListener("change", () => { if (fi.files[0]) setFile(fi.files[0]); });
 
@@ -897,10 +897,29 @@ async function toggleRecording() {
 // 7. DSP LOCAL
 // ═══════════════════════════════════════════════════════════════════════════════
 async function extractFeatures(blob) {
-  const ab  = await blob.arrayBuffer();
-  const ctx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate:22050 });
+  // blob.arrayBuffer() es moderno (iOS 14+). FileReader es universal.
+  const ab = await new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.onload = () => res(reader.result);
+    reader.onerror = rej;
+    reader.readAsArrayBuffer(blob);
+  });
+
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  const ctx = new AudioCtx(); // Sin sampleRate forzado en el constructor para mayor compatibilidad
+  
   let buf;
-  try { buf = await ctx.decodeAudioData(ab); } finally { ctx.close(); }
+  try {
+    // Wrapper para decodeAudioData (Promesa + Callback para Safari antiguo)
+    buf = await new Promise((res, rej) => {
+      ctx.decodeAudioData(ab, res, (err) => {
+          // Re-intentar sin el callback si falla el modo promesa (esto es por redundancia)
+          ctx.decodeAudioData(ab).then(res).catch(rej);
+      });
+    });
+  } finally {
+    if (ctx.state !== 'closed') ctx.close();
+  }
 
   const sr = buf.sampleRate, data = buf.getChannelData(0);
   const dur = buf.duration;
