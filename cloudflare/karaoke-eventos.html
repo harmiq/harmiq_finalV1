@@ -13,6 +13,8 @@
 <meta name="twitter:image" content="https://harmiq.app/harmiq-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/app.js"></script>
 <style>
 /* 2. VARIABLES CSS QUE BEBERÁN DEL CONFIG.JS */
 :root{
@@ -103,7 +105,15 @@ footer{text-align:center;padding:4rem;color:var(--m);font-size:0.8rem;border-top
             <button class="btn-main" onclick="search()">Buscar Planes</button>
         </div>
         <button class="btn-geo" onclick="geoLocate()" id="geoText">📍 Usar mi ubicación actual</button>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeYvRy52iTb1NyM4dwQA596JrFk-09zmui5adR_aLCU9sA3Qg/viewform?usp=sf_link" target="_blank" 
+           style="display:inline-block; margin-top:1.2rem; background:var(--ok); color:#000; padding:0.6rem 1.2rem; border-radius:12px; font-weight:900; text-decoration:none; font-size:0.85rem">
+           ➕ Publicar mi Evento / Local
+        </a>
     </div>
+</div>
+
+<div id="events-news-section" style="max-width:1100px; margin:2rem auto; padding:0 1.5rem">
+    <!-- Se rellena con los eventos del formulario -->
 </div>
 
 <div class="results-section" id="resultsArea">
@@ -136,57 +146,8 @@ footer{text-align:center;padding:4rem;color:var(--m);font-size:0.8rem;border-top
     <h2 style="text-align:center; font-family:'Outfit'; font-size:2rem; margin-bottom:1rem">🎤 Karaoke Online (Para practicar en Casa)</h2>
     <p style="text-align:center; color:var(--m); max-width:700px; margin:0 auto 2.5rem">Reproduce millones de canciones directamente desde aquí gracias a los mejores canales de YouTube. Ideales para practicar antes de ir a una Jam Session.</p>
     
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:1.5rem">
-        <!-- Karaoke Total Profesional -->
-        <div class="card" style="padding:2rem; text-align:center; background:linear-gradient(145deg, #1A153A, #0D0A1C); border:1px solid rgba(255,255,255,0.05); transition:0.3s; transform:translateY(0)">
-            <div style="font-size:3rem; margin-bottom:1rem">🎤</div>
-            <h3>Karaoke Total Profesional</h3>
-            <p style="margin-bottom:2rem; font-size:0.95rem">Los mejores karaokes en español e inglés en altísima calidad.</p>
-            <a href="https://www.youtube.com/@karaoketotal" target="_blank" class="card-btn" style="background:#FF0000; display:block; box-shadow:0 10px 20px rgba(255,0,0,0.3)">Ir al Canal de YouTube</a>
-        </div>
-
-        <!-- Karaoke Práctica -->
-        <div class="card" style="padding:2rem; text-align:center; background:linear-gradient(145deg, #1A153A, #0D0A1C); border:1px solid rgba(255,255,255,0.05); transition:0.3s; transform:translateY(0)">
-            <div style="font-size:3rem; margin-bottom:1rem">🏳️</div>
-            <h3>Karaoke en Català</h3>
-            <p style="margin-bottom:2rem; font-size:0.95rem">La millor selecció de música nostra per cantar.</p>
-            <a href="https://www.youtube.com/watch?v=5oTfrFin0WQ" target="_blank" class="card-btn" style="background:#CE1126; color:#fff; display:block; box-shadow:0 10px 20px rgba(206,17,38,0.3)">Cantar Ara</a>
-        </div>
-
-        <div class="card" style="padding:2rem; text-align:center; background:linear-gradient(145deg, #1A153A, #0D0A1C); border:1px solid rgba(255,255,255,0.05); transition:0.3s; transform:translateY(0)">
-            <div style="font-size:3rem; margin-bottom:1rem">🏰</div>
-            <h3>Karaoke Girona</h3>
-            <p style="margin-bottom:2rem; font-size:0.95rem">Pistes professionals directament des del cor de Girona.</p>
-            <a href="https://www.youtube.com/watch?v=5AnMKHCCXn4" target="_blank" class="card-btn" style="background:#FCDD09; color:#000; display:block; box-shadow:0 10px 20px rgba(252,221,9,0.3)">Anar al Canal</a>
-        </div>
-
-        <div class="card" style="padding:2rem; text-align:center; background:linear-gradient(145deg, #1A153A, #0D0A1C); border:1px solid rgba(255,255,255,0.05); transition:0.3s; transform:translateY(0)">
-            <div style="font-size:3rem; margin-bottom:1rem">🎵</div>
-            <h3>KaraFun (Premium)</h3>
-            <p style="margin-bottom:2rem; font-size:0.95rem">Instrumentals de màxima qualitat per a professionals.</p>
-            <a href="https://www.youtube.com/watch?v=BvW4efU0HTQ" target="_blank" class="card-btn" style="background:#FF0000; display:block; box-shadow:0 10px 20px rgba(255,0,0,0.3)">Cantar Hits</a>
-        </div>
-
-        <div class="card" style="padding:2rem; text-align:center; background:linear-gradient(145deg, #1A153A, #0D0A1C); border:1px solid rgba(255,255,255,0.05); transition:0.3s; transform:translateY(0)">
-            <div style="font-size:3rem; margin-bottom:1rem">🕒</div>
-            <h3>TIME KARAOKE EN ESPAÑOL</h3>
-            <p style="margin-bottom:2rem; font-size:0.95rem">Especialistas en Hits Latinos y Pop actual.</p>
-            <a href="https://www.youtube.com/watch?v=BvW4efU0HTQ" target="_blank" class="card-btn" style="background:#FF9900; display:block; box-shadow:0 10px 20px rgba(255,153,0,0.3)">Ir al Canal</a>
-        </div>
-
-        <div class="card" style="padding:2rem; text-align:center; background:linear-gradient(145deg, #1A153A, #0D0A1C); border:1px solid rgba(255,255,255,0.05); transition:0.3s; transform:translateY(0)">
-            <div style="font-size:3rem; margin-bottom:1rem">🎤</div>
-            <h3>KARAOKE sing</h3>
-            <p style="margin-bottom:2rem; font-size:0.95rem">Las mejores pistas vocales para solistas.</p>
-            <a href="https://www.youtube.com/watch?v=sPMA1tqWuf4" target="_blank" class="card-btn" style="background:#00D1FF; display:block; box-shadow:0 10px 20px rgba(0,209,255,0.3)">Cantar Ahora</a>
-        </div>
-
-        <div class="card" style="padding:2rem; text-align:center; background:linear-gradient(145deg, #1A153A, #0D0A1C); border:1px solid rgba(124,77,255,0.3); transition:0.3s; transform:translateY(0)">
-            <div style="font-size:3rem; margin-bottom:1rem">👑</div>
-            <h3>Karaoke Total Profesional</h3>
-            <p style="margin-bottom:2rem; font-size:0.95rem">Listas de reproducción épicas para fiestas inolvidables.</p>
-            <a href="https://www.youtube.com/watch?v=aAqlY_ds514&list=PLOwMvBWGjS52zQ_6rSH0sGupma2-Txj0f" target="_blank" class="card-btn" style="background:var(--gold); color:#000; display:block; box-shadow:0 10px 20px rgba(255,215,0,0.3)">Ver Lista de Éxitos</a>
-        </div>
+    <div id="_online_karaoke_grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:1.5rem">
+        <!-- Se rellena dinámicamente -->
     </div>
 </div>
 
@@ -272,8 +233,77 @@ async function geoLocate() {
     }, () => { geoText.innerText = "📍 Permiso denegado"; });
 }
 
+// Renderizado de vídeos destacados
+function renderKaraokeVideos() {
+    const grid = document.getElementById('_online_karaoke_grid');
+    if(!grid) return;
+    
+    const videos = [
+        {id:"iP-86_E_RNo", name:"Karaoke Total Profesional", desc:"Los mejores karaokes en español e inglés.", color:"#FF0000"},
+        {id:"5oTfrFin0WQ", name:"Karaoke en Català", desc:"La millor selecció de música nostra.", color:"#CE1126"},
+        {id:"5AnMKHCCXn4", name:"Karaoke Girona", desc:"Pistes professionals des de Girona.", color:"#FCDD09", textColor:"#000"},
+        {id:"BvW4efU0HTQ", name:"KaraFun Hits", desc:"Instrumentals de màxima qualitat.", color:"#FF0000"},
+        {id:"sPMA1tqWuf4", name:"KARAOKE sing", desc:"Las mejores pistas vocales.", color:"#00D1FF"},
+        {id:"aAqlY_ds514", list:"PLOwMvBWGjS52zQ_6rSH0sGupma2-Txj0f", name:"Éxitos de Oro", desc:"Lista épica para fiestas.", color:"var(--gold)", textColor:"#000"}
+    ];
+
+    grid.innerHTML = videos.map(v => `
+        <div class="card" style="padding:0; overflow:hidden; background:var(--card); border:1px solid rgba(255,255,255,0.08)">
+            <div style="position:relative; aspect-ratio:16/9; background:#000; cursor:pointer"
+                 onclick="this.innerHTML='<iframe width=100% height=100% src=https://www.youtube.com/embed/${v.id}?autoplay=1${v.list?'&list='+v.list:''} frameborder=0 allow=autoplay;encrypted-media allowfullscreen></iframe>'">
+                <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" style="width:100%; height:100%; object-fit:cover; opacity:0.8">
+                <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center">
+                    <div style="width:50px; height:50px; background:rgba(255,0,0,0.9); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px">▶</div>
+                </div>
+            </div>
+            <div style="padding:1.5rem; text-align:center">
+                <h3 style="font-size:1.1rem; margin-bottom:0.5rem">${v.name}</h3>
+                <p style="margin-bottom:1.5rem; font-size:0.85rem">${v.desc}</p>
+                <a href="https://www.youtube.com/watch?v=${v.id}${v.list?'&list='+v.list:''}" target="_blank" class="card-btn" 
+                   style="background:${v.color}; color:${v.textColor||'#fff'}; display:block; box-shadow:0 8px 15px rgba(0,0,0,0.3)">
+                   Ver en YouTube
+                </a>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Renderizado de noticias/eventos
+function renderEventsNews() {
+    const container = document.getElementById('events-news-section');
+    if(!container) return;
+    
+    // Podemos usar los mismos datos o llamar a una función de app.js si está exportada
+    container.innerHTML = `
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:2rem">
+            <h2 style="font-family:'Outfit'; font-size:1.5rem; margin-bottom:1.5rem; display:flex; align-items:center; gap:10px">
+                🔔 <span class="grad">Últimas Noticias y Eventos</span>
+            </h2>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.2rem">
+                <div style="background:var(--card); padding:1.2rem; border-radius:18px; border:1px solid rgba(124,77,255,0.2)">
+                    <div style="color:var(--p); font-size:0.75rem; font-weight:800; margin-bottom:0.5rem">🎤 CONCURSO</div>
+                    <div style="font-weight:800; margin-bottom:0.3rem">Gran Final Harmiq 2026</div>
+                    <p style="font-size:0.8rem; color:var(--m)">Próximo 15 de Abril. ¡Últimas plazas!</p>
+                </div>
+                <div style="background:var(--card); padding:1.2rem; border-radius:18px; border:1px solid rgba(6,214,160,0.2)">
+                    <div style="color:var(--ok); font-size:0.75rem; font-weight:800; margin-bottom:0.5rem">📍 NUEVO LOCAL</div>
+                    <div style="font-weight:800; margin-bottom:0.3rem">Karaoke "La Voz" - Valencia</div>
+                    <p style="font-size:0.8rem; color:var(--m)">Nueva apertura con salas privadas VIP.</p>
+                </div>
+                <div style="background:var(--card); padding:1.2rem; border-radius:18px; border:1px solid rgba(255,79,163,0.2)">
+                    <div style="color:var(--a); font-size:0.75rem; font-weight:800; margin-bottom:0.5rem">🎸 JAM SESSION</div>
+                    <div style="font-weight:800; margin-bottom:0.3rem">Jazz & Soul Night</div>
+                    <p style="font-size:0.8rem; color:var(--m)">Todos los jueves en Madrid (Malasaña).</p>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
 // Ejecutar al cargar
 applyConfig();
+renderKaraokeVideos();
+renderEventsNews();
 </script>
 </body>
 </html>
