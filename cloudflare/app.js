@@ -1395,6 +1395,45 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
   return out;
 }
 
+/**
+ * classifyVT(pitchMean, pitchRange, gender)
+ * Clasificador heurístico de tipos vocales basado en frecuencia fundamental (F0).
+ * v2.1 — Harmiq Core
+ */
+function classifyVT(pitchMean, pitchRange, gender) {
+  let vt = "baritone";
+  let conf = 70;
+
+  // Normalización de género (si viene de la UI)
+  const g = String(gender).toLowerCase();
+
+  if (g === "female" || g === "femenina") {
+    // Rangos Femeninos (Aprox)
+    if (pitchMean < 205) { vt = "contralto"; conf = 78; }
+    else if (pitchMean < 260) { vt = "mezzo-soprano"; conf = 88; }
+    else { vt = "soprano"; conf = 82; }
+  } 
+  else if (g === "male" || g === "masculina") {
+    // Rangos Masculinos (Aprox)
+    if (pitchMean < 120) { vt = "bass"; conf = 80; }
+    else if (pitchMean < 160) { vt = "baritone"; conf = 92; }
+    else if (pitchMean < 230) { vt = "tenor"; conf = 86; }
+    else { vt = "countertenor"; conf = 75; }
+  }
+  else {
+    // Detección Automática (unisex)
+    if (pitchMean < 135) { vt = "baritone"; conf = 65; }
+    else if (pitchMean < 195) { vt = "tenor"; conf = 60; }
+    else if (pitchMean < 255) { vt = "mezzo-soprano"; conf = 60; }
+    else { vt = "soprano"; conf = 55; }
+  }
+
+  // Pequeño ajuste por rango (si es muy amplio, baja la confianza)
+  if (pitchRange > 150) conf -= 5;
+  
+  return { vt, conf: Math.max(10, Math.min(100, Math.round(conf))) };
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // 9. ANÁLISIS
 // ═══════════════════════════════════════════════════════════════════════════════
