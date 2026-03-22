@@ -1,5 +1,5 @@
 /**
- * app.js — Harmiq PRODUCCIÓN v7
+ * app.js — Harmiq PRODUCCIÓN v8.1 (HealthCheck & Playlists Fix)
  * FIX: botones género visual, auto-selección, HF_API_URL, GDPR
  * Un solo archivo. No requiere analyzer.js.
  *
@@ -26,6 +26,35 @@ const AFFILIATE_ID   = "harmiqapp-20";
 const DB_PATH        = "/harmiq_db_vectores.json";
 const UDEMY_LINK     = "https://www.udemy.com/topic/singing/"; // TODO: REEMPLAZAR POR TU LINK DE AFILIADO
 const HF_API_URL     = "https://hamiq-harmiq-backend1.hf.space"; 
+
+// --- SHARED UI COMPONENTS ---
+function getPremiumHeaderHTML() {
+    return `
+    <nav style="position:sticky; top:0; z-index:1000; background:rgba(10,10,15,0.9); backdrop-filter:blur(15px); border-bottom:1px solid rgba(255,255,255,0.05)">
+        <div style="max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:0.8rem 1rem">
+            <a class="logo" href="/" style="font-size:1.4rem; text-decoration:none; display:flex; align-items:center; gap:0.5rem">🎙️ <span style="font-family:'Baloo 2',sans-serif; font-weight:800; color:#fff">Harmiq</span></a>
+            <ul class="nav-links" style="display:flex; list-style:none; gap:0.8rem; margin:0; padding:0; align-items:center">
+                <li><a href="/voz/soprano" style="color:#FF4FA3; font-weight:700; font-size:0.85rem; text-decoration:none; padding:0.4rem 0.8rem; border-radius:10px; background:rgba(255,79,163,0.1)">Soprano</a></li>
+                <li><a href="/voz/mezzo-soprano" style="color:#7C4DFF; font-weight:700; font-size:0.85rem; text-decoration:none; padding:0.4rem 0.8rem; border-radius:10px; background:rgba(124,77,255,0.1)">Mezzo</a></li>
+                <li><a href="/voz/tenor" style="color:#1DB954; font-weight:700; font-size:0.85rem; text-decoration:none; padding:0.4rem 0.8rem; border-radius:10px; background:rgba(29,185,84,0.1)">Tenor</a></li>
+                <li><a href="/comunidad" style="color:#FF9900; font-weight:700; font-size:0.85rem; text-decoration:none; padding:0.4rem 1.2rem; border-radius:10px; background:rgba(255,153,0,0.1); border:1px solid rgba(255,153,0,0.2)">Comunidad</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div style="background:linear-gradient(90deg,#7C4DFF,#FF4FA3); color:#fff; text-align:center; padding:0.4rem; font-size:0.75rem; font-weight:700; letter-spacing:0.5px">
+        🏆 CONCURSO DE KARAOKE EN MADRID · PRÓXIMO VIERNES · <a href="/comunidad" style="color:#fff; text-decoration:underline">MÁS INFO</a>
+    </div>`;
+}
+
+function getPremiumFooterHTML() {
+    return `
+    <footer style="padding:4rem 2rem; background:rgba(5,5,10,1); border-top:1px solid rgba(255,255,255,0.05); text-align:center">
+        <div style="max-width:800px; margin:0 auto; margin-bottom:2.5rem; color:#6B7280; font-size:0.8rem; line-height:1.6">
+            <p><strong>Aviso Legal y Transparencia:</strong> Harmiq es una plataforma de análisis vocal y recomendación. No gestionamos pagos directos; todas las transacciones de cursos (Udemy) y equipamiento (Amazon) se realizan de forma segura en sus respectivas plataformas oficiales.</p>
+        </div>
+        <p style="color:#9CA3AF; font-size:0.85rem">© 2026 Harmiq · Inteligencia Artificial Vocal · <a href="/politica-privacidad.html" style="color:#7C4DFF; text-decoration:none">Privacidad</a> · <a href="/terminos.html" style="color:#7C4DFF; text-decoration:none">Términos</a></p>
+    </footer>`;
+}
 
 // Plataformas musicales por país (geolocalización)
 const MUSIC_PLATFORM = {
@@ -3027,28 +3056,19 @@ function loadComunidadPage() {
     `;
 
     document.body.innerHTML = `
-    <nav style="position:sticky; top:0; z-index:1000; background:rgba(10,10,15,0.8); backdrop-filter:blur(10px)">
-        <div style="max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:1rem">
-            <a class="logo" href="/">🎙️ Harmiq</a>
-            <ul class="nav-links" style="display:flex; list-style:none; gap:1rem; margin:0; padding:0">
-                <li><a href="/voz/soprano" style="color:#FF4FA3; font-weight:700">Soprano</a></li>
-                <li><a href="/voz/tenor" style="color:#1DB954; font-weight:700">Tenor</a></li>
-                <li><a href="/voz/mezzo-soprano" style="color:#7C4DFF; font-weight:700">Mezzo</a></li>
-                <li><a href="/comunidad" style="color:#FF9900; font-weight:700">Comunidad</a></li>
-            </ul>
-        </div>
-    </nav>
-    <div id="comunidad-wrap">${content}</div>
-    <footer style="padding:4rem 2rem; border-top:1px solid rgba(255,255,255,0.05); text-align:center">
-        <p style="color:#6B7280; font-size:0.9rem">© 2026 Harmiq · Plataforma Segura · <a href="/politica-privacidad.html" style="color:#7C4DFF">Privacidad</a></p>
-    </footer>
+    ${getPremiumHeaderHTML()}
+    <div id="comunidad-wrap" style="min-height:80vh">${content}</div>
+    ${getPremiumFooterHTML()}
     `;
 
     // Render Playlists
-    renderVideoSection("playlist-cat-1", "PLpcARcDSTR0KZjKxP9ecy7qadkM3Hqk_j", false); // Catalan 1
-    renderVideoSection("playlist-cat-2", "PLpcARcDSTR0L2gIDjYjIuY_8_Y4x3M_Z", false); // Catalan 2
-    renderVideoSection("playlist-global-1", "PLvR-j5N0A_6beOnN0k7k-bZ_r9o8yF6_F", true); // Spanish
-    renderVideoSection("playlist-global-2", "PL8D4Iby0Bmm9y57_K3vBvkZiaGjIXD_x5", true); // Sing King EN
+    // Render Playlists (con delay para asegurar DOM)
+    setTimeout(() => {
+        renderVideoSection("playlist-cat-1", "PLpcARcDSTR0KZjKxP9ecy7qadkM3Hqk_j", false); 
+        renderVideoSection("playlist-cat-2", "PLpcARcDSTR0L2gIDjYjIuY_8_Y4x3M_Z", false); 
+        renderVideoSection("playlist-global-1", "PLvR-j5N0A_6beOnN0k7k-bZ_r9o8yF6_F", true); 
+        renderVideoSection("playlist-global-2", "PL8D4Iby0Bmm9y57_K3vBvkZiaGjIXD_x5", true); 
+    }, 100);
 
     renderDisqus("comunidad-v4");
     document.title = "Comunidad Harmiq | Karaoke & Home Studio";
