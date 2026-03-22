@@ -1828,34 +1828,48 @@ function buildKaraokeSection(vtName, vtSlug) {
 
         <!-- Resultados de búsqueda -->
         <div id="_karaoke_results" style="display:none;margin-bottom:1rem">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.5rem">
             <a id="_kr_bars" href="#" target="_blank" rel="noopener"
               style="padding:.7rem;background:rgba(255,159,28,.08);border:1px solid rgba(255,159,28,.2);
               border-radius:10px;text-decoration:none;color:#E5E7EB;display:flex;flex-direction:column;gap:.2rem">
               <span style="font-size:1rem">🍺</span>
               <span style="font-size:.78rem;font-weight:700">Bares de karaoke</span>
-              <span style="font-size:.65rem;color:#6B7280">Ver en Google Maps →</span>
+              <span style="font-size:.65rem;color:#6B7280">Google Maps →</span>
             </a>
             <a id="_kr_mics" href="#" target="_blank" rel="noopener"
               style="padding:.7rem;background:rgba(124,77,255,.08);border:1px solid rgba(124,77,255,.2);
               border-radius:10px;text-decoration:none;color:#E5E7EB;display:flex;flex-direction:column;gap:.2rem">
               <span style="font-size:1rem">🎸</span>
               <span style="font-size:.78rem;font-weight:700">Open mics & jams</span>
-              <span style="font-size:.65rem;color:#6B7280">Ver en Google Maps →</span>
+              <span style="font-size:.65rem;color:#6B7280">Google Maps →</span>
             </a>
-            <a id="_kr_companies" href="#" target="_blank" rel="noopener"
-              style="padding:.7rem;background:rgba(29,185,84,.08);border:1px solid rgba(29,185,84,.2);
+            <a id="_kr_comu" href="#" target="_blank" rel="noopener"
+              style="padding:.7rem;background:rgba(6,214,160,.08);border:1px solid rgba(6,214,160,.2);
               border-radius:10px;text-decoration:none;color:#E5E7EB;display:flex;flex-direction:column;gap:.2rem">
-              <span style="font-size:1rem">🏢</span>
-              <span style="font-size:.78rem;font-weight:700">Empresas karaoke</span>
-              <span style="font-size:.65rem;color:#6B7280">Ver en Google Maps →</span>
+              <span style="font-size:1rem">👥</span>
+              <span style="font-size:.78rem;font-weight:700">Comunidad local</span>
+              <span style="font-size:.65rem;color:#6B7280">Ver en Google →</span>
             </a>
             <a id="_kr_events" href="#" target="_blank" rel="noopener"
               style="padding:.7rem;background:rgba(255,79,163,.08);border:1px solid rgba(255,79,163,.2);
               border-radius:10px;text-decoration:none;color:#E5E7EB;display:flex;flex-direction:column;gap:.2rem">
               <span style="font-size:1rem">🎭</span>
-              <span style="font-size:.78rem;font-weight:700">Concursos canto</span>
-              <span style="font-size:.65rem;color:#6B7280">Ver en Eventbrite →</span>
+              <span style="font-size:.78rem;font-weight:700">Eventos & Concursos</span>
+              <span style="font-size:.65rem;color:#6B7280">Ver en Google →</span>
+            </a>
+            <a id="_kr_studio" href="#" target="_blank" rel="noopener"
+              style="padding:.7rem;background:rgba(252,221,9,.08);border:1px solid rgba(252,221,9,.2);
+              border-radius:10px;text-decoration:none;color:#E5E7EB;display:flex;flex-direction:column;gap:.2rem">
+              <span style="font-size:1rem">🎛️</span>
+              <span style="font-size:.78rem;font-weight:700">Montar Home Studio</span>
+              <span style="font-size:.65rem;color:#6B7280">Guía vocal →</span>
+            </a>
+            <a id="_kr_pro" href="#" target="_blank" rel="noopener"
+              style="padding:.7rem;background:rgba(255,0,0,.08);border:1px solid rgba(255,0,0,.2);
+              border-radius:10px;text-decoration:none;color:#E5E7EB;display:flex;flex-direction:column;gap:.2rem">
+              <span style="font-size:1rem">🏆</span>
+              <span style="font-size:.78rem;font-weight:700">Pistas Pro</span>
+              <span style="font-size:.65rem;color:#6B7280">YouTube Pro →</span>
             </a>
           </div>
         </div>
@@ -2566,14 +2580,30 @@ function renderVozPage(slug) {
     </div>`).join("");
 
   const descClean = desc.replace(/\n/g,' ');
+  const logoAbs   = "https://harmiq.app/harmiq-logo.png";
+  
   document.body.innerHTML = `
 <!DOCTYPE html><html lang="${lang}"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Voz de ${capSlug} ${data.emoji} — Artistas, ejercicios, micrófonos y canciones | Harmiq</title>
 <meta name="description" content="${descClean.slice(0,158)}">
+<meta name="keywords" content="voz ${slug}, cantante ${slug}, tipo de voz ${slug}, home studio ${slug}, karaoke ${slug}, harmiq">
 <meta property="og:title" content="Voz de ${capSlug} — Descubre si tu voz es ${slug}">
 <meta property="og:description" content="${descClean.slice(0,120)}">
+<meta property="og:image" content="${logoAbs}">
+<link rel="icon" type="image/png" href="${logoAbs}">
+<link rel="apple-touch-icon" href="${logoAbs}">
 <link rel="canonical" href="https://harmiq.app/voz/${slug}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Harmiq",
+  "url": "https://harmiq.app",
+  "logo": "${logoAbs}",
+  "sameAs": ["https://www.instagram.com/harmiq_app","https://www.tiktok.com/@harmiq"]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
@@ -2776,9 +2806,8 @@ function renderVozPage(slug) {
     <a href="/voz/contralto">Contralto</a>
     <a href="/voz/bajo">Bajo</a>
     <a href="/comunidad" style="color:#FF5E5B; font-weight:700">Comunidad</a>
-    <a href="https://ko-fi.com/harmiq" target="_blank">☕ Apoya Harmiq</a>
   </div>
-  <p>© 2025 Harmiq · Análisis vocal con IA · <a href="mailto:info@harmiq.app">info@harmiq.app</a></p>
+  <p>© 2026 Harmiq · Análisis vocal con IA · <a href="mailto:info@harmiq.app">info@harmiq.app</a> · <a href="/politica-privacidad.html">Privacidad</a></p>
 </footer>
 
 <script>
@@ -2837,37 +2866,7 @@ async function loadStaticPage(url, title) {
     document.body.innerHTML = doc.body.innerHTML;
     document.title = doc.title || title;
     
-    function changeLanguage(l) {
-  if (translations[l]) {
-    lang = l;
-    localStorage.setItem("harmiq_lang", l);
-    // Actualizar todos los textos in-place
-    document.querySelectorAll("[data-tr]").forEach(el => {
-      const key = el.getAttribute("data-tr");
-      if (translations[lang][key]) {
-        if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-          el.placeholder = translations[lang][key];
-        } else {
-          el.innerHTML = translations[lang][key];
-        }
-      }
-    });
-    // Forzar recarga de la ruta actual para actualizar componentes dinámicos
-    handleRoute();
-  }
-}
-
-// Al cargar, verificar el idioma guardado
-(function initLang() {
-  const saved = localStorage.getItem("harmiq_lang");
-  if (saved && translations[saved]) {
-    lang = saved;
-    const sw = document.getElementById("lang-switcher");
-    if(sw) sw.value = lang;
-  }
-})();
-
-// Re-ejecutar scripts inline del nuevo HTML
+    // Re-ejecutar scripts inline del nuevo HTML
     document.body.querySelectorAll("script:not([src])").forEach(old => {
       const s = document.createElement("script");
       s.textContent = old.textContent;
@@ -3050,18 +3049,35 @@ function _searchKaraoke() {
   const city = document.getElementById("_karaoke_city")?.value?.trim();
   if (!city) return;
   const enc = encodeURIComponent(city);
+  const lg = lang || "es";
   const resDiv = document.getElementById("_karaoke_results");
   if (resDiv) resDiv.style.display = "block";
 
-  const barsEl = document.getElementById("_kr_bars");
-  const micsEl = document.getElementById("_kr_mics");
-  const compEl = document.getElementById("_kr_companies");
-  const evtEl  = document.getElementById("_kr_events");
+  const terms = {
+    es: { bars: "karaoke bares", comu: "comunidad karaoke", events: "concursos de canto karaoke", studio: "como montar home studio voz", pro: "karaoke pistas profesionales" },
+    en: { bars: "karaoke bars", comu: "karaoke community", events: "singing contests karaoke", studio: "how to build home studio vocal", pro: "pro karaoke tracks" },
+    ca: { bars: "karaoke bars", comu: "comunitat karaoke", events: "concursos de cant karaoke", studio: "com muntar home studio veu", pro: "pistes karaoke professionals" },
+    ru: { bars: "караоке бары", comu: "караоке сообщество", events: "конкурсы вокала караоке", studio: "как собрать домашнюю студию вокала", pro: "профессиональные минусовки караоке" },
+    ja: { bars: "カラオケバー", comu: "カラオケコミュニティ", events: "カラオケ大会", studio: "ホームスタジオの作り方 ボーカル", pro: "プロ用カラオケ音源" },
+    de: { bars: "Karaoke-Bars", comu: "Karaoke-Community", events: "Gesangswettbewerbe Karaoke", studio: "wie man ein Homestudio für Gesang baut", pro: "professionelle Karaoke-Tracks" },
+    fr: { bars: "bars karaoké", comu: "communauté karaoké", events: "concours de chant karaoké", studio: "comment créer un home studio vocal", pro: "pistes karaoké professionnelles" },
+    it: { bars: "karaoke bar", comu: "comunità karaoke", events: "concorsi di canto karaoke", studio: "come costruire un home studio vocale", pro: "basi karaoke professionali" },
+    pt: { bars: "bares de karaoke", comu: "comunidade karaoke", events: "concursos de canto karaoke", studio: "como montar um home studio de voz", pro: "pistas de karaoke profissionais" }
+  }[lg] || terms.en;
 
-  if (barsEl) barsEl.href = `https://www.google.com/maps/search/karaoke+bares+${enc}`;
-  if (micsEl) micsEl.href = `https://www.google.com/maps/search/open+mic+jam+session+${enc}`;
-  if (compEl) compEl.href = `https://www.google.com/maps/search/empresa+karaoke+${enc}`;
-  if (evtEl)  evtEl.href  = `https://www.eventbrite.es/d/${enc}/concurso-canto-karaoke/`;
+  const mapping = {
+    _kr_bars:   `https://www.google.com/maps/search/${encodeURIComponent(terms.bars)}+${enc}`,
+    _kr_mics:   `https://www.google.com/maps/search/open+mic+jam+session+${enc}`,
+    _kr_comu:   `https://www.google.com/search?q=${encodeURIComponent(terms.comu)}+${enc}`,
+    _kr_events: `https://www.google.com/search?q=${encodeURIComponent(terms.events)}+${enc}`,
+    _kr_studio: `https://www.google.com/search?q=${encodeURIComponent(terms.studio)}`,
+    _kr_pro:    `https://www.youtube.com/results?search_query=${encodeURIComponent(terms.pro)}`
+  };
+
+  for (const [id, url] of Object.entries(mapping)) {
+    const el = document.getElementById(id);
+    if (el) el.href = url;
+  }
 }
 
 async function loadDB() {
