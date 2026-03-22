@@ -1092,28 +1092,32 @@ function getAmazonHtml(voiceType) {
   
   return `
     <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
-      border-radius:16px;padding:1.4rem;display:flex;flex-direction:column;gap:1.2rem;
-      border-left:4px solid #FF9F1C">
-      <div style="display:flex;align-items:center;gap:1rem">
-        <div style="background:#FF9F1C;color:#000;width:42px;height:42px;border-radius:10px;
-          display:flex;align-items:center;justify-content:center;font-size:1.4rem">🎤</div>
+      border-radius:24px;padding:1.8rem;display:flex;flex-direction:column;gap:1.5rem;
+      border-left:5px solid #FF9F1C; box-shadow:0 10px 30px rgba(0,0,0,0.3)">
+      <div style="display:flex;align-items:center;gap:1.2rem">
+        <div style="background:#FF9F1C;color:#000;width:50px;height:50px;border-radius:14px;
+          display:flex;align-items:center;justify-content:center;font-size:1.8rem;box-shadow:0 0 20px rgba(255,159,28,0.3)">🎙️</div>
         <div>
-          <div style="font-size:.7rem;color:#FF9F1C;font-weight:800;text-transform:uppercase;letter-spacing:.05em">
-            Micrófono recomendado para ${trV("_vt_names", voiceType) || vtKey}
+          <div style="font-size:.75rem;color:#FF9F1C;font-weight:900;text-transform:uppercase;letter-spacing:.08em">
+            Micrófono recomendado: ${vtKey}
           </div>
-          <div style="font-size:.75rem;color:#9CA3AF">Selección personalizada para tu perfil vocal</div>
+          <p style="font-size:.85rem;color:#9CA3AF;margin-top:2px">Potencia tus armónicos con el equipo adecuado.</p>
         </div>
       </div>
-      <div style="font-size:.85rem;color:#D1D5DB;font-weight:600">${micName}</div>
-      <div style="font-size:.78rem;color:#9CA3AF;line-height:1.5">${profile.characteristics}</div>
+      <div style="font-size:1rem;color:#fff;font-weight:800">${micName}</div>
+      <div style="font-size:.85rem;color:#9CA3AF;line-height:1.6">${profile.characteristics}</div>
       <a href="${amzLink}" target="_blank" rel="noopener sponsored"
         style="display:inline-block;align-self:flex-start;
-        background:linear-gradient(135deg,#FF9F1C,#FF6B35);color:#fff;
-        font-size:.8rem;font-weight:700;padding:.45rem 1rem;border-radius:10px;
-        text-decoration:none;letter-spacing:.02em">
-        🛒 Ver precio en Amazon →
+        background:#FF9900;color:#000;
+        font-size:.85rem;font-weight:900;padding:.6rem 1.4rem;border-radius:12px;
+        text-decoration:none;transition:transform 0.2s" 
+        onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        🛒 Ver precio en Amazon
       </a>
-      ${getHomeStudioHTML(voiceType)}
+      <div style="border-top:1px solid rgba(255,255,255,0.05); padding-top:1.5rem">
+        <h4 style="font-size:0.9rem; margin-bottom:1rem; color:#fff">📦 Packs Home Studio Completos</h4>
+        ${getHomeStudioHTML()}
+      </div>
     </div>`;
 }
 
@@ -1750,15 +1754,30 @@ async function renderResults({feat,vt,conf,matches,gender}) {
     ${songsHTML}
     ${amzHTML}
     ${shareHTML}
-    <div style="margin-top:1.5rem; background:rgba(124,77,255,.1); border:1px solid rgba(124,77,255,.2); border-radius:18px; padding:1.2rem; display:flex; align-items:center; gap:1rem">
-      <div style="font-size:2rem">🎓</div>
-      <div style="flex:1">
-        <h4 style="font-family:'Baloo 2',sans-serif; font-size:1.1rem; margin-bottom:.2rem">Escala tu talento con Udemy</h4>
-        <p style="font-size:.8rem; color:#A5B4FC">¿Quieres dominar tu voz? Accede a los mejores cursos de técnica vocal y producción.</p>
+
+    <!-- TÉCNICA VOCAL (Upgrade) -->
+    <div class="vocal-technique-up" style="margin-top:3rem; padding-top:2rem; border-top:2px solid rgba(124,77,255,0.1)">
+      <h3 style="font-family:'Baloo 2',sans-serif; font-size:1.8rem; margin-bottom:1.5rem; text-align:center; background:linear-gradient(135deg,#fff,#7C4DFF); -webkit-background-clip:text; -webkit-text-fill-color:transparent">
+        🎓 Mejora tu Técnica Vocal
+      </h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem">
+        <div class="tech-box">
+          <p style="font-size:0.9rem; color:#A5B4FC; font-weight:700; margin-bottom:0.8rem">🇪🇸 Clases en Español (Gret Rocha)</p>
+          <div id="vocal-es-list"></div>
+        </div>
+        <div class="tech-box">
+          <p style="font-size:0.9rem; color:#FF9Fcc; font-weight:700; margin-bottom:0.8rem">🇺🇸 English Lessons (Vocal Growth)</p>
+          <div id="vocal-en-list"></div>
+        </div>
       </div>
-      <a href="${UDEMY_LINK}" target="_blank" style="background:#7C4DFF; color:#fff; padding:.6rem 1rem; border-radius:10px; text-decoration:none; font-weight:700; font-size:.85rem; white-space:nowrap">Ver Cursos</a>
     </div>
-    ${getComunidadHarmiq()}`;
+    `;
+
+    // Render Playlists de técnica
+    setTimeout(() => {
+        renderVideoSection("vocal-es-list", "PL-X9s2_0kH9X5_Z4L6x4_v8Z", true); // Gret Rocha
+        renderVideoSection("vocal-en-list", "PLp01lSgrRROIigx0bu8T1EyjQMzAF6W1s", true); // Timo Parker
+    }, 100);
 
   // ── Evento filtro época ────────────────────────────────────────────────
   const applyFilters = async () => {
@@ -2897,67 +2916,147 @@ async function loadStaticPage(url, title) {
 
 // ── Comunidad (Disqus) ────────────────────────────────────────────────────────
 // ── Comunidad (Disqus + Eventos + Mapa) ──────────────────────────────────────
+// --- MONETIZACIÓN Y AFILIADOS ---
+function getUdemyBannerHTML() {
+    return `
+    <div class="udemy-banner" style="margin-top:1.5rem; padding:1.2rem; background:linear-gradient(135deg,rgba(124,77,255,0.1),rgba(255,79,163,0.1)); border-radius:15px; border:1px solid rgba(124,77,255,0.2); text-align:center; transition: transform 0.3s">
+        <p style="font-size:0.95rem; color:#fff; margin-bottom:0.8rem">🚀 ¿Quieres subir de nivel? Certifícate con nuestro curso profesional.</p>
+        <a href="https://www.udemy.com/?p=affiliate-link-here" target="_blank" class="btn" style="background:#7C4DFF; font-size:0.85rem; padding:0.5rem 1rem">Ver Curso en Udemy</a>
+    </div>`;
+}
+
+function getHomeStudioHTML() {
+    const cleanLink = (url) => url.replace(/[^a-zA-Z0-9\s:/.]/g, ''); 
+    
+    return `
+    <div class="home-studio-section" style="margin-top:3rem">
+        <h2 style="font-family:'Baloo 2',sans-serif; text-align:center; margin-bottom:2rem; background:linear-gradient(135deg,#fff,#FF9900); -webkit-background-clip:text; -webkit-text-fill-color:transparent">🎙️ Domina tu Home Studio</h2>
+        <div class="amazon-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem">
+            ${[
+                {name: "Pack Iniciación (Behringer)", url: "https://amazon.es/pack1-iniciacion"},
+                {name: "Pack Pro Vocals (Rode)", url: "https://amazon.es/pack2-pro"},
+                {name: "Pack Podcaster (Shure)", url: "https://amazon.es/pack3-podcast"},
+                {name: "Pack Studio Elite (Neumann)", url: "https://amazon.es/pack4-elite"}
+            ].map(p => `
+                <div class="amazon-card" style="background:rgba(255,255,255,0.03); padding:1.2rem; border-radius:20px; text-align:center; border:1px solid rgba(255,255,255,0.05); transition:all 0.3s">
+                    <div style="font-size:2rem; margin-bottom:0.5rem">📦</div>
+                    <h3 style="font-size:1rem; margin-bottom:0.8rem; color:#fff">${p.name}</h3>
+                    <a href="${cleanLink(p.url)}" target="_blank" class="btn-amazon" style="display:inline-block; padding:0.5rem 1rem; background:#FF9900; color:#000; font-weight:700; border-radius:10px; font-size:0.85rem; text-decoration:none">Ver en Amazon</a>
+                </div>
+            `).join('')}
+        </div>
+    </div>`;
+}
+
+function renderVideoSection(containerId, playlistId, showUdemy = true) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="video-container" style="position:relative; width:100%; aspect-ratio:16/9; border-radius:24px; overflow:hidden; box-shadow:0 15px 40px rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.1)">
+            <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://www.youtube.com/embed/videoseries?list=${playlistId}" 
+                title="Harmiq Karaoke Playlist" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    `;
+
+    el.innerHTML = iframeHtml + (showUdemy ? getUdemyBannerHTML() : "");
+}
+
 function loadComunidadPage() {
-  const content = `
-    <div style="max-width:960px; margin:0 auto; padding:2rem 1rem">
-      <div style="text-align:center; margin-bottom:3rem">
-        <h1 style="font-family:'Baloo 2',sans-serif; font-weight:900; font-size:clamp(2rem,6vw,3.5rem); margin-bottom:1rem; background:linear-gradient(135deg,#fff,#7C4DFF); -webkit-background-clip:text; -webkit-text-fill-color:transparent">
-          👥 Comunidad <span style="color:#FF4FA3">Harmiq</span>
-        </h1>
-        <p style="color:#9CA3AF; font-size:1.1rem; max-width:600px; margin:0 auto">
-          El punto de encuentro para amantes del karaoke. Publica eventos, encuentra locales y comparte tu pasión.
-        </p>
-      </div>
+    const content = `
+    <div style="max-width:1000px; margin:0 auto; padding:2rem 1rem">
+        <div style="text-align:center; margin-bottom:3rem">
+            <h1 style="font-family:'Baloo 2',sans-serif; font-weight:900; font-size:clamp(2.2rem,6vw,4rem); margin-bottom:1rem; background:linear-gradient(135deg,#fff,#FF4FA3); -webkit-background-clip:text; -webkit-text-fill-color:transparent">
+                👥 Comunidad <span style="color:#7C4DFF">Harmiq</span>
+            </h1>
+            <p style="color:#9CA3AF; font-size:1.1rem; max-width:650px; margin:0 auto">
+                Canta, comparte y conéctate con la mayor comunidad de karaoke.
+            </p>
+            <div style="margin-top:2rem">
+                <button onclick="openPublishPopup()" class="btn" style="background:#FF4FA3; padding:0.8rem 1.5rem; font-weight:900; box-shadow:0 0 20px rgba(255,79,163,0.3)">🎤 Publicar mi Karaoke</button>
+            </div>
+        </div>
 
-      ${getEventsModuleHTML()}
+        <!-- SECCIÓN CATALÀ -->
+        <div class="community-section" style="margin-bottom:4rem">
+            <h2 style="font-family:'Baloo 2',sans-serif; font-size:1.8rem; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.5rem">
+                🏴 Karaoke en Català
+            </h2>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem">
+                <div id="playlist-cat-1"></div>
+                <div id="playlist-cat-2"></div>
+            </div>
+        </div>
 
-      <!-- DISQUS -->
-      <div style="background:rgba(255,255,255,.02); border-radius:24px; border:1px solid rgba(255,255,255,.05); padding:2rem; margin-top:3rem">
-        <h2 style="font-family:'Baloo 2',sans-serif; font-size:1.5rem; margin-bottom:1.5rem; text-align:center">
-          💬 Foro de Discusión
-        </h2>
-        <div id="disqus_thread"></div>
-      </div>
-      
-      <div style="margin-top:2.5rem; padding:1.5rem; background:rgba(255,255,255,.03); border-radius:18px; font-size:.78rem; color:#6B7280; line-height:1.6">
-        <strong>Aviso de la Comunidad:</strong> La sección de eventos es gestionada por los propios usuarios. Harmiq actúa únicamente como plataforma de difusión y no se responsabiliza de los cambios de última hora, precios de entrada o calidad del servicio en los locales mencionados. Al participar en el foro, aceptas nuestras normas de respeto y convivencia.
-      </div>
+        <!-- SECCIÓN ESPAÑOL / ENGLISH -->
+        <div class="community-section" style="margin-bottom:4rem">
+            <h2 style="font-family:'Baloo 2',sans-serif; font-size:1.8rem; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.5rem">
+                🌎 Éxitos Globales (ES/EN)
+            </h2>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem">
+                <div id="playlist-global-1"></div>
+                <div id="playlist-global-2"></div>
+            </div>
+        </div>
+
+        ${getHomeStudioHTML()}
+
+        <!-- DISQUS -->
+        <div style="background:rgba(255,255,255,.02); border-radius:30px; border:1px solid rgba(255,255,255,.05); padding:2rem; margin-top:4rem">
+            <h2 style="font-family:'Baloo 2',sans-serif; font-size:1.5rem; margin-bottom:1.5rem; text-align:center">
+                💬 Foro de Discusión
+            </h2>
+            <div id="disqus_thread"></div>
+        </div>
+
+        <div style="margin-top:3rem; padding:1.5rem; background:rgba(255,255,255,.03); border-radius:20px; font-size:.8rem; color:#6B7280; line-height:1.7; text-align:center">
+            <strong>Protección Legal:</strong> Harmiq es una plataforma de análisis y recomendación. No gestionamos pagos directos; las transacciones de cursos y equipos se realizan de forma segura en Udemy y Amazon.
+        </div>
     </div>
-  `;
+    `;
 
-  // Renderizar página completa para evitar el bug del elemento #app ausente
-  document.body.innerHTML = `
-    <nav>
-      <a class="logo" href="/">🎙️ Harmiq</a>
-      <ul class="nav-links">
-        <li><a href="/voz/baritono">Barítono</a></li>
-        <li><a href="/voz/tenor">Tenor</a></li>
-        <li><a href="/voz/soprano">Soprano</a></li>
-        <li><a href="/voz/mezzo-soprano">Mezzo</a></li>
-        <li><a href="/voz/contralto">Contralto</a></li>
-        <li><a href="/voz/bajo">Bajo</a></li>
-      </ul>
-      <a class="btn" href="/#app" style="padding:.5rem 1.2rem;font-size:.85rem">🎤 Analizar mi voz</a>
+    document.body.innerHTML = `
+    <nav style="position:sticky; top:0; z-index:1000; background:rgba(10,10,15,0.8); backdrop-filter:blur(10px)">
+        <div style="max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:1rem">
+            <a class="logo" href="/">🎙️ Harmiq</a>
+            <ul class="nav-links" style="display:flex; list-style:none; gap:1rem; margin:0; padding:0">
+                <li><a href="/voz/soprano" style="color:#FF4FA3; font-weight:700">Soprano</a></li>
+                <li><a href="/voz/tenor" style="color:#1DB954; font-weight:700">Tenor</a></li>
+                <li><a href="/voz/mezzo-soprano" style="color:#7C4DFF; font-weight:700">Mezzo</a></li>
+                <li><a href="/comunidad" style="color:#FF9900; font-weight:700">Comunidad</a></li>
+            </ul>
+        </div>
     </nav>
     <div id="comunidad-wrap">${content}</div>
-    <footer>
-      <div class="fl">
-        <a href="/">Inicio</a>
-        <a href="/voz/baritono">Barítono</a>
-        <a href="/voz/tenor">Tenor</a>
-        <a href="/voz/soprano">Soprano</a>
-        <a href="/voz/mezzo-soprano">Mezzo</a>
-        <a href="/voz/contralto">Contralto</a>
-        <a href="/voz/bajo">Bajo</a>
-        <a href="/comunidad" style="color:#FF5E5B; font-weight:700">Comunidad</a>
-      </div>
-      <p>© 2026 Harmiq · <a href="mailto:info@harmiq.app">info@harmiq.app</a> · <a href="/politica-privacidad.html">Privacidad</a></p>
+    <footer style="padding:4rem 2rem; border-top:1px solid rgba(255,255,255,0.05); text-align:center">
+        <p style="color:#6B7280; font-size:0.9rem">© 2026 Harmiq · Plataforma Segura · <a href="/politica-privacidad.html" style="color:#7C4DFF">Privacidad</a></p>
     </footer>
-  `;
+    `;
 
-  renderDisqus("comunidad-v3");
-  document.title = "Comunidad Karaoke Harmiq | Eventos y Foro";
-  window.scrollTo(0,0);
+    // Render Playlists
+    renderVideoSection("playlist-cat-1", "PLpcARcDSTR0KZjKxP9ecy7qadkM3Hqk_j", false); // Catalan 1
+    renderVideoSection("playlist-cat-2", "PLpcARcDSTR0L2gIDjYjIuY_8_Y4x3M_Z", false); // Catalan 2
+    renderVideoSection("playlist-global-1", "PLvR-j5N0A_6beOnN0k7k-bZ_r9o8yF6_F", true); // Spanish
+    renderVideoSection("playlist-global-2", "PL8D4Iby0Bmm9y57_K3vBvkZiaGjIXD_x5", true); // Sing King EN
+
+    renderDisqus("comunidad-v4");
+    document.title = "Comunidad Harmiq | Karaoke & Home Studio";
+    window.scrollTo(0,0);
+}
+
+function openPublishPopup() {
+    const url = prompt("Pega aquí el enlace de tu karaoke (YouTube or TikTok):");
+    if (url) {
+        alert("¡Recibido! Tu karaoke será revisado y publicado en la comunidad pronto. Gracias por compartir.");
+        console.log("Karaoke link submitted:", url);
+    }
 }
 
 function renderDisqus(identifier) {
@@ -3276,7 +3375,7 @@ function inicializarSEO() {
     }
     .btn-vocal:hover { transform: scale(1.07); filter: brightness(1.18); }
     .v-soprano  { background: #FF4FA3; }
-    .v-mezzo    { background: #D44DFF; }
+    .v-mezzo    { background: #7C4DFF; }
     .v-tenor    { background: #1DB954; }
     .v-baritono { background: #FF9800; }
     .v-bajo     { background: #2196F3; }
