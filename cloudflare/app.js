@@ -652,16 +652,22 @@ async function getArtistImage(name) {
   const backendImg = await getSpotifyImageFromBackend(name);
   if (backendImg) { imgCache[name] = backendImg; return backendImg; }
 
-  // 3. Deezer API pública (no requiere auth, permite CORS)
+  // 3. iTunes Search API pública (CORS friendly, rápido y alta calidad)
   try {
     const q = encodeURIComponent(name);
     const r = await fetch(
-      `https://api.deezer.com/search/artist?q=${q}&limit=1`,
+      `https://itunes.apple.com/search?term=${q}&entity=song&limit=1`,
       { signal: AbortSignal.timeout(4000) }
     );
     const d = await r.json();
-    const img = d.data?.[0]?.picture_medium || d.data?.[0]?.picture;
-    if (img) { imgCache[name] = img; return img; }
+    if (d.results && d.results.length > 0) {
+      const art = d.results[0].artworkUrl100;
+      if (art) {
+        const img = art.replace('100x100bb', '600x600bb');
+        imgCache[name] = img;
+        return img;
+      }
+    }
   } catch(_) {}
 
   // 4. Fallback: avatar con iniciales coloreadas
@@ -1269,26 +1275,16 @@ function findMatch(userVector) {
 // 11. RENDERIZAR RESULTADOS
 // ═══════════════════════════════════════════════════════════════════════════════
 function getPlatformLinks(singerName, songName) {
-  const platform = getMusicPlatform();
   const q        = encodeURIComponent(`${singerName} ${songName||""}`);
   const qs       = encodeURIComponent(`${singerName} ${songName||""} karaoke`);
 
-  const links = {
-    spotify:   `https://open.spotify.com/search/${q}`,
-    apple:     `https://music.apple.com/search?term=${q}`,
-    youtube:   `https://www.youtube.com/results?search_query=${qs}`,
-    line:      `https://music.line.me/search?type=track&q=${q}`,
-    melon:     `https://www.melon.com/search/total/index.htm?q=${q}`,
-  };
-
-  const platformLabel = { spotify:"Spotify", apple:"Apple Music", youtube:"YouTube", line:"LINE Music", melon:"Melon" };
-  const platformColor = { spotify:"#1DB954", apple:"#fc3c44", youtube:"#FF0000", line:"#00B900", melon:"#00CD3C" };
-
   return {
-    karaoke:      links.youtube,
-    stream:       links[platform] || links.spotify,
-    streamLabel:  platformLabel[platform] || "Spotify",
-    streamColor:  platformColor[platform] || "#1DB954",
+    karaoke: `https://www.youtube.com/results?search_query=${qs}`,
+    streams: [
+      { url: `https://open.spotify.com/search/${q}`, label: "Spotify", color: "#1DB954" },
+      { url: `https://music.apple.com/search?term=${q}`, label: "Apple Music", color: "#fc3c44" },
+      { url: `https://music.youtube.com/search?q=${q}`, label: "YT Music", color: "#FF0000" }
+    ]
   };
 }
 
@@ -1390,7 +1386,7 @@ async function renderResults({feat,vt,conf,matches,gender}) {
     const pct  = Math.round(m.score);
     const img  = imgCache[m.name] || null;
     const song = m.reference_songs?.[0] || m.name;
-    const {karaoke, stream, streamLabel, streamColor} = getPlatformLinks(m.name, song);
+    const {karaoke, streams} = getPlatformLinks(m.name, song);
     const vtN  = trV("_vt_names", m.voice_type);
 
     return `
@@ -1434,13 +1430,15 @@ async function renderResults({feat,vt,conf,matches,gender}) {
             onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
             ▶ ${tr("_karaoke")}
           </a>
-          <a href="${stream}" target="_blank" rel="noopener"
+          ${streams.map(st => `
+          <a href="${st.url}" target="_blank" rel="noopener"
             style="display:inline-flex;align-items:center;gap:.3rem;font-size:.75rem;font-weight:700;
-            padding:.3rem .65rem;border-radius:20px;background:${streamColor}22;color:${streamColor};
-            text-decoration:none;border:1px solid ${streamColor}44;transition:opacity .2s;"
+            padding:.3rem .65rem;border-radius:20px;background:${st.color}22;color:${st.color};
+            text-decoration:none;border:1px solid ${st.color}44;transition:opacity .2s;"
             onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
-            🎵 ${streamLabel}
+            🎵 ${st.label}
           </a>
+          `).join('')}
         </div>
       </div>
 
@@ -1511,19 +1509,9 @@ async function renderResults({feat,vt,conf,matches,gender}) {
       </div>
     </div>`;
 
-  // ── Canciones recomendadas de Spotify ────────────────────────────────
+  // ── Canciones recomendadas globales ────────────────────────────────
   const topMatch  = matches[0];
   const songRefs  = topMatch?.reference_songs?.slice(0,3) || [];
-  const spPlatform= getMusicPlatform();
-  const spColor   = {spotify:"#1DB954",apple:"#fc3c44",line:"#00B900",melon:"#00CD3C"}[spPlatform]||"#1DB954";
-  const spLabel   = {spotify:"Spotify",apple:"Apple Music",line:"LINE Music",melon:"Melon"}[spPlatform]||"Spotify";
-  const spLinks   = {
-    spotify: n => `https://open.spotify.com/search/${encodeURIComponent(n)}`,
-    apple:   n => `https://music.apple.com/search?term=${encodeURIComponent(n)}`,
-    line:    n => `https://music.line.me/search?type=track&q=${encodeURIComponent(n)}`,
-    melon:   n => `https://www.melon.com/search/total/index.htm?q=${encodeURIComponent(n)}`,
-  };
-  const getLnk = spLinks[spPlatform] || spLinks.spotify;
 
   const songsHTML = songRefs.length ? `
     <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:1.1rem;margin-top:.5rem;margin-bottom:.5rem">
@@ -1533,18 +1521,21 @@ async function renderResults({feat,vt,conf,matches,gender}) {
       <div style="display:flex;flex-direction:column;gap:.35rem">
         ${songRefs.map(s => {
           const title = typeof s === 'object' ? s.title : s;
-          const ytUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(title+' karaoke')}`;
-          const stUrl = getLnk(topMatch.name + ' ' + title);
+          const {karaoke, streams} = getPlatformLinks(topMatch.name, title);
           return `<div style="display:flex;align-items:center;gap:.5rem;padding:.45rem .7rem;
-            background:rgba(255,255,255,.04);border-radius:9px;font-size:.82rem">
+            background:rgba(255,255,255,.04);border-radius:9px;font-size:.82rem;flex-wrap:wrap">
             <span style="color:#7C4DFF">🎵</span>
-            <span style="flex:1;font-weight:600">${title}</span>
-            <a href="${ytUrl}" target="_blank" style="background:rgba(255,0,0,.12);color:#ff4444;
-              font-size:.68rem;font-weight:700;padding:.18rem .5rem;border-radius:20px;
-              text-decoration:none;border:1px solid rgba(255,0,0,.2)">▶ Karaoke</a>
-            <a href="${stUrl}" target="_blank" style="background:${spColor}18;color:${spColor};
-              font-size:.68rem;font-weight:700;padding:.18rem .5rem;border-radius:20px;
-              text-decoration:none;border:1px solid ${spColor}33">${spLabel}</a>
+            <span style="flex:1;font-weight:600;min-width:120px">${title}</span>
+            <div style="display:flex;gap:.3rem">
+              <a href="${karaoke}" target="_blank" style="background:rgba(255,0,0,.12);color:#ff4444;
+                font-size:.68rem;font-weight:700;padding:.18rem .5rem;border-radius:20px;
+                text-decoration:none;border:1px solid rgba(255,0,0,.2)">▶ Karaoke</a>
+              ${streams.map(st => `
+              <a href="${st.url}" target="_blank" style="background:${st.color}18;color:${st.color};
+                font-size:.68rem;font-weight:700;padding:.18rem .5rem;border-radius:20px;
+                text-decoration:none;border:1px solid ${st.color}33">${st.label}</a>
+              `).join("")}
+            </div>
           </div>`;
         }).join("")}
       </div>
