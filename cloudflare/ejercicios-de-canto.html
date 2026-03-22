@@ -6,7 +6,11 @@
 <title>Ejercicios de Canto — Rutinas Vocales para Mejorar tu Voz | Harmiq</title>
 <meta name="description" content="Los mejores ejercicios de canto para mejorar tu voz: calentamiento vocal, técnica, extensión de rango, vibrato y más. Guía completa con videos y rutinas diarias.">
 <meta name="keywords" content="ejercicios de canto, ejercicios vocales, calentamiento vocal, mejorar la voz, técnica vocal, cómo cantar mejor, rutina vocal">
-<link rel="canonical" href="https://harmiq.app/ejercicios-de-canto">
+<link rel="canonical" href="https://harmiq.app/ejercicios-de-canto.html">
+<link rel="icon" type="image/png" href="/harmiq-logo.png">
+<link rel="apple-touch-icon" href="/harmiq-logo.png">
+<meta property="og:image" content="https://harmiq.app/harmiq-logo.png">
+<meta name="twitter:image" content="https://harmiq.app/harmiq-logo.png">
 <meta property="og:title" content="Ejercicios de Canto para Mejorar tu Voz | Harmiq">
 <meta property="og:description" content="Rutinas vocales completas para todos los niveles. Con videos de los mejores vocal coaches del mundo.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Ejercicios de Canto: Guía Completa","description":"Los mejores ejercicios vocales organizados por objetivo y nivel","url":"https://harmiq.app/ejercicios-de-canto"}</script>
@@ -606,44 +610,42 @@ function playVideo(card, id) {
 }
 
 // ⏱️ Cronómetros para Ejercicios
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.ex-duration').forEach(el => {
-    el.style.cursor = 'pointer';
-    el.title = 'Haz clic para iniciar el cronómetro';
-    el.innerHTML += ' <span style="font-size:0.7rem; color:var(--m);">(Click para iniciar)</span>';
-    el.addEventListener('click', function() {
-      if(this.timerInterval) return; // ya está corriendo
-      let match = this.innerText.match(/(\d+)/);
-      if(!match) return;
-      let mins = parseInt(match[1]);
-      let secs = mins * 60;
-      this.originalContent = this.innerHTML;
-      
-      this.style.background = 'rgba(6,214,160,0.1)';
-      this.style.padding = '4px 10px';
-      this.style.borderRadius = '10px';
-      this.style.border = '1px solid var(--green)';
-      
-      this.innerText = `⏳ Iniciando...`;
-      this.timerInterval = setInterval(() => {
-        secs--;
-        let m = Math.floor(secs / 60);
-        let s = secs % 60;
-        this.innerText = `⏳ ${m}:${s.toString().padStart(2, '0')} restantes`;
-        if(secs <= 0) {
-          clearInterval(this.timerInterval);
-          this.timerInterval = null;
-          this.innerText = "✅ ¡Completado!";
-          this.style.background = 'rgba(124,77,255,0.2)';
-          this.style.border = '1px solid var(--p)';
-          setTimeout(() => {
-              this.innerHTML = this.originalContent;
-              this.style.background = 'transparent';
-              this.style.border = 'none';
-          }, 4000);
-        }
-      }, 1000);
-    });
+document.querySelectorAll('.ex-duration').forEach(el => {
+  el.style.cursor = 'pointer';
+  el.title = 'Haz clic para iniciar el cronómetro';
+  el.innerHTML += ' <span style="font-size:0.7rem; color:var(--m);">(Click para iniciar)</span>';
+  el.addEventListener('click', function() {
+    if(this.timerInterval) return; // ya está corriendo
+    let match = this.innerText.match(/(\d+)/);
+    if(!match) return;
+    let mins = parseInt(match[1]);
+    let secs = mins * 60;
+    this.originalContent = this.innerHTML;
+    
+    this.style.background = 'rgba(6,214,160,0.1)';
+    this.style.padding = '4px 10px';
+    this.style.borderRadius = '10px';
+    this.style.border = '1px solid var(--green)';
+    
+    this.innerText = `⏳ Iniciando...`;
+    this.timerInterval = setInterval(() => {
+      secs--;
+      let m = Math.floor(secs / 60);
+      let s = secs % 60;
+      this.innerText = `⏳ ${m}:${s.toString().padStart(2, '0')} restantes`;
+      if(secs <= 0) {
+        clearInterval(this.timerInterval);
+        this.timerInterval = null;
+        this.innerText = "✅ ¡Completado!";
+        this.style.background = 'rgba(124,77,255,0.2)';
+        this.style.border = '1px solid var(--p)';
+        setTimeout(() => {
+            this.innerHTML = this.originalContent;
+            this.style.background = 'transparent';
+            this.style.border = 'none';
+        }, 4000);
+      }
+    }, 1000);
   });
 });
 </script>
