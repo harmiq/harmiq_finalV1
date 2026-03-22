@@ -564,15 +564,15 @@ function showSection(id, el) {
 
 // Videos con IDs verificados y thumbnails de alta calidad
 const VIDEOS = [
-  {id:"BjpEZ2f1j6E", title:"Cómo mejorar tu voz cantando — Técnicas básicas", channel:"Brett Manning"},
-  {id:"A8vZuFNLqyo", title:"Cómo cantar notas altas sin tensión", channel:"Ken Tamplin Vocal Academy"},
-  {id:"QXSY_FiLBYk", title:"Calentamiento vocal completo — 10 minutos", channel:"Cheryl Porter"},
-  {id:"bqCPDEm2K8s", title:"Clase de canto para principiantes absolutos", channel:"Justin Stoney"},
-  {id:"hzNEHAJRevk", title:"Mix voice — Cómo conectar registros", channel:"Eric Arceneaux"},
-  {id:"PgJYSJVfO04", title:"Los 5 mejores ejercicios vocales de calentamiento", channel:"Felicia Ricci"},
-  {id:"UPHCf-cZ7kA", title:"Vibrato — Cómo desarrollarlo correctamente", channel:"New York Vocal Coaching"},
-  {id:"m-a3HV5PVDE", title:"Respiración diafragmática para cantantes", channel:"The Voice Lab"},
-  {id:"hKBLGMWiPIg", title:"Cómo ampliar tu rango vocal — Ejercicios avanzados", channel:"Vocalist Studio"},
+  {id:"OXbhV6pduXY", title:"Tu voz suena forzada? Ejercicio de 5 min (Lax Vox)", channel:"Maria Viñas"},
+  {id:"PL4QLcc_qiWhIyWpteAoISVrQiqqSZxpMz", isPlaylist:true, title:"Cómo empezar a cantar (Playlist)", channel:"Maria Viñas"},
+  {id:"PLpcARcDSTR0I65m602wSm-I8lD1vqjd-q", isPlaylist:true, title:"Vocal Exercises (Full Playlist)", channel:"New York Vocal Coaching"},
+  {id:"bqCPDEm2K8s", title:"Clase de canto para principiantes", channel:"Justin Stoney (NYVC)"},
+  {id:"QXSY_FiLBYk", title:"Calentamiento vocal completo — 10 min", channel:"Cheryl Porter"},
+  {id:"BjpEZ2f1j6E", title:"Cómo mejorar tu voz cantando", channel:"Brett Manning"},
+  {id:"A8vZuFNLqyo", title:"Cantar notas altas sin tensión", channel:"Ken Tamplin"},
+  {id:"hzNEHAJRevk", title:"Mix voice — Conectar registros", channel:"Eric Arceneaux"},
+  {id:"PgJYSJVfO04", title:"5 mejores ejercicios de calentamiento", channel:"Felicia Ricci"},
 ];
 
 let videosRendered = false;
@@ -581,27 +581,42 @@ function renderVideos() {
   if (videosRendered) return;
   videosRendered = true;
   const container = document.getElementById('videos-container');
-  container.innerHTML = VIDEOS.map(v => `
-    <div class="video-card" onclick="playVideo(this,'${v.id}')">
+  container.innerHTML = VIDEOS.map(v => {
+    const thumbUrl = v.isPlaylist 
+      ? `https://img.youtube.com/vi/${v.id.startsWith('PL') ? 'default' : v.id}/hqdefault.jpg` // Fallback for playlists
+      : `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`;
+    
+    // For playlists, we use a different thumbnail if possible or just the first video if we had it
+    const activeThumb = v.isPlaylist ? "https://img.youtube.com/vi/bqCPDEm2K8s/hqdefault.jpg" : thumbUrl; 
+    if (v.id === "PL4QLcc_qiWhIyWpteAoISVrQiqqSZxpMz") v.displayThumb = "https://img.youtube.com/vi/OXbhV6pduXY/hqdefault.jpg";
+    if (v.id === "PLpcARcDSTR0I65m602wSm-I8lD1vqjd-q") v.displayThumb = "https://img.youtube.com/vi/UPHCf-cZ7kA/hqdefault.jpg";
+
+    return `
+    <div class="video-card" onclick="playVideo(this,'${v.id}',${v.isPlaylist?true:false})">
       <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/${v.id}/hqdefault.jpg"
+        <img src="${v.displayThumb || activeThumb}"
           alt="${v.title}"
           onerror="this.parentNode.style.background='#1a1a2e';this.style.display='none'">
         <div class="play-btn">
           <div class="play-circle">▶</div>
         </div>
+        ${v.isPlaylist ? '<div style="position:absolute; bottom:8px; right:8px; background:rgba(0,0,0,0.8); color:#fff; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:800">PLAYLIST</div>' : ''}
       </div>
       <div class="video-info">
         <h4>${v.title}</h4>
         <p>${v.channel}</p>
       </div>
     </div>
-  `).join('');
+  `}).join('');
 }
 
-function playVideo(card, id) {
+function playVideo(card, id, isPlaylist) {
   const thumb = card.querySelector('.video-thumb');
-  thumb.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" 
+  const src = isPlaylist 
+    ? `https://www.youtube.com/embed/videoseries?list=${id}&autoplay=1`
+    : `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+    
+  thumb.innerHTML = `<iframe src="${src}" 
     frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
     style="width:100%;height:100%;position:absolute;top:0;left:0"></iframe>`;
   thumb.style.position = 'relative';

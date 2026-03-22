@@ -1071,7 +1071,7 @@ function getHomeStudioHTML(voiceType) {
 
   const p = packs[voiceType] || packs["default"];
   
-  const getL = (item) => `https://www.amazon.${domain}/s?k=${encodeURIComponent(shieldAmazonQuery(item.name))}&tag=${tag}`;
+  const getL = (item) => `https://www.${getAmazonDomain()}/s?k=${encodeURIComponent(shieldAmazonQuery(item.name))}&tag=${tag}`;
 
   return `
     <div class="hs-packs" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-top:20px">
@@ -1116,8 +1116,7 @@ function getAmazonHtml(voiceType) {
   
   const micName = profile.recommended_models[0];
   const clean   = shieldAmazonQuery(micName);
-  const domain  = window.AMAZON_DOMAIN || "es";
-  const amzLink = `https://www.amazon.${domain}/s?k=${encodeURIComponent(clean)}&tag=harmiqapp-20`;
+  const amzLink = `https://www.${getAmazonDomain()}/s?k=${encodeURIComponent(clean)}&tag=harmiqapp-20`;
   
   return `
     <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
@@ -1145,7 +1144,7 @@ function getAmazonHtml(voiceType) {
       </a>
       <div style="border-top:1px solid rgba(255,255,255,0.05); padding-top:1.5rem">
         <h4 style="font-size:0.9rem; margin-bottom:1rem; color:#fff">📦 Packs Home Studio Completos</h4>
-        ${getHomeStudioHTML()}
+        ${getHomeStudioHTML(voiceType)}
       </div>
     </div>`;
 }
@@ -1166,7 +1165,7 @@ function getAmazonAffiliateLink(voiceType) {
   if (!profile || !profile.recommended_models || !profile.recommended_models.length) return null;
   const micName = profile.recommended_models[0];
   const clean   = shieldAmazonQuery(micName);
-  return `https://www.amazon.es/s?k=${encodeURIComponent(clean)}&tag=${monetizationDb.config?.affiliate_id||"harmiqapp-20"}`;
+  return `https://www.${getAmazonDomain()}/s?k=${encodeURIComponent(clean)}&tag=${monetizationDb.config?.affiliate_id||"harmiqapp-20"}`;
 }
 
 /**
@@ -1185,7 +1184,7 @@ function getAmazonBox(voiceType) {
   if (!profile || !profile.recommended_models || !profile.recommended_models.length) return "";
   const micName = profile.recommended_models[0];
   const clean   = shieldAmazonQuery(micName);
-  const link = `https://www.amazon.es/s?k=${encodeURIComponent(clean)}&tag=${monetizationDb.config?.affiliate_id||"harmiqapp-20"}`;
+  const link = `https://www.${getAmazonDomain()}/s?k=${encodeURIComponent(clean)}&tag=${monetizationDb.config?.affiliate_id||"harmiqapp-20"}`;
   return `
     <div class="cta-box" style="border:2px solid var(--gold,#FFD700);margin-top:20px;
       padding:1.1rem;border-radius:16px;background:rgba(255,215,0,.05)">
@@ -1204,7 +1203,8 @@ function getAmazonBox(voiceType) {
     </div>`;
 }
 
-function getEventsModuleHTML() {
+function getEventsModuleHTML(city = "España") {
+  const enc = encodeURIComponent(`karaoke ${city}`);
   return `
     <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; margin-top:2rem">
       <!-- Listado de Eventos -->
@@ -1216,41 +1216,36 @@ function getEventsModuleHTML() {
           <!-- Evento 1 -->
           <div style="background:rgba(124,77,255,.06); border:1px solid rgba(124,77,255,.15); border-radius:14px; padding:.9rem">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:.4rem">
-              <span style="font-size:.65rem; background:#7C4DFF; color:#fff; padding:.2rem .4rem; border-radius:5px; font-weight:800">BARCELONA</span>
+              <span style="font-size:.65rem; background:#7C4DFF; color:#fff; padding:.2rem .4rem; border-radius:5px; font-weight:800">${city.toUpperCase()}</span>
               <span style="font-size:.65rem; color:#6B7280">28 Mar, 21:00</span>
             </div>
             <div style="font-weight:800; font-size:.85rem; margin-bottom:.3rem">Karaoke Night @ Sala Apolo</div>
             <div style="display:flex; gap:.6rem; margin-top:.6rem">
-              <a href="https://maps.google.com/?q=Sala+Apolo+Barcelona" target="_blank" style="font-size:.65rem; color:#A5B4FC; text-decoration:none; font-weight:700">📍 Ubicación</a>
-              <a href="https://instagram.com/sala_apolo" target="_blank" style="font-size:.65rem; color:#FF4FA3; text-decoration:none; font-weight:700">📸 Instagram</a>
+              <a href="https://www.google.com/maps/search/karaoke+${encodeURIComponent(city)}" target="_blank" style="font-size:.65rem; color:#A5B4FC; text-decoration:none; font-weight:700">📍 Ver Locales en Google Maps</a>
             </div>
           </div>
           <!-- Evento 2 -->
           <div style="background:rgba(255,153,0,.06); border:1px solid rgba(255,153,0,.15); border-radius:14px; padding:.9rem">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:.4rem">
-              <span style="font-size:.65rem; background:#FF9900; color:#fff; padding:.2rem .4rem; border-radius:5px; font-weight:800">MADRID</span>
+              <span style="font-size:.65rem; background:#FF9900; color:#fff; padding:.2rem .4rem; border-radius:5px; font-weight:800">ONLINE</span>
               <span style="font-size:.65rem; color:#6B7280">02 Abr, 20:00</span>
             </div>
-            <div style="font-weight:800; font-size:.85rem; margin-bottom:.3rem">Open Mic @ El Búho Real</div>
+            <div style="font-weight:800; font-size:.85rem; margin-bottom:.3rem">Open Mic Virtual (Vía Discord)</div>
             <div style="display:flex; gap:.6rem; margin-top:.6rem">
-              <a href="https://maps.google.com/?q=El+Buho+Real+Madrid" target="_blank" style="font-size:.65rem; color:#A5B4FC; text-decoration:none; font-weight:700">📍 Ubicación</a>
-              <a href="https://facebook.com/buhoreal" target="_blank" style="font-size:.65rem; color:#1877F2; text-decoration:none; font-weight:700">📘 Facebook</a>
+              <a href="/comunidad" style="font-size:.65rem; color:#A5B4FC; text-decoration:none; font-weight:700">💬 Ver Foro</a>
             </div>
           </div>
         </div>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSeYvRy52iTb1NyM4dwQA596JrFk-09zmui5adR_aLCU9sA3Qg/viewform?usp=sf_link" target="_blank" style="display:block; margin-top:1.2rem; text-align:center; background:#06D6A0; color:#000; padding:.7rem; border-radius:10px; font-weight:900; text-decoration:none; font-size:.8rem">
           ➕ Publicar mi Evento
         </a>
-        <a href="${UDEMY_LINK}" target="_blank" style="display:block; margin-top:.8rem; text-align:center; background:#A5B4FC; color:#000; padding:.6rem; border-radius:10px; font-weight:800; text-decoration:none; font-size:.75rem">
-          🎓 Cursos de Canto Pro (Udemy)
-        </a>
       </div>
 
       <!-- Mapa -->
       <div style="background:rgba(255,255,255,.03); border-radius:20px; border:1px solid rgba(255,255,255,.08); padding:1rem; display:flex; flex-direction:column">
-        <h3 style="font-family:'Baloo 2',sans-serif; font-size:1.1rem; margin-bottom:1rem">🧭 Mapa de Locales</h3>
+        <h3 style="font-family:'Baloo 2',sans-serif; font-size:1.1rem; margin-bottom:1rem">🧭 Mapa de Locales en ${city}</h3>
         <div style="flex:1; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.1); min-height:220px">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d1500000!2d-3.7!3d40.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1skaraoke!5e0!3m2!1ses!2ses!4v1711100000000!5m2!1ses!2ses" 
+          <iframe id="_google_map" src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d1500000!2d-3.7!3d40.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1skaraoke+${encodeURIComponent(city)}!5e0!3m2!1ses!2ses!4v1711100000000!5m2!1ses!2ses" 
             width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
         </div>
       </div>
@@ -1804,8 +1799,8 @@ async function renderResults({feat,vt,conf,matches,gender}) {
 
     // Render Playlists de técnica
     setTimeout(() => {
-        renderVideoSection("vocal-es-list", "PL-X9s2_0kH9X5_Z4L6x4_v8Z", true); // Gret Rocha
-        renderVideoSection("vocal-en-list", "PLp01lSgrRROIigx0bu8T1EyjQMzAF6W1s", true); // Timo Parker
+        renderVideoSection("vocal-es-list", "PL4QLcc_qiWhIyWpteAoISVrQiqqSZxpMz", true); // Maria Viñas (Learn to Sing)
+        renderVideoSection("vocal-en-list", "PLpcARcDSTR0I65m602wSm-I8lD1vqjd-q", true); // New York Vocal Coaching
     }, 100);
 
   // ── Evento filtro época ────────────────────────────────────────────────
@@ -1942,11 +1937,11 @@ function buildKaraokeSection(vtName, vtSlug) {
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem">
             ${[
-              {id:"aAqlY_ds514", name:"Karaoke Total Profesional", desc:"Pistas alta fidelidad", color:"rgba(255,215,0,.1)", border:"rgba(255,215,0,.3)"},
-              {id:"5oTfrFin0WQ", name:"Karaoke en Català", desc:"Música de casa nostra", color:"rgba(206,17,38,.1)", border:"rgba(206,17,38,.2)"},
-              {id:"5AnMKHCCXn4", name:"Karaoke Girona", desc:"Pistes de la terra", color:"rgba(252,221,9,.1)", border:"rgba(252,221,9,.2)"},
-              {id:"BvW4efU0HTQ", name:"Karaoke Fun", desc:"Pistas divertidas", color:"rgba(0,209,255,.1)", border:"rgba(0,209,255,.2)"},
-              {id:"W_iC8U4Gj7I", name:"TIME KARAOKE", desc:"Hits Latinos & Pop", color:"rgba(255,153,0,.1)", border:"rgba(255,153,0,.2)"},
+              {id:"TfD-5k68uOQ", name:"Técnica: Respiración", desc:"Gret Rocha (Vocal Coach)", color:"rgba(124,77,255,.1)", border:"rgba(124,77,255,.3)"},
+              {id:"Z8_X9v_Z-jI", name:"Técnica: Apoyo Vocal", desc:"Ejercicios prácticos", color:"rgba(255,79,163,.1)", border:"rgba(255,79,163,.2)"},
+              {id:"6oF08tGkM50", name:"Vocal Grit & Power", desc:"Chris Liepe (Distortion)", color:"rgba(255,153,0,.1)", border:"rgba(255,153,0,.2)"},
+              {id:"4vUu_k_oI9Q", name:"High Note Control", desc:"Domina tus agudos", color:"rgba(6,214,160,.1)", border:"rgba(6,214,160,.2)"},
+              {id:"fS_m4uXoU_Y", name:"Daily Vocal Warmup", desc:"Calentamiento diario", color:"rgba(0,170,255,.1)", border:"rgba(0,170,255,.2)"},
             ].map(v=>`
               <div style="border-radius:12px;overflow:hidden;background:${v.color};border:1px solid ${v.border}">
                 <div style="position:relative;aspect-ratio:16/9;cursor:pointer;background:#000"
@@ -2966,10 +2961,10 @@ function getHomeStudioHTML() {
         <h2 style="font-family:'Baloo 2',sans-serif; text-align:center; margin-bottom:2rem; background:linear-gradient(135deg,#fff,#FF9900); -webkit-background-clip:text; -webkit-text-fill-color:transparent">🎙️ Domina tu Home Studio</h2>
         <div class="amazon-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem">
             ${[
-                {name: "Pack Iniciación (Behringer)", url: "https://amazon.es/pack1-iniciacion"},
-                {name: "Pack Pro Vocals (Rode)", url: "https://amazon.es/pack2-pro"},
-                {name: "Pack Podcaster (Shure)", url: "https://amazon.es/pack3-podcast"},
-                {name: "Pack Studio Elite (Neumann)", url: "https://amazon.es/pack4-elite"}
+                {name: "Pack Iniciación (Behringer)", url: "https://www.amazon.es/s?k=pack+home+studio+behringer+u-phoria"},
+                {name: "Pack Pro Vocals (Rode)", url: "https://www.amazon.es/s?k=Rode+NT1+5th+Gen+Studio+Pack"},
+                {name: "Pack Podcaster (Shure)", url: "https://www.amazon.es/s?k=Shure+MV7+Podcast+Kit"},
+                {name: "Pack Studio Elite (Neumann)", url: "https://www.amazon.es/s?k=Neumann+TLM+103+Studio+Set"}
             ].map(p => `
                 <div class="amazon-card" style="background:rgba(255,255,255,0.03); padding:1.2rem; border-radius:20px; text-align:center; border:1px solid rgba(255,255,255,0.05); transition:all 0.3s">
                     <div style="font-size:2rem; margin-bottom:0.5rem">📦</div>
@@ -3004,47 +2999,53 @@ function renderVideoSection(containerId, playlistId, showUdemy = true) {
 
 function loadComunidadPage() {
     const content = `
-    <div style="max-width:1000px; margin:0 auto; padding:2rem 1rem">
-        <div style="text-align:center; margin-bottom:3rem">
-            <h1 style="font-family:'Baloo 2',sans-serif; font-weight:900; font-size:clamp(2.2rem,6vw,4rem); margin-bottom:1rem; background:linear-gradient(135deg,#fff,#FF4FA3); -webkit-background-clip:text; -webkit-text-fill-color:transparent">
-                👥 Comunidad <span style="color:#7C4DFF">Harmiq</span>
+    <div style="padding:4rem 2rem; max-width:1100px; margin:0 auto; color:#fff">
+        <header style="text-align:center; margin-bottom:4rem">
+            <h1 style="font-family:'Outfit',sans-serif; font-size:3rem; margin-bottom:1rem; background:linear-gradient(135deg,#fff,#7C4DFF); -webkit-background-clip:text; -webkit-text-fill-color:transparent">
+                👥 Comunidad Harmiq
             </h1>
-            <p style="color:#9CA3AF; font-size:1.1rem; max-width:650px; margin:0 auto">
-                Canta, comparte y conéctate con la mayor comunidad de karaoke.
+            <p style="font-size:1.1rem; color:#9CA3AF; max-width:700px; margin:0 auto">
+                El punto de encuentro para cantantes de todo el mundo. Descubre eventos, comparte tu talento y aprende de los mejores.
             </p>
-            <div style="margin-top:2rem">
-                <button onclick="openPublishPopup()" class="btn" style="background:#FF4FA3; padding:0.8rem 1.5rem; font-weight:900; box-shadow:0 0 20px rgba(255,79,163,0.3)">🎤 Publicar mi Karaoke</button>
-            </div>
-        </div>
+        </header>
 
-        <!-- SECCIÓN CATALÀ -->
+        <!-- SECCIÓN EVENTOS Y MAPA -->
         <div class="community-section" style="margin-bottom:4rem">
-            <h2 style="font-family:'Baloo 2',sans-serif; font-size:1.8rem; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.5rem">
-                🏴 Karaoke en Català
-            </h2>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem">
-                <div id="playlist-cat-1"></div>
-                <div id="playlist-cat-2"></div>
-            </div>
+           ${getEventsModuleHTML("Madrid")}
         </div>
 
-        <!-- SECCIÓN ESPAÑOL / ENGLISH -->
-        <div class="community-section" style="margin-bottom:4rem">
-            <h2 style="font-family:'Baloo 2',sans-serif; font-size:1.8rem; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.5rem">
-                🌎 Éxitos Globales (ES/EN)
-            </h2>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem">
-                <div id="playlist-global-1"></div>
-                <div id="playlist-global-2"></div>
+        <!-- SECCIÓN MÁS OPCIONES (Contribución) -->
+        <div id="participa" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.5rem; margin-bottom:4rem">
+            <div style="background:rgba(255,255,255,.03); padding:1.5rem; border-radius:24px; border:1px solid rgba(255,255,255,.06); text-align:center">
+                <div style="font-size:2rem; margin-bottom:.8rem">🎤</div>
+                <h3 style="font-size:1.1rem; margin-bottom:.5rem">Comparte tu Karaoke</h3>
+                <p style="font-size:.85rem; color:#6B7280; margin-bottom:1.5rem">¿Has grabado algo especial? Comparte el enlace con la comunidad.</p>
+                <button onclick="openPublishPopup()" style="background:rgba(124,77,255,.2); color:#A5B4FC; border:1px solid rgba(124,77,255,.3); padding:.6rem 1.2rem; border-radius:12px; font-weight:700; cursor:pointer">
+                    Compartir Link
+                </button>
+            </div>
+            <div style="background:rgba(255,255,255,.03); padding:1.5rem; border-radius:24px; border:1px solid rgba(255,255,255,.06); text-align:center">
+                <div style="font-size:2rem; margin-bottom:.8rem">🏆</div>
+                <h3 style="font-size:1.1rem; margin-bottom:.5rem">Montar Home Studio</h3>
+                <p style="font-size:.85rem; color:#6B7280; margin-bottom:1.5rem">Packs de equipo profesional para tu tipo de voz.</p>
+                <a href="/voz/baritono" style="display:inline-block; background:rgba(255,153,0,.2); color:#FF9900; border:1px solid rgba(255,153,0,.3); padding:.6rem 1.2rem; border-radius:12px; font-weight:700; text-decoration:none">
+                    Ver Equipos
+                </a>
+            </div>
+            <div style="background:rgba(255,255,255,.03); padding:1.5rem; border-radius:24px; border:1px solid rgba(255,255,255,.06); text-align:center">
+                <div style="font-size:2rem; margin-bottom:.8rem">🎓</div>
+                <h3 style="font-size:1.1rem; margin-bottom:.5rem">Academia Harmiq</h3>
+                <p style="font-size:.85rem; color:#6B7280; margin-bottom:1.5rem">Certifícate con cursos profesionales en Udemy.</p>
+                <a href="${UDEMY_LINK}" target="_blank" style="display:inline-block; background:rgba(6,214,160,.2); color:#06D6A0; border:1px solid rgba(6,214,160,.3); padding:.6rem 1.2rem; border-radius:12px; font-weight:700; text-decoration:none">
+                    Ver Cursos
+                </a>
             </div>
         </div>
-
-        ${getHomeStudioHTML()}
 
         <!-- DISQUS -->
-        <div style="background:rgba(255,255,255,.02); border-radius:30px; border:1px solid rgba(255,255,255,.05); padding:2rem; margin-top:4rem">
+        <div style="background:rgba(255,255,255,.02); border-radius:30px; border:1px solid rgba(255,255,255,.05); padding:2rem">
             <h2 style="font-family:'Baloo 2',sans-serif; font-size:1.5rem; margin-bottom:1.5rem; text-align:center">
-                💬 Foro de Discusión
+                💬 Foro de la Comunidad
             </h2>
             <div id="disqus_thread"></div>
         </div>
@@ -3061,17 +3062,8 @@ function loadComunidadPage() {
     ${getPremiumFooterHTML()}
     `;
 
-    // Render Playlists
-    // Render Playlists (con delay para asegurar DOM)
-    setTimeout(() => {
-        renderVideoSection("playlist-cat-1", "PLpcARcDSTR0KZjKxP9ecy7qadkM3Hqk_j", false); 
-        renderVideoSection("playlist-cat-2", "PLpcARcDSTR0L2gIDjYjIuY_8_Y4x3M_Z", false); 
-        renderVideoSection("playlist-global-1", "PLvR-j5N0A_6beOnN0k7k-bZ_r9o8yF6_F", true); 
-        renderVideoSection("playlist-global-2", "PL8D4Iby0Bmm9y57_K3vBvkZiaGjIXD_x5", true); 
-    }, 100);
-
-    renderDisqus("comunidad-v4");
-    document.title = "Comunidad Harmiq | Karaoke & Home Studio";
+    renderDisqus("home");
+    document.title = "Comunidad Harmiq | Foro, Eventos y Karaoke";
     window.scrollTo(0,0);
 }
 
@@ -3200,6 +3192,13 @@ function _searchKaraoke() {
   if (!city) return;
   const enc = encodeURIComponent(city);
   const lg = lang || "es";
+  
+  // Actualizar Mapa Dinámico si existe
+  const mapIf = document.getElementById("_google_map");
+  if (mapIf) {
+    mapIf.src = `https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d1500000!2d-3.7!3d40.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1skaraoke+${encodeURIComponent(city)}!5e0!3m2!1ses!2ses!4v1711100000000!5m2!1ses!2ses`;
+  }
+
   const resDiv = document.getElementById("_karaoke_results");
   if (resDiv) resDiv.style.display = "block";
 

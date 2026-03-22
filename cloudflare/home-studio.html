@@ -375,28 +375,28 @@
     <section id="sec-headphones" class="content-section">
         <div class="prod-grid">
             <div class="prod-card">
-                <div class="img-wrap"><img src="athm20x.jpg" alt="ATH-M20x" onerror="this.src='https://m.media-amazon.com/images/P/B00HVLUR18.01._SCLZZZZZZZ_.jpg'"></div>
+                <div class="img-wrap"><img src="https://m.media-amazon.com/images/I/71u9SShm6+L._AC_SL1500_.jpg" alt="Audio-Technica ATH-M20x"></div>
                 <div class="info-body">
                     <div class="tag-row"><span class="tag" style="background:var(--blue)">💰 Económico</span></div>
                     <h2 class="card-title">Audio-Technica ATH-M20x</h2>
                     <p class="analysis-text">La entrada perfecta al audio profesional. Sonido plano y diseño cerrado para que no se filtre ruido al grabar en el micrófono.</p>
                 </div>
-                <a href="#" class="btn-amz" data-asin="B00HVLUR18">Ver en Amazon</a>
+                <a href="https://www.amazon.es/Audio-Technica-ATH-M20x-Auriculares-estudio-cerrado/dp/B00HVLUR18/?tag=harmiqapp-20" class="btn-amz">Ver en Amazon</a>
             </div>
 
             <div class="prod-card">
-                <div class="img-wrap"><img src="dt770.jpg" alt="DT770" onerror="this.src='https://m.media-amazon.com/images/P/B0016MNAAI.01._SCLZZZZZZZ_.jpg'"></div>
+                <div class="img-wrap"><img src="https://m.media-amazon.com/images/I/71U7-y6XguL._AC_SL1500_.jpg" alt="Beyerdynamic DT 770 Pro"></div>
                 <div class="info-body">
                     <div class="tag-row"><span class="tag" style="background:var(--a)">🎙 Medio</span></div>
                     <h2 class="card-title">Beyerdynamic DT 770 Pro</h2>
                     <p class="analysis-text">El estándar indiscutible de grabación vocal en todos los grandes estudios del mundo. Extremadamente duraderos y aislantes.</p>
                     <div class="pro-fact" style="margin-top:1rem"><b>🌟 Comodidad:</b> Famosos por sus almohadillas gigantes de terciopelo que permiten sesiones maratonianas sin fatiga.</div>
                 </div>
-                <a href="#" class="btn-amz" data-asin="B0016MNAAI">Ver en Amazon</a>
+                <a href="https://www.amazon.es/Beyerdynamic-DT-770-PRO-Auriculares/dp/B0016MNAAI/?tag=harmiqapp-20" class="btn-amz">Ver en Amazon</a>
             </div>
 
             <div class="prod-card">
-                <div class="img-wrap"><img src="hd600.jpg" alt="Sennheiser HD600" onerror="this.src='https://m.media-amazon.com/images/P/B00004SY4H.01._SCLZZZZZZZ_.jpg'"></div>
+                <div class="img-wrap"><img src="https://m.media-amazon.com/images/I/7178W7Q6XPL._AC_SL1500_.jpg" alt="Sennheiser HD 600"></div>
                 <div class="info-body">
                     <div class="tag-row"><span class="tag" style="background:var(--p)">🔥 Pro / Caro</span></div>
                     <h2 class="card-title">Sennheiser HD 600</h2>
@@ -405,7 +405,7 @@
                         <strong>⚠️ Aviso:</strong> Al ser abiertos, dejan escapar el sonido. Úsalos para mezclar el beat, no para estar delante del micrófono (el micro captaría la base musical).
                     </div>
                 </div>
-                <a href="#" class="btn-amz" data-asin="B00004SY4H">Ver en Amazon</a>
+                <a href="https://www.amazon.es/Sennheiser-HD-600-Auriculares-abiertos/dp/B00004SY4H/?tag=harmiqapp-20" class="btn-amz">Ver en Amazon</a>
             </div>
         </div>
     </section>
@@ -804,6 +804,17 @@
                     }
                 };
             }
+        }
+    });
+
+    // Manejador de clics para enlaces con data-asin
+    document.addEventListener('click', e => {
+        const btn = e.target.closest('.btn-amz');
+        if (btn && btn.getAttribute('data-asin')) {
+            const asin = btn.getAttribute('data-asin');
+            const url = `https://www.amazon.es/dp/${asin}/?tag=harmiqapp-20`;
+            window.open(url, '_blank');
+            e.preventDefault();
         }
     });
 </script>
