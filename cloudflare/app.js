@@ -2919,9 +2919,13 @@ async function loadStaticPage(url, title) {
 // --- MONETIZACIÓN Y AFILIADOS ---
 function getUdemyBannerHTML() {
     return `
-    <div class="udemy-banner" style="margin-top:1.5rem; padding:1.2rem; background:linear-gradient(135deg,rgba(124,77,255,0.1),rgba(255,79,163,0.1)); border-radius:15px; border:1px solid rgba(124,77,255,0.2); text-align:center; transition: transform 0.3s">
-        <p style="font-size:0.95rem; color:#fff; margin-bottom:0.8rem">🚀 ¿Quieres subir de nivel? Certifícate con nuestro curso profesional.</p>
-        <a href="https://www.udemy.com/?p=affiliate-link-here" target="_blank" class="btn" style="background:#7C4DFF; font-size:0.85rem; padding:0.5rem 1rem">Ver Curso en Udemy</a>
+    <div class="udemy-banner" style="margin-top:1.5rem; background:linear-gradient(135deg, rgba(124,77,255,0.15), rgba(76,29,149,0.3)); border:1px solid rgba(124,77,255,0.3); border-radius:18px; padding:1.4rem; display:flex; align-items:center; gap:1.2rem; transition:transform 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.2)" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:2.4rem; filter:drop-shadow(0 0 10px rgba(124,77,255,0.5))">🚀</div>
+        <div style="flex:1">
+            <h4 style="font-family:'Baloo 2',sans-serif; font-size:1.15rem; margin-bottom:.3rem; color:#fff">¿Quieres dejar de ser un aficionado?</h4>
+            <p style="font-size:.85rem; color:#A5B4FC; line-height:1.4">Certifícate con nuestro curso profesional y domina los escenarios con técnica vocal de élite.</p>
+        </div>
+        <a href="${window.UDEMY_LINK || 'https://www.udemy.com/?p=harmiq'}" target="_blank" style="background:#7C4DFF; color:#fff; padding:.7rem 1.2rem; border-radius:12px; text-decoration:none; font-weight:800; font-size:.85rem; white-space:nowrap; box-shadow:0 4px 15px rgba(124,77,255,0.4)">Inscribirme Ahora</a>
     </div>`;
 }
 
@@ -2952,7 +2956,7 @@ function renderVideoSection(containerId, playlistId, showUdemy = true) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    container.innerHTML = `
+    const iframeHtml = `
         <div class="video-container" style="position:relative; width:100%; aspect-ratio:16/9; border-radius:24px; overflow:hidden; box-shadow:0 15px 40px rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.1)">
             <iframe 
                 width="100%" 
@@ -2966,7 +2970,7 @@ function renderVideoSection(containerId, playlistId, showUdemy = true) {
         </div>
     `;
 
-    el.innerHTML = iframeHtml + (showUdemy ? getUdemyBannerHTML() : "");
+    container.innerHTML = iframeHtml + (showUdemy ? getUdemyBannerHTML() : "");
 }
 
 function loadComunidadPage() {
