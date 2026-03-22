@@ -3086,7 +3086,7 @@ function openPublishPopup() {
 function renderDisqus(identifier) {
   // Configuración global de Disqus
   window.disqus_config = function () {
-    this.page.url = window.location.href;
+    this.page.url = (identifier === "home") ? "https://harmiq.app" : window.location.href;
     this.page.identifier = identifier;
   };
   
@@ -3155,6 +3155,11 @@ function handleRoute() {
     history.replaceState({}, "", "/#app");
     document.getElementById("app")?.scrollIntoView({behavior:"smooth"});
     return false;
+  }
+
+  if (path === "/" || path === "/index.html") {
+    renderDisqus("home");
+    return false; // Permitir que siga la carga normal de la home (recuperar resultados, etc)
   }
 
   return false;
