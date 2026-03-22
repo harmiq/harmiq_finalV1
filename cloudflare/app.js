@@ -2961,17 +2961,22 @@ function loadComunidadPage() {
 }
 
 function renderDisqus(identifier) {
+  // Configuración global de Disqus
   window.disqus_config = function () {
     this.page.url = window.location.href;
     this.page.identifier = identifier;
   };
+  
   const old = document.getElementById("disqus-embed-script");
   if (old) old.remove();
-  const d = document, s = d.createElement('script');
-  s.id = "disqus-embed-script";
-  s.src = 'https://harmiq.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', +new Date());
-  (d.head || d.body).appendChild(s);
+
+  (function() { // Snippet estándar proporcionado por el usuario
+    const d = document, s = d.createElement('script');
+    s.id = "disqus-embed-script";
+    s.src = 'https://harmiq.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
 }
 
 // ── Router SPA ─────────────────────────────────────────────────────────────────
