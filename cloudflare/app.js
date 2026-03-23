@@ -768,7 +768,7 @@ function injectUI() {
     </button>`;
 
   // ── Insertar en el DOM ─────────────────────────────────────────────────
-  const genderRow = document.querySelector("[id='user-gender']")?.closest("div");
+  const genderRow = document.getElementById("user-gender")?.closest("div");
   const recRow    = document.getElementById("record-btn")?.closest("div");
   // Marcar botó com "no llest" fins que carregui la DB
   const recBtnEl = document.getElementById("record-btn");
