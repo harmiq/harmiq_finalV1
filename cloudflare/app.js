@@ -1442,25 +1442,43 @@ async function analyzeAudio() {
   if (!gender)    { showStatus(tr("_err_gender"),"err"); return; }
   if (!audioBlob) { showStatus(tr("_err_short"),"err"); return; }
   if (!singersDb.length){ showStatus(tr("_err_db"),"err"); return; }
-  showStatus(tr("_analyzing"));
-  try {
-    // 🔔 PING: Despierta el Space de HF si está dormido
-    try { await fetch(`${HF_API_URL}/health`, { method: 'GET', signal: AbortSignal.timeout(5000) }); } catch(_) {}
 
-    // 🚀 ENVÍO AL BACKEND (Vía FormData para recibir vector 27D)
+  try {
+    showStatus("⏳ Despertando el servidor de IA...");
+    
+    // 🔔 WAKE-UP LOOP: Hasta 20 segundos para despertar el Space
+    let isAwake = false;
+    for (let i=0; i<10; i++) {
+      try {
+        const h = await fetch(`${HF_API_URL}/health`, { 
+            method: 'GET', 
+            mode: 'cors',
+            signal: AbortSignal.timeout(3000) 
+        });
+        if (h.ok) { isAwake = true; break; }
+      } catch(e) { console.log("Despertando...", i); }
+      await new Promise(r => setTimeout(r, 2000));
+    }
+
+    if (!isAwake) {
+      throw new Error("El servidor de IA está tardando mucho en arrancar. Por favor, recarga la página en 1 minuto.");
+    }
+
+    showStatus("⏳ Analizando tu voz...");
+
+    // 🚀 ENVÍO AL BACKEND
     const formData = new FormData();
     formData.append('audio', audioBlob, 'record.wav');
 
-    showStatus("⏳ Analizando tu voz con IA... (puede tardar hasta 30 seg la primera vez)");
-
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 90000); // 90s timeout
+    const timeout = setTimeout(() => controller.abort(), 60000); // 60s timeout
 
     let resp;
     try {
       resp = await fetch(`${HF_API_URL}/analyze`, {
         method: 'POST',
         body: formData,
+        mode: 'cors',
         signal: controller.signal
       });
     } finally {
@@ -1468,14 +1486,12 @@ async function analyzeAudio() {
     }
 
     if (!resp.ok) {
-      if (resp.status === 503 || resp.status === 504) {
-        throw new Error("El servidor de IA se está iniciando. Por favor, espera 30 segundos y vuelve a intentarlo.");
-      }
-      throw new Error("Error en el servidor de IA (" + resp.status + "). Inténtalo de nuevo.");
+      throw new Error("Error en el servidor (" + resp.status + "). Reintenta en unos segundos.");
     }
     const data = await resp.json();
     
-    // El backend devuelve vector (27 dims) + features (pitchMean, centroid...)
+    if (data.status === "error") throw new Error(data.message);
+
     const vec  = data.vector;
     const feat = data.features;
     
