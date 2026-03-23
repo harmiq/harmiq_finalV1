@@ -1680,7 +1680,7 @@ async function renderResults({feat,vt,conf,matches,gender}) {
         </div>
         <div style="font-size:.72rem;color:#6B7280;margin-bottom:.5rem;text-transform:capitalize;display:flex;gap:.35rem;flex-wrap:wrap">
           <span class="result-meta-tag" style="background:rgba(255,255,255,.07);color:#E5E7EB">${vtN}</span>
-          ${m.genre_category?`<span class="result-meta-tag" style="background:${data.color}22;color:${data.color}">${m.genre_category}</span>`:""}
+          ${m.genre_category?`<span class="result-meta-tag" style="background:rgba(124,77,255,0.15);color:#A5B4FC">${m.genre_category}</span>`:""}
           ${m.era?`<span class="result-meta-tag" style="background:rgba(124,77,255,0.15);color:#A5B4FC">${trV("_eras",m.era)}</span>`:""}
         </div>
 
