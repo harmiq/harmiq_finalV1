@@ -122,7 +122,7 @@ function renderTop() {
         <div class="top-artista">${c.artista} · ${c.genere} · ${c.any}</div>
         ${yid ? `
           <div style="margin-top:.6rem; border-radius:10px; overflow:hidden; background:#000; aspect-ratio:16/9; max-width:240px; cursor:pointer; position:relative"
-            onclick="event.stopPropagation(); this.innerHTML='<iframe width=100% height=100% src=https://www.youtube.com/embed/${yid}?autoplay=1 frameborder=0 allow=autoplay allowfullscreen></iframe>'">
+            onclick="event.stopPropagation(); this.innerHTML='<iframe width=\\'100%\\' height=\\'100%\\' src=\\'https://www.youtube.com/embed/${yid}?autoplay=1\\' frameborder=\\'0\\' allow=\\'autoplay; encrypted-media\\' allowfullscreen></iframe>'">
             <img src="https://img.youtube.com/vi/${yid}/mqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:.8">
             <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
               <div style="width:32px;height:32px;background:rgba(255,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff">▶</div>
@@ -228,7 +228,7 @@ function openArtista(id) {
             <a href="${c.karaoke_url||'#'}" target="_blank" rel="noopener" class="btn-karaoke">🎤 Karaoke</a>
           </div>
           ${yid ? `<div style="border-radius:8px; overflow:hidden; background:#000; aspect-ratio:16/9; cursor:pointer; position:relative"
-            onclick="event.stopPropagation(); this.innerHTML='<iframe width=100% height=100% src=https://www.youtube.com/embed/${yid}?autoplay=1 frameborder=0 allow=autoplay allowfullscreen></iframe>'">
+            onclick="event.stopPropagation(); this.innerHTML='<iframe width=\\'100%\\' height=\\'100%\\' src=\\'https://www.youtube.com/embed/${yid}?autoplay=1\\' frameborder=\\'0\\' allow=\\'autoplay; encrypted-media\\' allowfullscreen></iframe>'">
             <img src="https://img.youtube.com/vi/${yid}/mqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:.6"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff">▶</div>
           </div>` : ''}
         </div>`;
@@ -286,7 +286,7 @@ function renderRecomandador() {
         <a class="btn-karaoke" href="${c.karaoke_url||'#'}" target="_blank" rel="noopener">🎤</a>
       </div>
       ${yid ? `<div style="border-radius:8px; overflow:hidden; background:#000; aspect-ratio:16/9; cursor:pointer; position:relative"
-        onclick="this.innerHTML='<iframe width=100% height=100% src=https://www.youtube.com/embed/${yid}?autoplay=1 frameborder=0 allow=autoplay allowfullscreen></iframe>'">
+        onclick="this.innerHTML='<iframe width=\\'100%\\' height=\\'100%\\' src=\\'https://www.youtube.com/embed/${yid}?autoplay=1\\' frameborder=\\'0\\' allow=\\'autoplay; encrypted-media\\' allowfullscreen></iframe>'">
         <img src="https://img.youtube.com/vi/${yid}/mqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:.6"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff">▶</div>
       </div>` : ''}
     </div>`;
@@ -337,7 +337,7 @@ function cercaCatalà(query) {
           <a class="btn-karaoke" href="${c.karaoke_url||'#'}" target="_blank" rel="noopener">🎤</a>
         </div>
         ${yid ? `<div style="border-radius:8px; overflow:hidden; background:#000; aspect-ratio:16/9; cursor:pointer; position:relative"
-          onclick="this.innerHTML='<iframe width=100% height=100% src=https://www.youtube.com/embed/${yid}?autoplay=1 frameborder=0 allow=autoplay allowfullscreen></iframe>'">
+          onclick="this.innerHTML='<iframe width=\\'100%\\' height=\\'100%\\' src=\\'https://www.youtube.com/embed/${yid}?autoplay=1\\' frameborder=\\'0\\' allow=\\'autoplay; encrypted-media\\' allowfullscreen></iframe>'">
           <img src="https://img.youtube.com/vi/${yid}/mqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:.6"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff">▶</div>
         </div>` : ''}
       </div>`;

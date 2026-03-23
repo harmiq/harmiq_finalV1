@@ -251,7 +251,7 @@ function renderKaraokeVideos() {
     grid.innerHTML = videos.map(v => `
         <div class="card" style="padding:0; overflow:hidden; background:var(--card); border:1px solid rgba(255,255,255,0.08)">
             <div style="position:relative; aspect-ratio:16/9; background:#000; cursor:pointer"
-                 onclick="this.innerHTML='<iframe width=100% height=100% src=https://www.youtube.com/embed/${v.id}?autoplay=1${v.list?'&list='+v.list:''} frameborder=0 allow=autoplay;encrypted-media allowfullscreen></iframe>'">
+                 onclick="this.innerHTML='<iframe width=\\'100%\\' height=\\'100%\\' src=\\'https://www.youtube.com/embed/${v.list ? 'videoseries?list=' + v.list + '&autoplay=1' : v.id + '?autoplay=1'}\\' frameborder=\\'0\\' allow=\\'autoplay; encrypted-media\\' allowfullscreen></iframe>'">
                 <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" class="karaoke-thumbnail" style="width:100%; height:100%; object-fit:cover; opacity:0.8" alt="Karaoke thumbnail">
                 <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center">
                     <div style="width:50px; height:50px; background:rgba(255,0,0,0.9); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px">▶</div>

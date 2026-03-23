@@ -1453,7 +1453,12 @@ async function analyzeAudio() {
       body: formData
     });
     
-    if (!resp.ok) throw new Error("Error en el servidor de IA. Inténtalo de nuevo.");
+    if (!resp.ok) {
+      if (resp.status === 503 || resp.status === 504) {
+        throw new Error("El servidor de IA se está iniciando. Por favor, espera 30 segundos y vuelve a intentarlo.");
+      }
+      throw new Error("Error en el servidor de IA (" + resp.status + "). Inténtalo de nuevo.");
+    }
     const data = await resp.json();
     
     // El backend devuelve vector (27 dims) + features (pitchMean, centroid...)
@@ -1984,7 +1989,7 @@ function buildKaraokeSection(vtName, vtSlug) {
             ].map(v=>`
               <div style="border-radius:12px;overflow:hidden;background:${v.color};border:1px solid ${v.border}">
                 <div style="position:relative;aspect-ratio:16/9;cursor:pointer;background:#000"
-                  onclick="this.innerHTML='<iframe width=100% height=100% src=https://www.youtube.com/embed/${v.id}?autoplay=1 frameborder=0 allow=autoplay allowfullscreen></iframe>'">
+                  onclick="this.innerHTML='<iframe width=\\'100%\\' height=\\'100%\\' src=\\'https://www.youtube.com/embed/${v.id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'autoplay; encrypted-media\\' allowfullscreen></iframe>'">
                   <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:.7">
                   <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
                     <div style="width:36px;height:36px;background:rgba(255,0,0,.8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px">▶</div>
@@ -2806,7 +2811,7 @@ function renderVozPage(slug) {
       ].map(v=>`
         <div style="border-radius:14px;overflow:hidden;background:#000;
           box-shadow:0 4px 16px rgba(0,0,0,.4);cursor:pointer"
-          onclick="this.innerHTML='<iframe width=100% height=160 src=https://www.youtube.com/embed/${v.id}?autoplay=1&rel=0 frameborder=0 allow=autoplay;encrypted-media allowfullscreen></iframe>'">
+          onclick="this.innerHTML='<iframe width=\\'100%\\' height=\\'160\\' src=\\'https://www.youtube.com/embed/${v.id}?autoplay=1&rel=0\\' frameborder=\\'0\\' allow=\\'autoplay; encrypted-media\\' allowfullscreen></iframe>'">
           <div style="position:relative;aspect-ratio:16/9">
             <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg"
               alt="${v.title}" style="width:100%;height:100%;object-fit:cover"
