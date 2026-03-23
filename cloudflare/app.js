@@ -1505,7 +1505,11 @@ async function analyzeAudio() {
     showStatus("");
   } catch(e) { 
     console.error("Analysis error:", e);
-    showStatus(e.message||tr("_err_short"),"err"); 
+    let msg = e.message || tr("_err_short");
+    if (msg.includes("Load failed") || msg.includes("Failed to fetch")) {
+      msg = "⚠️ El servidor de IA no responde. Por favor, asegúrate de que no tienes un bloqueador de anuncios activo o intenta recargar la página.";
+    }
+    showStatus(msg, "err"); 
   }
 }
 
