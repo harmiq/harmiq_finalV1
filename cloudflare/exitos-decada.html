@@ -100,7 +100,7 @@ footer{text-align:center;padding:3rem;color:var(--m);font-size:0.8rem;border-top
     <div class="tab" onclick="changeTab('80s', this)">80s</div>
     <div class="tab" onclick="changeTab('70s', this)">70s</div>
     <div class="tab" onclick="changeTab('60s', this)">60s</div>
-    <div class="tab" onclick="changeTab('2026', this)" style="border-color:var(--a); color:var(--a)">2026 🔥</div>
+    <div class="tab" onclick="changeTab('top', this)" style="border-color:var(--green); color:var(--green)">🌍 Top Charts</div>
     <div class="tab" id="tab-search" style="display:none">🔍 Búsqueda</div>
 </div>
 
@@ -115,9 +115,20 @@ footer{text-align:center;padding:3rem;color:var(--m);font-size:0.8rem;border-top
 
 <script>
 const BACKEND_URL = "https://hamiq-harmiq-backend1.hf.space";
+let userCC = "GLOBAL";
+
+// Detectar País por IP
+async function detectGeo() {
+    try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        if (data.country_code) userCC = data.country_code;
+    } catch(e) { console.log("Geo-IP fallback to GLOBAL"); }
+}
 
 // Mezclar para que no sea estático
 function shuffle(array) {
+    if (!array) return [];
     return array.sort(() => Math.random() - 0.5);
 }
 
@@ -126,9 +137,40 @@ async function loadData(target, isSearch = false) {
     container.innerHTML = `<div class="loading-box"><div class="spinner"></div><p>Rescatando fotos de Spotify...</p></div>`;
 
     try {
-        // Diagnostic health check
-        const healthCheck = await fetch(`${BACKEND_URL}/health`).then(r => r.json()).catch(() => ({}));
-        console.log("Backend Health:", healthCheck);
+        if (target === 'top') {
+            const response = await fetch(`${BACKEND_URL}/top-charts?cc=${userCC}`);
+            const data = await response.json();
+            
+            let html = `<h2 style="margin-bottom:1.5rem; font-family:'Outfit'; text-align:center">Top 50: ${data.country === 'GLOBAL' ? 'Global' : (data.country + ' 🌍')}</h2>`;
+            
+            const renderList = (tracks, title) => `
+                <div style="margin-bottom:2rem">
+                    <h3 style="color:var(--p); margin-bottom:1rem; border-left:4px solid var(--p); padding-left:10px">${title}</h3>
+                    ${tracks.map((t, i) => `
+                        <div class="track-card">
+                            <div style="font-weight:900; color:var(--m); width:25px">${t.position || (i+1)}</div>
+                            <div class="img-container">
+                                <img src="${t.image}" class="track-img" onerror="this.parentElement.innerHTML='🎵'">
+                            </div>
+                            <div class="track-info">
+                                <div class="track-title">${t.title}</div>
+                                <div class="track-artist">${t.artist}</div>
+                            </div>
+                            <div class="actions">
+                                <a href="${t.spotify_url}" target="_blank" class="btn-play">Oír</a>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            html += renderList(data.local, `Top 50 ${data.country}`);
+            if (data.country !== 'GLOBAL') {
+                html += renderList(data.global, "Top 50 Global");
+            }
+            container.innerHTML = html;
+            return;
+        }
 
         const url = isSearch 
             ? `${BACKEND_URL}/search-tracks?q=${encodeURIComponent(target)}&_cb=${Date.now()}`
@@ -167,8 +209,7 @@ async function loadData(target, isSearch = false) {
         container.innerHTML = `
             <div style="text-align:center; padding:3rem; color:var(--m)">
                 <p style="font-size:1.2rem; margin-bottom:.5rem">⚠️ ${e.message === "Vacío" ? "No se encontraron resultados" : "Error de Conexión"}</p>
-                <p style="font-size:.8rem; color:#9CA3AF">${e.message === "Vacío" ? "El servidor respondió con una lista vacía. Verifica que tus Secrets estén configurados en Hugging Face Space." : e.message}</p>
-                ${e.message === "Vacío" ? `<div style="margin-top:1rem; font-size:0.75rem; background:rgba(255,79,163,0.1); padding:0.5rem; border-radius:10px; color:#FF4FA3">TIP: Si acabas de actualizar los Secrets, reinicia el Space en HF y espera 2 minutos.</div>` : ""}
+                <p style="font-size:.8rem; color:#9CA3AF">${e.message === "Vacío" ? "El servidor respondió con una lista vacía." : e.message}</p>
                 <button onclick="location.reload()" style="margin-top:1.5rem; background:var(--p); color:#fff; border:none; padding:12px 24px; border-radius:12px; cursor:pointer; font-weight:700">Reintentar</button>
             </div>`;
     }
@@ -192,8 +233,11 @@ function doSearch() {
     loadData(q, true);
 }
 
-// Inicio automático con Novedades
-loadData('viernes');
+// Inicio automático
+window.onload = async () => {
+    await detectGeo();
+    loadData('viernes');
+};
 </script>
 </body>
 </html>
