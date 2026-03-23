@@ -63,6 +63,7 @@
         <div class="tab active" onclick="load('historics', this)">🏛️ Històrics</div>
         <div class="tab" onclick="load('exit', this)">🏆 Èxits</div>
         <div class="tab" onclick="load('emergent', this)">🌱 Emergents</div>
+        <div class="tab" onclick="changeTab('top', this)" style="border-color:var(--gold); color:var(--gold)">🌍 Top Charts</div>
     </div>
 </div>
 
@@ -105,6 +106,16 @@
 </footer>
 
 <script>
+let userCC = "GLOBAL";
+
+async function detectGeo() {
+    try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        if (data.country_code) userCC = data.country_code;
+    } catch(e) { console.log("Geo fallback GLOBAL"); }
+}
+
 function applyConfig() {
     if (typeof CONFIG === 'undefined') return;
     const root = document.documentElement.style;
@@ -163,6 +174,46 @@ async function loadCatalan(el) {
     } catch(e) { grid.innerHTML = "<p>Error carregant catala_data.json</p>"; }
 }
 
+async function changeTab(dec, el) {
+    if (dec === 'top') {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+        const grid = document.getElementById('artist-grid');
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:5rem">Carregant Top Charts de Spotify...</div>';
+        
+        try {
+            const response = await fetch(`${CONFIG.HF_BASE}/top-charts?cc=${userCC}`);
+            const data = await response.json();
+            
+            const renderList = (tracks, title) => `
+                <div style="grid-column: 1/-1; margin-bottom: 2rem">
+                    <h2 style="font-family:'Outfit'; border-left: 5px solid var(--gold); padding-left: 15px; margin-bottom: 20px">${title}</h2>
+                    <div class="artist-grid">
+                        ${tracks.map(t => `
+                            <div class="artist-card">
+                                <div class="card-img"><img src="${t.image}" alt="${t.title}" loading="lazy"></div>
+                                <div class="card-body">
+                                    <h3>${t.artist}</h3>
+                                    <p style="font-size:0.85rem; margin-bottom:1.2rem">${t.title}</p>
+                                    <a href="${t.spotify_url}" target="_blank" class="btn-sp" style="background:#1DB954; color:#000">Spotify</a>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            let html = renderList(data.local, `Top 50: ${data.country}`);
+            if (data.country !== 'GLOBAL') {
+                html += renderList(data.global, "Top 50: Global");
+            }
+            grid.innerHTML = html;
+        } catch(e) { grid.innerHTML = "<p>Error carregant Top Charts</p>"; }
+    } else {
+        load(dec, el);
+    }
+}
+
 async function load(cat, el) {
     if(el) {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -186,7 +237,11 @@ async function load(cat, el) {
     } catch(e) { grid.innerHTML = "<p style='grid-column:1/-1; text-align:center; padding:5rem; color:var(--m)'>Servidor en repòs. Utilitza el 'Llegat Català' per a veure contingut local.</p>"; }
 }
 
-window.onload = () => { applyConfig(); load('historics'); };
+window.onload = async () => { 
+    await detectGeo();
+    applyConfig(); 
+    load('historics'); 
+};
 </script>
 </body>
 </html>
