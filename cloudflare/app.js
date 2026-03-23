@@ -1588,15 +1588,15 @@ async function renderResults({feat,vt,conf,matches,gender}) {
 
   // Épocas disponibles en DB (mostramos todas las que existen)
   const ERA_DISPLAY = [
-    {val:"pre-1960s",  label:"Pre-60s"},
-    {val:"1960s",      label:"60s"},
-    {val:"1970s",      label:"70s"},
-    {val:"1980s",      label:"80s"},
-    {val:"1990s",      label:"90s"},
-    {val:"2000s",      label:"2000s"},
-    {val:"2010s",      label:"2010s"},
-    {val:"2020s",      label:"2020s"},
-    {val:"actualidad", label:"Actualidad"}
+    {val:"pre-1960s",  label:"Clásicos"},
+    {val:"1960s",      label:"60"},
+    {val:"1970s",      label:"70"},
+    {val:"1980s",      label:"80"},
+    {val:"1990s",      label:"90"},
+    {val:"2000s",      label:"2000"},
+    {val:"2010s",      label:"2010"},
+    {val:"2020s",      label:"2020"},
+    {val:"actualidad", label:"Actual"}
   ];
   // Mapa para saber si una década tiene representación en la DB (mapeando a sus valores reales)
   const eraToDbMap = {
@@ -3522,3 +3522,27 @@ function injectNewsBanner() {
   document.head.appendChild(style);
   document.body.insertAdjacentElement("afterbegin", b);
 }
+// ── Lógica de los botones de género ──────────────────────────────────────
+document.addEventListener("click", e => {
+  const btn = e.target.closest(".gender-btn");
+  if (!btn) return;
+  const selector = document.getElementById("gender-selector");
+  if (!selector) return;
+
+  // Toggle active class
+  selector.querySelectorAll(".gender-btn").forEach(b => {
+    b.classList.remove("active");
+    b.style.background = "rgba(255,255,255,0.05)";
+    b.style.color = "#E5E7EB";
+    b.style.border = "1px solid rgba(255,255,255,0.1)";
+  });
+  
+  btn.classList.add("active");
+  btn.style.background = "rgba(124,77,255,0.15)";
+  btn.style.color = "#fff";
+  btn.style.border = "1px solid var(--p)";
+  
+  // Update hidden input
+  const input = document.getElementById("user-gender");
+  if (input) input.value = btn.dataset.gender;
+});
