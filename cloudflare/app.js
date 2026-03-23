@@ -1353,36 +1353,29 @@ function score(uVec, sVec, uvt, svt) {
 }
 
 function getMatches(vec,vt,gender,filters={},topN=5) {
+  // 1. FILTRO DEMOGRÁFICO ESTRICTO (Género)
   let pool = gender ? singersDb.filter(s=>s.gender===gender) : singersDb;
-  if(pool.length<5) pool=singersDb;
+  
+  // 2. FILTRO DE TIPO DE VOZ ESTRICTO (Barítono solo ve Barítonos, etc.)
+  pool = pool.filter(s => s.voice_type === vt);
 
-  // Aplicar filtros
+  // No permitimos fallback automático a otros tipos de voz para mantener la precisión
+  // Si no hay resultados exactos, preferimos mostrar lista vacía o manejarlo en UI.
+
+  // Aplicar filtros adicionales (Época, Género musical, País)
   if(filters.era) {
-    // "1970s" y "1980s" ambos mapean a "1970s-80s" en la DB
-    const eraMap = {"1970s":"1970s-80s","1980s":"1970s-80s","2020s":"2010s+"};
+      const eraMap = {
+        "1970s":"1970s-80s", "1980s":"1970s-80s",
+        "2000s":"2000s+", "2010s":"2010s+", "2020s":"2010s+", "actualidad":"2010s+"
+      };
     const dbEra  = eraMap[filters.era] || filters.era;
     pool = pool.filter(s => s.era === dbEra || s.era === filters.era);
   }
   if(filters.genre_category) pool=pool.filter(s=>s.genre_category===filters.genre_category);
   if(filters.country_code)   pool=pool.filter(s=>s.country_code===filters.country_code);
 
-  // Si pool muy pequeño tras filtros, relajar solo era/género pero mantener gender
-  // Si pool muy pequeño, relajar filtros pero mantener género
-  if(pool.length<3) {
-    var poolG = gender ? singersDb.filter(s=>s.gender===gender) : singersDb;
-    if(filters.country_code) {
-      var poolC = poolG.filter(s=>s.country_code===filters.country_code);
-      pool = poolC.length>=3 ? poolC : poolG;
-    } else {
-      pool = poolG;
-    }
-  }
-  if(pool.length<2) pool=singersDb;
-
   // Score base de popularidad por país del usuario
   const countryBonus = (s) => s.country_code === userCountry ? 1.03 : 1.0;
-
-  // Boost cultural catalán — solo si el usuario navega en catalán y catalaDb está disponible
   const catalaBonus = (s) => {
     if (lang !== "ca" || !catalaDb?.artistes) return 1.0;
     return catalaDb.artistes.some(a => a.nom.toLowerCase() === s.name.toLowerCase()) ? 1.15 : 1.0;
@@ -1397,6 +1390,7 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
 
   if(!scored[0]) return [];
 
+  // Diversidad de resultados (limitado a topN)
   const out=[scored[0]]; const seen=new Set([scored[0]?.voice_type]);
   for(const s of scored.slice(1)){
     const e={...s};
@@ -1538,12 +1532,32 @@ async function analyzeAudio() {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// 10. DESCRIPCIONES EMPÁTICAS — Explicación profesional del tipo de voz
+// ═══════════════════════════════════════════════════════════════════════════════
+function getVoiceTypeDescription(vt, conf, lang = 'es') {
+  const data = {
+    es: {
+      baritone: "Tu voz de **Barítono** tiene un timbre rico y cálido, situándose en el equilibrio perfecto entre profundidad y versatilidad. Es la voz masculina más común y emblemática en el pop y rock.",
+      tenor: "Un **Tenor** posee una brillantez y agilidad únicas en el registro agudo. Tu voz tiene esa cualidad heroica y potente que destaca naturalmente en cualquier mezcla musical.",
+      bass: "Como **Bajo**, posees la base más profunda y resonante del espectro humano. Tu voz transmite autoridad, estabilidad y un cuerpo impresionante en las notas graves.",
+      "bass-baritone": "Tu voz de **Bajo-Barítono** combina la autoridad del bajo con la flexibilidad lírica del barítono, permitiéndote navegar con maestría por una amplia gama de emociones.",
+      soprano: "Una **Soprano** es la voz más brillante y aguda, capaz de una agilidad cristalina. Tu registro tiene una claridad natural que brilla con elegancia en las notas más altas.",
+      "mezzo-soprano": "Como **Mezzosoprano**, tu voz es rica, plena y extremadamente expresiva. Tienes un timbre aterciopelado que aporta una calidez y madurez sonora excepcional.",
+      contralto: "La voz de **Contralto** es una rareza vocal maravillosa, siendo la más grave y profunda de las voces femeninas. Posees un tono oscuro y noble con una resonancia única.",
+      countertenor: "Ser **Contratenor** es poseer una rareza vocal extraordinaria, utilizando el falsete para alcanzar registros tradicionalmente femeninos con una pureza etérea y mágica."
+    }
+  };
+
+  const base = data[lang]?.[vt] || data['es']?.[vt] || "Tu voz tiene una cualidad única y especial. Sigue explorando tu potencial.";
+  return `${base} (Análisis completado con un **${conf}%** de precisión).`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // 11. RENDERIZAR RESULTADOS
 // ═══════════════════════════════════════════════════════════════════════════════
 function getPlatformLinks(singerName, songName) {
   const q        = encodeURIComponent(`${singerName} ${songName||""}`);
-  const qs       = encodeURIComponent(`${singerName} ${songName||""} karaoke`);
-  // Obtenemos la IP usando la variable global nativa (userCountry) 
+  const qs       = encodeURIComponent(`${singerName} ${songName||""} karaoke sing king`); // Priorizar canales de alta calidad
   const cc       = window.userCountry || window.GEO_CC || "US";
 
   let streams = [
@@ -1552,7 +1566,6 @@ function getPlatformLinks(singerName, songName) {
     { url: `https://music.youtube.com/search?q=${q}`, label: "YT Music", color: "#FF0000" }
   ];
 
-  // Inyección Geográfica Dinámica para Asia!
   if (["KR"].includes(cc)) {
     streams.unshift({ url: `https://www.melon.com/search/total/index.htm?q=${q}`, label: "Melon (멜론)", color: "#00CD3C" });
   } else if (["JP", "TW", "TH"].includes(cc)) {
@@ -1562,46 +1575,40 @@ function getPlatformLinks(singerName, songName) {
   return { karaoke: `https://www.youtube.com/results?search_query=${qs}`, streams };
 }
 
-function rebuildEraFilter() {
-  const sel = document.getElementById("_era_filter");
-  if (!sel) return;
-  const current = sel.value;
-  sel.innerHTML = `<option value="">${tr("_all_eras")}</option>`;
-  const eras = ["pre-1960s","1960s","1970s-80s","1990s","2000s+","2010s+"];
-  eras.filter(e=>singersDb.some(s=>s.era===e)).forEach(e=>{
-    const o = document.createElement("option");
-    o.value = e; o.textContent = trV("_eras",e);
-    if (e===current) o.selected = true;
-    sel.appendChild(o);
-  });
-}
-
 async function renderResults({feat,vt,conf,matches,gender}) {
   const vtName = trV("_vt_names",vt);
   const sym    = ["🥇","🥈","🥉","4.","5."];
+  const explanation = getVoiceTypeDescription(vt, conf, window.lang || 'es');
 
-  // ── Inyectar filtro de épocas si no existe ─────────────────────────────
   const resEl = document.getElementById("results");
   if (!resEl) return;
 
   let filtersHTML = "";
   const eras       = [...new Set(singersDb.map(s=>s.era).filter(Boolean))];
-  // Épocas mostradas al usuario (incluye mapeos de DB)
+
   // Épocas disponibles en DB (mostramos todas las que existen)
   const ERA_DISPLAY = [
     {val:"pre-1960s",  label:"Clásicos pre-60"},
-    {val:"1960s",      label:"Los 60"},
-    {val:"1970s",      label:"Los 70"},
-    {val:"1980s",      label:"Los 80"},
-    {val:"1990s",      label:"Los 90"},
+    {val:"1960s",      label:"Los 60s"},
+    {val:"1970s",      label:"Los 70s"},
+    {val:"1980s",      label:"Los 80s"},
+    {val:"1990s",      label:"Los 90s"},
     {val:"2000s",      label:"Años 2000"},
     {val:"2010s",      label:"Años 2010"},
     {val:"2020s",      label:"Años 2020"},
-    {val:"2026",       label:"Éxitos 2026"},
+    {val:"actualidad", label:"Actualidad"}
   ];
-  // Solo mostrar épocas que realmente tienen artistas en la DB
+  // Mapa para saber si una década tiene representación en la DB (mapeando a sus valores reales)
+  const eraToDbMap = {
+    "1970s":"1970s-80s", "1980s":"1970s-80s",
+    "2000s":"2000s+", "2010s":"2010s+", "2020s":"2010s+", "actualidad":"2010s+"
+  };
+
   const eraOptions = ERA_DISPLAY
-    .filter(e => singersDb.some(s => s.era === e.val))
+    .filter(e => {
+      const dbVal = eraToDbMap[e.val] || e.val;
+      return singersDb.some(s => s.era === dbVal);
+    })
     .map(e => `<option value="${e.val}">${e.label}</option>`).join("");
 
   // Géneros disponibles en DB
@@ -1741,22 +1748,6 @@ async function renderResults({feat,vt,conf,matches,gender}) {
           onmouseout="this.style.background='rgba(124,77,255,.12)'">
           🎛️ Home Studio
         </a>
-        <a href="/karaoke-eventos"
-          style="display:inline-flex;align-items:center;gap:.35rem;padding:.48rem .85rem;
-          background:rgba(255,79,163,.1);border:1px solid rgba(255,79,163,.25);border-radius:10px;
-          text-decoration:none;color:#FF9FCC;font-size:.78rem;font-weight:700;transition:all .2s"
-          onmouseover="this.style.background='rgba(255,79,163,.2)'"
-          onmouseout="this.style.background='rgba(255,79,163,.1)'">
-          🎤 Buscar Karaoke
-        </a>
-        <a href="/tipos-de-voz"
-          style="display:inline-flex;align-items:center;gap:.35rem;padding:.48rem .85rem;
-          background:rgba(6,214,160,.1);border:1px solid rgba(6,214,160,.25);border-radius:10px;
-          text-decoration:none;color:#06D6A0;font-size:.78rem;font-weight:700;transition:all .2s"
-          onmouseover="this.style.background='rgba(6,214,160,.2)'"
-          onmouseout="this.style.background='rgba(6,214,160,.1)'">
-          📖 Tipos de Voz
-        </a>
         <a href="/ejercicios-de-canto"
           style="display:inline-flex;align-items:center;gap:.35rem;padding:.48rem .85rem;
           background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.25);border-radius:10px;
@@ -1838,76 +1829,66 @@ async function renderResults({feat,vt,conf,matches,gender}) {
         color:#a89fff;font-size:.78rem;font-weight:700;padding:.28rem .75rem;border-radius:20px">
         ⚡ ${tr("_result")}
       </span>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1rem">
+      ${explanation}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1.15rem">
         <div style="background:rgba(255,255,255,.05);border-radius:12px;padding:.9rem;text-align:center">
           <div style="font-size:.68rem;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.2rem">${tr("_vt_label")}</div>
-          <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.25rem;
-            background:linear-gradient(135deg,#7C4DFF,#FF4FA3);-webkit-background-clip:text;
-            -webkit-text-fill-color:transparent;text-transform:capitalize">${vtName}</div>
-          <div style="color:#6B7280;font-size:.72rem">${conf}% ${tr("_confidence")}</div>
+          <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.1rem;color:#fff;text-transform:capitalize">${vtName}</div>
         </div>
         <div style="background:rgba(255,255,255,.05);border-radius:12px;padding:.9rem;text-align:center">
-          <div style="font-size:.68rem;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.2rem">Pitch</div>
-          <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.25rem;color:#7C4DFF">
-            ${Math.round(feat.pitchMean)} Hz</div>
-          <div style="color:#6B7280;font-size:.72rem">±${Math.round(feat.pitchRange/2)} Hz</div>
+          <div style="font-size:.68rem;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.2rem">Confianza</div>
+          <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.1rem;color:var(--a)">${conf}%</div>
         </div>
       </div>
     </div>
     ${filtersHTML}
-    <div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:1rem">${cardsHTML}</div>
+    <div id="_cards_grid" style="display:flex;flex-direction:column;gap:.75rem">
+      ${cardsHTML}
+    </div>
     ${extraBtnsHTML}
     ${songsHTML}
-    ${amzHTML}
     ${shareHTML}
+    ${amzHTML}`;
 
-    <!-- TÉCNICA VOCAL (Upgrade) -->
-    <div class="vocal-technique-up" style="margin-top:3rem; padding-top:2rem; border-top:2px solid rgba(124,77,255,0.1)">
-      <h3 style="font-family:'Baloo 2',sans-serif; font-size:1.8rem; margin-bottom:1.5rem; text-align:center; background:linear-gradient(135deg,#fff,#7C4DFF); -webkit-background-clip:text; -webkit-text-fill-color:transparent">
-        🎓 Mejora tu Técnica Vocal
-      </h3>
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem">
-        <div class="tech-box">
-          <p style="font-size:0.9rem; color:#A5B4FC; font-weight:700; margin-bottom:0.8rem">🇪🇸 Clases en Español (Gret Rocha)</p>
-          <div id="vocal-es-list"></div>
-        </div>
-        <div class="tech-box">
-          <p style="font-size:0.9rem; color:#FF9Fcc; font-weight:700; margin-bottom:0.8rem">🇺🇸 English Lessons (Vocal Growth)</p>
-          <div id="vocal-en-list"></div>
-        </div>
-      </div>
-    </div>
-    `;
+    // Re-vincular eventos de filtros
+    attachFilterEvents(vec, vt, gender);
 
-    // Render Playlists de técnica
-    setTimeout(() => {
-        renderVideoSection("vocal-es-list", "PL4QLcc_qiWhIyWpteAoISVrQiqqSZxpMz", true); // Maria Viñas (Learn to Sing)
-        renderVideoSection("vocal-en-list", "PLpcARcDSTR0I65m602wSm-I8lD1vqjd-q", true); // New York Vocal Coaching
-    }, 100);
 
-  // ── Evento filtro época ────────────────────────────────────────────────
+function attachFilterEvents(vec, vt, gender) {
   const applyFilters = async () => {
     const eraVal  = document.getElementById("_era_filter")?.value    || "";
     const genre   = document.getElementById("_genre_filter")?.value  || "";
     const country = document.getElementById("_country_filter")?.value|| "";
-    // Mapear era UI → era DB
-    const ERA_MAP  = {"1970s":"1970s-80s","1980s":"1970s-80s","2020s":"2010s+","2026":"2010s+"};
+    const ERA_MAP = {
+      "1970s":"1970s-80s", "1980s":"1970s-80s",
+      "2000s":"2000s+", "2010s":"2010s+", "2020s":"2010s+", "actualidad":"2010s+"
+    };
     const era      = ERA_MAP[eraVal] || eraVal;
+    
     const filters = {};
     if (era)     filters.era            = era;
     if (genre)   filters.genre_category = genre;
     if (country) filters.country_code   = country;
-    const newMatches = getMatches(lastResult.vec, lastResult.vt, lastResult.gender, filters, 5);
+
+    const newMatches = getMatches(vec, vt, gender, filters, 5);
     await preloadImages(newMatches.map(m=>m.name));
-    lastResult.matches = newMatches;
-    await renderResults(lastResult);
+    
+    // Update global state if exists
+    if (typeof lastResult !== 'undefined') {
+        lastResult.matches = newMatches;
+        await renderResults(lastResult);
+    } else {
+        await renderResults({ feat: {}, vt, conf: 100, matches: newMatches, gender });
+    }
   };
+
   const eraF     = document.getElementById("_era_filter");
   const genreF   = document.getElementById("_genre_filter");
   const countryF = document.getElementById("_country_filter");
   if (eraF)     eraF.addEventListener("change",     applyFilters);
   if (genreF)   genreF.addEventListener("change",   applyFilters);
   if (countryF) countryF.addEventListener("change", applyFilters);
+}
 
   // Scroll al resultado
   resEl.scrollIntoView({ behavior:"smooth", block:"start" });
@@ -2023,7 +2004,7 @@ function buildKaraokeSection(vtName, vtSlug) {
               {id:"Z8_X9v_Z-jI", name:"Técnica: Apoyo Vocal", desc:"Ejercicios prácticos", color:"rgba(255,79,163,.1)", border:"rgba(255,79,163,.2)"},
               {id:"6oF08tGkM50", name:"Vocal Grit & Power", desc:"Chris Liepe (Distortion)", color:"rgba(255,153,0,.1)", border:"rgba(255,153,0,.2)"},
               {id:"4vUu_k_oI9Q", name:"High Note Control", desc:"Domina tus agudos", color:"rgba(6,214,160,.1)", border:"rgba(6,214,160,.2)"},
-              {id:"fS_m4uXoU_Y", name:"Daily Vocal Warmup", desc:"Calentamiento diario", color:"rgba(0,170,255,.1)", border:"rgba(0,170,255,.2)"},
+              {id:"fS_m4uXoU_Y", name:"Daily Vocal Warmup", desc:"Calentamiento diario (Singeo)", color:"rgba(0,170,255,.1)", border:"rgba(0,170,255,.2)"},
             ].map(v=>`
               <div style="border-radius:12px;overflow:hidden;background:${v.color};border:1px solid ${v.border}">
                 <div style="position:relative;aspect-ratio:16/9;cursor:pointer;background:#000"
