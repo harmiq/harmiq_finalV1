@@ -1588,14 +1588,14 @@ async function renderResults({feat,vt,conf,matches,gender}) {
 
   // Épocas disponibles en DB (mostramos todas las que existen)
   const ERA_DISPLAY = [
-    {val:"pre-1960s",  label:"Clásicos pre-60"},
-    {val:"1960s",      label:"Los 60s"},
-    {val:"1970s",      label:"Los 70s"},
-    {val:"1980s",      label:"Los 80s"},
-    {val:"1990s",      label:"Los 90s"},
-    {val:"2000s",      label:"Años 2000"},
-    {val:"2010s",      label:"Años 2010"},
-    {val:"2020s",      label:"Años 2020"},
+    {val:"pre-1960s",  label:"Pre-60s"},
+    {val:"1960s",      label:"60s"},
+    {val:"1970s",      label:"70s"},
+    {val:"1980s",      label:"80s"},
+    {val:"1990s",      label:"90s"},
+    {val:"2000s",      label:"2000s"},
+    {val:"2010s",      label:"2010s"},
+    {val:"2020s",      label:"2020s"},
     {val:"actualidad", label:"Actualidad"}
   ];
   // Mapa para saber si una década tiene representación en la DB (mapeando a sus valores reales)
