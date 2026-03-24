@@ -768,18 +768,28 @@ function injectUI() {
     </button>`;
 
   // ── Insertar en el DOM ─────────────────────────────────────────────────
-  const genderRow = document.getElementById("user-gender")?.closest("div");
-  const recRow    = document.getElementById("record-btn")?.closest("div");
-  // Marcar botó com "no llest" fins que carregui la DB
+  const recRow   = document.getElementById("record-btn")?.closest("div");
   const recBtnEl = document.getElementById("record-btn");
   if (recBtnEl) { recBtnEl.style.opacity = "0.7"; recBtnEl.title = "Cargando base de datos..."; }
-  if (genderRow && recRow) {
-    // Ocultar el select original (lo mantenemos para compatibilidad)
-    if (genderRow) genderRow.style.display = "none";
-    genderRow.parentNode.insertBefore(tipDiv,      genderRow);
-    genderRow.parentNode.insertBefore(genderBtns,  genderRow);
-    genderRow.parentNode.insertBefore(uploadWrap,  recRow);
-    recRow.parentNode.insertBefore(specWrap, recRow.nextSibling);
+
+  const alreadyHasButtons = !!document.getElementById("_gbtn_container");
+  const genderRow = alreadyHasButtons ? null : document.getElementById("user-gender")?.closest("div");
+
+  if (recRow) {
+    if (alreadyHasButtons) {
+      // Botones ya en el HTML — solo inyectar tip, upload y espectro
+      const btnContainer = document.getElementById("_gbtn_container");
+      btnContainer.parentNode.insertBefore(tipDiv, btnContainer);
+      recRow.parentNode.insertBefore(uploadWrap, recRow);
+      recRow.parentNode.insertBefore(specWrap, recRow.nextSibling);
+    } else if (genderRow) {
+      // HTML antiguo con <select> — ocultar y reemplazar con botones
+      genderRow.style.display = "none";
+      genderRow.parentNode.insertBefore(tipDiv,     genderRow);
+      genderRow.parentNode.insertBefore(genderBtns, genderRow);
+      genderRow.parentNode.insertBefore(uploadWrap, recRow);
+      recRow.parentNode.insertBefore(specWrap, recRow.nextSibling);
+    }
   }
 
   // ── Eventos drop zone ──────────────────────────────────────────────────
@@ -1459,7 +1469,30 @@ async function analyzeAudio() {
     }
 
     if (!isAwake) {
-      throw new Error("El servidor de IA está tardando mucho en arrancar. Por favor, recarga la página en 1 minuto.");
+      // Backend dormido → análisis local con DSP del navegador
+      showStatus("⚡ Analizando con IA local...");
+      const feat = await extractFeatures(audioBlob);
+      const vec  = featuresToVector(feat);
+      const {vt, conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
+      const matches = getMatches(vec, vt, gender, {}, 5);
+      lastResult = {feat, vec, vt, conf, matches, gender};
+      try {
+        const toSave = {
+          feat: lastResult.feat, vt: lastResult.vt, conf: lastResult.conf,
+          gender: lastResult.gender,
+          matches: lastResult.matches.map(m => ({
+            id:m.id, name:m.name, voice_type:m.voice_type,
+            genre_category:m.genre_category, country_code:m.country_code,
+            era:m.era, score:m.score,
+            reference_songs: m.reference_songs?.slice(0,3) || []
+          }))
+        };
+        sessionStorage.setItem("harmiq_result", JSON.stringify(toSave));
+      } catch(_) {}
+      await preloadImages(matches.slice(0,5).map(m=>m.name));
+      renderResults(lastResult);
+      showStatus("");
+      return;
     }
 
     showStatus("⏳ Analizando tu voz...");
@@ -1484,7 +1517,17 @@ async function analyzeAudio() {
     }
 
     if (!resp.ok) {
-      throw new Error("Error en el servidor (" + resp.status + "). Reintenta en unos segundos.");
+      // Backend con error HTTP → fallback local
+      showStatus("⚡ Backend no disponible. Analizando localmente...");
+      const feat = await extractFeatures(audioBlob);
+      const vec  = featuresToVector(feat);
+      const {vt, conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
+      const matches = getMatches(vec, vt, gender, {}, 5);
+      lastResult = {feat, vec, vt, conf, matches, gender};
+      await preloadImages(matches.slice(0,5).map(m=>m.name));
+      renderResults(lastResult);
+      showStatus("");
+      return;
     }
     const data = await resp.json();
     

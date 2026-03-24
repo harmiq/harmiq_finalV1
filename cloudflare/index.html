@@ -161,13 +161,20 @@
         ❌ ELIMINADO: el <iframe> que apuntaba al Space de HF y mostraba el JSON en bruto.
     -->
     <div id="app" class="app-box" style="padding: 2.5rem 10%; text-align: center;">
-        <div style="margin-bottom: 1.5rem;">
-            <select id="user-gender" style="padding: 0.8rem; border-radius: 12px; background: rgba(255,255,255,0.05); color: #E5E7EB; border: 1px solid rgba(255,255,255,0.1); width: 100%; font-size: 1rem; outline: none;">
-                <option value="" disabled selected>Selecciona tu tipo de voz</option>
-                <option value="male">Masculina</option>
-                <option value="female">Femenina</option>
-                <option value="auto">Automático</option>
-            </select>
+        <input type="hidden" id="user-gender" value="">
+        <div id="_gbtn_container" style="display:flex;gap:.6rem;margin-bottom:1.2rem;">
+            <button onclick="_setGender('male',this)" id="_gbtn_male"
+                style="flex:1;padding:.8rem;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#E5E7EB;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all .2s">
+                ♂️ Masculina
+            </button>
+            <button onclick="_setGender('female',this)" id="_gbtn_female"
+                style="flex:1;padding:.8rem;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#E5E7EB;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all .2s">
+                ♀️ Femenina
+            </button>
+            <button onclick="_setGender('auto',this)" id="_gbtn_auto"
+                style="flex:1;padding:.8rem;border-radius:12px;border:2px solid rgba(124,77,255,.5);background:rgba(124,77,255,.12);color:#c4b5fd;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all .2s">
+                ✨ Auto
+            </button>
         </div>
         <div style="margin-bottom: 0.5rem; display: flex; justify-content: center; align-items: center;">
             <button id="record-btn" style="padding: 1.2rem 2.5rem; border-radius: 50px; background: linear-gradient(135deg, #7C4DFF, #FF4FA3); color: white; border: none; font-size: 1.2rem; cursor: pointer; font-weight: 800; box-shadow: 0 10px 25px rgba(124,77,255,0.4); transition: transform 0.2s; min-width: 250px;">
