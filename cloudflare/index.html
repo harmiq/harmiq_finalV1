@@ -160,7 +160,14 @@
         ✅ CORRECTO: app.js inyecta aquí la UI de grabación/análisis completa.
         ❌ ELIMINADO: el <iframe> que apuntaba al Space de HF y mostraba el JSON en bruto.
     -->
-    <div id="app" class="app-box" style="padding: 2.5rem 10%; text-align: center;">
+    <div id="app" class="app-box" style="padding: 2rem 8%; text-align: center;">
+
+        <!-- Tip de grabación -->
+        <div id="_rec_tips_el" style="background:rgba(124,77,255,.1);border:1px solid rgba(124,77,255,.25);border-radius:10px;padding:.6rem 1rem;font-size:.8rem;color:#a89fff;margin-bottom:1.2rem;text-align:center;">
+            Para mejor resultado: canta sin música · acerca el micro · evita el eco
+        </div>
+
+        <!-- Selector de tipo de voz (botones) -->
         <input type="hidden" id="user-gender" value="">
         <div id="_gbtn_container" style="display:flex;gap:.6rem;margin-bottom:1.2rem;">
             <button onclick="_setGender('male',this)" id="_gbtn_male"
@@ -176,11 +183,31 @@
                 ✨ Auto
             </button>
         </div>
+
+        <!-- Zona de subida de audio -->
+        <div id="_upload_wrap" style="margin-bottom:1rem;">
+            <div id="_drop_zone" style="border:2px dashed rgba(255,255,255,.18);border-radius:14px;padding:1.4rem;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.02);">
+                <input type="file" id="_file_inp" accept="audio/*,video/mp4,video/quicktime,.m4a,.mp3,.wav,.mp4,.mov" style="display:none">
+                <div style="font-size:1.6rem;margin-bottom:.4rem">🎵</div>
+                <div id="_upload_btn_el" style="font-weight:700;color:#7C4DFF;font-size:.95rem;">📁 Subir audio</div>
+                <div id="_upload_hint_el" style="font-size:.75rem;color:#6B7280;margin-top:.2rem;">WAV · MP3 · M4A · OGG · FLAC · mín. 5 seg</div>
+                <div id="_file_name" style="margin-top:.4rem;font-size:.82rem;color:#7C4DFF;font-weight:600;"></div>
+            </div>
+            <div id="_or_el" style="text-align:center;color:#6B7280;font-size:.82rem;margin:.7rem 0;">— o —</div>
+        </div>
+
+        <!-- Espectrómetro (visible solo al grabar) -->
+        <div id="_spec_wrap" style="display:none;margin:.8rem 0;">
+            <canvas id="_spec_canvas" style="width:100%;height:72px;border-radius:12px;background:rgba(255,255,255,.04);display:block;"></canvas>
+        </div>
+
+        <!-- Botón grabar/analizar -->
         <div style="margin-bottom: 0.5rem; display: flex; justify-content: center; align-items: center;">
-            <button id="record-btn" style="padding: 1.2rem 2.5rem; border-radius: 50px; background: linear-gradient(135deg, #7C4DFF, #FF4FA3); color: white; border: none; font-size: 1.2rem; cursor: pointer; font-weight: 800; box-shadow: 0 10px 25px rgba(124,77,255,0.4); transition: transform 0.2s; min-width: 250px;">
-                <span id="btn-record-text">🎤 Analizar mi voz — gratis</span>
+            <button id="record-btn" style="padding: 1.2rem 2.5rem; border-radius: 50px; background: linear-gradient(135deg, #7C4DFF, #FF4FA3); color: white; border: none; font-size: 1.2rem; cursor: pointer; font-weight: 800; box-shadow: 0 10px 25px rgba(124,77,255,0.4); transition: transform 0.2s; min-width: 250px; opacity:0.7;">
+                <span id="btn-record-text">🎤 Grabar y analizar</span>
             </button>
         </div>
+
         <div id="status-msg" style="display:none; margin-top: 1.2rem; font-weight: 700; color: #7C4DFF; font-size: 1.1rem;"></div>
     </div>
     <div id="results"></div>

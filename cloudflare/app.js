@@ -714,99 +714,42 @@ async function preloadImages(names) {
 // 4. INYECTAR UI (upload + era filter + spectrum + tips)
 // ═══════════════════════════════════════════════════════════════════════════════
 function injectUI() {
+  // Todos los elementos ya están en el HTML estático.
+  // Esta función solo actualiza textos con el idioma activo y conecta los eventos.
+  if (document.getElementById("_harmiq_ui_injected")) return;
   const appBox = document.querySelector(".app-box");
-  if (!appBox || document.getElementById("_harmiq_ui_injected")) return;
-  appBox.setAttribute("id", "_harmiq_ui_injected");
+  if (appBox) appBox.setAttribute("data-ui", "_harmiq_ui_injected");
+  document.body.setAttribute("id", "_harmiq_ui_injected"); // guard anti-doble ejecución
 
-  // ── Tip de grabación ───────────────────────────────────────────────────
-  const tipDiv = document.createElement("div");
-  tipDiv.id = "_rec_tips_el";
-  tipDiv.style.cssText = "background:rgba(124,77,255,.1);border:1px solid rgba(124,77,255,.25);border-radius:10px;padding:.6rem 1rem;font-size:.8rem;color:#a89fff;margin-bottom:1.2rem;text-align:center;";
-  tipDiv.textContent = tr("_rec_tips");
+  // ── Actualizar textos traducibles ya presentes en el HTML ──────────────
+  const tipEl    = document.getElementById("_rec_tips_el");
+  const upBtnEl  = document.getElementById("_upload_btn_el");
+  const upHintEl = document.getElementById("_upload_hint_el");
+  const orEl     = document.getElementById("_or_el");
+  if (tipEl)    tipEl.textContent    = tr("_rec_tips");
+  if (upBtnEl)  upBtnEl.textContent  = tr("_upload_btn");
+  if (upHintEl) upHintEl.textContent = tr("_upload_hint");
+  if (orEl)     orEl.textContent     = tr("_or");
 
-  // ── Zona de subida ─────────────────────────────────────────────────────
-  const uploadWrap = document.createElement("div");
-  uploadWrap.style.cssText = "margin-bottom:1rem;";
-  uploadWrap.innerHTML = `
-    <div id="_drop_zone" style="border:2px dashed rgba(255,255,255,.18);border-radius:14px;padding:1.4rem;
-      text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.02);">
-      <input type="file" id="_file_inp" accept="audio/*,video/mp4,video/quicktime,.m4a,.mp3,.wav,.mp4,.mov" style="display:none">
-      <div style="font-size:1.6rem;margin-bottom:.4rem">🎵</div>
-      <div id="_upload_btn_el" style="font-weight:700;color:#7C4DFF;font-size:.95rem;">${tr("_upload_btn")}</div>
-      <div id="_upload_hint_el" style="font-size:.75rem;color:#6B7280;margin-top:.2rem;">${tr("_upload_hint")}</div>
-      <div id="_file_name" style="margin-top:.4rem;font-size:.82rem;color:#7C4DFF;font-weight:600;"></div>
-    </div>
-    <div id="_or_el" style="text-align:center;color:#6B7280;font-size:.82rem;margin:.7rem 0;">${tr("_or")}</div>`;
-
-  // ── Canvas espectro ────────────────────────────────────────────────────
-  const specWrap = document.createElement("div");
-  specWrap.id = "_spec_wrap";
-  specWrap.style.cssText = "display:none;margin:.8rem 0;";
-  specWrap.innerHTML = `<canvas id="_spec_canvas" style="width:100%;height:72px;border-radius:12px;background:rgba(255,255,255,.04);display:block;"></canvas>`;
-
-  // ── Botones género visuales ───────────────────────────────────────────
-  const genderBtns = document.createElement("div");
-  genderBtns.style.cssText = "display:flex;gap:.6rem;margin-bottom:1.2rem;";
-  genderBtns.innerHTML = `
-    <button onclick="_setGender('male',this)" style="flex:1;padding:.8rem;border-radius:12px;
-      border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#E5E7EB;
-      font-family:'Outfit',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all .2s"
-      id="_gbtn_male">
-      ♂️ Masculina
-    </button>
-    <button onclick="_setGender('female',this)" style="flex:1;padding:.8rem;border-radius:12px;
-      border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#E5E7EB;
-      font-family:'Outfit',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all .2s"
-      id="_gbtn_female">
-      ♀️ Femenina
-    </button>
-    <button onclick="_setGender('auto',this)" style="flex:1;padding:.8rem;border-radius:12px;
-      border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#E5E7EB;
-      font-family:'Outfit',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all .2s"
-      id="_gbtn_auto">
-      ✨ Auto
-    </button>`;
-
-  // ── Insertar en el DOM ─────────────────────────────────────────────────
-  const recRow   = document.getElementById("record-btn")?.closest("div");
+  // ── Botón en estado "cargando" hasta que la DB esté lista ──────────────
   const recBtnEl = document.getElementById("record-btn");
   if (recBtnEl) { recBtnEl.style.opacity = "0.7"; recBtnEl.title = "Cargando base de datos..."; }
-
-  const alreadyHasButtons = !!document.getElementById("_gbtn_container");
-  const genderRow = alreadyHasButtons ? null : document.getElementById("user-gender")?.closest("div");
-
-  if (recRow) {
-    if (alreadyHasButtons) {
-      // Botones ya en el HTML — solo inyectar tip, upload y espectro
-      const btnContainer = document.getElementById("_gbtn_container");
-      btnContainer.parentNode.insertBefore(tipDiv, btnContainer);
-      recRow.parentNode.insertBefore(uploadWrap, recRow);
-      recRow.parentNode.insertBefore(specWrap, recRow.nextSibling);
-    } else if (genderRow) {
-      // HTML antiguo con <select> — ocultar y reemplazar con botones
-      genderRow.style.display = "none";
-      genderRow.parentNode.insertBefore(tipDiv,     genderRow);
-      genderRow.parentNode.insertBefore(genderBtns, genderRow);
-      genderRow.parentNode.insertBefore(uploadWrap, recRow);
-      recRow.parentNode.insertBefore(specWrap, recRow.nextSibling);
-    }
-  }
 
   // ── Eventos drop zone ──────────────────────────────────────────────────
   const dz = document.getElementById("_drop_zone");
   const fi = document.getElementById("_file_inp");
-  dz.addEventListener("click", () => fi.click());
-  dz.addEventListener("dragover", e => { e.preventDefault(); dz.style.borderColor="#7C4DFF"; dz.style.background="rgba(124,77,255,.07)"; });
-  dz.addEventListener("dragleave", () => { dz.style.borderColor="rgba(255,255,255,.18)"; dz.style.background="rgba(255,255,255,.02)"; });
-  dz.addEventListener("drop", e => {
-    e.preventDefault(); dz.style.borderColor="rgba(255,255,255,.18)"; dz.style.background="rgba(255,255,255,.02)";
-    const f = e.dataTransfer.files[0];
-    if (f) setFile(f);
-  });
-  fi.addEventListener("change", () => { if (fi.files[0]) setFile(fi.files[0]); });
-
-  // ── Filtro de épocas (se añade después del resultado) ─────────────────
-  // Se inyecta en renderResults()
+  if (dz && fi) {
+    dz.addEventListener("click", () => fi.click());
+    dz.addEventListener("dragover", e => { e.preventDefault(); dz.style.borderColor="#7C4DFF"; dz.style.background="rgba(124,77,255,.07)"; });
+    dz.addEventListener("dragleave", () => { dz.style.borderColor="rgba(255,255,255,.18)"; dz.style.background="rgba(255,255,255,.02)"; });
+    dz.addEventListener("drop", e => {
+      e.preventDefault(); dz.style.borderColor="rgba(255,255,255,.18)"; dz.style.background="rgba(255,255,255,.02)";
+      const f = e.dataTransfer.files[0];
+      if (f) setFile(f);
+    });
+    fi.addEventListener("change", () => { if (fi.files[0]) setFile(fi.files[0]); });
+  }
+  // ── Filtro de épocas (se inyecta en renderResults()) ──────────────────
 }
 
 function _setGender(val, btn) {
@@ -3421,10 +3364,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Aplicar idioma al HTML estático
   changeLang(initL);
 
-  // Inyectar UI dinámica
-  injectUI();
-
-  // Botón grabar
+  // Botón grabar — se configura ANTES de injectUI() para garantizar que funcione
   const btn = document.getElementById("record-btn");
   if (btn) {
     btn.onclick = async () => {
@@ -3441,6 +3381,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     };
   }
+
+  // Conectar eventos UI (drop zone, etc.)
+  injectUI();
 
   // Cargar DB
   await loadDB();
