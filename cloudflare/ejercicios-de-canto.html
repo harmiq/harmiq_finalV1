@@ -565,8 +565,8 @@ function showSection(id, el) {
 // Videos con IDs verificados y thumbnails de alta calidad
 const VIDEOS = [
   {id:"OXbhV6pduXY", title:"Tu voz suena forzada? Ejercicio de 5 min (Lax Vox)", channel:"Maria Viñas"},
-  {id:"PL4QLcc_qiWhIyWpteAoISVrQiqqSZxpMz", isPlaylist:true, title:"Cómo empezar a cantar (Playlist)", channel:"Maria Viñas"},
-  {id:"PLpcARcDSTR0I65m602wSm-I8lD1vqjd-q", isPlaylist:true, title:"Vocal Exercises (Full Playlist)", channel:"New York Vocal Coaching"},
+  {id:"PL4QLcc_qiWhIyWpteAoISVrQiqqSZxpMz", isPlaylist:true, thumbId:"OXbhV6pduXY", title:"Cómo empezar a cantar (Playlist)", channel:"Maria Viñas"},
+  {id:"PLpcARcDSTR0I65m602wSm-I8lD1vqjd-q", isPlaylist:true, thumbId:"UPHCf-cZ7kA", title:"Vocal Exercises (Full Playlist)", channel:"New York Vocal Coaching"},
   {id:"bqCPDEm2K8s", title:"Clase de canto para principiantes", channel:"Justin Stoney (NYVC)"},
   {id:"QXSY_FiLBYk", title:"Calentamiento vocal completo — 10 min", channel:"Cheryl Porter"},
   {id:"BjpEZ2f1j6E", title:"Cómo mejorar tu voz cantando", channel:"Brett Manning"},
@@ -616,12 +616,10 @@ function playVideo(card, id, isPlaylist) {
     ? `https://www.youtube.com/embed/videoseries?list=${id}&autoplay=1`
     : `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
     
-  thumb.innerHTML = `<iframe src="${src}" 
-    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
-    style="width:100%;height:100%;position:absolute;top:0;left:0"></iframe>`;
   thumb.style.position = 'relative';
-  thumb.style.paddingBottom = '56.25%';
-  thumb.style.height = '0';
+  thumb.innerHTML = `<iframe src="${src}"
+    frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen
+    style="position:absolute;top:0;left:0;width:100%;height:100%;border:none"></iframe>`;
 }
 
 // ⏱️ Cronómetros para Ejercicios

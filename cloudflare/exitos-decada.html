@@ -117,13 +117,55 @@ footer{text-align:center;padding:3rem;color:var(--m);font-size:0.8rem;border-top
 const BACKEND_URL = "https://hamiq-harmiq-backend1.hf.space";
 let userCC = "GLOBAL";
 
-// Detectar País por IP
+// Detectar País por IP (con timeout de 3s)
 async function detectGeo() {
     try {
-        const res = await fetch('https://ipapi.co/json/');
+        const ctrl = new AbortController();
+        setTimeout(() => ctrl.abort(), 3000);
+        const res = await fetch('https://ipapi.co/json/', { signal: ctrl.signal });
         const data = await res.json();
         if (data.country_code) userCC = data.country_code;
     } catch(e) { console.log("Geo-IP fallback to GLOBAL"); }
+}
+
+async function fetchWithTimeout(url, ms = 12000) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), ms);
+    try {
+        const r = await fetch(url, { signal: ctrl.signal });
+        clearTimeout(timer);
+        return r;
+    } catch(e) { clearTimeout(timer); throw e; }
+}
+
+function renderFallbackCharts() {
+    const topES = [
+        {pos:1,title:"Hawái",artist:"Maluma",spotify_url:"https://open.spotify.com/search/Hawai%20Maluma"},
+        {pos:2,title:"Pepas",artist:"Farruko",spotify_url:"https://open.spotify.com/search/Pepas%20Farruko"},
+        {pos:3,title:"La Bachata",artist:"Manuel Turizo",spotify_url:"https://open.spotify.com/search/La%20Bachata%20Manuel%20Turizo"},
+        {pos:4,title:"Quevedo: Bzrp Vol.52",artist:"Bizarrap",spotify_url:"https://open.spotify.com/search/Quevedo%20Bizarrap"},
+        {pos:5,title:"Flowers",artist:"Miley Cyrus",spotify_url:"https://open.spotify.com/search/Flowers%20Miley%20Cyrus"},
+        {pos:6,title:"As It Was",artist:"Harry Styles",spotify_url:"https://open.spotify.com/search/As%20It%20Was%20Harry%20Styles"},
+        {pos:7,title:"Anti-Hero",artist:"Taylor Swift",spotify_url:"https://open.spotify.com/search/Anti-Hero%20Taylor%20Swift"},
+        {pos:8,title:"Shakira: Bzrp Vol.53",artist:"Bizarrap",spotify_url:"https://open.spotify.com/search/Shakira%20Bizarrap"},
+        {pos:9,title:"Tití Me Preguntó",artist:"Bad Bunny",spotify_url:"https://open.spotify.com/search/Titi%20Me%20Pregunto%20Bad%20Bunny"},
+        {pos:10,title:"CALLE EN LLAMAS",artist:"Quevedo",spotify_url:"https://open.spotify.com/search/Calle%20en%20Llamas%20Quevedo"},
+    ];
+    const topGlobal = [
+        {pos:1,title:"Blinding Lights",artist:"The Weeknd",spotify_url:"https://open.spotify.com/search/Blinding%20Lights%20The%20Weeknd"},
+        {pos:2,title:"Shape of You",artist:"Ed Sheeran",spotify_url:"https://open.spotify.com/search/Shape%20of%20You%20Ed%20Sheeran"},
+        {pos:3,title:"Flowers",artist:"Miley Cyrus",spotify_url:"https://open.spotify.com/search/Flowers%20Miley%20Cyrus"},
+        {pos:4,title:"As It Was",artist:"Harry Styles",spotify_url:"https://open.spotify.com/search/As%20It%20Was%20Harry%20Styles"},
+        {pos:5,title:"Stay",artist:"The Kid LAROI",spotify_url:"https://open.spotify.com/search/Stay%20Kid%20Laroi"},
+        {pos:6,title:"Levitating",artist:"Dua Lipa",spotify_url:"https://open.spotify.com/search/Levitating%20Dua%20Lipa"},
+        {pos:7,title:"Bad Guy",artist:"Billie Eilish",spotify_url:"https://open.spotify.com/search/Bad%20Guy%20Billie%20Eilish"},
+        {pos:8,title:"Peaches",artist:"Justin Bieber",spotify_url:"https://open.spotify.com/search/Peaches%20Justin%20Bieber"},
+        {pos:9,title:"MONTERO",artist:"Lil Nas X",spotify_url:"https://open.spotify.com/search/MONTERO%20Lil%20Nas%20X"},
+        {pos:10,title:"Save Your Tears",artist:"The Weeknd",spotify_url:"https://open.spotify.com/search/Save%20Your%20Tears%20Weeknd"},
+    ];
+    const row = t => `<div class="track-card"><div style="font-weight:900;color:var(--m);width:25px">${t.pos}</div><div class="img-container"><span class="track-placeholder">🎵</span></div><div class="track-info"><div class="track-title">${t.title}</div><div class="track-artist">${t.artist}</div></div><div class="actions"><a href="${t.spotify_url}" target="_blank" class="btn-play">Buscar</a></div></div>`;
+    const section = (tracks, title) => `<div style="margin-bottom:2rem"><h3 style="color:var(--p);margin-bottom:1rem;border-left:4px solid var(--p);padding-left:10px">${title}</h3><div style="background:rgba(255,165,0,0.05);border:1px solid rgba(255,165,0,0.15);border-radius:10px;padding:0.6rem 1rem;margin-bottom:1rem;font-size:0.75rem;color:#9CA3AF">⚠️ Datos de referencia — backend en pausa. <a href="https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M" target="_blank" style="color:var(--green)">Ver en Spotify →</a></div>${tracks.map(row).join('')}</div>`;
+    return section(topES,'🇪🇸 Top España (referencia)') + section(topGlobal,'🌍 Top Global (referencia)');
 }
 
 // Mezclar para que no sea estático
@@ -134,12 +176,19 @@ function shuffle(array) {
 
 async function loadData(target, isSearch = false) {
     const container = document.getElementById('list-container');
-    container.innerHTML = `<div class="loading-box"><div class="spinner"></div><p>Rescatando fotos de Spotify...</p></div>`;
+    container.innerHTML = `<div class="loading-box"><div class="spinner"></div><p>Cargando...</p></div>`;
 
     try {
         if (target === 'top') {
-            const response = await fetch(`${BACKEND_URL}/top-charts?cc=${userCC}`);
-            const data = await response.json();
+            let data;
+            try {
+                const response = await fetchWithTimeout(`${BACKEND_URL}/top-charts?cc=${userCC}`, 12000);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                data = await response.json();
+            } catch(e) {
+                container.innerHTML = `<h2 style="margin-bottom:1.5rem;font-family:'Outfit';text-align:center">Top Charts</h2>` + renderFallbackCharts();
+                return;
+            }
             
             let html = `<h2 style="margin-bottom:1.5rem; font-family:'Outfit'; text-align:center">Top 50: ${data.country === 'GLOBAL' ? 'Global' : (data.country + ' 🌍')}</h2>`;
             
@@ -176,7 +225,8 @@ async function loadData(target, isSearch = false) {
             ? `${BACKEND_URL}/search-tracks?q=${encodeURIComponent(target)}&_cb=${Date.now()}`
             : `${BACKEND_URL}/decade-tracks?decade=${target}&_cb=${Date.now()}`;
         
-        const response = await fetch(url);
+        const response = await fetchWithTimeout(url, 12000);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
 
         if (!data.tracks || data.tracks.length === 0) throw new Error("Vacío");
