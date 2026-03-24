@@ -1371,24 +1371,35 @@ function classifyVT(pitchMean, pitchRange, gender) {
   let pm = pitchMean;
   const g = String(gender).toLowerCase();
   const isMale = (g === "male" || g === "masculina");
-  if (isMale && pm > 190) pm = pm / 2; // Corrección de octava hombre (pm 240 -> 120)
+
+  if (isMale) {
+    // El detector de pitch a veces captura el 1er o 2º armónico en vez del fundamental.
+    // Umbral bajo para capturar barítonos que cantan notas medias (~150-200 Hz → ~75-100 Hz real)
+    if      (pm > 300) pm = pm / 4;   // 2 octavas arriba (raro pero posible)
+    else if (pm > 155) pm = pm / 2;   // 1 octava arriba: barítono registrado a ~160-200 Hz → ~80-100 Hz
+  }
 
   let vt = "baritone";
   let conf = 75;
 
   if (g === "female" || g === "femenina") {
-    if (pm < 205)      { vt = "contralto"; conf = 85; }
-    else if (pm < 265) { vt = "mezzo-soprano"; conf = 90; }
-    else               { vt = "soprano"; conf = 88; }
-  } 
-  else {
-    if (pm < 118)      { vt = "bass"; conf = 82; }
-    else if (pm < 155) { vt = "baritone"; conf = 95; }
-    else if (pm < 215) { vt = "tenor"; conf = 88; }
-    else               { vt = "countertenor"; conf = 80; }
+    if (pm < 200)      { vt = "contralto";     conf = 85; }
+    else if (pm < 260) { vt = "mezzo-soprano"; conf = 88; }
+    else               { vt = "soprano";       conf = 88; }
+  } else {
+    // Rangos realistas en Hz para voz masculina (fundamental):
+    // Bajo:      55-130 Hz  (C2-C3)
+    // Barítono: 100-165 Hz  (G2-E3 aprox)
+    // Tenor:    130-200 Hz  (C3-G4 hablado)
+    if      (pm < 112) { vt = "bass";          conf = 82; }
+    else if (pm < 162) { vt = "baritone";      conf = 90; }
+    else if (pm < 210) { vt = "tenor";         conf = 85; }
+    else               { vt = "countertenor";  conf = 78; }
   }
 
-  if (pitchRange > 180) conf -= 10;
+  // Reducir confianza si el rango de pitch es muy amplio (grabación imprecisa)
+  if (pitchRange > 180) conf -= 12;
+  if (pitchRange > 260) conf -= 10;
   return { vt, conf: Math.max(10, Math.min(100, Math.round(conf))) };
 }
 
@@ -1422,6 +1433,7 @@ async function analyzeAudio() {
       // Backend dormido → análisis local con DSP del navegador
       showStatus("⚡ Analizando con IA local...");
       const feat = await extractFeatures(audioBlob);
+      feat._local = true;
       const vec  = featuresToVector(feat);
       const {vt, conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
       const matches = getMatches(vec, vt, gender, {}, 5);
@@ -1470,6 +1482,7 @@ async function analyzeAudio() {
       // Backend con error HTTP → fallback local
       showStatus("⚡ Backend no disponible. Analizando localmente...");
       const feat = await extractFeatures(audioBlob);
+      feat._local = true;
       const vec  = featuresToVector(feat);
       const {vt, conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
       const matches = getMatches(vec, vt, gender, {}, 5);
@@ -1839,29 +1852,68 @@ async function renderResults({feat,vec,vt,conf,matches,gender}) {
   // ── Bloque Amazon (monetización) ──────────────────────────────────────
   const amzHTML = getAmazonHtml(vt);
 
+  // Botones de corrección manual del tipo de voz
+  const vtOverrideHTML = (() => {
+    const allVTs = ['bass','baritone','tenor','countertenor','contralto','mezzo-soprano','soprano'];
+    const btns = allVTs.map(v => {
+      const n = trV('_vt_names', v) || v;
+      const isActive = v === vt;
+      return `<button onclick="_overrideVT('${v}')" style="font-size:.71rem;font-weight:700;
+        padding:.28rem .65rem;border-radius:20px;cursor:pointer;transition:.15s;
+        border:1px solid ${isActive ? 'rgba(124,77,255,.8)' : 'rgba(255,255,255,.13)'};
+        background:${isActive ? 'rgba(124,77,255,.3)' : 'rgba(255,255,255,.04)'};
+        color:${isActive ? '#C4B5FD' : '#9CA3AF'}">${n}</button>`;
+    }).join('');
+    return `<div style="margin-top:.75rem;padding:.7rem .9rem;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px">
+      <div style="font-size:.67rem;color:#6B7280;margin-bottom:.45rem">¿Resultado incorrecto? Elige tu tipo real:</div>
+      <div style="display:flex;gap:.3rem;flex-wrap:wrap">${btns}</div>
+    </div>`;
+  })();
+
+  // Advertencia si el análisis fue local (backend dormido)
+  const localNote = feat?._local ? `
+    <div style="background:rgba(255,165,0,.08);border:1px solid rgba(255,165,0,.2);
+      border-radius:10px;padding:.55rem .85rem;margin-top:.75rem;font-size:.75rem;color:#FCD34D">
+      ⚡ Análisis local (servidor en pausa). Precisión reducida — usa la corrección si no es exacto.
+    </div>` : '';
+
   resEl.innerHTML = `
     <!-- Header resultado -->
-    <div style="margin-bottom:1.25rem">
+    <div style="margin-bottom:1rem">
       <span style="background:rgba(124,77,255,.15);border:1px solid rgba(124,77,255,.3);
         color:#a89fff;font-size:.78rem;font-weight:700;padding:.28rem .75rem;border-radius:20px">
         ⚡ ${tr("_result")}
       </span>
-      ${explanation}
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1.15rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-top:.9rem">
         <div style="background:rgba(255,255,255,.05);border-radius:12px;padding:.9rem;text-align:center">
-          <div style="font-size:.68rem;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.2rem">${tr("_vt_label")}</div>
-          <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.1rem;color:#fff;text-transform:capitalize">${vtName}</div>
+          <div style="font-size:.65rem;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.2rem">${tr("_vt_label")}</div>
+          <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.15rem;color:#fff;text-transform:capitalize">${vtName}</div>
         </div>
         <div style="background:rgba(255,255,255,.05);border-radius:12px;padding:.9rem;text-align:center">
-          <div style="font-size:.68rem;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.2rem">Confianza</div>
-          <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.1rem;color:var(--a)">${conf}%</div>
+          <div style="font-size:.65rem;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.2rem">Confianza</div>
+          <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.15rem;color:var(--a)">${conf}%</div>
         </div>
       </div>
+      ${vtOverrideHTML}
+      ${localNote}
     </div>
+
+    <!-- Artistas similares: LO MÁS IMPORTANTE, siempre visible -->
+    <div style="margin-bottom:1.1rem">
+      <div style="font-size:.72rem;color:#6B7280;font-weight:700;text-transform:uppercase;
+        letter-spacing:.06em;margin-bottom:.65rem">🎤 Artistas con tu tipo de voz</div>
+      <div id="_cards_grid" style="display:flex;flex-direction:column;gap:.7rem">
+        ${cardsHTML}
+      </div>
+    </div>
+
+    <!-- Explicación del tipo de voz -->
+    ${explanation}
+
+    <!-- Filtros (debajo, opcionales) -->
     ${filtersHTML}
-    <div id="_cards_grid" style="display:flex;flex-direction:column;gap:.75rem">
-      ${cardsHTML}
-    </div>
+
     ${extraBtnsHTML}
     ${songsHTML}
     ${shareHTML}
@@ -2081,6 +2133,15 @@ function _btnStyle(bg, border="none") {
   return `flex:1;min-width:88px;background:${bg};border:${border};color:#fff;font-family:'Nunito',sans-serif;
     font-weight:700;font-size:.82rem;padding:.55rem .7rem;border-radius:10px;cursor:pointer;transition:opacity .2s;`;
 }
+
+window._overrideVT = function(newVt) {
+  if (!lastResult) return;
+  lastResult.vt   = newVt;
+  lastResult.conf = 95; // user knows their own voice type
+  const newMatches = getMatches(lastResult.vec || new Array(27).fill(0.5), newVt, lastResult.gender, {}, 5);
+  lastResult.matches = newMatches;
+  preloadImages(newMatches.map(m => m.name)).then(() => renderResults(lastResult));
+};
 
 function _share(p) {
   if (!lastResult?.matches?.[0]) return;
