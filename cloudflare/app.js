@@ -1369,37 +1369,50 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
  */
 function classifyVT(pitchMean, pitchRange, gender) {
   let pm = pitchMean;
-  const g = String(gender).toLowerCase();
+  let g = String(gender).toLowerCase();
+
+  // 1. AUTO-GENDER DETECTION (Si el usuario eligió "Auto" o no hay selección)
+  if (!g || g === "auto" || g === "undefined") {
+    // Si la frecuencia es típica de mujer (>170 Hz), asumimos femenino para el rango
+    g = (pm > 170) ? "female" : "male";
+  }
+
   const isMale = (g === "male" || g === "masculina");
 
   if (isMale) {
-    // El detector de pitch a veces captura el 1er o 2º armónico en vez del fundamental.
-    // Umbral bajo para capturar barítonos que cantan notas medias (~150-200 Hz → ~75-100 Hz real)
-    if      (pm > 300) pm = pm / 4;   // 2 octavas arriba (raro pero posible)
-    else if (pm > 155) pm = pm / 2;   // 1 octava arriba: barítono registrado a ~160-200 Hz → ~80-100 Hz
+    // CORRECCIÓN DE OCTAVA (v2.2): El detector a veces captura el 1er armónico.
+    // El umbral de 215Hz es más seguro para no dividir voces de Tenor/Barítono reales.
+    if      (pm > 430) pm = pm / 4;   // 2 octavas arriba
+    else if (pm > 215) pm = pm / 2;   // 1 octava arriba
   }
 
   let vt = "baritone";
-  let conf = 75;
+  let conf = 80;
 
   if (g === "female" || g === "femenina") {
-    if (pm < 200)      { vt = "contralto";     conf = 85; }
-    else if (pm < 260) { vt = "mezzo-soprano"; conf = 88; }
-    else               { vt = "soprano";       conf = 88; }
+    // Rangos Femeninos (Hz):
+    // Contralto: 160-240 Hz
+    // Mezzo:     200-350 Hz
+    // Soprano:   250-500+ Hz
+    if      (pm < 195) { vt = "contralto";     conf = 88; }
+    else if (pm < 255) { vt = "mezzo-soprano"; conf = 92; }
+    else               { vt = "soprano";       conf = 90; }
   } else {
-    // Rangos realistas en Hz para voz masculina (fundamental):
-    // Bajo:      55-130 Hz  (C2-C3)
-    // Barítono: 100-165 Hz  (G2-E3 aprox)
-    // Tenor:    130-200 Hz  (C3-G4 hablado)
-    if      (pm < 112) { vt = "bass";          conf = 82; }
-    else if (pm < 162) { vt = "baritone";      conf = 90; }
-    else if (pm < 210) { vt = "tenor";         conf = 85; }
-    else               { vt = "countertenor";  conf = 78; }
+    // Rangos Masculinos (Hz) - FUNDAMENTAL:
+    // Bajo:      80-115 Hz
+    // Barítono: 110-160 Hz
+    // Tenor:    155-215 Hz
+    // Contra:   >215 Hz
+    if      (pm < 115) { vt = "bass";          conf = 85; }
+    else if (pm < 165) { vt = "baritone";      conf = 95; } // Barítono es el centro, máxima confianza
+    else if (pm < 215) { vt = "tenor";         conf = 88; }
+    else               { vt = "countertenor";  conf = 80; }
   }
 
-  // Reducir confianza si el rango de pitch es muy amplio (grabación imprecisa)
-  if (pitchRange > 180) conf -= 12;
-  if (pitchRange > 260) conf -= 10;
+  // Ajuste de confianza por estabilidad (Range)
+  if (pitchRange > 180) conf -= 10;
+  if (pitchRange > 280) conf -= 15;
+  
   return { vt, conf: Math.max(10, Math.min(100, Math.round(conf))) };
 }
 
