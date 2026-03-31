@@ -1318,6 +1318,8 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
   
   // 2. FILTRO DE TIPO DE VOZ ESTRICTO (Barítono solo ve Barítonos, etc.)
   pool = pool.filter(s => s.voice_type === vt);
+  const compareSlug = (new URLSearchParams(window.location.search)).get('compare');
+  let compareArtist = null; if (compareSlug) { const target = compareSlug.toLowerCase(); compareArtist = singersDb.find(s => s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === target || s.name.toLowerCase().includes(target.replace(/-/g, ' '))); }
 
   // No permitimos fallback automático a otros tipos de voz para mantener la precisión
   // Si no hay resultados exactos, preferimos mostrar lista vacía o manejarlo en UI.
@@ -1732,10 +1734,11 @@ async function renderResults({feat,vec,vt,conf,matches,gender}) {
     const vtN  = trV("_vt_names", m.voice_type);
     const songs = m.reference_songs?.slice(0,3) || [];
 
+    const isComp = m.isComparisonMode;
     return `
-    <div style="background:rgba(255,255,255,.03); border:1px solid ${i===0?color+'55':"rgba(255,255,255,.08)"};
-      border-radius:24px; padding:1.5rem; margin-bottom:1rem; position:relative; overflow:hidden">
-      
+    <div style="background:rgba(255,255,255,.03); border:1px solid ${isComp?'#FF4FA3':(i===0?color+'55':"rgba(255,255,255,.08)")};
+      border-radius:24px; padding:1.5rem; margin-bottom:1rem; position:relative; overflow:hidden; ${isComp?'box-shadow:0 0 20px rgba(255,79,163,0.2)':''}">
+      ${isComp ? `<div style="position:absolute; top:0; right:0; background:#FF4FA3; color:white; font-size:0.6rem; font-weight:900; padding:4px 12px; border-radius:0 0 0 12px; text-transform:uppercase; letter-spacing:1px">Tu Comparación</div>` : ""}
       <div style="display:flex; gap:1.2rem; align-items:center; margin-bottom:1rem">
         <div style="position:relative">
           <div style="width:75px; height:75px; border-radius:50%; overflow:hidden; border:3px solid ${i===0?color:'rgba(255,255,255,.1)'}">
