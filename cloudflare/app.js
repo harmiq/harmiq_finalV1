@@ -722,42 +722,70 @@ async function preloadImages(names) {
 // 4. INYECTAR UI (upload + era filter + spectrum + tips)
 // ═══════════════════════════════════════════════════════════════════════════════
 function injectUI() {
-  // Todos los elementos ya están en el HTML estático.
-  // Esta función solo actualiza textos con el idioma activo y conecta los eventos.
   if (document.getElementById("_harmiq_ui_injected")) return;
-  const appBox = document.querySelector(".app-box");
-  if (appBox) appBox.setAttribute("data-ui", "_harmiq_ui_injected");
-  document.body.setAttribute("id", "_harmiq_ui_injected"); // guard anti-doble ejecución
+  const mount = document.getElementById("app-mount");
+  if (!mount) return;
 
-  // ── Actualizar textos traducibles ya presentes en el HTML ──────────────
-  const tipEl    = document.getElementById("_rec_tips_el");
-  const upBtnEl  = document.getElementById("_upload_btn_el");
-  const upHintEl = document.getElementById("_upload_hint_el");
-  const orEl     = document.getElementById("_or_el");
-  if (tipEl)    tipEl.textContent    = tr("_rec_tips");
-  if (upBtnEl)  upBtnEl.textContent  = tr("_upload_btn");
-  if (upHintEl) upHintEl.textContent = tr("_upload_hint");
-  if (orEl)     orEl.textContent     = tr("_or");
+  mount.innerHTML = `
+    <div id="_drop_zone" style="background:var(--glass); border:2px dashed var(--glass-border); border-radius:32px; padding:3rem 2rem; cursor:pointer; transition:0.3s; position:relative; overflow:hidden">
+      <div id="_spec_wrap" style="display:none; margin-bottom:1.5rem">
+        <canvas id="_spec_canvas" style="width:100%; height:80px"></canvas>
+      </div>
+      
+      <div id="_upload_ui">
+        <div style="font-size:3rem; margin-bottom:1rem">🎙️</div>
+        <button class="hm-btn" id="record-btn" style="margin-bottom:1rem">
+          <span id="btn-record-text">Pulsar para Grabar</span>
+        </button>
+        <div style="color:var(--m); font-size:0.9rem; margin:1rem 0" id="_or_el">o también</div>
+        <button style="background:transparent; border:1px solid var(--glass-border); color:var(--t); padding:0.8rem 2rem; border-radius:100px; font-weight:700; cursor:pointer; transition:0.3s" onmouseover="this.style.borderColor='var(--p)'" onmouseout="this.style.borderColor='var(--glass-border)'">
+          📁 <span id="_upload_btn_el">Subir archivo de audio</span>
+        </button>
+        <p style="font-size:0.75rem; color:var(--m); margin-top:1.5rem" id="_upload_hint_el">Formatos: MP3, WAV, M4A o Voice Memo</p>
+        <div id="_file_name" style="margin-top:1rem; font-weight:800; color:var(--p)"></div>
+      </div>
+      
+      <input type="file" id="_file_inp" accept="audio/*" style="display:none">
+    </div>
+    
+    <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:center" id="_gender_select_wrap">
+      <button id="_gbtn_auto" onclick="_setGender('auto')" style="background:rgba(124,77,255,0.15); border:1px solid var(--p); color:#fff; padding:0.6rem 1.2rem; border-radius:15px; font-weight:700; cursor:pointer">✨ Auto-detec</button>
+      <button id="_gbtn_male" onclick="_setGender('male')" style="background:var(--glass); border:1px solid var(--glass-border); color:var(--m); padding:0.6rem 1.2rem; border-radius:15px; font-weight:700; cursor:pointer">👨 Hombre</button>
+      <button id="_gbtn_female" onclick="_setGender('female')" style="background:var(--glass); border:1px solid var(--glass-border); color:var(--m); padding:0.6rem 1.2rem; border-radius:15px; font-weight:700; cursor:pointer">👩 Mujer</button>
+    </div>
+    <select id="user-gender" style="display:none"><option value="auto">auto</option></select>
 
-  // ── Botón en estado "cargando" hasta que la DB esté lista ──────────────
-  const recBtnEl = document.getElementById("record-btn");
-  if (recBtnEl) { recBtnEl.style.opacity = "0.7"; recBtnEl.title = "Cargando base de datos..."; }
+    <div id="results" style="margin-top:3rem"></div>
+    <div id="events-area" style="margin-top:2rem"></div>
+  `;
 
-  // ── Eventos drop zone ──────────────────────────────────────────────────
+  // Conectar eventos
   const dz = document.getElementById("_drop_zone");
   const fi = document.getElementById("_file_inp");
+  const recBtn = document.getElementById("record-btn");
+
   if (dz && fi) {
-    dz.addEventListener("click", () => fi.click());
-    dz.addEventListener("dragover", e => { e.preventDefault(); dz.style.borderColor="#7C4DFF"; dz.style.background="rgba(124,77,255,.07)"; });
-    dz.addEventListener("dragleave", () => { dz.style.borderColor="rgba(255,255,255,.18)"; dz.style.background="rgba(255,255,255,.02)"; });
+    dz.addEventListener("dragover", e => { e.preventDefault(); dz.style.borderColor="var(--p)"; dz.style.background="rgba(124,77,255,0.05)"; });
+    dz.addEventListener("dragleave", () => { dz.style.borderColor="var(--glass-border)"; dz.style.background="var(--glass)"; });
     dz.addEventListener("drop", e => {
-      e.preventDefault(); dz.style.borderColor="rgba(255,255,255,.18)"; dz.style.background="rgba(255,255,255,.02)";
+      e.preventDefault(); dz.style.borderColor="var(--glass-border)"; dz.style.background="var(--glass)";
       const f = e.dataTransfer.files[0];
       if (f) setFile(f);
     });
     fi.addEventListener("change", () => { if (fi.files[0]) setFile(fi.files[0]); });
   }
-  // ── Filtro de épocas (se inyecta en renderResults()) ──────────────────
+
+  if (recBtn) {
+    recBtn.onclick = async () => {
+      if (!isRec && audioBlob) {
+        await analyzeAudio();
+      } else {
+        await toggleRecording();
+      }
+    };
+  }
+
+  mount.setAttribute("data-ui", "_harmiq_ui_injected");
 }
 
 function _setGender(val, btn) {
@@ -1655,9 +1683,9 @@ async function renderResults({feat,vec,vt,conf,matches,gender}) {
   const storyCardHTML = `
     <div id="_premium_story_card" style="
       background: linear-gradient(170deg,#0f0820 0%,#1a0a35 35%,#0a1228 70%);
-      border-radius: 28px; padding: 2.5rem 1.5rem; color: #fff; margin-bottom: 2.5rem;
+      border-radius: 40px; padding: 3rem 2rem; color: #fff; margin-bottom: 3rem;
       border: 1px solid rgba(255,255,255,.15); position: relative; overflow: hidden;
-      box-shadow: 0 30px 100px rgba(0,0,0,0.8), 0 0 40px ${color}33; text-align:center;">
+      box-shadow: 0 40px 120px rgba(0,0,0,0.8), 0 0 50px ${color}44; text-align:center;">
       
       <!-- Destellos de fondo -->
       <div style="position:absolute; top:-20%; left:-10%; width:200px; height:200px; background:${color}; filter:blur(100px); opacity:0.25; pointer-events:none"></div>
