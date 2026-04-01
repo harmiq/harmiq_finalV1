@@ -522,7 +522,7 @@ const MONO_IMGS = {
   "Isabel Pantoja":      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Isabel_Pantoja_2011.jpg/220px-Isabel_Pantoja_2011.jpg",
   // Mezzosopranos
   "Adele":               "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Adele_2016.jpg/220px-Adele_2016.jpg",
-  "Amy Winehouse":       "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Amy_Winehouse_2007.jpg/220px-Amy_Winehouse_2007.jpg",
+  "Amy Winehouse":       "/assets/img/amy_winehouse.png",
   "Beyoncé":             "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Beyoncé_in_Cannes_%282012%29.jpg/220px-Beyoncé_in_Cannes_%282012%29.jpg",
   "Rosalía":             "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Rosal%C3%ADa_%282019%29.jpg/220px-Rosal%C3%ADa_%282019%29.jpg",
   "Tracy Chapman":       "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Tracy_Chapman_2009.jpg/220px-Tracy_Chapman_2009.jpg",
