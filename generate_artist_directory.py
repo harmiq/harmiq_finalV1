@@ -1,6 +1,6 @@
 import os, json, re, urllib.parse
 
-from upgrade_artist_pages_v3 import VERIFIED_ARTISTS # Reutilizar la base de datos
+from upgrade_artist_pages_v3 import VERIFIED_ARTISTS, get_itunes_image_url
 
 ARTISTAS_INDEX = r"E:\Harmiq_viaje\cloudflare\artistas\index.html"
 CACHE_PATH = r"E:\Harmiq_viaje\itunes_img_cache.json"
@@ -16,9 +16,21 @@ def load_cache():
 
 IMG_CACHE = load_cache()
 
+def save_cache():
+    with open(CACHE_PATH, "w", encoding="utf-8") as f:
+        json.dump(IMG_CACHE, f, indent=4, ensure_ascii=False)
+
 def get_img(artist_name):
-    # Intentar sacar del caché de itunes que ya poblamos anteriormente
-    return IMG_CACHE.get(artist_name, "")
+    # Intentar sacar del caché
+    url = IMG_CACHE.get(artist_name, "")
+    if not url:
+        # SI NO ESTÁ EN CACHÉ, BUSCARLO EN TIEMPO REAL (Lento la primera vez pero soluciona el problema de las letras)
+        print(f" -> Buscando foto para: {artist_name}")
+        url = get_itunes_image_url(artist_name)
+        if url:
+            IMG_CACHE[artist_name] = url
+            save_cache()
+    return url
 
 def generate_directory():
     artists_html = ""
@@ -52,6 +64,7 @@ def generate_directory():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
     <title>Directorio de Voces y Cantantes | Harmiq IA</title>
     <meta name="description" content="Explora el directorio completo de perfiles vocales de Harmiq. Descubre el tipo de voz de tus artistas favoritos: Sopranos, Tenores, Barítonos y más.">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">

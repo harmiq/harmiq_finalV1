@@ -247,6 +247,7 @@ def upgrade_html(html_path, slug, vocal_type, bio_text, songs, artist_img):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
     <title>Análisis Vocal de {artist_name} | {vocal_type} | Harmiq IA</title>
     <meta name="description" content="Descubre el perfil vocal y afinación biomecánica de {artist_name}, {vocal_type}. Escucha sus top canciones y análisis de Harmiq.">
     <link rel="canonical" href="https://harmiq.app/artistas/{slug}/">
