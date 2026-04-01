@@ -3182,7 +3182,11 @@ function handleRoute() {
     return true;
   }
   if (path === "/modul-catala") {
-    loadStaticPage("/modul-catala.html", "🏴 Mòdul Català | Harmiq");
+    loadStaticPage("/modul-catala.html", "🏴 Mòdul Català | Harmiq").then(() => {
+      if (typeof window.initModulCatala === 'function') {
+        window.initModulCatala();
+      }
+    });
     return true;
   }
   if (path === "/tipos-de-voz") {

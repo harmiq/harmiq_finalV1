@@ -36,10 +36,10 @@
 
         /* ── NAV ── */
         nav{display:flex;justify-content:space-between;align-items:center;padding:.85rem 4%;
-            background:rgba(10,8,24,.95);backdrop-filter:blur(12px);position:sticky;top:0;
+            background:rgba(10,8,24,.95);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);position:sticky;top:0;
             z-index:1000;border-bottom:1px solid rgba(255,255,255,.07);flex-wrap:wrap;gap:.5rem}
         .logo{font-family:'Outfit',sans-serif;font-size:1.7rem;font-weight:900;
-            background:linear-gradient(135deg,#7C4DFF,#FF4FA3);background-clip:text;-webkit-background-clip:text;
+            background:linear-gradient(135deg,#7C4DFF,#FF4FA3);-webkit-background-clip:text;background-clip:text;
             -webkit-text-fill-color:transparent}
         .nav-links{display:flex;list-style:none;gap:.25rem;flex-wrap:wrap;align-items:center}
         .nav-links a{font-weight:700;font-size:.88rem;padding:.38rem .75rem;border-radius:20px;
@@ -96,7 +96,7 @@
         @media(max-width:600px){.kofi-btn{bottom:.6rem;right:.6rem;padding:.42rem .6rem;font-size:.68rem;border-radius:36px;box-shadow:0 4px 12px rgba(255,94,91,.35);animation:none}}
 
         /* Cookie Consent */
-        #cookie-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(10,8,24,.97);backdrop-filter:blur(20px);
+        #cookie-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(10,8,24,.97);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
             border-top:1px solid rgba(255,255,255,.08);padding:1rem 5%;display:flex;
             align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
             z-index:9998;transform:translateY(100%);transition:transform .4s ease}
@@ -227,37 +227,49 @@
         <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:1.5rem;">
             <!-- Rosalía -->
             <a href="/artistas/rosal-a/" style="text-decoration:none; text-align:center; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                <img src="https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/3d/8c/1e/3d8c1e87-84bc-2358-7e50-2f9611f8e6c4/196589006509.jpg/200x200bb.jpg" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border:3px solid #7C4DFF; margin-bottom:0.8rem;">
+                <div style="width:100px; height:100px; border-radius:50%; border:3px solid #7C4DFF; overflow:hidden; margin:0 auto 0.8rem; display:flex; align-items:center; justify-content:center;">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/3d/8c/1e/3d8c1e87-84bc-2358-7e50-2f9611f8e6c4/196589006509.jpg/200x200bb.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Rosalía">
+                </div>
                 <div style="color:#fff; font-weight:700; font-size:0.9rem;">Rosalía</div>
                 <div style="color:#A5B4FC; font-size:0.75rem; font-weight:600;">Soprano</div>
             </a>
             <!-- Quevedo -->
             <a href="/artistas/quevedo/" style="text-decoration:none; text-align:center; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                <img src="https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/44/23/e8/4423e80f-90e8-0b5c-897b-952402bc4500/8445162981504.jpg/200x200bb.jpg" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border:3px solid #7C4DFF; margin-bottom:0.8rem;">
+                <div style="width:100px; height:100px; border-radius:50%; border:3px solid #7C4DFF; overflow:hidden; margin:0 auto 0.8rem; display:flex; align-items:center; justify-content:center;">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/44/23/e8/4423e80f-90e8-0b5c-897b-952402bc4500/8445162981504.jpg/200x200bb.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Quevedo">
+                </div>
                 <div style="color:#fff; font-weight:700; font-size:0.9rem;">Quevedo</div>
                 <div style="color:#A5B4FC; font-size:0.75rem; font-weight:600;">Barítono</div>
             </a>
             <!-- Freddie Mercury -->
             <a href="/artistas/freddie-mercury/" style="text-decoration:none; text-align:center; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                <img src="https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ce/6f/fc/ce6ffc4a-6f6a-2d22-bc6f-f4335f08ca42/06UMGIM08611.rgb.jpg/200x200bb.jpg" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border:3px solid #7C4DFF; margin-bottom:0.8rem;">
+                <div style="width:100px; height:100px; border-radius:50%; border:3px solid #7C4DFF; overflow:hidden; margin:0 auto 0.8rem; display:flex; align-items:center; justify-content:center;">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ce/6f/fc/ce6ffc4a-6f6a-2d22-bc6f-f4335f08ca42/06UMGIM08611.rgb.jpg/200x200bb.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Freddie Mercury">
+                </div>
                 <div style="color:#fff; font-weight:700; font-size:0.9rem;">F. Mercury</div>
                 <div style="color:#A5B4FC; font-size:0.75rem; font-weight:600;">Barítono</div>
             </a>
             <!-- Bad Bunny -->
             <a href="/artistas/bad-bunny/" style="text-decoration:none; text-align:center; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                <img src="https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/ee/6f/fc/ee6ffc5a-6f6a-2d22-bc6f-f4335f08ca42/196589552105.jpg/200x200bb.jpg" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border:3px solid #7C4DFF; margin-bottom:0.8rem;">
+                <div style="width:100px; height:100px; border-radius:50%; border:3px solid #7C4DFF; overflow:hidden; margin:0 auto 0.8rem; display:flex; align-items:center; justify-content:center;">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/ee/6f/fc/ee6ffc5a-6f6a-2d22-bc6f-f4335f08ca42/196589552105.jpg/200x200bb.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Bad Bunny">
+                </div>
                 <div style="color:#fff; font-weight:700; font-size:0.9rem;">Bad Bunny</div>
                 <div style="color:#A5B4FC; font-size:0.75rem; font-weight:600;">Barítono</div>
             </a>
             <!-- Michael Jackson -->
             <a href="/artistas/michael-jackson/" style="text-decoration:none; text-align:center; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                <img src="https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/ce/6f/fc/ce6ffc4a-6f6a-2d22-bc6f-f4335f08ca42/886447285661.jpg/200x200bb.jpg" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border:3px solid #7C4DFF; margin-bottom:0.8rem;">
+                <div style="width:100px; height:100px; border-radius:50%; border:3px solid #7C4DFF; overflow:hidden; margin:0 auto 0.8rem; display:flex; align-items:center; justify-content:center;">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/ce/6f/fc/ce6ffc4a-6f6a-2d22-bc6f-f4335f08ca42/886447285661.jpg/200x200bb.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Michael Jackson">
+                </div>
                 <div style="color:#fff; font-weight:700; font-size:0.9rem;">M. Jackson</div>
                 <div style="color:#A5B4FC; font-size:0.75rem; font-weight:600;">Tenor</div>
             </a>
             <!-- Shakira -->
             <a href="/artistas/shakira/" style="text-decoration:none; text-align:center; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                <img src="https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/be/6f/fc/be6ffc4a-6f6a-2d22-bc6f-f4335f08ca42/196589785890.jpg/200x200bb.jpg" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border:3px solid #7C4DFF; margin-bottom:0.8rem;">
+                <div style="width:100px; height:100px; border-radius:50%; border:3px solid #7C4DFF; overflow:hidden; margin:0 auto 0.8rem; display:flex; align-items:center; justify-content:center;">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/be/6f/fc/be6ffc4a-6f6a-2d22-bc6f-f4335f08ca42/196589785890.jpg/200x200bb.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Shakira">
+                </div>
                 <div style="color:#fff; font-weight:700; font-size:0.9rem;">Shakira</div>
                 <div style="color:#A5B4FC; font-size:0.75rem; font-weight:600;">Mezzo</div>
             </a>
