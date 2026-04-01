@@ -1,0 +1,451 @@
+Corrección de tipos vocales - Total corregidos: 449
+
+  ✅ 22Gz: Contralto → Bajo
+  ✅ A Flock Of Seagulls: Contralto → Bajo
+  ✅ A-Lin: Contralto → Bajo
+  ✅ A.N.I.M.A.L.;Chuck Jonhson: Contralto → Bajo
+  ✅ A.R. Rahman;Arijit Singh;Shashaa Tirupati: Mezzosoprano → Barítono
+  ✅ Aaron Shust: Soprano → Tenor
+  ✅ Aaron Smith;Krono;Luvli: Contralto → Bajo
+  ✅ Above & Beyond;Richard Bedford;Nox Vahn: Mezzosoprano → Barítono
+  ✅ Ahoora: Contralto → Bajo
+  ✅ Alan Menken: Contralto → Bajo
+  ✅ Alejandro Sanz: Contralto → Bajo
+  ✅ Alex Ceesay: Soprano → Tenor
+  ✅ Alex Schulz: Contralto → Bajo
+  ✅ Alexandre Pires: Soprano → Tenor
+  ✅ ALI;AKLO: Soprano → Tenor
+  ✅ Aloe Blacc: Contralto → Bajo
+  ✅ alt-J: Contralto → Bajo
+  ✅ Alvin & The Chipmunks;David Seville: Soprano → Tenor
+  ✅ Amaranthe: Soprano → Tenor
+  ✅ Amit Trivedi: Mezzosoprano → Barítono
+  ✅ Andrea Bocelli;Giorgia: Contralto → Bajo
+  ✅ Andrew Belle: Mezzosoprano → Barítono
+  ✅ Andrew Lloyd Webber;Emmy Rossum: Mezzosoprano → Barítono
+  ✅ Anjelah Johnson: Mezzosoprano → Barítono
+  ✅ Annihilator: Soprano → Tenor
+  ✅ Anupam Roy: Mezzosoprano → Barítono
+  ✅ Anupam Roy;Iman Chakraborty: Contralto → Bajo
+  ✅ arai tasuku;Coma: Contralto → Bajo
+  ✅ Arijit Singh;Shadab;Altamash Faridi: Soprano → Tenor
+  ✅ Armin van Buuren;Vini Vici;Hilight Tribe: Mezzosoprano → Barítono
+  ✅ Artista Especial 221: Mezzosoprano → Barítono
+  ✅ Artista Especial 222: Soprano → Tenor
+  ✅ Artista Especial 223: Mezzosoprano → Barítono
+  ✅ Artista Especial 225: Mezzosoprano → Barítono
+  ✅ Artista Especial 226: Contralto → Bajo
+  ✅ Artista Especial 227: Soprano → Tenor
+  ✅ Artista Especial 229: Contralto → Bajo
+  ✅ Artista Especial 231: Soprano → Tenor
+  ✅ Artista Especial 232: Mezzosoprano → Barítono
+  ✅ Artista Especial 233: Soprano → Tenor
+  ✅ Artista Especial 239: Contralto → Bajo
+  ✅ Artista Generado 101: Contralto → Bajo
+  ✅ Artista Generado 102: Contralto → Bajo
+  ✅ Artista Generado 103: Contralto → Bajo
+  ✅ Artista Generado 105: Contralto → Bajo
+  ✅ Artista Generado 106: Mezzosoprano → Barítono
+  ✅ Artista Generado 108: Contralto → Bajo
+  ✅ Artista Generado 109: Contralto → Bajo
+  ✅ Artista Generado 110: Contralto → Bajo
+  ✅ Artista Generado 112: Contralto → Bajo
+  ✅ Artista Generado 113: Mezzosoprano → Barítono
+  ✅ Artista Generado 114: Contralto → Bajo
+  ✅ Artista Generado 115: Soprano → Tenor
+  ✅ Artista Generado 116: Contralto → Bajo
+  ✅ Artista Generado 117: Soprano → Tenor
+  ✅ Artista Generado 118: Contralto → Bajo
+  ✅ Artista Generado 119: Contralto → Bajo
+  ✅ Artista Generado 120: Mezzosoprano → Barítono
+  ✅ Artista Generado 121: Contralto → Bajo
+  ✅ Artista Generado 122: Contralto → Bajo
+  ✅ Artista Generado 125: Mezzosoprano → Barítono
+  ✅ Artista Generado 126: Contralto → Bajo
+  ✅ Artista Generado 129: Contralto → Bajo
+  ✅ Artista Generado 131: Mezzosoprano → Barítono
+  ✅ Artista Generado 132: Mezzosoprano → Barítono
+  ✅ Artista Generado 134: Contralto → Bajo
+  ✅ Artista Generado 136: Contralto → Bajo
+  ✅ Artista Generado 141: Mezzosoprano → Barítono
+  ✅ Artista Generado 142: Soprano → Tenor
+  ✅ Artista Generado 143: Soprano → Tenor
+  ✅ Artista Generado 144: Contralto → Bajo
+  ✅ Artista Generado 145: Soprano → Tenor
+  ✅ Artista Generado 146: Contralto → Bajo
+  ✅ Artista Generado 147: Soprano → Tenor
+  ✅ Artista Generado 148: Soprano → Tenor
+  ✅ Artista Generado 149: Soprano → Tenor
+  ✅ Artista Generado 150: Mezzosoprano → Barítono
+  ✅ Artista Generado 153: Mezzosoprano → Barítono
+  ✅ Artista Generado 159: Soprano → Tenor
+  ✅ Artista Generado 162: Contralto → Bajo
+  ✅ Artista Generado 165: Soprano → Tenor
+  ✅ Artista Generado 168: Contralto → Bajo
+  ✅ Artista Generado 169: Contralto → Bajo
+  ✅ Artista Generado 170: Soprano → Tenor
+  ✅ Artista Generado 172: Contralto → Bajo
+  ✅ Artista Generado 173: Contralto → Bajo
+  ✅ Artista Generado 174: Contralto → Bajo
+  ✅ Artista Generado 176: Contralto → Bajo
+  ✅ Artista Generado 178: Mezzosoprano → Barítono
+  ✅ Artista Generado 179: Soprano → Tenor
+  ✅ Artista Generado 180: Soprano → Tenor
+  ✅ Artista Generado 181: Soprano → Tenor
+  ✅ Artista Generado 183: Mezzosoprano → Barítono
+  ✅ Artista Generado 184: Contralto → Bajo
+  ✅ Artista Generado 188: Contralto → Bajo
+  ✅ Artista Generado 189: Soprano → Tenor
+  ✅ Artista Generado 193: Mezzosoprano → Barítono
+  ✅ Artista Generado 196: Mezzosoprano → Barítono
+  ✅ Artista Generado 197: Mezzosoprano → Barítono
+  ✅ Artista Generado 199: Mezzosoprano → Barítono
+  ✅ Artista Generado 200: Mezzosoprano → Barítono
+  ✅ Artista Generado 204: Soprano → Tenor
+  ✅ Artista Generado 206: Mezzosoprano → Barítono
+  ✅ Artista Generado 207: Mezzosoprano → Barítono
+  ✅ Artista Generado 213: Contralto → Bajo
+  ✅ Artista Generado 216: Soprano → Tenor
+  ✅ Artista Generado 219: Mezzosoprano → Barítono
+  ✅ Artista Generado 60: Soprano → Tenor
+  ✅ Artista Generado 61: Contralto → Bajo
+  ✅ Artista Generado 62: Contralto → Bajo
+  ✅ Artista Generado 64: Mezzosoprano → Barítono
+  ✅ Artista Generado 65: Mezzosoprano → Barítono
+  ✅ Artista Generado 68: Mezzosoprano → Barítono
+  ✅ Artista Generado 69: Mezzosoprano → Barítono
+  ✅ Artista Generado 80: Contralto → Bajo
+  ✅ Artista Generado 83: Contralto → Bajo
+  ✅ Artista Generado 86: Soprano → Tenor
+  ✅ Artista Generado 91: Contralto → Bajo
+  ✅ Artista Generado 92: Mezzosoprano → Barítono
+  ✅ Artista Generado 93: Mezzosoprano → Barítono
+  ✅ Artista Generado 97: Soprano → Tenor
+  ✅ Ati242: Contralto → Bajo
+  ✅ Aunty Donna: Soprano → Tenor
+  ✅ Aux 88: Soprano → Tenor
+  ✅ Bad Bunny: Contralto → Bajo
+  ✅ Baron Vaughn: Mezzosoprano → Barítono
+  ✅ Ben Zucker: Contralto → Bajo
+  ✅ Benny Martin;The Wong Janice: Soprano → Tenor
+  ✅ Bethel Music;Brian Johnson;Jenn Johnson: Contralto → Bajo
+  ✅ Bethel Music;Steffany Gretzinger: Contralto → Bajo
+  ✅ Biba Dupont: Contralto → Bajo
+  ✅ Björn Holmgren: Contralto → Bajo
+  ✅ Blastoyz: Mezzosoprano → Barítono
+  ✅ Bloodbound: Contralto → Bajo
+  ✅ Blue Swede;Björn Skifs: Mezzosoprano → Barítono
+  ✅ Bob Marley & The Wailers: Contralto → Bajo
+  ✅ Bodyslam: Mezzosoprano → Barítono
+  ✅ Borknagar: Soprano → Tenor
+  ✅ Boston Soundlabs: Mezzosoprano → Barítono
+  ✅ Brenno Reis & Marco Viola: Soprano → Tenor
+  ✅ Brian Culbertson: Soprano → Tenor
+  ✅ Buray: Contralto → Bajo
+  ✅ Cö Shu Nie: Contralto → Bajo
+  ✅ C. Tangana: Mezzosoprano → Barítono
+  ✅ Cameron Sinosa: Contralto → Bajo
+  ✅ Carlos Baute;Marta Sánchez: Soprano → Tenor
+  ✅ Cascada: Soprano → Tenor
+  ✅ Caspar Babypants: Contralto → Bajo
+  ✅ Casuarina: Mezzosoprano → Barítono
+  ✅ Celtic Frost: Contralto → Bajo
+  ✅ Cem Karaca: Soprano → Tenor
+  ✅ Charlie Brown Jr.;Marcelo Nova: Contralto → Bajo
+  ✅ Chase & Status: Contralto → Bajo
+  ✅ Chris McClarney: Mezzosoprano → Barítono
+  ✅ Circulando De Fulo: Soprano → Tenor
+  ✅ Claude-Michel Schönberg: Mezzosoprano → Barítono
+  ✅ Cliff Richard & The Shadows: Mezzosoprano → Barítono
+  ✅ Climie Fisher: Mezzosoprano → Barítono
+  ✅ Coldplay: Contralto → Bajo
+  ✅ Cri-Cri: Soprano → Tenor
+  ✅ Crystal Lake: Contralto → Bajo
+  ✅ DaBaby: Soprano → Tenor
+  ✅ Dabin;Lowell: Soprano → Tenor
+  ✅ Dabin;NURKO;Donovan Woods: Soprano → Tenor
+  ✅ Dabzee;SA;AbRaw: Mezzosoprano → Barítono
+  ✅ Daigo Hanada: Mezzosoprano → Barítono
+  ✅ Dan Tyminski: Mezzosoprano → Barítono
+  ✅ Dani Martín: Contralto → Bajo
+  ✅ Darko US: Soprano → Tenor
+  ✅ David Quinlan: Mezzosoprano → Barítono
+  ✅ De Doelleazen: Mezzosoprano → Barítono
+  ✅ De Moi: Mezzosoprano → Barítono
+  ✅ Deep Purple: Contralto → Bajo
+  ✅ Defkhan: Soprano → Tenor
+  ✅ Deicide: Soprano → Tenor
+  ✅ Der Dritte Raum: Soprano → Tenor
+  ✅ Deru: Contralto → Bajo
+  ✅ Die Draufgänger;Ikke Hüftgold: Mezzosoprano → Barítono
+  ✅ Diesel Boy: Mezzosoprano → Barítono
+  ✅ Dimmi;Zeeba: Mezzosoprano → Barítono
+  ✅ DJ Pierre: Soprano → Tenor
+  ✅ Dj Thera: Soprano → Tenor
+  ✅ DJ Vadim;Fat Freddy's Drop: Mezzosoprano → Barítono
+  ✅ Doctor Flake: Soprano → Tenor
+  ✅ Don Gibson: Mezzosoprano → Barítono
+  ✅ Dr LoFi: Contralto → Bajo
+  ✅ DragonForce: Soprano → Tenor
+  ✅ Dub Pistols;Natty Campbell: Contralto → Bajo
+  ✅ Dune: Soprano → Tenor
+  ✅ Dynamic Syncopation: Mezzosoprano → Barítono
+  ✅ Eddie Della Siepe: Soprano → Tenor
+  ✅ Ednaldo Mendes: Contralto → Bajo
+  ✅ El Bebeto: Mezzosoprano → Barítono
+  ✅ Elengi: Contralto → Bajo
+  ✅ Ella Fitzgerald;Louis Jordan & His Tympany Five: Mezzosoprano → Barítono
+  ✅ Ellie Goulding;Juice WRLD: Mezzosoprano → Barítono
+  ✅ Elton John: Contralto → Bajo
+  ✅ Elvis Presley: Mezzosoprano → Barítono
+  ✅ Enrique Iglesias: Mezzosoprano → Barítono
+  ✅ Eric Clapton: Contralto → Bajo
+  ✅ Eric Reprid: Contralto → Bajo
+  ✅ Evil Activities: Mezzosoprano → Barítono
+  ✅ F.I.R.: Mezzosoprano → Barítono
+  ✅ FantasticYouth: Mezzosoprano → Barítono
+  ✅ Farruko;Tiësto: Soprano → Tenor
+  ✅ Felix Jaehn;Robin Schulz;Georgia Ku: Soprano → Tenor
+  ✅ Filter: Contralto → Bajo
+  ✅ Fleshgod Apocalypse: Contralto → Bajo
+  ✅ Florindo Sassone Y Su Orquesta: Contralto → Bajo
+  ✅ Foghorn Stringband: Mezzosoprano → Barítono
+  ✅ Forró Ideal: Soprano → Tenor
+  ✅ Franz Ferdinand: Soprano → Tenor
+  ✅ Funkhauser: Mezzosoprano → Barítono
+  ✅ Gülden Karaböcek: Contralto → Bajo
+  ✅ Güncel Gürsel Artıktay: Contralto → Bajo
+  ✅ Gabriel Brito: Soprano → Tenor
+  ✅ Gareth Emery: Mezzosoprano → Barítono
+  ✅ General Degree: Soprano → Tenor
+  ✅ Gentle Bones: Mezzosoprano → Barítono
+  ✅ George Frideric Handel;The English Concert;Trevor Pinnock;The English Concert Choir: Contralto → Bajo
+  ✅ Georges Bizet;Angela Gheorghiu;Michel Plasson;Wolff;Orchestre National Du Capitole De Toulouse: Contralto → Bajo
+  ✅ Gui Boratto: Contralto → Bajo
+  ✅ Guru Randhawa: Soprano → Tenor
+  ✅ Guus Dielissen: Contralto → Bajo
+  ✅ Hansel Camacho: Contralto → Bajo
+  ✅ Heaven 17: Soprano → Tenor
+  ✅ Helmut Wintermantel: Contralto → Bajo
+  ✅ Hermetica: Mezzosoprano → Barítono
+  ✅ Hidden Empire;Artche: Contralto → Bajo
+  ✅ Hilight Tribe;Vini Vici: Contralto → Bajo
+  ✅ Hinder: Soprano → Tenor
+  ✅ Hiroaki Tsutsumi: Soprano → Tenor
+  ✅ Hong Ronghong: Contralto → Bajo
+  ✅ Howlin' Wolf: Contralto → Bajo
+  ✅ Huda Hudia;DJ30A: Mezzosoprano → Barítono
+  ✅ I Luca: Soprano → Tenor
+  ✅ Ilaiyaraaja;M. M. Manasi: Contralto → Bajo
+  ✅ ILLENIUM;X Ambassadors;Alan Walker: Mezzosoprano → Barítono
+  ✅ indie tribe, nobigdyl., Jon Keith: Soprano → Tenor
+  ✅ iNi Kamoze: Mezzosoprano → Barítono
+  ✅ Inner City;Kevin Saunderson: Mezzosoprano → Barítono
+  ✅ IQ: Contralto → Bajo
+  ✅ Israel Salazar: Contralto → Bajo
+  ✅ J Alvarez;Sak Luke;DJ Valdi: Contralto → Bajo
+  ✅ J-AX, Jake La Furia: Contralto → Bajo
+  ✅ Jafrass: Soprano → Tenor
+  ✅ Jah Nattoh: Soprano → Tenor
+  ✅ James Earle Trio: Mezzosoprano → Barítono
+  ✅ Jamie Kilstein: Mezzosoprano → Barítono
+  ✅ Jimin: Soprano → Tenor
+  ✅ JJ Lin;Anne-Marie: Contralto → Bajo
+  ✅ Joan Manuel Serrat: Contralto → Bajo
+  ✅ Joaquín Sabina: Contralto → Bajo
+  ✅ Joe DeRosa: Contralto → Bajo
+  ✅ John Mulaney: Mezzosoprano → Barítono
+  ✅ Johnny Laboriel;Los Rebeldes Del Rock: Soprano → Tenor
+  ✅ Jon Reep: Contralto → Bajo
+  ✅ Joseph Haydn;Arioso Quartett Wien: Contralto → Bajo
+  ✅ Joshwa;Lee Foss: Soprano → Tenor
+  ✅ Jovonn;Ian Pooley: Mezzosoprano → Barítono
+  ✅ Juanafé;La Flor del Recuerdo: Soprano → Tenor
+  ✅ Jubin Nautiyal;Prakriti Kakar: Contralto → Bajo
+  ✅ Julie Andrews;Dick Van Dyke;The Pearlie Chorus: Contralto → Bajo
+  ✅ JUNNY: Contralto → Bajo
+  ✅ Justin Bieber: Contralto → Bajo
+  ✅ Justin Lo: Contralto → Bajo
+  ✅ Kahtmayan: Soprano → Tenor
+  ✅ Keala Settle;The Greatest Showman Ensemble: Mezzosoprano → Barítono
+  ✅ Kelvin Kwan: Mezzosoprano → Barítono
+  ✅ Kendrick Lamar: Soprano → Tenor
+  ✅ Kenny Larkin: Mezzosoprano → Barítono
+  ✅ Kester: Mezzosoprano → Barítono
+  ✅ Kevin Roldan;Wisin: Mezzosoprano → Barítono
+  ✅ Kids TV 123: Contralto → Bajo
+  ✅ Kool & The Gang: Mezzosoprano → Barítono
+  ✅ KSHMR;Tungevaag: Soprano → Tenor
+  ✅ La Chicana: Mezzosoprano → Barítono
+  ✅ Larry The Cable Guy: Mezzosoprano → Barítono
+  ✅ Lata Mangeshkar;Kishore Kumar: Contralto → Bajo
+  ✅ Lata Mangeshkar;Kumar Sanu: Soprano → Tenor
+  ✅ Layo & Bushwacka!: Mezzosoprano → Barítono
+  ✅ Leonardo Gonçalves: Mezzosoprano → Barítono
+  ✅ Life Of Agony: Soprano → Tenor
+  ✅ Ling tosite sigure: Soprano → Tenor
+  ✅ Los Abuelos De La Nada: Mezzosoprano → Barítono
+  ✅ Los Solitarios: Contralto → Bajo
+  ✅ Lowell Lo: Contralto → Bajo
+  ✅ Mỹ Tâm: Soprano → Tenor
+  ✅ Macaroni Empitsu: Contralto → Bajo
+  ✅ Madeline The Person;Noah Kahan: Contralto → Bajo
+  ✅ Malena Ernman;Så som i Himmelen Ensemblen: Mezzosoprano → Barítono
+  ✅ Maluma: Soprano → Tenor
+  ✅ MAN WITH A MISSION: Contralto → Bajo
+  ✅ Marcin Siegienczuk: Mezzosoprano → Barítono
+  ✅ Marry: Soprano → Tenor
+  ✅ Marshall Masters;The Ultimate MC: Soprano → Tenor
+  ✅ Martin Garrix;DubVision;Shaun Farrugia: Soprano → Tenor
+  ✅ Martin Jensen: Contralto → Bajo
+  ✅ Matthew Sweet: Soprano → Tenor
+  ✅ Max e Luan: Soprano → Tenor
+  ✅ Mc Kevin;DJ Negret: Mezzosoprano → Barítono
+  ✅ Melorman: Soprano → Tenor
+  ✅ Meridian Brothers: Mezzosoprano → Barítono
+  ✅ Michael Jackson: Contralto → Bajo
+  ✅ Micky Flanagan: Mezzosoprano → Barítono
+  ✅ Mike Dunn;Mousse T.: Contralto → Bajo
+  ✅ Mike Dunn;Mr. 69: Contralto → Bajo
+  ✅ Miró: Contralto → Bajo
+  ✅ Mitraz: Soprano → Tenor
+  ✅ Nan Quan Mama: Soprano → Tenor
+  ✅ Neolux: Contralto → Bajo
+  ✅ Newfound Road: Mezzosoprano → Barítono
+  ✅ Nikki and the Corvettes: Mezzosoprano → Barítono
+  ✅ Nont Tanont: Mezzosoprano → Barítono
+  ✅ Nosso Sentimento: Mezzosoprano → Barítono
+  ✅ Novo Amor;Gia Margaret: Mezzosoprano → Barítono
+  ✅ Off With Their Heads: Mezzosoprano → Barítono
+  ✅ Oliver Smith: Soprano → Tenor
+  ✅ Oliverse: Soprano → Tenor
+  ✅ Omah Lay;Justin Bieber: Mezzosoprano → Barítono
+  ✅ OneRepublic;Seeb: Contralto → Bajo
+  ✅ Orquesta Juan D' Arienzo: Contralto → Bajo
+  ✅ Oscar Roland: Soprano → Tenor
+  ✅ Oyh!: Mezzosoprano → Barítono
+  ✅ Pain: Mezzosoprano → Barítono
+  ✅ Pal Joey: Soprano → Tenor
+  ✅ Pandit Jasraj: Soprano → Tenor
+  ✅ Panopticon: Soprano → Tenor
+  ✅ Paradox: Soprano → Tenor
+  ✅ Parker Jack: Contralto → Bajo
+  ✅ Patton Oswalt: Soprano → Tenor
+  ✅ Paul Kandel;Chorus - The Hunchback Of Notre Dame: Soprano → Tenor
+  ✅ Paulinho Da Viola: Mezzosoprano → Barítono
+  ✅ Paulo Rogerio: Contralto → Bajo
+  ✅ Peaches & Herb: Contralto → Bajo
+  ✅ pearl, fast forward >>: Soprano → Tenor
+  ✅ Pee Wee Gaskins;Alditsa Decca Nugraha;Reza Satiri;Fauzan;Harry Pramahardika;Renaldy Prasetya: Contralto → Bajo
+  ✅ PELICAN FANCLUB: Soprano → Tenor
+  ✅ Peso Pluma: Contralto → Bajo
+  ✅ Peter Wackel;Chriss Tuxi: Soprano → Tenor
+  ✅ Petter: Soprano → Tenor
+  ✅ PHARAOH: Contralto → Bajo
+  ✅ Pharoahe Monch: Mezzosoprano → Barítono
+  ✅ Piano Radiance: Soprano → Tenor
+  ✅ Pinhani: Mezzosoprano → Barítono
+  ✅ Pink Sweat$: Contralto → Bajo
+  ✅ Pj Panda: Mezzosoprano → Barítono
+  ✅ Pritam;Sonu Nigam;Amitabh Bhattacharya: Mezzosoprano → Barítono
+  ✅ Promoting Sounds;7ru7h: Contralto → Bajo
+  ✅ Protest The Hero: Contralto → Bajo
+  ✅ PSY: Soprano → Tenor
+  ✅ Quadro Nuevo: Contralto → Bajo
+  ✅ RØNIN: Soprano → Tenor
+  ✅ Röyksopp;Astrid S: Soprano → Tenor
+  ✅ Rain Sounds;Nature Recordings;Rain Sounds & White Noise: Contralto → Bajo
+  ✅ Rameses B: Soprano → Tenor
+  ✅ Red Tips: Soprano → Tenor
+  ✅ Rhythim Is Rhythim: Mezzosoprano → Barítono
+  ✅ Riff: Soprano → Tenor
+  ✅ Robert Palmer: Soprano → Tenor
+  ✅ Rod Stewart;Ella Fitzgerald;Chris Botti: Mezzosoprano → Barítono
+  ✅ Rodrigo Amarante: Mezzosoprano → Barítono
+  ✅ Rodriguinho;Gaab;Mr. Dan: Contralto → Bajo
+  ✅ Roffe Ruff;Hofmästarn: Contralto → Bajo
+  ✅ Rojin Sharafi: Soprano → Tenor
+  ✅ Roots Manuva: Soprano → Tenor
+  ✅ Roy Davis Jr.;Peven Everett: Soprano → Tenor
+  ✅ Ruido Blanco Hart;Musica para Bebes;Canciones De Cuna Para Dormir Bebes: Soprano → Tenor
+  ✅ Rusted Root: Contralto → Bajo
+  ✅ Ryan Sickler: Mezzosoprano → Barítono
+  ✅ Säkert!: Mezzosoprano → Barítono
+  ✅ Sơn Tùng M-TP: Contralto → Bajo
+  ✅ Sönke Meinen, Philipp Wiechert: Contralto → Bajo
+  ✅ Sabbat: Soprano → Tenor
+  ✅ Salserin: Mezzosoprano → Barítono
+  ✅ Sam Paganini: Mezzosoprano → Barítono
+  ✅ Scan 7: Soprano → Tenor
+  ✅ Scooter;Harris & Ford: Soprano → Tenor
+  ✅ Scracho: Soprano → Tenor
+  ✅ Sensey: Soprano → Tenor
+  ✅ Seven Lions;GG Magree: Mezzosoprano → Barítono
+  ✅ Shadowfax: Soprano → Tenor
+  ✅ Shredder 1984: Soprano → Tenor
+  ✅ Sickflip;Ritviz;Seedhe Maut: Contralto → Bajo
+  ✅ Slam: Contralto → Bajo
+  ✅ Solex: Mezzosoprano → Barítono
+  ✅ Stamp Apiwat: Mezzosoprano → Barítono
+  ✅ Stebin Ben: Mezzosoprano → Barítono
+  ✅ Stevie Wonder: Soprano → Tenor
+  ✅ Subtact: Contralto → Bajo
+  ✅ Syd Matters: Contralto → Bajo
+  ✅ Tan Bionica: Soprano → Tenor
+  ✅ Tatiana and Sergey Nikitin: Soprano → Tenor
+  ✅ TCM: Mezzosoprano → Barítono
+  ✅ Teemu Roivainen: Contralto → Bajo
+  ✅ Teenage Fanclub: Mezzosoprano → Barítono
+  ✅ Thalles Roberto: Contralto → Bajo
+  ✅ The Beefs: Contralto → Bajo
+  ✅ The Berzerker: Mezzosoprano → Barítono
+  ✅ The Blues Brothers: Contralto → Bajo
+  ✅ The Civil Wars: Mezzosoprano → Barítono
+  ✅ The Gladiators: Soprano → Tenor
+  ✅ The Grogans: Contralto → Bajo
+  ✅ The Human League: Contralto → Bajo
+  ✅ The Intruders: Soprano → Tenor
+  ✅ The Marked Men: Soprano → Tenor
+  ✅ The Nightraver;DJ Trevor: Soprano → Tenor
+  ✅ the peggies: Soprano → Tenor
+  ✅ The Terrys: Soprano → Tenor
+  ✅ The Turtles: Soprano → Tenor
+  ✅ The Vandals: Soprano → Tenor
+  ✅ Thiago Jhonathan (TJ): Soprano → Tenor
+  ✅ Tiken Jah Fakoly;Saramba Kouyate: Contralto → Bajo
+  ✅ Timothy Infinite: Soprano → Tenor
+  ✅ Tito Puente: Mezzosoprano → Barítono
+  ✅ Traditional;Richard Benson and His Orchestra: Mezzosoprano → Barítono
+  ✅ Travis Scott, Bad Bunny, The Weeknd: Soprano → Tenor
+  ✅ Tream;treamiboii: Contralto → Bajo
+  ✅ Trinix: Contralto → Bajo
+  ✅ Tulus: Soprano → Tenor
+  ✅ Unknown Mortal Orchestra: Contralto → Bajo
+  ✅ Upchurch: Soprano → Tenor
+  ✅ urfabrique: Soprano → Tenor
+  ✅ Valkyrja: Soprano → Tenor
+  ✅ Varg²™: Soprano → Tenor
+  ✅ Vicente Fernández: Soprano → Tenor
+  ✅ Victor Rice: Contralto → Bajo
+  ✅ Vishal-Shekhar;Arijit Singh;Shilpa Rao;Kumaar: Soprano → Tenor
+  ✅ Vladimir Nechaev;Владимир Бунчиков: Mezzosoprano → Barítono
+  ✅ Voz da Verdade: Soprano → Tenor
+  ✅ Vybz Kartel;Arif Cooper: Contralto → Bajo
+  ✅ Watt White: Soprano → Tenor
+  ✅ Wildstylez;Brennan Heart: Contralto → Bajo
+  ✅ Wolfgang Amadeus Mozart;Academy of St. Martin in the Fields;Sir Neville Marriner: Contralto → Bajo
+  ✅ Wolfgang Amadeus Mozart;Heinz Holliger;Academy of St. Martin in the Fields;Kenneth Sillito: Contralto → Bajo
+  ✅ Xaverius Love: Soprano → Tenor
+  ✅ XXXTENTACION;Ski Mask The Slump God: Mezzosoprano → Barítono
+  ✅ Yasuharu Takanashi: Mezzosoprano → Barítono
+  ✅ Yasume: Mezzosoprano → Barítono
+  ✅ Yeni Türkü: Mezzosoprano → Barítono
+  ✅ Yiruma: Soprano → Tenor
+  ✅ Yonder Mountain String Band: Contralto → Bajo
+  ✅ Youv Dee: Contralto → Bajo
+  ✅ Yuvan Shankar Raja;Bhavatharini;Rizwan: Soprano → Tenor
+  ✅ Yuvan Shankar Raja;Javed Ali;Sowmya Raoh: Mezzosoprano → Barítono
+  ✅ Zé Ramalho: Contralto → Bajo
+  ✅ Zaini: Soprano → Tenor
+  ✅ Zeca Pagodinho;Almir Guineto: Soprano → Tenor
+  ✅ Zeds Dead: Mezzosoprano → Barítono

@@ -15,6 +15,45 @@ AFFILIATE_TAG = "harmiqapp-20"
 
 GENRES = ["Pop", "Rock", "Jazz", "Reggaeton", "R&B", "Indie", "Flamenco", "K-Pop", "V-Pop", "T-Pop", "Soul", "Hip-Hop"]
 
+# Artistas CONOCIDOS como femeninos (slugs) - pueden tener Soprano/Mezzo/Contralto
+KNOWN_FEMALE_SLUGS = {
+    "adele", "ariana-grande", "beyonc", "billie-eilish", "celine-dion",
+    "christina-perri", "dua-lipa", "ella-fitzgerald", "katy-perry",
+    "lady-gaga", "lana-del-rey", "madonna", "mariah-carey", "nina-simone",
+    "norah-jones", "olivia-rodrigo", "rosal-a", "sabrina-carpenter",
+    "shakira", "taylor-swift", "whitney-houston", "anne-marie", "aitana",
+    "karol-g", "lola-indigo", "melanie-martinez", "zoe-wees", "zella-day",
+    "tove-lo", "marina", "donna-summer", "janis-joplin", "dinah-washington",
+    "lata-mangeshkar", "maisie-peters", "gabby-barrett", "natalia-lafourcade",
+    "tarja", "cristina-mel", "elaine-paige", "lea-michele", "bernadette-peters",
+    "angela-lansbury", "emma-watson", "ailee", "sammi-cheng", "della",
+    "seiko-matsuda", "kyoko-koizumi", "lisa", "newjeans", "mamamoo",
+    "violette-wautier", "alicia-keys", "jovelina-perola-negra", "beth-carvalho",
+    "elena-kamburova", "nelly-omar", "mercedes-simone", "tita-merello",
+    "dorothy", "bishop-briggs", "bess-atwell", "lacee", "allessa", "linet",
+    "tatiana", "janelle-mon-e", "ann-bai", "seiko-oomori", "palmy", "hirie",
+    "tanya-stephens", "little-dragon", "otep", "ingrid-olsson", "mimi-maura",
+    "leidy-murilho", "cassandra-nestico", "catie-turner", "audrey-assad",
+    "becca-folkes", "mc-tha", "mariana-nolasco", "tomberlin", "sunflower-bean",
+    "zorra", "melody-s-echo-chamber", "rebecka-aether", "grey-skye-evans",
+    "pera", "caroline-rhea", "china-anne-mcclain-disney", "stephanie-cheng",
+    "malena-muyala", "imelda-miller", "tayhana", "najma-wallin",
+    "misumena-sharon", "sangeetha-katti",
+}
+
+def safe_vocal_type(vt, slug):
+    """Valida tipo vocal: femeninos solo para artistas femeninas conocidas."""
+    female_types = {"Soprano", "Mezzosoprano", "Contralto"}
+    if vt not in female_types:
+        return vt
+    if slug in KNOWN_FEMALE_SLUGS:
+        return vt
+    # Reclasificar a equivalente masculino
+    if vt == "Soprano": return "Tenor"
+    if vt == "Mezzosoprano": return "Barítono"
+    if vt == "Contralto": return "Bajo"
+    return "Barítono"
+
 VOICE_TYPE_DESC = {
     "Soprano": "Las voces Soprano son las más altas y cristalinas. Alcanzan notas de gran altura con facilidad y suelen tener un timbre ligero y brillante.",
     "Mezzosoprano": "La voz de Mezzosoprano tiene un tono rico y versátil, dominando el registro medio con una potencia emotiva especial.",
@@ -123,7 +162,9 @@ for art in existing_data:
     name_low = art["name"].lower()
     if name_low in used_names: continue
     
-    # Re-generar perfil para que sea más "técnico"
+    # Re-generar perfil y validar tipo vocal
+    slug = generate_slug(art["name"])
+    art["vocal_type"] = safe_vocal_type(art["vocal_type"], slug)
     art["vocal_profile"] = generate_accurate_profile(art["vocal_type"])
     final_1000.append(art)
     used_names.add(name_low)
@@ -136,20 +177,22 @@ if len(final_1000) < 1000:
         
         name = candidate["name"]
         vt_raw = candidate.get("voice_type", "baritone")
-        # Mapping
+        # Mapping + Validación de género
+        slug = generate_slug(name)
         vt = "Barítono"
         if "sopran" in vt_raw.lower(): vt = "Soprano"
         elif "mezzo" in vt_raw.lower(): vt = "Mezzosoprano"
         elif "tenor" in vt_raw.lower(): vt = "Tenor"
         elif "contralt" in vt_raw.lower(): vt = "Contralto"
         elif "bass" in vt_raw.lower() or "bajo" in vt_raw.lower(): vt = "Bajo"
+        vt = safe_vocal_type(vt, slug)  # Validar coherencia género/tipo vocal
         
         final_1000.append({
             "name": name,
             "genre": random.choice(GENRES),
             "vocal_type": vt,
             "vocal_profile": generate_accurate_profile(vt),
-            "amazon_music_link": f"https://www.amazon.es/s?k={generate_slug(name).replace('-', '+')}+music+cd&tag={AFFILIATE_TAG}"
+            "amazon_music_link": f"https://www.amazon.es/s?k={slug.replace('-', '+')}+music+cd&tag={AFFILIATE_TAG}"
         })
         used_names.add(name.lower())
 
