@@ -1562,11 +1562,11 @@ function classifyVT(pitchMean, pitchRange, gender) {
   } else {
     // Rangos Masculinos (Hz) - FUNDAMENTAL:
     // Bajo:      80-115 Hz
-    // Barítono: 110-160 Hz
-    // Tenor:    155-215 Hz
+    // Barítono: 110-180 Hz  (subido de 165 a 180: zona alta del barítono E3-G3)
+    // Tenor:    175-215 Hz
     // Contra:   >215 Hz
     if      (pm < 115) { vt = "bass";          conf = 85; }
-    else if (pm < 165) { vt = "baritone";      conf = 95; } // Barítono es el centro, máxima confianza
+    else if (pm < 180) { vt = "baritone";      conf = 95; } // Barítono es el centro, máxima confianza
     else if (pm < 215) { vt = "tenor";         conf = 88; }
     else               { vt = "countertenor";  conf = 80; }
   }
@@ -2114,10 +2114,17 @@ function attachFilterEvents(vec, vt, gender) {
 
     const newMatches = getMatches(vec, vt, gender, filters, 8); // Aumentar a 8 resultados en filtros
     await preloadImages(newMatches.map(m=>m.name));
-    
+
     if (typeof lastResult !== 'undefined') {
         lastResult.matches = newMatches;
-        renderResults(lastResult);
+        await renderResults(lastResult);
+        // Restaurar los valores seleccionados tras el re-render (renderResults reconstruye el HTML)
+        const eraEl     = document.getElementById("_era_filter");
+        const genreEl   = document.getElementById("_genre_filter");
+        const countryEl = document.getElementById("_country_filter");
+        if (eraEl)     eraEl.value     = eraVal;
+        if (genreEl)   genreEl.value   = genre;
+        if (countryEl) countryEl.value = country;
     }
   };
 
