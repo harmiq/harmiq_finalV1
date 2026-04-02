@@ -25,8 +25,9 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 const AMAZON_DOMAINS = { ES:"es",US:"com",MX:"com.mx",UK:"co.uk",DE:"de",FR:"fr",IT:"it",CA:"ca",BR:"com.br",JP:"co.jp" };
 const AFFILIATE_ID   = "harmiqapp-20";
-const HF_API_URL     = "https://hamiq-harmiq-backend1.hf.space"; 
+const HF_API_URL     = "https://hamiq-harmiq-backend1.hf.space";
 const APP_VERSION    = "10.3";
+const DB_PATH        = "/harmiq_db_vectores.json";
 
 // --- SHARED UI COMPONENTS ---
 function getPremiumHeaderHTML() {
@@ -1591,8 +1592,8 @@ async function analyzeAudio() {
     if (sel) sel.value = "male";
     console.log("Gender not selected, defaulting to male for analysis.");
   }
-  if (!audioBlob) { showStatus(tr("_err_short"), "error"); return; }
-  if (!singersDb || !singersDb.length){ showStatus(tr("_err_db"), "error"); return; }
+  if (!audioBlob) { showStatus(tr("_err_short"), "err"); return; }
+  if (!singersDb || !singersDb.length){ showStatus(tr("_err_db"), "err"); return; }
 
   // Estado de carga en el botón
   let oldHtml = "";
