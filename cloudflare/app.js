@@ -79,7 +79,7 @@ const T = {
     "stat1":"Artistas de todo el mundo","stat2":"Idiomas","stat3":"Para tu resultado","stat4":"Gratis siempre",
     "app-title":"Analiza tu voz","app-desc":"Selecciona tu voz, sube un audio o graba directamente",
     "opt-default":"Selecciona tu voz","opt-male":"Voz masculina","opt-female":"Voz femenina",
-    "btn-record-text":"Grabar y analizar",
+    "btn-record-text":"Pulsar para Grabar Voice",
     "how-title":"Cómo funciona","how-sub":"Tres pasos. Sin registro. Sin instalar nada.",
     "step1-t":"1. Canta unos segundos","step1-d":"Sube un audio o usa el micrófono. Solo necesitas 5-10 segundos.",
     "step2-t":"2. La IA analiza tu voz","step2-d":"Detectamos tu frecuencia fundamental, timbre y rango vocal.",
@@ -119,7 +119,7 @@ const T = {
     "stat1":"Artists worldwide","stat2":"Languages","stat3":"For your result","stat4":"Always free",
     "app-title":"Analyze your voice","app-desc":"Select your voice type, upload audio or record directly",
     "opt-default":"Select your voice","opt-male":"Male voice","opt-female":"Female voice",
-    "btn-record-text":"Record & Analyze",
+    "btn-record-text":"Tap to Record Voice",
     "how-title":"How it works","how-sub":"Three steps. No sign-up. No install.",
     "step1-t":"1. Sing a few seconds","step1-d":"Upload audio or use your mic. Just 5-10 seconds.",
     "step2-t":"2. AI analyzes your voice","step2-d":"We detect your fundamental frequency, timbre and vocal range.",
@@ -158,7 +158,7 @@ const T = {
     "stat1":"Artistes de tot el món","stat2":"Idiomes","stat3":"Per al teu resultat","stat4":"Sempre gratis",
     "app-title":"Analitza la teva veu","app-desc":"Selecciona el teu tipus de veu, puja un àudio o grava directament",
     "opt-default":"Selecciona el teu tipus de veu","opt-male":"Veu masculina","opt-female":"Veu femenina",
-    "btn-record-text":"Gravar i analitzar",
+    "btn-record-text":"Prem per Gravar Voice",
     "how-title":"Com funciona","how-sub":"Tres passos. Sense registre. Sense instal·lar res.",
     "step1-t":"1. Canta uns segons","step1-d":"Puja un àudio o usa el micròfon. Només necessites 5-10 segons.",
     "step2-t":"2. La IA analitza la teva veu","step2-d":"Detectem la teva freqüència fonamental, timbre i rang vocal.",
@@ -191,7 +191,7 @@ const T = {
     "btn-main":"🎤 Analyser ma voix — gratuit","btn-how":"Voir comment ça marche","hero-sub":"Sans inscription · Sans installation",
     "stat1":"Artistes du monde","stat2":"Langues","stat3":"Pour ton résultat","stat4":"Toujours gratuit",
     "app-title":"Analyse ta voix","app-desc":"Sélectionne ta voix, télécharge ou enregistre",
-    "opt-default":"Sélectionne ta voix","opt-male":"Voix masculine","opt-female":"Voix féminine","btn-record-text":"Enregistrer et analyser",
+    "opt-default":"Sélectionne ta voix","opt-male":"Voix masculine","opt-female":"Voix féminine",    "btn-record-text":"Appuyer pour Enregistrer Voice",
     "how-title":"Comment ça marche","how-sub":"Trois étapes. Sans inscription.",
     "step1-t":"1. Chante quelques secondes","step1-d":"Télécharge ou utilise le micro. 5-10 secondes suffisent.",
     "step2-t":"2. L'IA analyse ta voix","step2-d":"On détecte ta fréquence, timbre et tessiture.",
@@ -221,7 +221,7 @@ const T = {
     "btn-main":"🎤 Stimme analysieren — kostenlos","btn-how":"Wie es funktioniert","hero-sub":"Keine Anmeldung · Keine Installation",
     "stat1":"Weltweite Künstler","stat2":"Sprachen","stat3":"Bis zum Ergebnis","stat4":"Immer kostenlos",
     "app-title":"Analysiere deine Stimme","app-desc":"Wähle deinen Stimmtyp, lade hoch oder nimm auf",
-    "opt-default":"Wähle deine Stimme","opt-male":"Männerstimme","opt-female":"Frauenstimme","btn-record-text":"Aufnehmen & Analysieren",
+    "opt-default":"Wähle deine Stimme","opt-male":"Männerstimme","opt-female":"Frauenstimme",    "btn-record-text":"Zum Aufnehmen Tippen Voice",
     "how-title":"Wie es funktioniert","how-sub":"Drei Schritte. Keine Anmeldung.",
     "step1-t":"1. Singe ein paar Sekunden","step1-d":"Lade hoch oder nutze das Mikrofon.","step2-t":"2. KI analysiert deine Stimme","step2-d":"Wir erkennen Grundfrequenz, Timbre und Stimmumfang.",
     "step3-t":"3. Entdecke deinen Sänger","step3-d":"Wir sagen dir, welcher Künstler deiner Stimme am ähnlichsten ist.",
@@ -250,7 +250,7 @@ const T = {
     "btn-main":"🎤 Analizza la mia voce — gratis","btn-how":"Vedi come funziona","hero-sub":"Senza registrazione · Senza installare nulla",
     "stat1":"Artisti nel mondo","stat2":"Lingue","stat3":"Per il tuo risultato","stat4":"Sempre gratis",
     "app-title":"Analizza la tua voce","app-desc":"Seleziona la tua voce, carica o registra",
-    "opt-default":"Seleziona la tua voce","opt-male":"Voce maschile","opt-female":"Voce femminile","btn-record-text":"Registra e Analizza",
+    "opt-default":"Seleziona la tua voce","opt-male":"Voce maschile","opt-female":"Voce femminile",    "btn-record-text":"Tocca per Registrare Voice",
     "how-title":"Come funziona","how-sub":"Tre passi. Senza registrazione.",
     "step1-t":"1. Canta qualche secondo","step1-d":"Carica o usa il microfono.","step2-t":"2. L'IA analizza la voce","step2-d":"Rileviamo frequenza, timbro ed estensione.",
     "step3-t":"3. Scopri il tuo cantante","step3-d":"Ti diciamo quale artista ti assomiglia.",
@@ -279,7 +279,7 @@ const T = {
     "btn-main":"🎤 Analisar minha voz — grátis","btn-how":"Ver como funciona","hero-sub":"Sem cadastro · Sem instalar · No celular",
     "stat1":"Artistas do mundo","stat2":"Idiomas","stat3":"Para seu resultado","stat4":"Sempre grátis",
     "app-title":"Analise sua voz","app-desc":"Selecione sua voz, envie áudio ou grave diretamente",
-    "opt-default":"Selecione sua voz","opt-male":"Voz masculina","opt-female":"Voz feminina","btn-record-text":"Gravar e Analisar",
+    "opt-default":"Selecione sua voz","opt-male":"Voz masculina","opt-female":"Voz feminina","btn-record-text":"Toque para Gravar Voice",
     "how-title":"Como funciona","how-sub":"Três passos. Sem cadastro.",
     "step1-t":"1. Cante alguns segundos","step1-d":"Envie áudio ou use o microfone.","step2-t":"2. A IA analisa sua voz","step2-d":"Detectamos frequência, timbre e alcance.",
     "step3-t":"3. Descubra seu cantor","step3-d":"Dizemos qual artista combina com você.",
@@ -308,7 +308,7 @@ const T = {
     "btn-main":"🎤 声を分析する — 無料","btn-how":"使い方を見る","hero-sub":"登録不要 · インストール不要 · スマホ対応",
     "stat1":"世界のアーティスト","stat2":"言語","stat3":"結果まで","stat4":"常に無料",
     "app-title":"声を分析する","app-desc":"声域を選択し音声をアップロードか録音",
-    "opt-default":"声域を選択","opt-male":"男声","opt-female":"女声","btn-record-text":"録音して分析",
+    "opt-default":"声域を選択","opt-male":"男声","opt-female":"女声",    "btn-record-text":"タップして録音 Voice",
     "how-title":"使い方","how-sub":"3ステップ。登録不要。","step1-t":"1. 数秒歌う","step1-d":"音声ファイルをアップロードするかマイクを使用。",
     "step2-t":"2. AIが声を分析","step2-d":"基本周波数、音色、声域を検出します。","step3-t":"3. アーティストを発見","step3-d":"最も声が似ている有名アーティストを表示します。",
     "voices-title":"声域タイプを発見","voices-sub":"声域タイプによって理想の曲が異なります。",
@@ -336,7 +336,7 @@ const T = {
     "btn-main":"🎤 Анализировать — бесплатно","btn-how":"Как это работает","hero-sub":"Без регистрации · Без установки",
     "stat1":"Артистов со всего мира","stat2":"Языков","stat3":"До результата","stat4":"Всегда бесплатно",
     "app-title":"Анализируй голос","app-desc":"Выбери тип голоса, загрузи или записывай",
-    "opt-default":"Выбери свой голос","opt-male":"Мужской голос","opt-female":"Женский голос","btn-record-text":"Записать и анализировать",
+    "opt-default":"Выбери свой голос","opt-male":"Мужской голос","opt-female":"Женский голос",    "btn-record-text":"Нажмите для записи Voice",
     "how-title":"Как это работает","how-sub":"Три шага. Без регистрации.",
     "step1-t":"1. Пой несколько секунд","step1-d":"Загрузи или используй микрофон.","step2-t":"2. ИИ анализирует","step2-d":"Определяем частоту, тембр и диапазон.",
     "step3-t":"3. Узнай своего певца","step3-d":"Скажем, какой артист тебе похож.",
@@ -2072,7 +2072,7 @@ function buildKaraokeSection(vtName, vtSlug) {
             ${[
               ["🎙️","Elige canciones dentro de tu rango","No elijas la canción más difícil. Elige una que domines bien — el público lo agradece más que un intento fallido de un hit imposible."],
               ["🌡️","Calienta la voz antes","5 minutos de escalas suaves antes de subir al escenario marcan una diferencia enorme. El humming (boca cerrada) es perfecto."],
-              ["🎤","Domina el micrófono","Mantén el micro a 5-10 cm de la boca. Aléjalo un poco en los agudos, acércalo en los graves. No lo tapes con la mano."],
+              ["🎤","Domina el micrófono","Mantén el micro a 5-10 cm de la boca. Aléjalo un poco en los agudos, acércala en los graves. No lo tapes con la mano."],
               ["👀","Mira al público","No te claves en la pantalla. Léela de reojo y conecta con el público. Una sonrisa vale más que la nota perfecta."],
               ["🍵","Hidratación y temperatura","Agua a temperatura ambiente, no fría. El alcohol reseca las cuerdas vocales. Un té con miel es tu mejor aliado."],
             ].map(([ico,tit,desc])=>`
@@ -2180,9 +2180,6 @@ function showViralCard() {
         </div>
       </div>`;
   }).join("");
-
-  // Texto para compartir
-  const shareText = `🎤 Mi voz es de ${vtName} y me parezco a ${top1?.name} con ${Math.round(top1?.score||0)}% de similitud. ¡Descubre el tuyo! 👉 harmiq.app`;
 
   const modal = document.createElement("div");
   modal.id = "_viral_modal";
@@ -2367,7 +2364,7 @@ const VOZ_DATA = {
     mics:[
       {name:"Shure SM7B",reason:"Estándar broadcast para voces graves y cálidas. Ideal para el rango barítono.",search:"Shure SM7B microfono"},
       {name:"Audio-Technica AT4040",reason:"Captura perfectamente el rango medio-bajo con gran detalle.",search:"Audio Technica AT4040"},
-      {name:"Rode NT2-A",reason:"Gran versatilidad para voces profundas con tres patrones polares.",search:"Rode NT2-A microfono"},
+      {name:"Rode NT2-A",reason:"Gran versatilidad para voces profundas con tres patrones polares.",search:"Rode NT2-A Microphone Kit"},
     ],
     pro_mics:["Neumann U87","AKG C414 XLII"],
     home_studio:{
@@ -2410,7 +2407,7 @@ const VOZ_DATA = {
     },
     mics:[
       {name:"Audio-Technica AT2035",reason:"Realce en la 'banda de aire' (10-12kHz) captura los armónicos agudos del tenor.",search:"Audio Technica AT2035"},
-      {name:"Rode NT1-A",reason:"Ultrabajo ruido de fondo para los pianissimos del tenor lírico.",search:"Rode NT1-A microfono"},
+      {name:"Rode NT1-A",reason:"Ultrabajo ruido de fondo para los pianissimos del tenor lírico.",search:"Rode NT1-A Microphone Package"},
       {name:"AKG C214",reason:"Calidad profesional, captura el carácter musical del tenor con precisión.",search:"AKG C214 microfono"},
     ],
     pro_mics:["Neumann TLM 103","Telefunken ELAM 251"],
@@ -2458,7 +2455,7 @@ const VOZ_DATA = {
     mics:[
       {name:"Neumann TLM 102",reason:"La referencia profesional para voces de soprano. Captura los agudos con fidelidad total.",search:"Neumann TLM 102"},
       {name:"Audio-Technica AT2020",reason:"Captura armónicos brillantes sin saturación en los agudos extremos.",search:"Audio Technica AT2020 USB"},
-      {name:"Rode NT1",reason:"Ruido de fondo casi nulo, ideal para los pianissimos de soprano.",search:"Rode NT1 microfono"},
+      {name:"Rode NT1",reason:"Ruido de fondo casi nulo, ideal para los pianissimos de soprano.",search:"Rode NT1 5th Gen Microphone Only"},
     ],
     pro_mics:["Neumann U87","Sennheiser MKH 40"],
     home_studio:{
@@ -2502,7 +2499,7 @@ const VOZ_DATA = {
       "Beyoncé":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Beyoncé_in_Cannes_%282012%29.jpg/220px-Beyoncé_in_Cannes_%282012%29.jpg",
     },
     mics:[
-      {name:"Rode NT1",reason:"Captura la calidez del registro medio con precisión y bajo ruido.",search:"Rode NT1 microfono"},
+      {name:"Rode NT1",reason:"Captura la calidez del registro medio con precisión y bajo ruido.",search:"Rode NT1 5th Gen Microphone Only"},
       {name:"Audio-Technica AT2035",reason:"Equilibrio perfecto para voces de potencia media-alta.",search:"Audio Technica AT2035"},
       {name:"Shure SM27",reason:"Versátil y natural, ideal para el rango completo del mezzo.",search:"Shure SM27 microfono"},
     ],
@@ -2545,7 +2542,7 @@ const VOZ_DATA = {
     artistImgs:{},
     mics:[
       {name:"Shure SM7B",reason:"Diseñado para voces graves, el SM7B captura la profundidad única de la contralto.",search:"Shure SM7B"},
-      {name:"Rode Procaster",reason:"Dinámico con gran cuerpo y calidez para voces graves femeninas.",search:"Rode Procaster microfono"},
+      {name:"Rode Procaster",reason:"Dinámico con gran cuerpo y calidez para voces graves femeninas.",search:"Rode Procaster Dynamic Microphone"},
       {name:"Audio-Technica AT4040",reason:"Condensador cálido que favorece el registro grave con detalle.",search:"Audio Technica AT4040"},
     ],
     pro_mics:["Neumann U87","Telefunken U47"],
@@ -2591,7 +2588,7 @@ const VOZ_DATA = {
     mics:[
       {name:"Shure SM7B",reason:"El estándar absoluto para voces graves broadcast. Desarrollado para voces profundas.",search:"Shure SM7B"},
       {name:"Electro-Voice RE20",reason:"Cardiode de patrón variable, el preferido por locutores y cantantes de bajo.",search:"Electro Voice RE20"},
-      {name:"Rode Broadcaster",reason:"Cálido y robusto, captura la profundidad del bajo sin distorsión.",search:"Rode Broadcaster microfono"},
+      {name:"Rode Broadcaster",reason:"Cálido y robusto, captura la profundidad del bajo sin distorsión.",search:"Rode Broadcaster Microphone"},
     ],
     pro_mics:["Neumann U87","AKG C414 XLII"],
     home_studio:{
@@ -2986,8 +2983,6 @@ function renderVozPage(slug) {
     const src = artistData[name] || monoImgs[name];
     if (src) img.src = src;
   });
-</script>
-
 </body></html>`;
   return true;
 }
@@ -3447,23 +3442,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Aplicar idioma al HTML estático
   changeLang(initL);
 
-  // Botón grabar — se configura ANTES de injectUI() para garantizar que funcione
-  const btn = document.getElementById("record-btn");
-  if (btn) {
-    btn.onclick = async () => {
-      // Si no eligió género, auto-seleccionar "auto" silenciosamente
-      const sel = document.getElementById("user-gender");
-      if (sel && !sel.value) {
-        sel.value = "auto";
-        _setGender("auto", document.getElementById("_gbtn_auto"));
-      }
-      if (!isRec && audioBlob) {
-        await analyzeAudio();
-      } else {
-        await toggleRecording();
-      }
-    };
-  }
+  // Eventos de botones (record-btn, etc.) se gestionan ahora íntegramente dentro de injectUI()
 
   // Conectar eventos UI (drop zone, etc.)
   injectUI();
