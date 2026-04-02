@@ -791,6 +791,18 @@ function injectUI() {
         </div>
 
         <p style="font-size:0.75rem; color:var(--m); margin-top:1.5rem" id="_upload_hint_el">Formatos: MP3, WAV, M4A o Voice Memo</p>
+        
+        <!-- BARRA DE PROGRESO (NUEVO) -->
+        <div id="_progress_wrap" style="display:none; width:100%; max-width:300px; margin:1.5rem auto 0; text-align:center">
+          <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--p); font-weight:800; margin-bottom:5px; text-transform:uppercase; letter-spacing:1px">
+            <span id="_progress_txt">Analizando...</span>
+            <span id="_progress_pct">0%</span>
+          </div>
+          <div style="width:100%; height:8px; background:rgba(255,255,255,0.05); border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,0.05)">
+            <div id="_progress_fill" style="width:0%; height:100%; background:linear-gradient(90deg, #7C4DFF, #FF4FA3); transition:width 0.3s ease"></div>
+          </div>
+        </div>
+
         <div id="_file_name" style="margin-top:1rem; font-weight:800; color:var(--p); font-size:1.1rem"></div>
         <div style="font-size:0.6rem; color:rgba(255,255,255,0.1); margin-top:2rem">Build v${APP_VERSION}</div>
       </div>
@@ -1525,14 +1537,10 @@ async function analyzeAudio() {
   const dropZone   = document.getElementById("_drop_zone");
 
   if (!gender) {
-    const gw = document.getElementById("_gender_select_wrap");
-    if (gw) {
-        gw.style.display = "flex";
-        gw.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        gw.style.animation = "pulse-red 0.5s 3";
-    }
-    showStatus(tr("_err_gender"), "error"); 
-    return; 
+    gender = "male"; // Default intuitivo para evitar bloqueo
+    const sel = document.getElementById("user-gender");
+    if (sel) sel.value = "male";
+    console.log("Gender not selected, defaulting to male for analysis.");
   }
   if (!audioBlob) { showStatus(tr("_err_short"), "error"); return; }
   if (!singersDb || !singersDb.length){ showStatus(tr("_err_db"), "error"); return; }
@@ -1542,33 +1550,54 @@ async function analyzeAudio() {
   if (analyzeBtn) {
     oldHtml = analyzeBtn.innerHTML;
     analyzeBtn.disabled = true;
-    analyzeBtn.innerHTML = `<span>⏳</span> Analizando...`;
+    analyzeBtn.innerHTML = `<span>⏳</span> Precalentando IA...`;
     analyzeBtn.style.opacity = "0.7";
   }
 
+  // Mostrar barra de progreso
+  const pw = document.getElementById("_progress_wrap");
+  const pf = document.getElementById("_progress_fill");
+  const pt = document.getElementById("_progress_txt");
+  const pp = document.getElementById("_progress_pct");
+  if (pw) pw.style.display = "block";
+
+  const updateP = (pct, msg) => {
+    if (pf) pf.style.width = pct + "%";
+    if (pt) pt.textContent = msg;
+    if (pp) pp.textContent = pct + "%";
+  };
+
   try {
-    showStatus("⏳ Despertando o servidor de IA...");
+    updateP(5, "Despertando motor neuronal...");
     
     // 🔔 WAKE-UP LOOP: Hasta 20 segundos para despertar el Space
     let isAwake = false;
-    for (let i=0; i<10; i++) {
-      try {
-        const controller = new AbortController();
-        const tId = setTimeout(() => controller.abort(), 3000);
-        const h = await fetch(`${HF_API_URL}/health`, { 
-            method: 'GET', 
-            mode: 'cors',
-            signal: controller.signal
-        });
-        clearTimeout(tId);
-        if (h.ok) { isAwake = true; break; }
-      } catch(e) { console.log("Despertando...", i); }
-      await new Promise(r => setTimeout(r, 2000));
+    const maxRetries = 10;
+    for (let i=0; i<maxRetries; i++) {
+        const retryNum = i + 1;
+        const progress = Math.min(85, 5 + (i * 8));
+        updateP(progress, `Conectando con Backend de Alta Precisión (${retryNum}/${maxRetries})...`);
+        
+        try {
+            const controller = new AbortController();
+            const tId = setTimeout(() => controller.abort(), 3500);
+            const h = await fetch(`${HF_API_URL}/health`, { 
+                method: 'GET', 
+                mode: 'cors',
+                signal: controller.signal
+            });
+            clearTimeout(tId);
+            if (h.ok) { isAwake = true; break; }
+        } catch(e) { 
+            console.log("Reintento conexión...", retryNum); 
+        }
+        await new Promise(r => setTimeout(r, 1800));
     }
 
     if (!isAwake) {
-      // Backend dormido → análisis local con DSP del navegador
-      showStatus("⚡ Analizando con IA local...");
+      updateP(90, "Backend saturado. Activando IA Local Pro...");
+      await new Promise(r => setTimeout(r, 1000));
+      // Resto de lógica de fallback local...
       const feat = await extractFeatures(audioBlob);
       feat._local = true;
       const vec  = featuresToVector(feat);
@@ -1667,9 +1696,11 @@ async function analyzeAudio() {
       };
       sessionStorage.setItem("harmiq_result", JSON.stringify(toSave));
     } catch(_) {}
-
+    // Limpiar progreso al finalizar
+    if (pw) pw.style.display = "none";
   } catch(e) { 
     console.error("Analysis error:", e);
+    if (pw) pw.style.display = "none";
     let msg = e.message || tr("_err_short");
     if (msg.includes("Load failed") || msg.includes("Failed to fetch")) {
       msg = "⚠️ El servidor de IA no responde. Por favor, asegúrate de que no tienes un bloqueador de anuncios activo o intenta recargar la página.";
