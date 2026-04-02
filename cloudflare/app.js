@@ -718,6 +718,25 @@ async function preloadImages(names) {
   await Promise.allSettled(names.map(n => getArtistImage(n)));
 }
 
+function setFile(f) {
+  audioBlob = f;
+  const fn = document.getElementById("_file_name");
+  if (fn) fn.textContent = `✓ ${f.name}`;
+  
+  const abtn = document.getElementById("analyze-btn");
+  if (abtn) {
+    abtn.style.display = "block";
+    abtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  const dz = document.getElementById("_drop_zone");
+  if (dz) {
+    dz.style.borderColor = "var(--p)";
+    dz.style.background = "rgba(124,77,255,0.06)";
+  }
+  showStatus("");
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // 4. INYECTAR UI (upload + era filter + spectrum + tips)
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -727,28 +746,43 @@ function injectUI() {
 
   mount.innerHTML = `
     <div id="_drop_zone" style="background:var(--glass); border:2px dashed var(--glass-border); border-radius:32px; padding:3rem 2rem; cursor:pointer; transition:0.3s; position:relative; overflow:hidden">
-      <div id="_spec_wrap" style="display:none; margin-bottom:1.5rem">
+      <!-- VISUALIZADOR -->
+      <div id="_spec_wrap" style="display:none; margin-bottom:1.5rem; background:rgba(0,0,0,0.2); border-radius:16px; padding:10px">
         <canvas id="_spec_canvas" style="width:100%; height:80px"></canvas>
       </div>
       
       <div id="_upload_ui">
-        <div style="font-size:3rem; margin-bottom:1rem">🎙️</div>
-        <button class="hm-btn" id="record-btn" style="margin-bottom:1rem">
-          <span id="btn-record-text">Pulsar para Grabar</span>
-        </button>
-        <div style="color:var(--m); font-size:0.9rem; margin:1rem 0" id="_or_el">o también</div>
-        <button style="background:transparent; border:1px solid var(--glass-border); color:var(--t); padding:0.8rem 2rem; border-radius:100px; font-weight:700; cursor:pointer; transition:0.3s" onmouseover="this.style.borderColor='var(--p)'" onmouseout="this.style.borderColor='var(--glass-border)'">
-          📁 <span id="_upload_btn_el">Subir archivo de audio</span>
-        </button>
+        <div id="_main_mic_icon" style="font-size:3rem; margin-bottom:1rem">🎙️</div>
+        
+        <div style="display:flex; flex-direction:column; gap:1.2rem; align-items:center">
+          <!-- BOTÓN GRABAR / DETENER -->
+          <button class="hm-btn" id="record-btn" style="min-width:280px; font-size:1.1rem; padding:1.2rem; display:flex; align-items:center; justify-content:center; gap:10px">
+            <span id="_mic_bullet" style="display:none; width:12px; height:12px; background:#ff4757; border-radius:50%; animation:pulse-red 1s infinite"></span>
+            <span id="btn-record-text">Pulsar para Grabar</span>
+          </button>
+
+          <!-- BOTÓN ANALIZAR (Visible tras grabación o subida) -->
+          <button id="analyze-btn" class="hm-btn" style="min-width:300px; font-size:1.2rem; padding:1.4rem; display:none; background:linear-gradient(135deg, #FF4FA3, #7C4DFF); border:none; box-shadow:0 10px 30px rgba(124,77,255,0.4); border-radius:100px; color:#fff; font-weight:900; cursor:pointer" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+            🚀 ANALIZAR MI VOZ AHORA
+          </button>
+
+          <div style="color:var(--m); font-size:0.9rem; margin:0.4rem 0" id="_or_el">o también</div>
+          
+          <!-- BOTÓN SUBIR ARCHIVO -->
+          <button id="_upload_btn_trigger" style="background:transparent; border:1px solid var(--glass-border); color:var(--t); padding:0.8rem 2rem; border-radius:100px; font-weight:700; cursor:pointer; transition:0.3s; min-width:240px" onmouseover="this.style.borderColor='var(--p)'" onmouseout="this.style.borderColor='var(--glass-border)'">
+            📁 <span id="_upload_btn_el">Subir archivo de audio</span>
+          </button>
+        </div>
+
         <p style="font-size:0.75rem; color:var(--m); margin-top:1.5rem" id="_upload_hint_el">Formatos: MP3, WAV, M4A o Voice Memo</p>
-        <div id="_file_name" style="margin-top:1rem; font-weight:800; color:var(--p)"></div>
+        <div id="_file_name" style="margin-top:1rem; font-weight:800; color:var(--p); font-size:1.1rem"></div>
       </div>
       
       <input type="file" id="_file_inp" accept="audio/*" style="display:none">
     </div>
     
     <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:center" id="_gender_select_wrap">
-      <button id="_gbtn_auto" onclick="_setGender('auto')" style="background:rgba(124,77,255,0.15); border:1px solid var(--p); color:#fff; padding:0.6rem 1.2rem; border-radius:15px; font-weight:700; cursor:pointer">✨ Auto-detec</button>
+      <button id="_gbtn_auto" onclick="_setGender('auto')" style="background:rgba(124,77,255,0.15); border:1px solid var(--p); color:#fff; padding:0.6rem 1.2rem; border-radius:15px; font-weight:700; cursor:pointer">✨ Auto-detect</button>
       <button id="_gbtn_male" onclick="_setGender('male')" style="background:var(--glass); border:1px solid var(--glass-border); color:var(--m); padding:0.6rem 1.2rem; border-radius:15px; font-weight:700; cursor:pointer">👨 Hombre</button>
       <button id="_gbtn_female" onclick="_setGender('female')" style="background:var(--glass); border:1px solid var(--glass-border); color:var(--m); padding:0.6rem 1.2rem; border-radius:15px; font-weight:700; cursor:pointer">👩 Mujer</button>
     </div>
@@ -756,12 +790,17 @@ function injectUI() {
 
     <div id="results" style="margin-top:3rem"></div>
     <div id="events-area" style="margin-top:2rem"></div>
+
+    <style>
+      @keyframes pulse-red { 0% { transform: scale(0.9); opacity: 0.7; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.7; } }
+    </style>
   `;
 
   // Conectar eventos
   const dz = document.getElementById("_drop_zone");
   const fi = document.getElementById("_file_inp");
   const recBtn = document.getElementById("record-btn");
+  const analyzeBtn = document.getElementById("analyze-btn");
 
   if (dz && fi) {
     dz.addEventListener("dragover", e => { e.preventDefault(); dz.style.borderColor="var(--p)"; dz.style.background="rgba(124,77,255,0.05)"; });
@@ -772,19 +811,20 @@ function injectUI() {
       if (f) setFile(f);
     });
     fi.addEventListener("change", () => { if (fi.files[0]) setFile(fi.files[0]); });
+    
     // Conectar botón de subir archivo
-    const uploadBtn = document.getElementById("_upload_btn_trigger");
-    if (uploadBtn) uploadBtn.addEventListener("click", (e) => { e.stopPropagation(); fi.click(); });
+    const uploadTrigger = document.getElementById("_upload_btn_trigger");
+    if (uploadTrigger) uploadTrigger.addEventListener("click", e => { e.stopPropagation(); fi.click(); });
   }
 
+  // Evento Grabar
   if (recBtn) {
-    recBtn.onclick = async () => {
-      if (!isRec && audioBlob) {
-        await analyzeAudio();
-      } else {
-        await toggleRecording();
-      }
-    };
+    recBtn.onclick = async () => { await toggleRecording(); };
+  }
+
+  // Evento Analizar (Nuevo)
+  if (analyzeBtn) {
+    analyzeBtn.onclick = async () => { await analyzeAudio(); };
   }
 
   mount.setAttribute("data-ui", "_harmiq_ui_injected");
