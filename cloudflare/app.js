@@ -1538,8 +1538,9 @@ async function analyzeAudio() {
       feat._local = true;
       const vec  = featuresToVector(feat);
       const {vt, conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
-      const matches = getMatches(vec, vt, gender, {}, 5);
-      lastResult = {feat, vec, vt, conf, matches, gender};
+      const finalGender = (gender === "auto") ? (feat.pitchMean > 170 ? "female" : "male") : gender;
+      const matches = getMatches(vec, vt, finalGender, {}, 5);
+      lastResult = {feat, vec, vt, conf, matches, gender: finalGender};
       try {
         const toSave = {
           feat: lastResult.feat, vt: lastResult.vt, conf: lastResult.conf,
@@ -1604,9 +1605,10 @@ async function analyzeAudio() {
     const feat = data.features;
     
     const {vt,conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
-    const matches = getMatches(vec, vt, gender, {}, 5);
+    const finalGender = (gender === "auto") ? (feat.pitchMean > 170 ? "female" : "male") : gender;
+    const matches = getMatches(vec, vt, finalGender, {}, 5);
     
-    lastResult = {feat, vec, vt, conf, matches, gender};
+    lastResult = {feat, vec, vt, conf, matches, gender: finalGender};
     await preloadImages(matches.slice(0,5).map(m=>m.name));
 
     // TRANSICIÓN DE UI: Ocultar zona de grabación para mostrar resultados
@@ -1721,7 +1723,15 @@ function getPlatformLinks(singerName, songName) {
 }
 
 async function renderResults(data) {
-  if (!data) return;
+  if (!data || !data.matches || data.matches.length === 0) {
+    const resEl = document.getElementById("results");
+    if (resEl) resEl.innerHTML = `<div style="padding:4rem 2rem; text-align:center; background:rgba(255,255,255,.03); border-radius:30px; border:1px solid rgba(255,255,255,0.1); margin:2rem 0">
+      <div style="font-size:3rem; margin-bottom:1rem">🔍</div>
+      <h2 style="font-size:1.5rem; color:#fff; margin-bottom:1rem">No hemos encontrado artistas que coincidan exactamente con tu tipo de voz</h2>
+      <p style="color:#9CA3AF">Inténtalo de nuevo grabando un poco más cerca del micrófono o seleccionando manualmente tu género.</p>
+    </div>`;
+    return;
+  }
   const {feat,vec,vt,conf,matches,gender} = data;
   
   try {
