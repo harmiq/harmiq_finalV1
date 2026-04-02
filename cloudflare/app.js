@@ -721,9 +721,10 @@ async function preloadImages(names) {
 }
 
 function setFile(f) {
+  if (!f) return;
   audioBlob = f;
   const fn = document.getElementById("_file_name");
-  if (fn) fn.textContent = `✓ ${f.name}`;
+  if (fn) fn.textContent = `✓ ${f.name} (Listo para analizar)`;
   
   const abtn = document.getElementById("analyze-btn");
   if (abtn) {
@@ -736,7 +737,6 @@ function setFile(f) {
     dz.style.borderColor = "var(--p)";
     dz.style.background = "rgba(124,77,255,0.06)";
   }
-  showStatus("");
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -784,11 +784,10 @@ function injectUI() {
     </div>
     
     <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:center" id="_gender_select_wrap">
-      <button id="_gbtn_auto" onclick="_setGender('auto')" style="background:rgba(124,77,255,0.15); border:1px solid var(--p); color:#fff; padding:0.6rem 1.2rem; border-radius:15px; font-weight:700; cursor:pointer">✨ Auto-detect</button>
-      <button id="_gbtn_male" onclick="_setGender('male')" style="background:var(--glass); border:1px solid var(--glass-border); color:var(--m); padding:0.6rem 1.2rem; border-radius:15px; font-weight:700; cursor:pointer">👨 Hombre</button>
-      <button id="_gbtn_female" onclick="_setGender('female')" style="background:var(--glass); border:1px solid var(--glass-border); color:var(--m); padding:0.6rem 1.2rem; border-radius:15px; font-weight:700; cursor:pointer">👩 Mujer</button>
+      <button id="_gbtn_male" onclick="_setGender('male')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.8rem; border-radius:15px; font-weight:700; cursor:pointer; transition:0.2s">👨 Hombre</button>
+      <button id="_gbtn_female" onclick="_setGender('female')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.8rem; border-radius:15px; font-weight:700; cursor:pointer; transition:0.2s">👩 Mujer</button>
     </div>
-    <select id="user-gender" style="display:none"><option value="auto">auto</option></select>
+    <select id="user-gender" style="display:none"><option value=""></option><option value="male">male</option><option value="female">female</option></select>
 
     <div id="results" style="margin-top:3rem"></div>
     <div id="events-area" style="margin-top:2rem"></div>
@@ -832,12 +831,12 @@ function injectUI() {
   mount.setAttribute("data-ui", "_harmiq_ui_injected");
 }
 
-function _setGender(val, btn) {
+function _setGender(val) {
   // Actualizar select oculto
   const sel = document.getElementById("user-gender");
   if (sel) sel.value = val;
   // Actualizar botones visuales
-  ["male","female","auto"].forEach(v => {
+  ["male","female"].forEach(v => {
     const b = document.getElementById(`_gbtn_${v}`);
     if (!b) return;
     const active = v === val;
@@ -1446,15 +1445,7 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
  */
 function classifyVT(pitchMean, pitchRange, gender) {
   let pm = pitchMean;
-  let g = String(gender).toLowerCase();
-
-  // 1. AUTO-GENDER DETECTION (Si el usuario eligió "Auto" o no hay selección)
-  if (!g || g === "auto" || g === "undefined") {
-    // Si la frecuencia es típica de mujer (>170 Hz), asumimos femenino para el rango
-    g = (pm > 170) ? "female" : "male";
-  }
-
-  const isMale = (g === "male" || g === "masculina");
+  const isMale = (gender === "male" || gender === "masculina");
 
   if (isMale) {
     // CORRECCIÓN DE OCTAVA (v2.2): El detector a veces captura el 1er armónico.
@@ -1466,7 +1457,7 @@ function classifyVT(pitchMean, pitchRange, gender) {
   let vt = "baritone";
   let conf = 80;
 
-  if (g === "female" || g === "femenina") {
+  if (gender === "female" || gender === "femenina") {
     // Rangos Femeninos (Hz):
     // Contralto: 160-240 Hz
     // Mezzo:     200-350 Hz
@@ -1538,9 +1529,8 @@ async function analyzeAudio() {
       feat._local = true;
       const vec  = featuresToVector(feat);
       const {vt, conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
-      const finalGender = (gender === "auto") ? (feat.pitchMean > 170 ? "female" : "male") : gender;
-      const matches = getMatches(vec, vt, finalGender, {}, 5);
-      lastResult = {feat, vec, vt, conf, matches, gender: finalGender};
+      const matches = getMatches(vec, vt, gender, {}, 5);
+      lastResult = {feat, vec, vt, conf, matches, gender};
       try {
         const toSave = {
           feat: lastResult.feat, vt: lastResult.vt, conf: lastResult.conf,
@@ -1605,10 +1595,9 @@ async function analyzeAudio() {
     const feat = data.features;
     
     const {vt,conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
-    const finalGender = (gender === "auto") ? (feat.pitchMean > 170 ? "female" : "male") : gender;
-    const matches = getMatches(vec, vt, finalGender, {}, 5);
+    const matches = getMatches(vec, vt, gender, {}, 5);
     
-    lastResult = {feat, vec, vt, conf, matches, gender: finalGender};
+    lastResult = {feat, vec, vt, conf, matches, gender};
     await preloadImages(matches.slice(0,5).map(m=>m.name));
 
     // TRANSICIÓN DE UI: Ocultar zona de grabación para mostrar resultados
