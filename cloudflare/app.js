@@ -598,8 +598,28 @@ const MONO_IMGS = {
   "SZA":                 "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/SZA_2022.jpg/220px-SZA_2022.jpg",
   "Alicia Keys":         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Alicia_Keys_2019.jpg/220px-Alicia_Keys_2019.jpg",
   "Nicki Minaj":         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Nicki_Minaj_2013.jpg/220px-Nicki_Minaj_2013.jpg",
+  // 🔥 VIP Artistas (Nuevos añadidos para asegurar fotos)
+  "Aitana":              "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Aitana_Los40_Music_Awards_2023.jpg/220px-Aitana_Los40_Music_Awards_2023.jpg",
+  "Karol G":             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Karol_G_2024.jpg/220px-Karol_G_2024.jpg",
+  "Nathy Peluso":        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Nathy_Peluso_2021.jpg/220px-Nathy_Peluso_2021.jpg",
+  "C. Tangana":          "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/C._Tangana_2021.png/220px-C._Tangana_2021.png",
+  "Lola Índigo":         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Lola_Indigo_2023.jpg/220px-Lola_Indigo_2023.jpg",
+  "Morat":               "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Morat_2018.jpg/220px-Morat_2018.jpg",
+  "Rauw Alejandro":      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/RauwAlejandro2022.jpg/220px-RauwAlejandro2022.jpg",
+  "Quevedo":             "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Quevedo_%28singer%29_2023.png/220px-Quevedo_%28singer%29_2023.png",
+  "Bizarrap":            "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Bizarrap_2023.jpg/220px-Bizarrap_2023.jpg",
+  "Tiago PZK":           "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Tiago_PZK_2021.jpg/220px-Tiago_PZK_2021.jpg",
+  "Myke Towers":         "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Myke_Towers_2022.jpg/220px-Myke_Towers_2022.jpg",
+  "Anuel AA":            "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Anuel_AA_2020.jpg/220px-Anuel_AA_2020.jpg",
+  "Feid":                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Feid_2022.jpg/220px-Feid_2022.jpg",
+  "Peso Pluma":          "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Peso_Pluma_2023.jpg/220px-Peso_Pluma_2023.jpg",
+  // 🏴 CAT Artistas
+  "Miki Núñez":          "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Miki_Nuñez_2019.jpg/220px-Miki_Nuñez_2019.jpg",
+  "The Tyets":           "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/The_Tyets_2023.jpg/220px-The_Tyets_2023.jpg",
+  "Stay Homas":          "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Stay_Homas_2020.jpg/220px-Stay_Homas_2020.jpg",
+  "Oques Grasses":       "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Oques_Grasses_2019.jpg/220px-Oques_Grasses_2019.jpg",
+  "Mushkaa":             "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Mushkaa_2023.jpg/220px-Mushkaa_2023.jpg",
   "Cardi B":             "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Cardi_B_2018.jpg/220px-Cardi_B_2018.jpg",
-  "Karol G":             "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/KAROL_G_2022.jpg/220px-KAROL_G_2022.jpg",
   "J Balvin":            "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/J_Balvin_2018.jpg/220px-J_Balvin_2018.jpg",
   "Rauw Alejandro":      "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Rauw_Alejandro_2022.jpg/220px-Rauw_Alejandro_2022.jpg",
   "Marc Anthony":        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Marc_Anthony_2015.jpg/220px-Marc_Anthony_2015.jpg",
@@ -1112,11 +1132,40 @@ function getHomeStudioHTML(voiceType) {
     },
     "baritone": {
       basico: { name: "Fifine AmpliGame A6V", asin: "B09MHRYY5C" },
-      pro:    { name: "Audio-Technica AT2035 + Scarlett Solo", asin: "B002T45X1G" },
+      pro:    { name: "Shure SM58 + Scarlett Solo", asin: "B00016W6Y8" },
       top:    { name: "Sennheiser MK4 + Focusrite 2i2", asin: "B004S4S6I6" },
       premium:{ name: "Neumann TLM 103 + Apollo Twin", asin: "B0002E4Z8M" }
     },
-    // Fallback general para otros tipos (tenor, soprano, etc)
+    "tenor": {
+      basico: { name: "Fifine AmpliGame A6V", asin: "B09MHRYY5C" },
+      pro:    { name: "Rode NT1-A + Scarlett Solo", asin: "B002QAUOKS" },
+      top:    { name: "AKG C214 + Focusrite 2i2", asin: "B0017I6I72" },
+      premium:{ name: "Neumann TLM 103 + Apollo Solo", asin: "B0002E4Z8M" }
+    },
+    "soprano": {
+      basico: { name: "Fifine AmpliGame A6V", asin: "B09MHRYY5C" },
+      pro:    { name: "Blue Baby Bottle SL + Scarlett Solo", asin: "B01M3W052B" },
+      top:    { name: "Lewitt LCT 440 Pure + Focusrite 2i2", asin: "B01N2O97R8" },
+      premium:{ name: "Neumann TLM 102 + Apollo Solo", asin: "B0046XCH96" }
+    },
+    "mezzo-soprano": {
+      basico: { name: "Fifine AmpliGame A6V", asin: "B09MHRYY5C" },
+      pro:    { name: "Shure SM58 + Scarlett Solo", asin: "B00016W6Y8" },
+      top:    { name: "Warm Audio WA-87 + Focusrite 2i2", asin: "B098863KBS" },
+      premium:{ name: "Shure SM7B + Cloudlifter + Apollo Twin", asin: "B0002E4Z8M" }
+    },
+    "contralto": {
+      basico: { name: "Fifine AmpliGame A6V", asin: "B09MHRYY5C" },
+      pro:    { name: "Shure SM7B + Scarlett Solo", asin: "B0002E4Z8M" },
+      top:    { name: "Electro-Voice RE20 + Focusrite 2i2", asin: "B0002E4Z8M" },
+      premium:{ name: "Neumann U87 Clone + Apollo Twin", asin: "B0033G2WTY" }
+    },
+    "countertenor": {
+      basico: { name: "Fifine AmpliGame A6V", asin: "B09MHRYY5C" },
+      pro:    { name: "Rode NT2-A + Scarlett Solo", asin: "B0002E4Z8M" },
+      top:    { name: "AKG C414 + Focusrite 2i2", asin: "B00M9CUJ6W" },
+      premium:{ name: "Neumann TLM 103 + Apollo Twin", asin: "B0002E4Z8M" }
+    },
     "default": {
       basico: { name: "Fifine AmpliGame A6V", asin: "B09MHRYY5C" },
       pro:    { name: "Rode NT1-A + Scarlett Solo", asin: "B002QAUOKS" },
@@ -1873,9 +1922,10 @@ async function renderResults(data) {
         </button>
       </div>
 
-      <!-- Monetización Integrada -->
-      <div style="margin-top:3rem; border-top:1px solid rgba(255,255,255,0.1); padding-top:2rem">
-        ${getUdemyBox(vt)}
+      <!-- Monetización Integrada (Simplificada en Card) -->
+      <div style="margin-top:2rem; border-top:1px solid rgba(255,255,255,0.05); padding-top:1.5rem">
+        <div style="font-size:0.75rem; color:#9CA3AF; font-weight:700; text-transform:uppercase; letter-spacing:1px">Sugerencia Profesional</div>
+        <div style="font-size:0.9rem; margin-top:0.3rem">${trV("_vt_names", vt)}: El equipo ideal para tu rango.</div>
       </div>
 
     </div>
@@ -1931,8 +1981,8 @@ async function renderResults(data) {
       ${isComp ? `<div style="position:absolute; top:0; right:0; background:#FF4FA3; color:white; font-size:0.6rem; font-weight:900; padding:4px 12px; border-radius:0 0 0 12px; text-transform:uppercase; letter-spacing:1px">Tu Comparación</div>` : ""}
       <div style="display:flex; gap:1.2rem; align-items:center; margin-bottom:1rem">
         <div style="position:relative">
-          <div style="width:75px; height:75px; border-radius:50%; overflow:hidden; border:3px solid ${i===0?color:'rgba(255,255,255,.1)'}">
-            <img src="${img}" style="width:100%; height:100%; object-fit:cover" onerror="this.src=getInitialsAvatar('${m.name.replace(/'/g,"\\'")}')">
+          <div style="width:75px; height:75px; border-radius:50%; overflow:hidden; border:3px solid ${i===0?color:'rgba(255,255,255,.1)'}; background:#1a103f">
+            <img src="${img}" style="width:100%; height:100%; object-fit:cover" onerror="this.onerror=null; this.src=getInitialsAvatar('${m.name.replace(/'/g,"\\'")}')">
           </div>
           <div style="position:absolute; bottom:-5px; right:-5px; width:30px; height:30px; background:#1a103f; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:800; border:2px solid ${color}">${sym[i]}</div>
         </div>
@@ -2008,6 +2058,23 @@ async function renderResults(data) {
           <div style="font-size:.8rem; color:#FFD166">Mejora tu rango y control</div>
         </a>
       </div>
+
+      <!-- 🎓 SECCIÓN DEDICADA DE CURSOS (Solicitud Usuario) -->
+      <div id="_courses_section" style="margin-top:3rem; animation: appear 0.8s ease-out">
+        <div style="font-family:'Outfit'; font-weight:900; font-size:1.5rem; color:#fff; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.8rem">
+          <span>🎓</span> Formación y Cursos Premium
+        </div>
+        ${getUdemyBox(vt)}
+        
+        <div style="margin-top:1.5rem; padding:1.5rem; background:rgba(255,255,255,.03); border-radius:24px; border:1px solid rgba(255,255,255,.08); display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap">
+          <div style="flex:1; min-width:200px">
+            <h4 style="font-size:1rem; color:#fff; margin-bottom:0.4rem">Masterclass: Técnica Vocal Avanzada</h4>
+            <p style="font-size:0.85rem; color:#9CA3AF">Aprende a dominar los armónicos y el control de aire con profesionales.</p>
+          </div>
+          <a href="https://www.udemy.com/topic/singing/?tag=harmiqapp-20" target="_blank" style="background:rgba(255,255,255,0.08); color:#fff; padding:0.8rem 1.5rem; border-radius:12px; text-decoration:none; font-weight:700; font-size:0.85rem; border:1px solid rgba(255,255,255,0.1)">Ver más cursos →</a>
+        </div>
+      </div>
+
     </div>
   `;
 
