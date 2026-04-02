@@ -1662,7 +1662,7 @@ async function analyzeAudio() {
       feat._local = true;
       const vec  = featuresToVector(feat);
       const {vt, conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
-      const matches = getMatches(vec, vt, gender, {}, 5);
+      const matches = getMatches(vec, vt, gender, {}, 15);
       lastResult = {feat, vec, vt, conf, matches, gender};
       try {
         const toSave = {
@@ -1713,7 +1713,7 @@ async function analyzeAudio() {
       feat._local = true;
       const vec  = featuresToVector(feat);
       const {vt, conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
-      const matches = getMatches(vec, vt, gender, {}, 5);
+      const matches = getMatches(vec, vt, gender, {}, 15);
       lastResult = {feat, vec, vt, conf, matches, gender};
       await preloadImages(matches.slice(0,5).map(m=>m.name));
       if (dropZone) dropZone.style.display = "none";
@@ -1861,7 +1861,7 @@ async function renderResults(data) {
   
   try {
     const vtName = trV("_vt_names",vt);
-    const sym    = ["🥇","🥈","🥉","4.","5."];
+    const sym    = ["🥇","🥈","🥉","4°","5°","6°","7°","8°","9°","10°","11°","12°","13°","14°","15°"];
   const explanation = getVoiceTypeDescription(vt, conf, window.lang || 'es');
 
   const resEl = document.getElementById("results");
@@ -1979,53 +1979,56 @@ async function renderResults(data) {
       </div>
     </div>`;
 
-  const cardsHTML = matches.map((m,i) => {
-    const pct  = Math.round(m.score);
-    const img  = imgCache[m.name] || getInitialsAvatar(m.name);
-    const vtN  = trV("_vt_names", m.voice_type);
+  // Cards grid: match[0] ya aparece en storyCard, mostramos match[1..14] en grid 2 cols
+  const cardsHTML = `<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:.75rem; margin-top:.5rem">` +
+    matches.slice(1).map((m, i) => {
+    const rank  = i + 2; // posición real (2,3,4...)
+    const pct   = Math.round(m.score);
+    const img   = imgCache[m.name] || getInitialsAvatar(m.name);
+    const vtN   = trV("_vt_names", m.voice_type);
     const songs = m.reference_songs?.slice(0,3) || [];
-
+    const medal = sym[rank - 1] || `${rank}°`;
     const isComp = m.isComparisonMode;
+    const slug  = m.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
     return `
-    <div style="background:rgba(255,255,255,.03); border:1px solid ${isComp?'#FF4FA3':(i===0?color+'55':"rgba(255,255,255,.08)")};
-      border-radius:24px; padding:1.5rem; margin-bottom:1rem; position:relative; overflow:hidden; ${isComp?'box-shadow:0 0 20px rgba(255,79,163,0.2)':''}">
-      ${isComp ? `<div style="position:absolute; top:0; right:0; background:#FF4FA3; color:white; font-size:0.6rem; font-weight:900; padding:4px 12px; border-radius:0 0 0 12px; text-transform:uppercase; letter-spacing:1px">Tu Comparación</div>` : ""}
-      <div style="display:flex; gap:1.2rem; align-items:center; margin-bottom:1rem">
-        <div style="position:relative">
-          <div style="width:75px; height:75px; border-radius:50%; overflow:hidden; border:3px solid ${i===0?color:'rgba(255,255,255,.1)'}; background:#1a103f">
-            <img src="${img}" style="width:100%; height:100%; object-fit:cover" onerror="this.onerror=null; this.src=getInitialsAvatar('${m.name.replace(/'/g,"\\'")}')">
-          </div>
-          <div style="position:absolute; bottom:-5px; right:-5px; width:30px; height:30px; background:#1a103f; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:800; border:2px solid ${color}">${sym[i]}</div>
+    <div style="background:rgba(255,255,255,.04); border:1px solid ${isComp?'#FF4FA3':'rgba(255,255,255,.09)'}; border-radius:18px; overflow:hidden; position:relative; transition:transform .2s, box-shadow .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+      ${isComp ? `<div style="position:absolute;top:0;right:0;background:#FF4FA3;color:#fff;font-size:.55rem;font-weight:900;padding:3px 10px;border-radius:0 0 0 10px;letter-spacing:1px;z-index:1">TU COMPARACIÓN</div>` : ""}
+      <div style="display:flex; align-items:stretch">
+        <!-- Foto -->
+        <div style="width:88px; flex-shrink:0; position:relative; overflow:hidden; background:#0d0a1f">
+          <img src="${img}" alt="${m.name}" style="width:100%;height:100%;object-fit:cover;display:block;min-height:88px" onerror="this.onerror=null;this.src=getInitialsAvatar('${m.name.replace(/'/g,"\\'")}')">
+          <div style="position:absolute;top:5px;left:5px;background:rgba(0,0,0,.75);color:#fff;font-size:.6rem;font-weight:900;padding:2px 6px;border-radius:12px;line-height:1.4">${medal}</div>
         </div>
-        <div style="flex:1">
-          <a href="/artistas/${m.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}/" style="text-decoration:none">
-            <h3 style="font-family:'Baloo 2',sans-serif; font-size:1.4rem; color:#fff; margin-bottom:0.2rem; line-height:1.2; transition:color 0.2s" onmouseover="this.style.color='#7C4DFF'" onmouseout="this.style.color='#fff'">${m.name}</h3>
+        <!-- Info -->
+        <div style="flex:1; padding:.8rem .9rem; min-width:0">
+          <a href="/artistas/${slug}/" style="text-decoration:none">
+            <div style="font-family:'Baloo 2',sans-serif; font-size:.95rem; color:#fff; font-weight:800; line-height:1.2; margin-bottom:.3rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${m.name}</div>
           </a>
-          <div style="display:flex; gap:0.5rem; flex-wrap:wrap">
-            <span style="font-size:0.7rem; font-weight:800; padding:0.2rem 0.6rem; border-radius:20px; background:${color}22; color:${color}; text-transform:uppercase">${vtN}</span>
-            <span style="font-size:0.7rem; font-weight:800; padding:0.2rem 0.6rem; border-radius:20px; background:rgba(255,255,255,0.05); color:#9CA3AF; text-transform:uppercase">${trV("_eras",m.era)}</span>
+          <div style="display:flex; gap:.3rem; flex-wrap:wrap; margin-bottom:.5rem">
+            <span style="font-size:.6rem; font-weight:800; padding:.15rem .45rem; border-radius:20px; background:${color}25; color:${color}">${vtN}</span>
+            <span style="font-size:.6rem; padding:.15rem .45rem; border-radius:20px; background:rgba(255,255,255,.07); color:#9CA3AF">${trV("_eras",m.era)||m.era||""}</span>
+          </div>
+          <!-- Barra de similitud -->
+          <div style="display:flex; align-items:center; gap:.5rem">
+            <div style="flex:1; height:3px; background:rgba(255,255,255,.07); border-radius:2px; overflow:hidden">
+              <div style="height:100%; width:${pct}%; background:linear-gradient(90deg,${color},#FF4FA3)"></div>
+            </div>
+            <div style="font-size:.85rem; font-weight:900; color:${color}; white-space:nowrap">${pct}%</div>
           </div>
         </div>
-        <div style="text-align:right">
-          <div style="font-size:2rem; font-weight:950; background:linear-gradient(135deg, #fff, ${color}); -webkit-background-clip:text; -webkit-text-fill-color:transparent">${pct}%</div>
-        </div>
       </div>
-
-      <div style="height:4px; background:rgba(255,255,255,.06); border-radius:2px; margin-bottom:1.2rem">
-        <div style="height:100%; width:${pct}%; background:linear-gradient(90deg, ${color}, #FF4FA3); border-radius:2px; box-shadow:0 0 10px ${color}88"></div>
-      </div>
-
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:0.6rem">
+      <!-- Canciones -->
+      ${songs.length ? `<div style="padding:.5rem .7rem .7rem; border-top:1px solid rgba(255,255,255,.05); display:flex; flex-direction:column; gap:.25rem">
         ${songs.map(s => {
           const {karaoke} = getPlatformLinks(m.name, s);
-          return `<a href="${karaoke}" target="_blank" style="display:flex; align-items:center; gap:0.6rem; padding:0.7rem; background:rgba(255,255,255,.04); border-radius:14px; text-decoration:none; border:1px solid rgba(255,255,255,.07); transition:all 0.2s" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
-            <span style="font-size:1rem; color:#ff4444">▶</span>
-            <div style="flex:1; font-size:0.78rem; color:#E5E7EB; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${s}</div>
+          return `<a href="${karaoke}" target="_blank" style="display:flex;align-items:center;gap:.45rem;text-decoration:none;padding:.3rem .45rem;border-radius:7px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">
+            <span style="color:#ff4444;font-size:.65rem;flex-shrink:0">▶</span>
+            <span style="font-size:.7rem;color:#D1D5DB;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s}</span>
           </a>`;
         }).join('')}
-      </div>
+      </div>` : ""}
     </div>`;
-  }).join("");
+  }).join("") + `</div>`;
 
   const vtOverrideHTML = (() => {
     const allVTs = ['bass','baritone','tenor','countertenor','contralto','mezzo-soprano','soprano'];
@@ -2048,8 +2051,8 @@ async function renderResults(data) {
       </div>
       
       <div style="margin:2.5rem 0 1.5rem">
-        <div style="font-family:'Outfit'; font-weight:900; font-size:1.5rem; color:#fff; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.8rem">
-          <span>🎸</span> Artistas que comparten tu ADN vocal
+        <div style="font-family:'Outfit'; font-weight:900; font-size:1.5rem; color:#fff; margin-bottom:1rem; display:flex; align-items:center; gap:0.8rem">
+          <span>🎸</span> ${matches.length} artistas que comparten tu ADN vocal
         </div>
         ${cardsHTML}
       </div>
@@ -2122,7 +2125,7 @@ function attachFilterEvents(vec, vt, gender) {
     if (genre)   filters.genre_category = genre;
     if (country) filters.country_code   = country;
 
-    const newMatches = getMatches(vec, vt, gender, filters, 8); // Aumentar a 8 resultados en filtros
+    const newMatches = getMatches(vec, vt, gender, filters, 15);
     await preloadImages(newMatches.map(m=>m.name));
 
     if (typeof lastResult !== 'undefined') {
