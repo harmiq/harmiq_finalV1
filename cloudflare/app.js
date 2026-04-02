@@ -845,14 +845,7 @@ function _setGender(val, btn) {
   });
 }
 
-function setFile(f) {
-  audioBlob = f;
-  const fn = document.getElementById("_file_name");
-  if (fn) fn.textContent = `✓ ${f.name}`;
-  const dz = document.getElementById("_drop_zone");
-  if (dz) { dz.style.borderColor="#7C4DFF"; dz.style.background="rgba(124,77,255,.06)"; }
-  showStatus("");
-}
+// setFile is now at line 721
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // 5. VISUALIZADOR DE ESPECTRO
