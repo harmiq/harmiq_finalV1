@@ -26,7 +26,7 @@
 const AMAZON_DOMAINS = { ES:"es",US:"com",MX:"com.mx",UK:"co.uk",DE:"de",FR:"fr",IT:"it",CA:"ca",BR:"com.br",JP:"co.jp" };
 const AFFILIATE_ID   = "harmiqapp-20";
 const HF_API_URL     = "https://hamiq-harmiq-backend1.hf.space"; 
-const APP_VERSION    = "10.2";
+const APP_VERSION    = "10.3";
 
 // --- SHARED UI COMPONENTS ---
 function getPremiumHeaderHTML() {
@@ -730,10 +730,11 @@ function setFile(f) {
   if (fn) fn.textContent = `✓ ${f.name} (Listo para analizar)`;
   
   const abtn = document.getElementById("analyze-btn");
-  if (abtn) {
-    abtn.style.display = "block";
-    abtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
+  const gsel = document.getElementById("_gender_select_wrap");
+  if (abtn) abtn.style.display = "block";
+  if (gsel) gsel.style.display = "flex";
+  
+  if (abtn) abtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
   const dz = document.getElementById("_drop_zone");
   if (dz) {
@@ -777,6 +778,16 @@ function injectUI() {
           <button id="_upload_btn_trigger" style="background:transparent; border:1px solid var(--glass-border); color:var(--t); padding:0.8rem 2rem; border-radius:100px; font-weight:700; cursor:pointer; transition:0.3s; min-width:240px" onmouseover="this.style.borderColor='var(--p)'" onmouseout="this.style.borderColor='var(--glass-border)'">
             📁 <span id="_upload_btn_el">Subir archivo de audio</span>
           </button>
+
+          <!-- SELECCIÓN DE GÉNERO (REUBICADO PARA VISIBILIDAD) -->
+          <div id="_gender_select_wrap" style="display:none; flex-direction:column; align-items:center; gap:0.8rem; margin:1.5rem 0; width:100%">
+            <p style="font-size:0.85rem; font-weight:800; color:var(--p); text-transform:uppercase; letter-spacing:1px">Selecciona tu tipo de voz:</p>
+            <div style="display:flex; gap:0.8rem; justify-content:center">
+              <button id="_gbtn_male" onclick="_setGender('male')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.5rem; border-radius:15px; font-weight:700; cursor:pointer; transition:0.2s">👨 Hombre</button>
+              <button id="_gbtn_female" onclick="_setGender('female')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.5rem; border-radius:15px; font-weight:700; cursor:pointer; transition:0.2s">👩 Mujer</button>
+            </div>
+            <select id="user-gender" style="display:none"><option value=""></option><option value="male">male</option><option value="female">female</option></select>
+          </div>
         </div>
 
         <p style="font-size:0.75rem; color:var(--m); margin-top:1.5rem" id="_upload_hint_el">Formatos: MP3, WAV, M4A o Voice Memo</p>
@@ -787,17 +798,12 @@ function injectUI() {
       <input type="file" id="_file_inp" accept="audio/*" style="display:none">
     </div>
     
-    <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:center" id="_gender_select_wrap">
-      <button id="_gbtn_male" onclick="_setGender('male')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.8rem; border-radius:15px; font-weight:700; cursor:pointer; transition:0.2s">👨 Hombre</button>
-      <button id="_gbtn_female" onclick="_setGender('female')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.8rem; border-radius:15px; font-weight:700; cursor:pointer; transition:0.2s">👩 Mujer</button>
-    </div>
-    <select id="user-gender" style="display:none"><option value=""></option><option value="male">male</option><option value="female">female</option></select>
-
     <div id="results" style="margin-top:3rem"></div>
     <div id="events-area" style="margin-top:2rem"></div>
 
     <style>
       @keyframes pulse-red { 0% { transform: scale(0.9); opacity: 0.7; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.7; } }
+      .gbtn-active { border-color:var(--p) !important; background:rgba(124,77,255,.15) !important; color:#fff !important; box-shadow:0 0 15px rgba(124,77,255,0.3); }
     </style>
   `;
 
@@ -1518,7 +1524,16 @@ async function analyzeAudio() {
   const analyzeBtn = document.getElementById("analyze-btn");
   const dropZone   = document.getElementById("_drop_zone");
 
-  if (!gender)    { showStatus(tr("_err_gender"), "error"); return; }
+  if (!gender) {
+    const gw = document.getElementById("_gender_select_wrap");
+    if (gw) {
+        gw.style.display = "flex";
+        gw.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        gw.style.animation = "pulse-red 0.5s 3";
+    }
+    showStatus(tr("_err_gender"), "error"); 
+    return; 
+  }
   if (!audioBlob) { showStatus(tr("_err_short"), "error"); return; }
   if (!singersDb || !singersDb.length){ showStatus(tr("_err_db"), "error"); return; }
 
@@ -1538,11 +1553,14 @@ async function analyzeAudio() {
     let isAwake = false;
     for (let i=0; i<10; i++) {
       try {
+        const controller = new AbortController();
+        const tId = setTimeout(() => controller.abort(), 3000);
         const h = await fetch(`${HF_API_URL}/health`, { 
             method: 'GET', 
             mode: 'cors',
-            signal: AbortSignal.timeout(3000) 
+            signal: controller.signal
         });
+        clearTimeout(tId);
         if (h.ok) { isAwake = true; break; }
       } catch(e) { console.log("Despertando...", i); }
       await new Promise(r => setTimeout(r, 2000));
@@ -3629,7 +3647,7 @@ function injectNewsBanner() {
     z-index: 10000;
     box-shadow: 0 4px 15px rgba(6,214,160,0.4);
   `;
-  b.innerHTML = `🔥 <span style="text-transform:uppercase; letter-spacing:1px">¡Harmiq v10.2 Live!</span> Descubre tu ADN Vocal con IA — Ahora con 12.000 artistas y cursos de canto →`;
+  b.innerHTML = `🔥 <span style="text-transform:uppercase; letter-spacing:1px">¡Harmiq v10.3 Live!</span> Análisis Vocal con IA y Equipamiento Profesional →`;
   
   const style = document.createElement("style");
   style.textContent = `

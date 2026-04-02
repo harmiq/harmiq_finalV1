@@ -198,6 +198,21 @@ def get_itunes_image_url(artist_name):
     time.sleep(0.5)
     return encoded_svg
 
+def get_artist_image_final(slug, artist_name):
+    """Prioridad: 1. Cache iTunes, 2. Fetch iTunes, 3. Imagen local /assets/img/ (si existe), 4. Fallback"""
+    # 1. Intentar obtener original de iTunes (ya sea de cache o fetch)
+    original = get_itunes_image_url(artist_name)
+    if original and not original.startswith("data:image/svg+xml"):
+        return original
+        
+    # 2. Si falla el original, buscar si tenemos un retrato IA verificado localmente
+    local_rel = f"/assets/img/{slug}.webp"
+    local_abs = os.path.join(r"E:\Harmiq_viaje\assets\img", f"{slug}.webp")
+    if os.path.exists(local_abs):
+        return local_rel
+        
+    return original # Devolverá el fallback SVG si nada funcionó
+
 
 def upgrade_html(html_path, slug, vocal_type, bio_text, songs, artist_img):
     with open(html_path, 'r', encoding='utf-8') as f:
@@ -214,10 +229,11 @@ def upgrade_html(html_path, slug, vocal_type, bio_text, songs, artist_img):
     if m_genre:
         genre = m_genre.group(1).strip()
         
-    m_amazon = re.search(r'<a href="(https://www\.amazon\.[^"]+)"[^>]+class="btn btn-amazon"', content)
-    amazon_link = m_amazon.group(1) if m_amazon else f"https://www.amazon.es/s?k={slug.replace('-', '+')}+music+cd&tag=harmiqapp-20"
-    
-    # 2. Rescatar graficos
+    # NUEVA LÓGICA: Forzar búsqueda de equipamiento (Microfono Profesional)
+    amazon_query = f"{artist_name} Microfono Profesional {vocal_type}"
+    amazon_link = f"https://www.amazon.es/s?k={urllib.parse.quote(amazon_query)}&tag=harmiqapp-20"
+
+    # 2. Rescatar graficos existentes o defaults
     m_chroma = re.search(r"data:\s*\[([\d\.\,\s]+)\]\s*,.*?backgroundColor:\s*'rgba", content, re.DOTALL)
     chroma_data = m_chroma.group(1).strip() if m_chroma else "0,0,0,0,0,0,0,0,0,0,0,0"
     
@@ -441,8 +457,8 @@ if __name__ == "__main__":
             
         print(f"Procesando: {art_name} ({vocal_type})")
         
-        # 1. Fetch Image via iTunes
-        img_url = get_itunes_image_url(art_name)
+        # 1. Fetch Image via iTunes / Local AI
+        img_url = get_artist_image_final(slug, art_name)
         
         # 2. Update/Create HTML
         if os.path.exists(html_path):
