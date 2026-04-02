@@ -888,8 +888,15 @@ async function toggleRecording() {
       const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
       chunks = []; isRec = true;
       btn.style.background = "linear-gradient(135deg,#ff4757,#ff6b9d)";
-      txt.textContent = tr("_rec_stop");
-      showStatus(tr("_analyzing"));
+      if (txt) txt.textContent = tr("_rec_stop");
+      
+      const bullet = document.getElementById("_mic_bullet");
+      if (bullet) bullet.style.display = "inline-block";
+      
+      const abtn = document.getElementById("analyze-btn");
+      if (abtn) abtn.style.display = "none";
+
+      showStatus("🔴 Grabando... Canta 5-10 segundos");
       startSpectrum(stream);
 
       const mime = MediaRecorder.isTypeSupported("audio/webm;codecs=opus") ? "audio/webm;codecs=opus"
@@ -903,14 +910,16 @@ async function toggleRecording() {
         const ext  = (mRec.mimeType||"").includes("webm") ? "webm" : (mRec.mimeType||"").includes("mp4") ? "mp4" : "wav";
         blob.name = `rec.${ext}`;
         setFile(blob);
-        await analyzeAudio();
+        showStatus("✅ Grabación completada. Pulsa Analizar.");
       };
       mRec.start(100);
     } catch(e) { showStatus(tr("_err_mic"), "err"); }
   } else {
     isRec = false;
     btn.style.background = "";
-    txt.textContent = tr("btn-record-text");
+    if (txt) txt.textContent = tr("btn-record-text");
+    const bullet = document.getElementById("_mic_bullet");
+    if (bullet) bullet.style.display = "none";
     if (mRec?.state !== "inactive") mRec.stop();
   }
 }
