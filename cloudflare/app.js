@@ -747,6 +747,17 @@ const MONO_IMGS = {
   "Soraya":              "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Soraya_Arnelas_2010.jpg/220px-Soraya_Arnelas_2010.jpg",
   "Bustamante":          "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/David_Bustamante_2019.jpg/220px-David_Bustamante_2019.jpg",
   "Bisbal":              "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/David_Bisbal_2014.jpg/220px-David_Bisbal_2014.jpg",
+  // 💎 Artistas Urbano / Pop Actual (Garantía de Imagen)
+  "Bizarrap":            "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Bizarrap_2023.jpg/220px-Bizarrap_2023.jpg",
+  "Karol G":             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Karol_G_2024.jpg/220px-Karol_G_2024.jpg",
+  "Rauw Alejandro":      "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Rauw_Alejandro_2022.jpg/220px-Rauw_Alejandro_2022.jpg",
+  "Myke Towers":         "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Myke_Towers_2020.jpg/220px-Myke_Towers_2020.jpg",
+  "Feid":                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Feid_2022.jpg/220px-Feid_2022.jpg",
+  "Anitta":              "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Anitta_2024.jpg/220px-Anitta_2024.jpg",
+  "Duki":                "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Duki_2023.jpg/220px-Duki_2023.jpg",
+  "Tini":                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tini_Stoessel_2022.jpg/220px-Tini_Stoessel_2022.jpg",
+  "Milo J":              "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Milo_J_2023.jpg/220px-Milo_J_2023.jpg",
+  "Trueno":              "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Trueno_2022.jpg/220px-Trueno_2022.jpg"
 };
 
 // Generar avatar con iniciales si no hay foto
@@ -1907,76 +1918,138 @@ async function analyzeAudio() {
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// 10. BLOQUE AMAZON — recomendación de micro para el resultado principal
-// ═══════════════════════════════════════════════════════════════════════════════
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// 10. DESCRIPCIONES EMPÁTICAS — Explicación profesional del tipo de voz
-// ═══════════════════════════════════════════════════════════════════════════════
-function getVoiceTypeDescription(vt, conf, lang = 'es') {
-  const icons = {
-    baritone: "🎙️", tenor: "🎵", bass: "🔊", "bass-baritone": "🎼",
-    soprano: "✨", "mezzo-soprano": "🌹", contralto: "🌊", countertenor: "🦋"
+// ═══════════════════════════════════════�  // ── 1. PREMIUM STORY CARD (V5 Elite) ───────────────────────────────
+  const top1 = matches[0];
+  const top1Img = MONO_IMGS[top1?.name] || imgCache[top1?.name] || getInitialsAvatar(top1?.name||"?");
+  const slugTop = top1.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  
+  const phrases = {
+    "baritone":["Tu voz tiene el poder de un clásico 🎭","Freddie Mercury era barítono en esencia 🤘","La voz más versátil y rica del mundo 🎤"],
+    "tenor":   ["Brillantez y agilidad en estado puro ✨","El Do de pecho es tu territorio natural 🏆","Los tenores que definen épocas 🎼"],
+    "soprano": ["Tu voz es pura magia y elegancia ✨","Mariah Carey empezó con este don 🌟","Soprano: La cúspide del rango humano 👑"],
+    "mezzo-soprano":["Adele cambió el Soul con esta voz 💜","La riqueza tonal más equilibrada 🎶","Tu timbre es aterciopelado y profundo 🔥"],
+    "contralto":["Una rareza vocal de una nobleza única 🌿","Nina Simone proyectaba tu misma alma 🎹","Contralto: Profundidad que estremece 💚"],
+    "bass":    ["Los cimientos de la música resuenan en ti 🎸","Johnny Cash definía la autoridad así 🖤","Tu voz tiene el peso de una leyenda ⚡"],
+    "countertenor":["La voz más sorprendente y etérea 🌈","Pureza absoluta en el registro agudo 💎","Una rareza vocal extraordinaria ⭐"],
   };
-  const tips = {
-    baritone: "Ideal para: pop, rock, soul, jazz.",
-    tenor: "Ideal para: ópera, pop lírico, rock melódico.",
-    bass: "Ideal para: gospel, blues, música clásica, soul profundo.",
-    "bass-baritone": "Ideal para: ópera dramática, baladas cinematográficas.",
-    soprano: "Ideal para: ópera, música sacra, pop lírico femenino.",
-    "mezzo-soprano": "Ideal para: ópera, jazz, soul, R&B.",
-    contralto: "Ideal para: gospel, blues, jazz, música folk.",
-    countertenor: "Ideal para: música barroca, early music, pop experimental."
-  };
-  const data = {
-    es: {
-      baritone: "Tu voz de <strong>Barítono</strong> tiene un timbre rico y cálido, situándose en el equilibrio perfecto entre profundidad y versatilidad. Es la voz masculina más común y emblemática en el pop y rock.",
-      tenor: "Un <strong>Tenor</strong> posee una brillantez y agilidad únicas en el registro agudo. Tu voz tiene esa cualidad heroica y potente que destaca naturalmente en cualquier mezcla musical.",
-      bass: "Como <strong>Bajo</strong>, posees la base más profunda y resonante del espectro humano. Tu voz transmite autoridad, estabilidad y un cuerpo impresionante en las notas graves.",
-      "bass-baritone": "Tu voz de <strong>Bajo-Barítono</strong> combina la autoridad del bajo con la flexibilidad lírica del barítono, permitiéndote navegar con maestría por una amplia gama de emociones.",
-      soprano: "Una <strong>Soprano</strong> es la voz más brillante y aguda, capaz de una agilidad cristalina. Tu registro tiene una claridad natural que brilla con elegancia en las notas más altas.",
-      "mezzo-soprano": "Como <strong>Mezzosoprano</strong>, tu voz es rica, plena y extremadamente expresiva. Tienes un timbre aterciopelado que aporta una calidez y madurez sonora excepcional.",
-      contralto: "La voz de <strong>Contralto</strong> es una rareza vocal maravillosa, siendo la más grave y profunda de las voces femeninas. Posees un tono oscuro y noble con una resonancia única.",
-      countertenor: "Ser <strong>Contratenor</strong> es poseer una rareza vocal extraordinaria, utilizando el falsete para alcanzar registros tradicionalmente femeninos con una pureza etérea y mágica."
-    }
-  };
+  const phraseArr = phrases[vt] || ["Tu voz es una huella única 🎤","Nadie canta exactamente igual que tú 🌟","El mundo necesita escuchar tu timbre 🎵"];
+  const phrase = phraseArr[Math.floor(Math.random() * phraseArr.length)];
 
-  const icon = icons[vt] || "🎤";
-  const tip  = tips[vt]  || "";
-  const base = data[lang]?.[vt] || data['es']?.[vt] || "Tu voz tiene una cualidad única y especial. Sigue explorando tu potencial.";
+  // Piano Roll Visual Builder
+  const notesToShow = ["C2","C3","C4","C5"];
+  const pianoRollHTML = `
+    <div style="display:flex; justify-content:center; gap:4px; margin:1.5rem 0; background:rgba(0,0,0,0.3); padding:10px; border-radius:15px; border:1px solid rgba(255,255,255,0.05)">
+      ${Object.keys(PIANO_FREQS).map(n => `<div id="pk-${n}" style="width:16px; height:40px; background:rgba(255,255,255,0.1); border-radius:4px; transition:0.3s; position:relative">
+         ${notesToShow.includes(n) ? `<span style="position:absolute; bottom:-18px; left:50%; transform:translateX(-50%); font-size:9px; color:var(--m); font-weight:900">${n}</span>` : ''}
+      </div>`).join('')}
+    </div>
+  `;
 
-  return `
-    <div style="background:linear-gradient(135deg,rgba(124,77,255,.12),rgba(255,79,163,.07));
-      border:1px solid rgba(124,77,255,.28);border-radius:20px;padding:1.2rem 1.4rem;margin-top:1rem;margin-bottom:.25rem">
-      <div style="font-size:2.2rem;margin-bottom:.55rem;line-height:1">${icon}</div>
-      <p style="font-size:.92rem;line-height:1.7;color:#D1D5DB;margin-bottom:.6rem">${base}</p>
-      ${tip ? `<p style="font-size:.78rem;color:#A5B4FC;font-weight:600;margin-bottom:.45rem">💡 ${tip}</p>` : ""}
-      <p style="font-size:.78rem;color:#6B7280">Análisis completado con una precisión de <strong style="color:#A5B4FC">${conf}%</strong>.</p>
-    </div>`;
-}
+  const storyCardHTML = `
+    <div id="_premium_story_card" style="
+      background: linear-gradient(170deg,#0f0820 0%,#1a0a35 35%,#0a1228 70%);
+      border-radius: 48px; padding: 4rem 2rem; color: #fff; margin-bottom: 3.5rem;
+      border: 1px solid rgba(255,255,255,.15); position: relative; overflow: hidden;
+      box-shadow: 0 40px 150px rgba(0,0,0,0.9), 0 0 60px ${color}33; text-align:center;">
+      
+      <div style="position:absolute; top:-10%; left:-10%; width:300px; height:300px; background:${color}; filter:blur(150px); opacity:0.2; pointer-events:none"></div>
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// 11. RENDERIZAR RESULTADOS
-// ═══════════════════════════════════════════════════════════════════════════════
-function getPlatformLinks(singerName, songName) {
-  const q        = encodeURIComponent(`${singerName} ${songName||""}`);
-  const qs       = encodeURIComponent(`${singerName} ${songName||""} karaoke sing king`); // Priorizar canales de alta calidad
-  const cc       = window.userCountry || window.GEO_CC || "US";
+      <div style="font-weight:900; text-transform:uppercase; letter-spacing:4px; font-size:0.8rem; color:${color}; margin-bottom:1.5rem">Identidad Vocal Confirmada</div>
 
-  let streams = [
-    { url: `https://open.spotify.com/search/${q}`, label: "Spotify", color: "#1DB954" },
-    { url: `https://music.apple.com/search?term=${q}`, label: "Apple Music", color: "#fc3c44" },
-    { url: `https://music.youtube.com/search?q=${q}`, label: "YT Music", color: "#FF0000" }
-  ];
+      <!-- AVATAR ARTISTA MATCH -->
+      <div style="width:180px; height:180px; margin:0 auto 2rem; position:relative;">
+        <div style="position:absolute; inset:-8px; border-radius:60px; background:linear-gradient(135deg, ${color}, #FF4FA3); padding:4px; border:1px solid rgba(255,255,255,0.2)">
+          <div style="width:100%; height:100%; background:#0f0820; border-radius:56px"></div>
+        </div>
+        <img src="${top1Img}" style="width:100%; height:100%; border-radius:56px; object-fit:cover; position:relative; z-index:2; border:6px solid #0f0820" onerror="this.src=getInitialsAvatar('${top1.name}')">
+      </div>
 
-  if (["KR"].includes(cc)) {
-    streams.unshift({ url: `https://www.melon.com/search/total/index.htm?q=${q}`, label: "Melon (멜론)", color: "#00CD3C" });
-  } else if (["JP", "TW", "TH"].includes(cc)) {
-    streams.unshift({ url: `https://music.line.me/search?type=track&q=${q}`, label: "LINE Music", color: "#00B900" });
-  }
+      <!-- NOMBRE ARTISTA GIGANTE -->
+      <div style="margin-bottom:0.5rem; font-size:0.9rem; color:var(--m); font-weight:700; text-transform:uppercase; letter-spacing:2px">REFERENCIA DE ESTILO</div>
+      <a href="/artistas/${slugTop}/" style="text-decoration:none; display:inline-block">
+        <h1 style="font-size:clamp(3rem, 10vw, 5.5rem); font-weight:900; line-height:0.9; margin-bottom:1rem; letter-spacing:-2px; background:linear-gradient(to bottom, #fff, #b8b1d9); -webkit-background-clip:text; -webkit-text-fill-color:transparent">${top1.name}</h1>
+      </a>
 
-  return { karaoke: `https://www.youtube.com/results?search_query=${qs}`, streams };
+      <div style="font-size:1.3rem; color:var(--m); margin-bottom:2rem; font-weight:500; font-style:italic">"${phrase}"</div>
+
+      <!-- AUDIO PLAYER & PIANO ROLL -->
+      <div style="max-width:400px; margin:0 auto 2.5rem; background:rgba(255,255,255,0.03); padding:2rem; border-radius:32px; border:1px solid rgba(255,255,255,0.08)">
+        <h3 style="font-size:1.4rem; color:#fff; margin-bottom:0.5rem">${vtName}</h3>
+        <div style="font-size:0.8rem; color:var(--m); margin-bottom:1rem">Rango vocal detectado por IA</div>
+        
+        ${pianoRollHTML}
+        
+        <button onclick="playVocalSequence('${vt}')" style="background:var(--p); color:#fff; border:none; padding:1.2rem 2.5rem; border-radius:50px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:10px; margin:0 auto; transition:0.3s; box-shadow:0 12px 30px rgba(124,77,255,0.4)" onmouseover="this.style.transform='scale(1.05)';this.style.background='var(--a)'" onmouseout="this.style.transform='scale(1)';this.style.background='var(--p)'">
+           <span>🎹</span> ESCUCHAR MI RANGO
+        </button>
+      </div>
+
+      <div style="display:flex; gap:1.2rem; justify-content:center; flex-wrap:wrap">
+        <div style="background:rgba(255,255,255,0.05); padding:1rem 2rem; border-radius:24px; border:1px solid rgba(255,255,255,0.1)">
+          <div style="font-size:2.8rem; font-weight:900; color:#fff">${displayScore(top1.score)}%</div>
+          <div style="font-size:0.7rem; color:var(--p); font-weight:900; text-transform:uppercase">Similitud</div>
+        </div>
+        <button onclick="showViralCard()" style="flex:1; max-width:260px; border-radius:24px; background:linear-gradient(135deg, #7C4DFF, #FF4FA3); color:white; border:none; font-weight:900; cursor:pointer; box-shadow:0 15px 30px rgba(124,77,255,0.4); font-size:1.1rem">
+           ESTRELLA V5.0 🌟
+        </button>
+      </div>
+
+      <div style="display:flex; gap:1rem; justify-content:center; margin-top:2.5rem; align-items:center">
+        <button id="_fb_ok" onclick="_sendFeedback(true)" style="background:var(--glass); border:1px solid var(--glass-border); border-radius:50px; padding:0.6rem 1.2rem; cursor:pointer; font-size:1.4rem">👍</button>
+        <button id="_reset_v5" onclick="_resetApp()" style="background:rgba(255,255,255,0.05); color:#A5B4FC; border:1px solid rgba(255,255,255,0.1); padding:0.8rem 2rem; border-radius:50px; font-weight:900; cursor:pointer">OTRA PRUEBA</button>
+        <button id="_fb_ko" onclick="_sendFeedback(false)" style="background:var(--glass); border:1px solid var(--glass-border); border-radius:50px; padding:0.6rem 1.2rem; cursor:pointer; font-size:1.4rem">👎</button>
+      </div>
+
+    </div>
+  `;
+3"],
+    "tenor":         ["C3", "E3", "G3", "C4"],
+    "countertenor":  ["G3", "B3", "D4", "G4"],
+    "contralto":     ["F3", "A3", "C4", "F4"],
+    "mezzo-soprano": ["A3", "C4", "E4", "A4"],
+    "soprano":       ["C4", "E4", "G4", "C5"]
+};
+
+async function playVocalSequence(vt) {
+    const notes = VOCAL_RANGES_PIANO[vt] || ["C3", "E3", "G3"];
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    let time = audioCtx.currentTime + 0.1;
+
+    notes.forEach((note, i) => {
+        const freq = PIANO_FREQS[note] || 261.63;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.type = 'triangle'; // Sonido suave tipo piano eléctrico/flauta
+        osc.frequency.setValueAtTime(freq, time);
+        
+        gain.gain.setValueAtTime(0, time);
+        gain.gain.linearRampToValueAtTime(0.3, time + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.8);
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        // Animación visual del piano roll
+        setTimeout(() => {
+            const keyEl = document.getElementById(`pk-${note}`);
+            if (keyEl) {
+                keyEl.style.background = 'var(--a)';
+                keyEl.style.boxShadow = '0 0 15px var(--a)';
+                setTimeout(() => {
+                    keyEl.style.background = 'rgba(255,255,255,0.1)';
+                    keyEl.style.boxShadow = 'none';
+                }, 500);
+            }
+        }, (time - audioCtx.currentTime) * 1000);
+
+        osc.start(time);
+        osc.stop(time + 0.8);
+        time += 0.4;
+    });
+
+    setTimeout(() => audioCtx.close(), time * 1000 + 1000);
 }
 
 async function renderResults(data) {
