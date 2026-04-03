@@ -796,13 +796,16 @@ async function getArtistImage(name) {
   if (backendImg) { imgCache[name] = backendImg; return backendImg; }
 
   // 3. iTunes Search API pública (CORS friendly, rápido y alta calidad)
+  // attribute=artistTerm → filtra por artista principal, evita collabs donde el artista buscado no es el principal
   try {
     const q = encodeURIComponent(name);
-    // Removemos AbortSignal.timeout porque rompe silenciosamente en Safari/Móviles antiguos
-    const r = await fetch(`https://itunes.apple.com/search?term=${q}&entity=song&limit=1`);
+    const r = await fetch(`https://itunes.apple.com/search?term=${q}&entity=song&limit=8&attribute=artistTerm`);
     const d = await r.json();
     if (d.results && d.results.length > 0) {
-      const art = d.results[0].artworkUrl100;
+      // Preferir el resultado cuyo artistName empiece por el mismo nombre
+      const nameKey = name.toLowerCase().split(' ')[0];
+      const best = d.results.find(r => r.artistName?.toLowerCase().startsWith(nameKey)) || d.results[0];
+      const art = best?.artworkUrl100;
       if (art) {
         const img = art.replace('100x100bb', '600x600bb');
         imgCache[name] = img;
