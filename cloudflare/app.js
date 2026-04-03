@@ -806,7 +806,7 @@ function injectUI() {
   if (!mount || mount.getAttribute("data-ui") === "_harmiq_ui_injected") return;
 
   mount.innerHTML = `
-    <div id="_drop_zone" style="background:var(--glass); border:2px dashed var(--glass-border); border-radius:32px; padding:3rem 2rem; cursor:pointer; transition:0.3s; position:relative; overflow:hidden">
+    <div id="_drop_zone" style="background:var(--glass); border:2px dashed var(--glass-border); border-radius:32px; padding:1.8rem 1.5rem; cursor:pointer; transition:0.3s; position:relative; overflow:hidden">
       <!-- VISUALIZADOR -->
       <div id="_spec_wrap" style="display:none; margin-bottom:1.5rem; background:rgba(0,0,0,0.2); border-radius:16px; padding:10px">
         <canvas id="_spec_canvas" style="width:100%; height:80px"></canvas>

@@ -25,12 +25,23 @@
         .container{max-width:1200px;margin:0 auto;padding:0 5%}
         
         /* ── MAIN ANALYZER CARD ── */
-        .analyzer-section{padding:3rem 0;text-align:center}
-        .analyzer-card{background:linear-gradient(165deg, #130F2A 0%, #05040D 100%);border:1px solid rgba(124,77,255,0.3);border-radius:48px;padding:4rem 5%;box-shadow:0 40px 100px rgba(0,0,0,0.6);position:relative;overflow:hidden}
+        .analyzer-section{padding:1.5rem 0;text-align:center}
+        .analyzer-card{background:linear-gradient(165deg, #130F2A 0%, #05040D 100%);border:1px solid rgba(124,77,255,0.3);border-radius:48px;padding:2.5rem 5%;box-shadow:0 40px 100px rgba(0,0,0,0.6);position:relative;overflow:hidden}
         .analyzer-card::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle, rgba(124,77,255,0.05) 0%, transparent 70%);pointer-events:none}
-        
-        .analyzer-card h1{font-size:clamp(2.5rem, 8vw, 4.5rem);font-weight:900;margin-bottom:1rem;letter-spacing:-0.04em}
-        .analyzer-card p{color:var(--m);font-size:1.25rem;max-width:650px;margin:0 auto 3rem}
+
+        .analyzer-card h1{font-size:clamp(2.2rem, 6vw, 4rem);font-weight:900;margin-bottom:0.8rem;letter-spacing:-0.04em}
+        .analyzer-card p{color:var(--m);font-size:1.1rem;max-width:600px;margin:0 auto 1.2rem}
+
+        /* ── HERO TWO-COLUMN LAYOUT (desktop) ── */
+        .hero-text{text-align:left}
+        @media(min-width:860px){
+          .analyzer-card{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;text-align:left}
+          .hero-text{display:contents}
+          .analyzer-card #app{grid-column:2;grid-row:1/4}
+          .analyzer-card .hero-badge{grid-column:1;grid-row:1}
+          .analyzer-card h1{grid-column:1;grid-row:2;margin-bottom:0.8rem}
+          .analyzer-card p{grid-column:1;grid-row:3;margin:0}
+        }
         
         /* ── MODULE HUB (THE CARDS) ── */
         .hub-title{font-size:2rem;font-weight:900;margin:4rem 0 2rem}
@@ -47,7 +58,7 @@
         .hm-btn{background:linear-gradient(135deg,var(--p),var(--a));color:#fff;padding:1.4rem 3rem;border-radius:50px;font-weight:900;font-size:1.2rem;display:inline-block;box-shadow:0 20px 40px rgba(124,77,255,0.4);border:none;cursor:pointer;transition:0.3s}
         .hm-btn:hover{transform:scale(1.05);box-shadow:0 25px 50px rgba(124,77,255,0.6)}
 
-        #app-mount{background:rgba(255,255,255,0.02);border-radius:32px;border:1px dashed rgba(124,77,255,0.2);padding:3rem 5%;margin-top:2rem}
+        #app-mount{background:rgba(255,255,255,0.02);border-radius:32px;border:1px dashed rgba(124,77,255,0.2);padding:1.5rem 5%;margin-top:0.5rem}
 
         /* ── FOOTER ── */
         footer{padding:5rem 5% 3rem;background:#030208;border-top:1px solid var(--glass-border);text-align:center}
@@ -69,8 +80,9 @@
         .mosaic-item .name{font-weight:900; font-size:1.1rem; display:block;}
         .mosaic-item .type{font-size:0.7rem; color:var(--a); font-weight:800; text-transform:uppercase;}
 
-        @media(max-width:768px){
-            .analyzer-card{padding:3rem 1.5rem;border-radius:30px}
+        @media(max-width:859px){
+            .analyzer-card{padding:2rem 1.5rem;border-radius:30px;text-align:center}
+            .analyzer-card p{margin-bottom:1.5rem}
             .hub-grid{grid-template-columns:1fr}
             .artist-mosaic{grid-template-columns:repeat(2,1fr); gap:1rem;}
             .artist-feature{padding:2rem 1.5rem;}
@@ -121,10 +133,10 @@
     <!-- ── SECCIÓN ANALIZADOR (PROTAGONISTA) ── -->
     <section class="analyzer-section" id="analizador">
         <div class="analyzer-card">
-            <span style="background:rgba(255,79,163,0.1); color:var(--a); padding:6px 15px; border-radius:100px; font-weight:800; font-size:0.75rem; text-transform:uppercase; margin-bottom:1.5rem; display:inline-block">Tecnología de Redes Neuronales 2026</span>
-            <h1>Tu <span class="grad">ADN Vocal</span> en 10 segundos</h1>
-            <p>Sube un audio o graba tu voz para descubrir tu tesitura exacta y qué cantante internacional eres matemáticamente.</p>
-            
+            <span class="hero-badge" style="background:rgba(255,79,163,0.1); color:var(--a); padding:6px 15px; border-radius:100px; font-weight:800; font-size:0.75rem; text-transform:uppercase; margin-bottom:1rem; display:inline-block">🎤 Análisis Vocal con IA</span>
+            <h1>Tu <span class="grad">ADN Vocal</span><br>en 10 segundos</h1>
+            <p>Graba o sube un audio y descubre qué cantante internacional eres matemáticamente.</p>
+
             <div id="app">
                 <div id="app-mount">
                     <!-- App.js inyectará aquí los botones de grabar/subir -->
