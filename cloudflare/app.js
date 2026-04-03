@@ -794,6 +794,16 @@ function injectUI() {
         <div id="_main_mic_icon" style="font-size:3rem; margin-bottom:1rem">🎙️</div>
         
         <div style="display:flex; flex-direction:column; gap:1.2rem; align-items:center">
+          <!-- SELECCIÓN DE GÉNERO — visible desde el inicio -->
+          <div id="_gender_select_wrap" style="display:flex; flex-direction:column; align-items:center; gap:0.8rem; margin-bottom:0.5rem; width:100%">
+            <p style="font-size:0.85rem; font-weight:800; color:var(--p); text-transform:uppercase; letter-spacing:1px; margin:0">¿Cuál es tu voz?</p>
+            <div style="display:flex; gap:0.8rem; justify-content:center">
+              <button id="_gbtn_male" onclick="_setGender('male')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.8rem; border-radius:50px; font-weight:700; cursor:pointer; transition:0.2s; font-size:1rem">👨 Hombre</button>
+              <button id="_gbtn_female" onclick="_setGender('female')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.8rem; border-radius:50px; font-weight:700; cursor:pointer; transition:0.2s; font-size:1rem">👩 Mujer</button>
+            </div>
+            <select id="user-gender" style="display:none"><option value=""></option><option value="male">male</option><option value="female">female</option></select>
+          </div>
+
           <!-- BOTÓN GRABAR / DETENER -->
           <button class="hm-btn" id="record-btn" style="min-width:280px; font-size:1.1rem; padding:1.2rem; display:flex; align-items:center; justify-content:center; gap:10px">
             <span id="_mic_bullet" style="display:none; width:12px; height:12px; background:#ff4757; border-radius:50%; animation:pulse-red 1s infinite"></span>
@@ -806,21 +816,11 @@ function injectUI() {
           </button>
 
           <div style="color:var(--m); font-size:0.9rem; margin:0.4rem 0" id="_or_el">o también</div>
-          
+
           <!-- BOTÓN SUBIR ARCHIVO -->
           <button id="_upload_btn_trigger" style="background:transparent; border:1px solid var(--glass-border); color:var(--t); padding:0.8rem 2rem; border-radius:100px; font-weight:700; cursor:pointer; transition:0.3s; min-width:240px" onmouseover="this.style.borderColor='var(--p)'" onmouseout="this.style.borderColor='var(--glass-border)'">
             📁 <span id="_upload_btn_el">Subir archivo de audio</span>
           </button>
-
-          <!-- SELECCIÓN DE GÉNERO (REUBICADO PARA VISIBILIDAD) -->
-          <div id="_gender_select_wrap" style="display:none; flex-direction:column; align-items:center; gap:0.8rem; margin:1.5rem 0; width:100%">
-            <p style="font-size:0.85rem; font-weight:800; color:var(--p); text-transform:uppercase; letter-spacing:1px">Selecciona tu tipo de voz:</p>
-            <div style="display:flex; gap:0.8rem; justify-content:center">
-              <button id="_gbtn_male" onclick="_setGender('male')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.5rem; border-radius:15px; font-weight:700; cursor:pointer; transition:0.2s">👨 Hombre</button>
-              <button id="_gbtn_female" onclick="_setGender('female')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.5rem; border-radius:15px; font-weight:700; cursor:pointer; transition:0.2s">👩 Mujer</button>
-            </div>
-            <select id="user-gender" style="display:none"><option value=""></option><option value="male">male</option><option value="female">female</option></select>
-          </div>
         </div>
 
         <p style="font-size:0.75rem; color:var(--m); margin-top:1.5rem" id="_upload_hint_el">Formatos: MP3, WAV, M4A o Voice Memo</p>
