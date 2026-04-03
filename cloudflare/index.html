@@ -55,9 +55,25 @@
         .footer-links a{color:var(--m);font-weight:700;font-size:0.9rem}
         .footer-links a:hover{color:var(--p)}
 
+        /* ── ARTIST FEATURE SECTION ── */
+        .artist-feature{margin:5rem 0; padding:4rem; background:rgba(124,77,255,0.05); border-radius:48px; border:1px solid rgba(124,77,255,0.1); text-align:center; position:relative; overflow:hidden;}
+        .artist-feature h2{font-size:3rem; font-weight:900; margin-bottom:1rem; letter-spacing:-1px;}
+        .artist-feature p{color:var(--m); font-size:1.1rem; margin-bottom:3rem; max-width:600px; margin-left:auto; margin-right:auto;}
+        
+        .artist-mosaic{display:grid; grid-template-columns:repeat(4, 1fr); gap:1.5rem; margin-bottom:3rem;}
+        .mosaic-item{border-radius:24px; overflow:hidden; position:relative; aspect-ratio:1/1.2; border:1px solid rgba(255,255,255,0.1); transition:0.4s;}
+        .mosaic-item img{width:100%; height:100%; object-fit:cover; transition:0.5s;}
+        .mosaic-item:hover{transform:translateY(-10px); border-color:var(--a); box-shadow:0 20px 40px rgba(255,79,163,0.2);}
+        .mosaic-item:hover img{transform:scale(1.1);}
+        .mosaic-item .info{position:absolute; bottom:0; left:0; right:0; padding:1.5rem; background:linear-gradient(to top, rgba(0,0,0,0.9), transparent); text-align:left;}
+        .mosaic-item .name{font-weight:900; font-size:1.1rem; display:block;}
+        .mosaic-item .type{font-size:0.7rem; color:var(--a); font-weight:800; text-transform:uppercase;}
+
         @media(max-width:768px){
             .analyzer-card{padding:3rem 1.5rem;border-radius:30px}
             .hub-grid{grid-template-columns:1fr}
+            .artist-mosaic{grid-template-columns:repeat(2,1fr); gap:1rem;}
+            .artist-feature{padding:2rem 1.5rem;}
         }
     </style>
 </head>
@@ -120,7 +136,46 @@
 
     <!-- ── DASHBOARD DE MÓDULOS (INTUITIVO) ── -->
     <h2 class="hub-title">Módulos de <span class="grad">Harmiq</span></h2>
+    
+    <!-- ── NUEVA SECCIÓN ARTISTAS DESTACADA ── -->
+    <section class="artist-feature">
+        <div style="position:absolute; top:-100px; right:-100px; width:300px; height:300px; background:var(--p); filter:blur(150px); opacity:0.1; pointer-events:none"></div>
+        <h2>Explora la <span style="color:var(--p)">Elite Vocal</span></h2>
+        <p>¿Qué micrófonos usa Bad Bunny? ¿Cómo lograba Freddie Mercury su vibrato? Accede a la base de datos técnica más completa.</p>
+        
+        <div class="artist-mosaic">
+            <a href="/artistas/bad-bunny/" class="mosaic-item">
+                <img src="https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/3d/8c/7d/3d8c7d6d-230c-783a-733d-6b5d92e59779/cover.jpg/600x600bb.jpg" alt="Bad Bunny">
+                <div class="info"><span class="type">Barítono</span><span class="name">Bad Bunny</span></div>
+            </a>
+            <a href="/artistas/freddie-mercury/" class="mosaic-item">
+                <img src="https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/4e/6a/02/4e6a02b1-5917-7422-7935-cf70e4c6020c/19UMGIM78065.rgb.jpg/600x600bb.jpg" alt="Freddie Mercury">
+                <div class="info"><span class="type">Tenor</span><span class="name">Freddie Mercury</span></div>
+            </a>
+            <a href="/artistas/rosalia/" class="mosaic-item">
+                <img src="https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/a5/d8/56/a5d85600-e7f0-062e-990c-9694a50d2ee7/886449767222.jpg/600x600bb.jpg" alt="Rosalia">
+                <div class="info"><span class="type">Mezzo-Soprano</span><span class="name">Rosalía</span></div>
+            </a>
+            <a href="/artistas/adele/" class="mosaic-item">
+                <img src="https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/71/61/52/71615234-fc56-02e0-f04b-37d4554df7b3/886449553658.jpg/600x600bb.jpg" alt="Adele">
+                <div class="info"><span class="type">Contralto</span><span class="name">Adele</span></div>
+            </a>
+        </div>
+
+        <a href="/artistas/" class="hm-btn">VER DIRECTORIO COMPLETO</a>
+    </section>
+
     <div class="hub-grid">
+        
+        <!-- Tarjeta: Artistas Destacado (Inyección en Grid) -->
+        <a href="/artistas/" class="mod-card" style="border-color:var(--p); background:linear-gradient(135deg, rgba(124,77,255,0.1), transparent)">
+            <div class="mod-icon" style="background:var(--p)">🌟</div>
+            <div>
+                <h3>Directorio Artistas</h3>
+                <p>Análisis de 160+ cantantes pro, hardware recomendado y lecciones gratuitas.</p>
+            </div>
+            <div class="mod-link">Ver todos los artistas →</div>
+        </a>
         
         <!-- Tarjeta: Tipos de Voz -->
         <a href="/tipos-de-voz/" class="mod-card">

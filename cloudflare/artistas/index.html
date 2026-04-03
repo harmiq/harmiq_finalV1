@@ -8,75 +8,120 @@
     <meta name="description" content="Descubre el tipo de voz de mas de 150 artistas: Bad Bunny, Rosalia, Adele, Peso Pluma, Beyonce y muchos mas. Fotos, curiosidades y analisis vocal.">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Baloo+2:wght@700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root{--p:#7C4DFF;--a:#FF4FA3;--dark:#0A0818;--card:#130F2A;--t:#E5E7EB;--m:#6B7280;}
+        :root{--p:#7C4DFF;--a:#FF4FA3;--dark:#05050A;--card:rgba(255,255,255,0.03);--t:#FFFFFF;--m:#94A3B8;--bg-grad:radial-gradient(circle at 50% 0%, #1A1A2E 0%, #05050A 100%);}
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{background:var(--dark);color:var(--t);font-family:'Outfit',sans-serif;line-height:1.6;}
-        nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 4%;background:rgba(10,8,24,.95);border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;z-index:100;}
-        .logo{font-size:1.7rem;font-weight:900;background:linear-gradient(135deg,#7C4DFF,#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
-        .container{max-width:1400px;margin:0 auto;padding:3rem 4%;}
-        h1{font-family:'Baloo 2',sans-serif;font-size:2.8rem;font-weight:900;text-align:center;margin-bottom:.8rem;background:linear-gradient(135deg,#fff,#A5B4FC);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-        .subtitle{color:var(--m);font-size:1.1rem;text-align:center;margin-bottom:2rem;}
-        .stats-bar{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;padding:1rem;background:rgba(255,255,255,.03);border-radius:16px;border:1px solid rgba(255,255,255,.07);}
-        .stat-item{text-align:center;}
-        .stat-num{font-family:'Baloo 2',sans-serif;font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,#7C4DFF,#FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-        .stat-label{font-size:.7rem;color:var(--m);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
-        .controls{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;margin-bottom:1rem;}
-        .search-wrap{position:relative;flex:1;min-width:220px;max-width:420px;}
-        .search-wrap::before{content:'🔍';position:absolute;left:1rem;top:50%;transform:translateY(-50%);pointer-events:none;font-size:.9rem;}
-        #artistSearch{width:100%;padding:.75rem 1rem .75rem 2.8rem;border-radius:50px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:white;font-family:'Outfit';font-size:.9rem;outline:none;transition:border-color .2s;}
-        #artistSearch:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(124,77,255,.15);}
-        .filter-sel{padding:.7rem 2rem .7rem 1.1rem;border-radius:50px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#E5E7EB;font-family:'Outfit';font-size:.85rem;font-weight:600;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239CA3AF'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .8rem center;}
-        .filter-sel option{background:#1a1730;}
-        #resultCount{color:var(--m);font-size:.85rem;text-align:center;margin-bottom:1.5rem;}
-        .artist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1.2rem;}
-        .artist-card{background:var(--card);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.07);transition:transform .25s,box-shadow .25s,border-color .25s;text-decoration:none;color:white;display:block;}
-        .artist-card:hover{transform:translateY(-8px);border-color:var(--p);box-shadow:0 16px 40px rgba(0,0,0,.5);}
-        .card-img-wrap{position:relative;padding-top:100%;background:#0d0a1f;overflow:hidden;}
-        .card-img-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .3s;}
-        .artist-card:hover .card-img-wrap img{transform:scale(1.06);}
-        .card-badge{position:absolute;bottom:8px;left:8px;font-size:.58rem;font-weight:900;padding:3px 9px;border-radius:20px;border:1px solid;text-transform:uppercase;letter-spacing:.5px;backdrop-filter:blur(6px);}
-        .artist-info{padding:1rem 1.1rem;}
-        .artist-info h3{font-family:'Baloo 2',sans-serif;font-size:1rem;font-weight:800;margin-bottom:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-        .artist-genre{font-size:.68rem;color:var(--m);margin-bottom:.5rem;}
-        .artist-desc{font-size:.72rem;color:#9CA3AF;line-height:1.45;margin-bottom:.6rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-        .anecdote-btn{font-size:.65rem;color:var(--p);font-weight:800;cursor:pointer;background:none;border:none;padding:.3rem 0;transition:color .15s;font-family:'Outfit';}
-        .anecdote-btn:hover{color:var(--a);}
-        .anecdote-text{font-size:.7rem;color:#C4B5FD;line-height:1.5;margin-top:.5rem;padding:.6rem .8rem;background:rgba(124,77,255,.08);border-radius:10px;border-left:2px solid var(--p);}
-        footer{padding:3rem;text-align:center;color:var(--m);font-size:.9rem;border-top:1px solid rgba(255,255,255,.05);margin-top:4rem;}
-        @media(max-width:600px){h1{font-size:2rem;}.artist-grid{grid-template-columns:repeat(2,1fr);gap:.8rem;}}
+        body{background:var(--dark);background-image:var(--bg-grad);color:var(--t);font-family:'Outfit',sans-serif;line-height:1.6;overflow-x:hidden;}
+        nav{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 5%;background:rgba(5,5,10,0.8);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.05);position:sticky;top:0;z-index:100;}
+        .logo{font-size:1.8rem;font-weight:900;text-decoration:none;color:#fff;letter-spacing:-1px;}
+        .logo span{background:linear-gradient(135deg, #7C4DFF, #FF4FA3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .container{max-width:1400px;margin:0 auto;padding:4rem 5%;}
+        h1{font-size:clamp(2.5rem,6vw,4rem);font-weight:900;text-align:center;margin-bottom:1rem;letter-spacing:-2px;background:linear-gradient(to bottom, #fff, #94A3B8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .subtitle{color:var(--m);font-size:1.2rem;text-align:center;margin-bottom:3rem;max-width:700px;margin-left:auto;margin-right:auto;}
+        
+        .stats-bar{display:flex;gap:3rem;justify-content:center;margin-bottom:4rem;padding:2rem;background:var(--card);border-radius:2rem;border:1px solid rgba(255,255,255,0.05);backdrop-filter:blur(10px);}
+        .stat-num{font-size:2.5rem;font-weight:900;color:var(--p);display:block;line-height:1;}
+        .stat-label{font-size:0.8rem;color:var(--m);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:0.5rem;display:block;}
+
+        .history-section {margin-bottom:5rem; text-align:center; padding:3rem; background:rgba(124,77,255,0.05); border-radius:2.5rem; border:1px solid rgba(124,77,255,0.1);}
+        .history-grid {display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1.5rem; margin-top:2rem;}
+        .history-card {padding:1.5rem; background:rgba(0,0,0,0.2); border-radius:1.5rem; text-align:left; border:1px solid rgba(255,255,255,0.03);}
+        .history-card h4 {color:var(--a); font-size:0.9rem; margin-bottom:0.5rem; text-transform:uppercase;}
+        .history-card p {font-size:0.85rem; color:var(--m);}
+
+        .controls{margin-bottom:3rem; text-align:center;}
+        .search-wrap{max-width:600px; margin:0 auto 2rem; position:relative;}
+        #artistSearch{width:100%; padding:1.2rem 1.5rem 1.2rem 3.5rem; border-radius:100px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; font-size:1.1rem; outline:none; transition:0.3s;}
+        #artistSearch:focus{background:rgba(255,255,255,0.08); border-color:var(--p); box-shadow:0 0 30px rgba(124,77,255,0.15);}
+        .search-icon{position:absolute; left:1.5rem; top:50%; transform:translateY(-50%); font-size:1.2rem; opacity:0.5;}
+        
+        .chips-container{display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap; margin-bottom:1rem;}
+        .chip{padding:0.6rem 1.2rem; border-radius:50px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:var(--m); cursor:pointer; font-weight:600; font-size:0.85rem; transition:0.2s;}
+        .chip:hover{background:rgba(255,255,255,0.1); color:#fff;}
+        .chip.active{background:var(--p); color:#fff; border-color:var(--p);}
+
+        .artist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2rem;}
+        .artist-card{background:var(--card);border-radius:2rem;overflow:hidden;border:1px solid rgba(255,255,255,0.05);transition:0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);text-decoration:none;color:white;display:block;position:relative;}
+        .artist-card:hover{transform:translateY(-15px);border-color:var(--p);box-shadow:0 30px 60px rgba(0,0,0,0.4);}
+        .card-img-wrap{padding-top:110%; position:relative; overflow:hidden; background:#000;}
+        .artist-img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:0.5s;}
+        .artist-card:hover .artist-img{transform:scale(1.1);}
+        .card-badge{position:absolute; top:1.2rem; right:1.2rem; background:rgba(0,0,0,0.6); backdrop-filter:blur(10px); padding:0.4rem 1rem; border-radius:100px; font-size:0.7rem; font-weight:800; border:1px solid rgba(255,255,255,0.1); z-index:2;}
+        
+        .artist-info{padding:1.5rem;}
+        .artist-info h3{font-size:1.3rem; font-weight:800; margin-bottom:0.2rem; letter-spacing:-0.5px;}
+        .artist-genre{font-size:0.75rem; color:var(--p); font-weight:700; text-transform:uppercase; margin-bottom:0.8rem;}
+        .artist-desc{font-size:0.85rem; color:var(--m); line-height:1.5; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+        
+        #resultCount{text-align:center; margin-bottom:2rem; font-weight:700; color:var(--p); font-size:1.2rem;}
+        footer{padding:5rem 2rem; text-align:center; border-top:1px solid rgba(255,255,255,0.05); color:var(--m);}
+        @media(max-width:600px){.artist-grid{grid-template-columns:repeat(2,1fr); gap:1rem;}}
     </style>
 </head>
 <body>
     <nav>
-        <a href="/" class="logo">Harmiq</a>
-        <a href="/" style="color:#fff;text-decoration:none;font-weight:800;background:linear-gradient(90deg,#7C4DFF,#FF4FA3);padding:.5rem 1rem;border-radius:30px;font-size:.85rem;">Analizar mi voz</a>
+        <a href="/" class="logo">HARMIQ<span>PRO</span></a>
+        <a href="https://harmiq.app#analizar" style="color:#fff;text-decoration:none;font-weight:900;background:var(--p);padding:0.8rem 1.8rem;border-radius:100px;font-size:0.9rem;box-shadow:0 10px 20px rgba(124,77,255,0.3);">ANALIZAR MI VOZ</a>
     </nav>
 
     <div class="container">
-        <h1>Directorio de Artistas</h1>
-        <p class="subtitle">Descubre el tipo de voz de tus artistas favoritos y sus curiosidades</p>
+        <h1>Enciclopedia de <span style="color:var(--p)">Artistas</span></h1>
+        <p class="subtitle">Análisis técnico de las voces más influyentes del mundo. Aprende de los mejores.</p>
 
         <div class="stats-bar">
-            <div class="stat-item"><div class="stat-num">160</div><div class="stat-label">Artistas</div></div>
-            <div class="stat-item"><div class="stat-num">7</div><div class="stat-label">Tipos de voz</div></div>
-            <div class="stat-item"><div class="stat-num">35+</div><div class="stat-label">Generos</div></div>
-            <div class="stat-item"><div class="stat-num">13.000+</div><div class="stat-label">En nuestra DB</div></div>
+            <div class="stat-item"><span class="stat-num">160</span><span class="stat-label">Artistas Pro</span></div>
+            <div class="stat-item"><span class="stat-num">7</span><span class="stat-label">Registros</span></div>
+            <div class="stat-item"><span class="stat-num">35</span><span class="stat-label">Géneros</span></div>
+            <div class="stat-item"><span class="stat-num">IA</span><span class="stat-label">Powered</span></div>
         </div>
+
+        <section class="history-section">
+            <h3 style="font-size:1.8rem; font-weight:900; margin-bottom:1rem;">🧬 Evolución de la Voz</h3>
+            <div class="history-grid">
+                <div class="history-card">
+                    <h4>1940 - 1950</h4>
+                    <p>Dominio de <b>Barítonos</b>. El estilo Crooner premiaba la calidez. (Sinatra)</p>
+                </div>
+                <div class="history-card">
+                    <h4>1960 - 1980</h4>
+                    <p>Auge de <b>Tenores</b> Rock & Soul. Falsetes técnicos. (Mercury)</p>
+                </div>
+                <div class="history-card">
+                    <h4>1990 - 2010</h4>
+                    <p>La era de las <b>Sopranos</b> pop. Melismas infinitos. (Mariah)</p>
+                </div>
+                <div class="history-card">
+                    <h4>Actualidad</h4>
+                    <p>Estilo <b>Lo-Fi & Aire</b>. Registros bajos y susurros. (Billie Eilish)</p>
+                </div>
+            </div>
+        </section>
 
         <div class="controls">
             <div class="search-wrap">
-                <input type="text" id="artistSearch" placeholder="Busca artista..." oninput="filterArtists()">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="artistSearch" placeholder="Busca un nombre, género o país..." oninput="filterArtists()">
             </div>
-            <select class="filter-sel" id="vtypeFilter" onchange="filterArtists()">
-                <option value="">Tipo de voz</option>
-                <option value="bajo baritono">Bajo Baritono</option><option value="baritono">Baritono</option><option value="contralto">Contralto</option><option value="mezzo-soprano">Mezzo-soprano</option><option value="soprano">Soprano</option><option value="tenor">Tenor</option>
-            </select>
-            <select class="filter-sel" id="genreFilter" onchange="filterArtists()">
-                <option value="">Genero</option>
-                <option value="afrobeats">Afrobeats</option><option value="bachata">Bachata</option><option value="corridos romanticos">Corridos Romanticos</option><option value="corridos sierrenios">Corridos Sierrenios</option><option value="corridos tumbados">Corridos Tumbados</option><option value="country">Country</option><option value="flamenco">Flamenco</option><option value="folk">Folk</option><option value="funk carioca">Funk Carioca</option><option value="grunge">Grunge</option><option value="hard rock">Hard Rock</option><option value="hip-hop">Hip-Hop</option><option value="hip-hop consciente">Hip-Hop Consciente</option><option value="indie pop">Indie Pop</option><option value="indie rock">Indie Rock</option><option value="jazz">Jazz</option><option value="new wave">New Wave</option><option value="pop">Pop</option><option value="post-punk">Post-Punk</option><option value="r&b">R&B</option><option value="ranchera">Ranchera</option><option value="rap">Rap</option><option value="reggaeton">Reggaeton</option><option value="rock">Rock</option><option value="salsa">Salsa</option><option value="soul">Soul</option><option value="soul trap">Soul Trap</option><option value="trap">Trap</option><option value="trap argentina">Trap Argentina</option><option value="trap colombia">Trap Colombia</option><option value="trap latino">Trap Latino</option><option value="urbano">Urbano</option><option value="vallenato">Vallenato</option>
-            </select>
+            
+            <div class="chips-container" id="vTypeChips">
+                <div class="chip active" data-val="" onclick="setVType('', this)">Todos los Registros</div>
+                <div class="chip" data-val="soprano" onclick="setVType('soprano', this)">Soprano</div>
+                <div class="chip" data-val="mezzosoprano" onclick="setVType('mezzo-soprano', this)">Mezzosoprano</div>
+                <div class="chip" data-val="tenor" onclick="setVType('tenor', this)">Tenor</div>
+                <div class="chip" data-val="baritono" onclick="setVType('baritono', this)">Barítono</div>
+                <div class="chip" data-val="contralto" onclick="setVType('contralto', this)">Contralto</div>
+            </div>
+
+            <div class="chips-container" id="genreChips">
+                <div class="chip active" data-val="" onclick="setGenre('', this)">Cualquier Estilo</div>
+                <div class="chip" data-val="pop" onclick="setGenre('pop', this)">Pop</div>
+                <div class="chip" data-val="rock" onclick="setGenre('rock', this)">Rock</div>
+                <div class="chip" data-val="urbano" onclick="setGenre('urbano', this)">Urbano</div>
+                <div class="chip" data-val="rap" onclick="setGenre('rap', this)">Rap / Hip-Hop</div>
+                <div class="chip" data-val="regueton" onclick="setGenre('regueton', this)">Reguetón</div>
+            </div>
         </div>
-        <div id="resultCount">160 artistas</div>
+
+        <div id="resultCount">Mostrando 160 maestros de la voz</div>
 
         <div class="artist-grid" id="artistGrid">
         <a href="/artistas/bad-bunny/" class="artist-card" data-name="bad bunny" data-type="baritono" data-genre="reggaeton / trap">
@@ -2177,12 +2222,30 @@
     const HF_API = "https://hamiq-harmiq-backend1.hf.space";
     const imgMap = {};
     const WIKI = {"Bad Bunny": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Bad_Bunny_2019.jpg/220px-Bad_Bunny_2019.jpg", "Peso Pluma": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Peso_Pluma_2023.jpg/220px-Peso_Pluma_2023.jpg", "Quevedo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Quevedo_%28singer%29_2023.png/220px-Quevedo_%28singer%29_2023.png", "C. Tangana": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/C._Tangana_2021.png/220px-C._Tangana_2021.png", "Bizarrap": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Bizarrap_2023.jpg/220px-Bizarrap_2023.jpg", "Anuel AA": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Anuel_AA_2020.jpg/220px-Anuel_AA_2020.jpg", "Myke Towers": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Myke_Towers_2022.jpg/220px-Myke_Towers_2022.jpg", "Rauw Alejandro": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/RauwAlejandro2022.jpg/220px-RauwAlejandro2022.jpg", "Jhay Cortez": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Jhay_Cortez_2022.jpg/220px-Jhay_Cortez_2022.jpg", "Ozuna": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ozuna_2017.jpg/220px-Ozuna_2017.jpg", "Nicky Jam": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Nicky_Jam_2018.jpg/220px-Nicky_Jam_2018.jpg", "Daddy Yankee": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Daddy_Yankee_-_Atlantic_2019.jpg/220px-Daddy_Yankee_-_Atlantic_2019.jpg", "Don Omar": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Don_Omar_%28cropped%29.jpg/220px-Don_Omar_%28cropped%29.jpg", "Maluma": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Maluma_2018.jpg/220px-Maluma_2018.jpg", "J Balvin": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/J_Balvin_2018.jpg/220px-J_Balvin_2018.jpg", "Feid": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Feid_2022.jpg/220px-Feid_2022.jpg", "Camilo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Camilo_2020.jpg/220px-Camilo_2020.jpg", "Drake": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Drake_July_2016.jpg/220px-Drake_July_2016.jpg", "Kendrick Lamar": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Kendrick_Lamar_2018.jpg/220px-Kendrick_Lamar_2018.jpg", "Post Malone": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Post_Malone_2019.jpg/220px-Post_Malone_2019.jpg", "The Weeknd": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/The_Weeknd_2018.jpg/220px-The_Weeknd_2018.jpg", "Travis Scott": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Travis_Scott_2018.jpg/220px-Travis_Scott_2018.jpg", "Future": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Future_%28musician%29_2018.jpg/220px-Future_%28musician%29_2018.jpg", "Eminem": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Eminem_2022.jpg/220px-Eminem_2022.jpg", "Jay-Z": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Jay_Z_at_Cannes.jpg/220px-Jay_Z_at_Cannes.jpg", "Kanye West": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Kanye_West_2_--_2012.jpg/220px-Kanye_West_2_--_2012.jpg", "Tyler the Creator": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Tyler%2C_the_Creator_2019.jpg/220px-Tyler%2C_the_Creator_2019.jpg", "Frank Ocean": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Frank_Ocean_%282012%29.jpg/220px-Frank_Ocean_%282012%29.jpg", "SZA": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/SZA_2022.jpg/220px-SZA_2022.jpg", "Rosalia": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Rosal%C3%ADa_%282019%29.jpg/220px-Rosal%C3%ADa_%282019%29.jpg", "Aitana": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Aitana_Los40_Music_Awards_2023.jpg/220px-Aitana_Los40_Music_Awards_2023.jpg", "Alejandro Sanz": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Alejandro_Sanz_2019.jpg/220px-Alejandro_Sanz_2019.jpg", "Adele": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Adele_2016.jpg/220px-Adele_2016.jpg", "Billie Eilish": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Billie_Eilish_-_2019_by_Glenn_Francis.jpg/220px-Billie_Eilish_-_2019_by_Glenn_Francis.jpg", "Taylor Swift": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/191125_Taylor_Swift_at_the_2019_American_Music_Awards_%28cropped%29.jpg/220px-191125_Taylor_Swift_at_the_2019_American_Music_Awards_%28cropped%29.jpg", "Ariana Grande": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Ariana_Grande_in_2019.jpg/220px-Ariana_Grande_in_2019.jpg", "Dua Lipa": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Dua_Lipa_2018_%28cropped%29.jpg/220px-Dua_Lipa_2018_%28cropped%29.jpg", "Olivia Rodrigo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Olivia_Rodrigo_2021.jpg/220px-Olivia_Rodrigo_2021.jpg", "Beyonce": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Beyonc%C3%A9_in_Cannes_%282012%29.jpg/220px-Beyonc%C3%A9_in_Cannes_%282012%29.jpg", "Sabrina Carpenter": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Sabrina_Carpenter_2023.jpg/220px-Sabrina_Carpenter_2023.jpg", "Doja Cat": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Doja_Cat_2020.jpg/220px-Doja_Cat_2020.jpg", "Karol G": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Karol_G_2024.jpg/220px-Karol_G_2024.jpg", "Nathy Peluso": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Nathy_Peluso_2021.jpg/220px-Nathy_Peluso_2021.jpg", "Jennifer Lopez": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Jennifer_Lopez_2019_at_Hustlers_Toronto_Premiere.jpg/220px-Jennifer_Lopez_2019_at_Hustlers_Toronto_Premiere.jpg", "Alicia Keys": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Alicia_Keys_2019.jpg/220px-Alicia_Keys_2019.jpg", "Amy Winehouse": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Amy_Winehouse_2007.jpg/220px-Amy_Winehouse_2007.jpg", "Camaron de la Isla": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Camarondelaisla.jpg/220px-Camarondelaisla.jpg", "Freddie Mercury": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Freddie_Mercury_performing_The_Works_Tour_in_New_Zealand.jpg/220px-Freddie_Mercury_performing_The_Works_Tour_in_New_Zealand.jpg", "David Bowie": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/David-Bowie_Chicago_2002-08-08_photoby_Adam-Bielawski_cropped.jpg/220px-David-Bowie_Chicago_2002-08-08_photoby_Adam-Bielawski_cropped.jpg", "Elvis Presley": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Elvis_Presley_promoting_Jailhouse_Rock.jpg/220px-Elvis_Presley_promoting_Jailhouse_Rock.jpg", "Michael Jackson": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Michael_Jackson_in_1988.jpg/220px-Michael_Jackson_in_1988.jpg", "Harry Styles": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Harry_Styles_2017_crop.jpg/220px-Harry_Styles_2017_crop.jpg", "Ed Sheeran": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Ed_Sheeran_in_2017.jpg/220px-Ed_Sheeran_in_2017.jpg", "Bruce Springsteen": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Bruce_Springsteen_2012.jpg/220px-Bruce_Springsteen_2012.jpg", "Sam Smith": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Sam_Smith_2014.jpg/220px-Sam_Smith_2014.jpg", "Bruno Mars": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Bruno_Mars_2021.jpg/220px-Bruno_Mars_2021.jpg", "Justin Bieber": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Justin_Bieber_in_2015.jpg/220px-Justin_Bieber_in_2015.jpg", "Shawn Mendes": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Shawn_Mendes_2019.jpg/220px-Shawn_Mendes_2019.jpg", "Shakira": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Shakira_2009.jpg/220px-Shakira_2009.jpg", "Rihanna": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Rihanna_-_7Seven_Nation_Army_photoshoot.jpg/220px-Rihanna_-_7Seven_Nation_Army_photoshoot.jpg", "Lady Gaga": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Lady_Gaga_2019.jpg/220px-Lady_Gaga_2019.jpg", "Selena Gomez": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Selena_Gomez_2015.jpg/220px-Selena_Gomez_2015.jpg", "Miley Cyrus": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Miley_Cyrus_2019.jpg/220px-Miley_Cyrus_2019.jpg", "Whitney Houston": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Whitney_Houston_Welcome_Home_Heroes_1991.jpg/220px-Whitney_Houston_Welcome_Home_Heroes_1991.jpg", "Mariah Carey": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Mariah_Carey_2019.jpg/220px-Mariah_Carey_2019.jpg", "Frank Sinatra": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Frank_Sinatra_-_publicity.jpg/220px-Frank_Sinatra_-_publicity.jpg", "Michael Buble": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Michael_Buble_2013.jpg/220px-Michael_Buble_2013.jpg", "John Legend": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/John_Legend_2019.jpg/220px-John_Legend_2019.jpg", "Usher": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Usher_2019.jpg/220px-Usher_2019.jpg", "Marvin Gaye": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Marvin_Gaye.jpg/220px-Marvin_Gaye.jpg", "Stevie Wonder": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Stevie_Wonder_2013.jpg/220px-Stevie_Wonder_2013.jpg", "Aretha Franklin": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Aretha_Franklin_1964.jpg/220px-Aretha_Franklin_1964.jpg", "Lorde": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Lorde_2013.png/220px-Lorde_2013.png", "Lana Del Rey": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Lana_Del_Rey_2019.jpg/220px-Lana_Del_Rey_2019.jpg", "Demi Lovato": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Demi_Lovato_2018.jpg/220px-Demi_Lovato_2018.jpg", "Florence Welch": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Florence_Welch_2010.jpg/220px-Florence_Welch_2010.jpg", "P!nk": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Pink_2019.jpg/220px-Pink_2019.jpg", "Tyla": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Tyla_2024.jpg/220px-Tyla_2024.jpg", "Chappell Roan": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Chappell_Roan_2024.jpg/220px-Chappell_Roan_2024.jpg", "Luis Miguel": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Luis_Miguel_2015.jpg/220px-Luis_Miguel_2015.jpg", "Vicente Fernandez": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Vicente_Fernandez_%28cropped%29.jpg/220px-Vicente_Fernandez_%28cropped%29.jpg", "Juanes": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Juanes_2019.jpg/220px-Juanes_2019.jpg", "Marc Anthony": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Marc_Anthony_2016.jpg/220px-Marc_Anthony_2016.jpg", "Ricky Martin": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Ricky_Martin_2020.jpg/220px-Ricky_Martin_2020.jpg", "Enrique Iglesias": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Enrique_Iglesias_2013.jpg/220px-Enrique_Iglesias_2013.jpg", "Mick Jagger": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Mick_Jagger_2016.jpg/220px-Mick_Jagger_2016.jpg", "Robert Plant": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Robert_Plant_2008.jpg/220px-Robert_Plant_2008.jpg", "Bob Dylan": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Bob_Dylan_-_Azkena_Rock_Festival_2010_2.jpg/220px-Bob_Dylan_-_Azkena_Rock_Festival_2010_2.jpg", "Kurt Cobain": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Kurt_Cobain_and_Krist_Novoselic_in_1991.jpg/220px-Kurt_Cobain_and_Krist_Novoselic_in_1991.jpg", "Liam Gallagher": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Liam_Gallagher_%28Oasis%29.jpg/220px-Liam_Gallagher_%28Oasis%29.jpg", "Bono": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Bono_2016.jpg/220px-Bono_2016.jpg", "Chris Martin": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Chris_Martin_2012_crop.jpg/220px-Chris_Martin_2012_crop.jpg", "Morat": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Morat_2018.jpg/220px-Morat_2018.jpg", "Alejandro Fernandez": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Alejandro_Fernandez_2012.jpg/220px-Alejandro_Fernandez_2012.jpg", "Anitta": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Anitta_%28cantora%29.jpg/220px-Anitta_%28cantora%29.jpg", "Maria Becerra": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Maria_Becerra_2022.jpg/220px-Maria_Becerra_2022.jpg", "Nicki Nicole": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Nicki_Nicole_2021.jpg/220px-Nicki_Nicole_2021.jpg", "Estrella Morente": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Estrella_Morente.jpg/220px-Estrella_Morente.jpg", "Nina Pastori": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Nina_Pastori.jpg/220px-Nina_Pastori.jpg", "Celine Dion": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Celine_Dion_-_Courage_World_Tour.jpg/220px-Celine_Dion_-_Courage_World_Tour.jpg"};
+    
+    let currentVType = '';
+    let currentGenre = '';
+    const imgMap = {};
+
+    function setVType(val, el) {
+        currentVType = val.toLowerCase();
+        document.querySelectorAll('#vTypeChips .chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+        filterArtists();
+    }
+
+    function setGenre(val, el) {
+        currentGenre = val.toLowerCase();
+        document.querySelectorAll('#genreChips .chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+        filterArtists();
+    }
 
     function getInitials(name){
         const p=name.trim().split(/\s+/),c=['%237C4DFF','%23FF4FA3','%23118AB2','%23FF9F1C','%2306D6A0'];
         const col=c[name.charCodeAt(0)%c.length];
         const i=(p[0][0]+(p.length>1?p[p.length-1][0]:p[0][1]||'?')).toUpperCase();
-        return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Crect width='400' height='400' fill='%230d0a1f'/%3E%3Ctext x='200' y='245' font-family='Arial' font-weight='900' font-size='160' fill='${col}' text-anchor='middle'%3E${i}%3C/text%3E%3C/svg%3E`;
+        return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Crect width='400' height='400' fill='%23050510'/%3E%3Ctext x='200' y='245' font-family='Arial' font-weight='900' font-size='160' fill='${col}' text-anchor='middle'%3E${i}%3C/text%3E%3C/svg%3E`;
     }
 
     async function loadArtistImg(name){
@@ -2203,50 +2266,56 @@
         const fb=getInitials(name);imgMap[name]=fb;return fb;
     }
 
-    const observer=new IntersectionObserver((entries)=>{
-        entries.forEach(entry=>{
-            if(entry.isIntersecting){
-                const img=entry.target;
-                const name=img.dataset.artist;
-                if(name&&!img.dataset.loaded){
-                    img.dataset.loaded='1';
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                const img = entry.target;
+                const name = img.dataset.artist;
+                if(name && !img.dataset.loaded) {
+                    img.dataset.loaded = '1';
                     observer.unobserve(img);
-                    loadArtistImg(name).then(url=>{
-                        const tmp=new Image();
-                        tmp.onload=()=>{img.src=url;};
-                        tmp.onerror=()=>{img.src=getInitials(name);};
-                        tmp.src=url;
+                    loadArtistImg(name).then(url => {
+                        const tmp = new Image();
+                        tmp.onload = () => { img.src = url; };
+                        tmp.onerror = () => { img.src = getInitials(name); };
+                        tmp.src = url;
                     });
                 }
             }
         });
-    },{rootMargin:'250px'});
+    }, {rootMargin: '500px'});
 
-    document.querySelectorAll('img.artist-img').forEach(img=>observer.observe(img));
+    document.querySelectorAll('img.artist-img').forEach(img => observer.observe(img));
 
-    function toggleAnecdote(btn){
-        const el=btn.nextElementSibling;
-        const open=el.style.display!=='none';
-        el.style.display=open?'none':'block';
-        btn.textContent=open?'Ver anecdota ▼':'Ocultar ▲';
-    }
-
-    function filterArtists(){
-        const q=document.getElementById('artistSearch').value.toLowerCase().trim();
-        const vt=document.getElementById('vtypeFilter').value;
-        const gn=document.getElementById('genreFilter').value;
-        let vis=0;
-        document.querySelectorAll('.artist-card').forEach(c=>{
-            const nm=c.dataset.name||'';
-            const tp=c.dataset.type||'';
-            const gr=c.dataset.genre||'';
-            const ok=(!q||nm.includes(q))&&(!vt||tp===vt)&&(!gn||gr.startsWith(gn));
-            c.style.display=ok?'':'none';
+    function filterArtists() {
+        const q = document.getElementById('artistSearch').value.toLowerCase().trim();
+        let vis = 0;
+        document.querySelectorAll('.artist-card').forEach(c => {
+            const nm = (c.dataset.name || '').toLowerCase();
+            const tp = (c.dataset.type || '').toLowerCase();
+            const gr = (c.dataset.genre || '').toLowerCase();
+            
+            const matchQ = !q || nm.includes(q) || gr.includes(q);
+            const matchV = !currentVType || tp === currentVType;
+            const matchG = !currentGenre || gr.includes(currentGenre);
+            
+            const ok = matchQ && matchV && matchG;
+            c.style.display = ok ? 'block' : 'none';
             if(ok) vis++;
         });
-        document.getElementById('resultCount').textContent=vis+' artistas';
-        document.getElementById('noResults').style.display=vis===0?'block':'none';
+        document.getElementById('resultCount').textContent = `Mostrando ${vis} maestros de la voz`;
     }
+
+    function toggleAnecdote(btn){
+        const el = btn.nextElementSibling;
+        const open = el.style.display !== 'none';
+        el.style.display = open ? 'none' : 'block';
+        btn.textContent = open ? 'Ver anécdota ▼' : 'Ocultar ▲';
+    }
+    </script>
+</body>
+</html>
+
     </script>
 </body>
 </html>
