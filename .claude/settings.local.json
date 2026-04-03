@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(del /F \"E:\\\\Harmiq_viaje\\\\.git\\\\worktrees\\\\inspiring-wozniak\\\\index.lock\")",
+      "Bash(rm \"E:/Harmiq_viaje/.git/worktrees/inspiring-wozniak/index.lock\")",
+      "Bash(tasklist)",
+      "Bash(tasklist /FI 'IMAGENAME eq git.exe')",
+      "Bash(GIT_INDEX_FILE=\"E:/Harmiq_viaje/.git/worktrees/inspiring-wozniak/index\" git commit -m \"fix: corrige TypeError al reasignar const gender en analyzeAudio:*)",
+      "Bash(where gh:*)",
+      "Bash(winget list:*)",
+      "Read(//e/Harmiq_viaje/**)",
+      "Bash(GIT_INDEX_FILE=\"E:/Harmiq_viaje/.git/worktrees/inspiring-wozniak/index\" git -C \"E:/Harmiq_viaje/.claude/worktrees/inspiring-wozniak\" add cloudflare/app.js)",
+      "Bash(GIT_INDEX_FILE=\"E:/Harmiq_viaje/.git/worktrees/inspiring-wozniak/index\" git -C \"E:/Harmiq_viaje/.claude/worktrees/inspiring-wozniak\" commit -m \"$\\(cat <<''EOF'':*)",
+      "Bash(node -e \":*)",
+      "Bash(python expandir_artistas_v1.py)",
+      "Bash(py --version)",
+      "Bash(where python3:*)",
+      "Bash(where py:*)",
+      "Bash(ls C:/Python*)",
+      "Read(//c/Users/dapui/AppData/Local/Programs/**)",
+      "Bash(py expandir_artistas_v1.py)",
+      "Bash(GIT_INDEX_FILE=\"E:/Harmiq_viaje/.git/worktrees/inspiring-wozniak/index\" git -C \"E:/Harmiq_viaje/.claude/worktrees/inspiring-wozniak\" add cloudflare/harmiq_db_vectores.json)",
+      "Bash(git -C \"E:/Harmiq_viaje/.claude/worktrees/inspiring-wozniak\" push origin claude/inspiring-wozniak)",
+      "Bash(grep -E '^[0-9]+$')",
+      "Bash(grep -E '^[1-9]$|^[1-9][0-9]$|^[1-9][0-9][0-9]$')",
+      "Bash(py generar_artistas_listing.py)",
+      "Bash(copy \"E:\\\\Harmiq_viaje\\\\cloudflare\\\\artistas\\\\index.html\" \"E:\\\\Harmiq_viaje\\\\.claude\\\\worktrees\\\\inspiring-wozniak\\\\cloudflare\\\\artistas\\\\index.html\" /y)",
+      "Bash(GIT_INDEX_FILE=\"E:/Harmiq_viaje/.git/worktrees/inspiring-wozniak/index\" git add cloudflare/artistas/index.html)",
+      "Bash(GIT_INDEX_FILE=\"E:/Harmiq_viaje/.git/worktrees/inspiring-wozniak/index\" git status)",
+      "Bash(GIT_INDEX_FILE=\"E:/Harmiq_viaje/.git/worktrees/inspiring-wozniak/index\" git commit -m \"$\\(cat <<''EOF'':*)"
+    ]
+  }
+}
