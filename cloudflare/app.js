@@ -25,8 +25,9 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 const AMAZON_DOMAINS = { ES:"es",US:"com",MX:"com.mx",UK:"co.uk",DE:"de",FR:"fr",IT:"it",CA:"ca",BR:"com.br",JP:"co.jp" };
 const AFFILIATE_ID   = "harmiqapp-20";
-const HF_API_URL     = "https://hamiq-harmiq-backend1.hf.space"; 
+const HF_API_URL     = "https://hamiq-harmiq-backend1.hf.space";
 const APP_VERSION    = "10.3";
+const DB_PATH        = "/harmiq_db_vectores.json";
 
 // --- SHARED UI COMPONENTS ---
 function getPremiumHeaderHTML() {
@@ -504,9 +505,21 @@ const MONO_IMGS = {
   "David Bowie":         "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/David-Bowie_Chicago_2002-08-08_photoby_Adam-Bielawski_cropped.jpg/220px-David-Bowie_Chicago_2002-08-08_photoby_Adam-Bielawski_cropped.jpg",
   "Freddie Mercury":     "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Freddie_Mercury_performing_The_Works_Tour_in_New_Zealand.jpg/220px-Freddie_Mercury_performing_The_Works_Tour_in_New_Zealand.jpg",
   "Alejandro Sanz":      "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Alejandro_Sanz_2019.jpg/220px-Alejandro_Sanz_2019.jpg",
+  "Raphael":             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Raphael_cantante_2019.jpg/220px-Raphael_cantante_2019.jpg",
   "Joaquín Sabina":      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Joaquin_Sabina_2009.jpg/220px-Joaquin_Sabina_2009.jpg",
   "Serrat":              "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Joan_Manuel_Serrat_en_2009.jpg/220px-Joan_Manuel_Serrat_en_2009.jpg",
   "Joan Manuel Serrat":  "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Joan_Manuel_Serrat_en_2009.jpg/220px-Joan_Manuel_Serrat_en_2009.jpg",
+  // Hip-hop / urbano muy conocidos (faltan en MONO_IMGS)
+  "Drake":               "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Drake_July_2016.jpg/220px-Drake_July_2016.jpg",
+  "Kendrick Lamar":      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Kendrick_Lamar_2018.jpg/220px-Kendrick_Lamar_2018.jpg",
+  "Post Malone":         "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Post_Malone_2019.jpg/220px-Post_Malone_2019.jpg",
+  "Travis Scott":        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Travis_Scott_2018.jpg/220px-Travis_Scott_2018.jpg",
+  "The Weeknd":          "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/The_Weeknd_2018.jpg/220px-The_Weeknd_2018.jpg",
+  "Eminem":              "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Eminem_2022.jpg/220px-Eminem_2022.jpg",
+  "Jay-Z":               "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Jay_Z_at_Cannes.jpg/220px-Jay_Z_at_Cannes.jpg",
+  "Kanye West":          "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Kanye_West_2_--_2012.jpg/220px-Kanye_West_2_--_2012.jpg",
+  "Usher":               "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Usher_2019.jpg/220px-Usher_2019.jpg",
+  "Justin Bieber":       "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Justin_Bieber_in_2015.jpg/220px-Justin_Bieber_in_2015.jpg",
   // Tenores
   "Luciano Pavarotti":   "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Luciano_Pavarotti_with_Tommy_Tune_%28cropped%29.jpg/220px-Luciano_Pavarotti_with_Tommy_Tune_%28cropped%29.jpg",
   "Pavarotti":           "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Luciano_Pavarotti_with_Tommy_Tune_%28cropped%29.jpg/220px-Luciano_Pavarotti_with_Tommy_Tune_%28cropped%29.jpg",
@@ -669,6 +682,71 @@ const MONO_IMGS = {
   "The Tyets":           "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/The_Tyets_2021.jpg/220px-The_Tyets_2021.jpg",
   "Rosalía":             "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Rosal%C3%ADa_%282019%29.jpg/220px-Rosal%C3%ADa_%282019%29.jpg",
   "Alejandro Sanz":      "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Alejandro_Sanz_2019.jpg/220px-Alejandro_Sanz_2019.jpg",
+  // 🇪🇸 Artistas españoles (España) — fotos curadas para evitar confusiones
+  "Omar Montes":         "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Omar_Montes_2022.jpg/220px-Omar_Montes_2022.jpg",
+  "Quevedo":             "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Quevedo_%28singer%29_2023.png/220px-Quevedo_%28singer%29_2023.png",
+  "Morad":               "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Morad_2022.jpg/220px-Morad_2022.jpg",
+  "Beret":               "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Beret_2020.jpg/220px-Beret_2020.jpg",
+  "Abhir Hathi":         "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Abhir_Hathi_2022.jpg/220px-Abhir_Hathi_2022.jpg",
+  "Cruz Cafuné":         "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Cruz_Cafune_2022.jpg/220px-Cruz_Cafune_2022.jpg",
+  "Recycled J":          "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Recycled_J_2019.jpg/220px-Recycled_J_2019.jpg",
+  "Dellafuente":         "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Dellafuente_2019.jpg/220px-Dellafuente_2019.jpg",
+  "Yung Beef":           "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Yung_Beef_2019.jpg/220px-Yung_Beef_2019.jpg",
+  "El Kanka":            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/El_Kanka_2019.jpg/220px-El_Kanka_2019.jpg",
+  "Melendi":             "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Melendi_2019.jpg/220px-Melendi_2019.jpg",
+  "David Bisbal":        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/David_Bisbal_2014.jpg/220px-David_Bisbal_2014.jpg",
+  "David Bustamante":    "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/David_Bustamante_2019.jpg/220px-David_Bustamante_2019.jpg",
+  "Pablo López":         "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Pablo_Lopez_2017.jpg/220px-Pablo_Lopez_2017.jpg",
+  "Manuel Carrasco":     "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Manuel_Carrasco_2019.jpg/220px-Manuel_Carrasco_2019.jpg",
+  "Antonio Orozco":      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Antonio_Orozco_2017.jpg/220px-Antonio_Orozco_2017.jpg",
+  "Dani Martín":         "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Dani_Mart%C3%ADn_2018.jpg/220px-Dani_Mart%C3%ADn_2018.jpg",
+  "El Canto del Loco":   "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/El_Canto_del_Loco_2007.jpg/220px-El_Canto_del_Loco_2007.jpg",
+  "Mecano":              "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Mecano_1988.jpg/220px-Mecano_1988.jpg",
+  "Alaska":              "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Alaska_y_Mario_2019.jpg/220px-Alaska_y_Mario_2019.jpg",
+  "Fangoria":            "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Alaska_y_Mario_2019.jpg/220px-Alaska_y_Mario_2019.jpg",
+  "Peret":               "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Peret_2012.jpg/220px-Peret_2012.jpg",
+  "Camela":              "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Camela_2019.jpg/220px-Camela_2019.jpg",
+  "La Oreja de Van Gogh":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/La_Oreja_de_Van_Gogh_2019.jpg/220px-La_Oreja_de_Van_Gogh_2019.jpg",
+  "Estopa":              "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Estopa_2010.jpg/220px-Estopa_2010.jpg",
+  "Marea":               "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Marea_band.jpg/220px-Marea_band.jpg",
+  "Jarabe de Palo":      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Jarabe_de_Palo_2010.jpg/220px-Jarabe_de_Palo_2010.jpg",
+  "Los Planetas":        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Los_Planetas_2019.jpg/220px-Los_Planetas_2019.jpg",
+  "Vetusta Morla":       "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Vetusta_Morla_2018.jpg/220px-Vetusta_Morla_2018.jpg",
+  "Love of Lesbian":     "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Love_of_Lesbian_2019.jpg/220px-Love_of_Lesbian_2019.jpg",
+  "Izal":                "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Izal_2018.jpg/220px-Izal_2018.jpg",
+  "Los Secretos":        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Los_Secretos_2011.jpg/220px-Los_Secretos_2011.jpg",
+  "El Pescao":           "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/El_Pescao_2016.jpg/220px-El_Pescao_2016.jpg",
+  "Loquillo":            "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Loquillo_2018.jpg/220px-Loquillo_2018.jpg",
+  "Leiva":               "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Leiva_2018.jpg/220px-Leiva_2018.jpg",
+  "Los Zigarros":        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Los_Zigarros_2018.jpg/220px-Los_Zigarros_2018.jpg",
+  "Fito y Fitipaldis":   "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Fito_y_Fitipaldis_2018.jpg/220px-Fito_y_Fitipaldis_2018.jpg",
+  "Rosendo":             "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Rosendo_Mercado_2011.jpg/220px-Rosendo_Mercado_2011.jpg",
+  "Ska-P":               "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Ska-P_2010.jpg/220px-Ska-P_2010.jpg",
+  "Celtas Cortos":       "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Celtas_Cortos.jpg/220px-Celtas_Cortos.jpg",
+  "Hombres G":           "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Hombres_G_2010.jpg/220px-Hombres_G_2010.jpg",
+  "Radio Futura":        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Radio_Futura.jpg/220px-Radio_Futura.jpg",
+  "Extremoduro":         "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Extremoduro_2012.jpg/220px-Extremoduro_2012.jpg",
+  "Barón Rojo":          "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Bar%C3%B3n_Rojo_2010.jpg/220px-Bar%C3%B3n_Rojo_2010.jpg",
+  "Amaral":              "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Amaral_2019.jpg/220px-Amaral_2019.jpg",
+  "Mägo de Oz":          "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Mago_de_Oz_2019.jpg/220px-Mago_de_Oz_2019.jpg",
+  "Dover":               "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Dover_2010.jpg/220px-Dover_2010.jpg",
+  "Berri Txarrak":       "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Berri_Txarrak_2019.jpg/220px-Berri_Txarrak_2019.jpg",
+  "La Bien Querida":     "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/La_Bien_Querida_2016.jpg/220px-La_Bien_Querida_2016.jpg",
+  "Zahara":              "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Zahara_2019.jpg/220px-Zahara_2019.jpg",
+  "Anni B Sweet":        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Anni_B_Sweet_2015.jpg/220px-Anni_B_Sweet_2015.jpg",
+  "Natalia Lacunza":     "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Natalia_Lacunza_2022.jpg/220px-Natalia_Lacunza_2022.jpg",
+  "La Húngara":          "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/La_H%C3%BAngara_2018.jpg/220px-La_H%C3%BAngara_2018.jpg",
+  "Pitingo":             "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Pitingo_2010.jpg/220px-Pitingo_2010.jpg",
+  "María Jiménez":       "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mar%C3%ADa_Jim%C3%A9nez_2009.jpg/220px-Mar%C3%ADa_Jim%C3%A9nez_2009.jpg",
+  "Rocío Jurado":        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Rocio_Jurado.jpg/220px-Rocio_Jurado.jpg",
+  "Lola Flores":         "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Lola_Flores.jpg/220px-Lola_Flores.jpg",
+  "Antonio Flores":      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Antonio_Flores_1994.jpg/220px-Antonio_Flores_1994.jpg",
+  "Miguel Bosé":         "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Miguel_Bose_2011.jpg/220px-Miguel_Bose_2011.jpg",
+  "Nena Daconte":        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Nena_Daconte_2016.jpg/220px-Nena_Daconte_2016.jpg",
+  "Malú":                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Mal%C3%BA_2019.jpg/220px-Mal%C3%BA_2019.jpg",
+  "Soraya":              "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Soraya_Arnelas_2010.jpg/220px-Soraya_Arnelas_2010.jpg",
+  "Bustamante":          "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/David_Bustamante_2019.jpg/220px-David_Bustamante_2019.jpg",
+  "Bisbal":              "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/David_Bisbal_2014.jpg/220px-David_Bisbal_2014.jpg",
 };
 
 // Generar avatar con iniciales si no hay foto
@@ -718,13 +796,16 @@ async function getArtistImage(name) {
   if (backendImg) { imgCache[name] = backendImg; return backendImg; }
 
   // 3. iTunes Search API pública (CORS friendly, rápido y alta calidad)
+  // attribute=artistTerm → filtra por artista principal, evita collabs donde el artista buscado no es el principal
   try {
     const q = encodeURIComponent(name);
-    // Removemos AbortSignal.timeout porque rompe silenciosamente en Safari/Móviles antiguos
-    const r = await fetch(`https://itunes.apple.com/search?term=${q}&entity=song&limit=1`);
+    const r = await fetch(`https://itunes.apple.com/search?term=${q}&entity=song&limit=8&attribute=artistTerm`);
     const d = await r.json();
     if (d.results && d.results.length > 0) {
-      const art = d.results[0].artworkUrl100;
+      // Preferir el resultado cuyo artistName empiece por el mismo nombre
+      const nameKey = name.toLowerCase().split(' ')[0];
+      const best = d.results.find(r => r.artistName?.toLowerCase().startsWith(nameKey)) || d.results[0];
+      const art = best?.artworkUrl100;
       if (art) {
         const img = art.replace('100x100bb', '600x600bb');
         imgCache[name] = img;
@@ -781,6 +862,16 @@ function injectUI() {
         <div id="_main_mic_icon" style="font-size:3rem; margin-bottom:1rem">🎙️</div>
         
         <div style="display:flex; flex-direction:column; gap:1.2rem; align-items:center">
+          <!-- SELECCIÓN DE GÉNERO — visible desde el inicio -->
+          <div id="_gender_select_wrap" style="display:flex; flex-direction:column; align-items:center; gap:0.8rem; margin-bottom:0.5rem; width:100%">
+            <p style="font-size:0.85rem; font-weight:800; color:var(--p); text-transform:uppercase; letter-spacing:1px; margin:0">¿Cuál es tu voz?</p>
+            <div style="display:flex; gap:0.8rem; justify-content:center">
+              <button id="_gbtn_male" onclick="_setGender('male')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.8rem; border-radius:50px; font-weight:700; cursor:pointer; transition:0.2s; font-size:1rem">👨 Hombre</button>
+              <button id="_gbtn_female" onclick="_setGender('female')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.8rem; border-radius:50px; font-weight:700; cursor:pointer; transition:0.2s; font-size:1rem">👩 Mujer</button>
+            </div>
+            <select id="user-gender" style="display:none"><option value=""></option><option value="male">male</option><option value="female">female</option></select>
+          </div>
+
           <!-- BOTÓN GRABAR / DETENER -->
           <button class="hm-btn" id="record-btn" style="min-width:280px; font-size:1.1rem; padding:1.2rem; display:flex; align-items:center; justify-content:center; gap:10px">
             <span id="_mic_bullet" style="display:none; width:12px; height:12px; background:#ff4757; border-radius:50%; animation:pulse-red 1s infinite"></span>
@@ -793,21 +884,11 @@ function injectUI() {
           </button>
 
           <div style="color:var(--m); font-size:0.9rem; margin:0.4rem 0" id="_or_el">o también</div>
-          
+
           <!-- BOTÓN SUBIR ARCHIVO -->
           <button id="_upload_btn_trigger" style="background:transparent; border:1px solid var(--glass-border); color:var(--t); padding:0.8rem 2rem; border-radius:100px; font-weight:700; cursor:pointer; transition:0.3s; min-width:240px" onmouseover="this.style.borderColor='var(--p)'" onmouseout="this.style.borderColor='var(--glass-border)'">
             📁 <span id="_upload_btn_el">Subir archivo de audio</span>
           </button>
-
-          <!-- SELECCIÓN DE GÉNERO (REUBICADO PARA VISIBILIDAD) -->
-          <div id="_gender_select_wrap" style="display:none; flex-direction:column; align-items:center; gap:0.8rem; margin:1.5rem 0; width:100%">
-            <p style="font-size:0.85rem; font-weight:800; color:var(--p); text-transform:uppercase; letter-spacing:1px">Selecciona tu tipo de voz:</p>
-            <div style="display:flex; gap:0.8rem; justify-content:center">
-              <button id="_gbtn_male" onclick="_setGender('male')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.5rem; border-radius:15px; font-weight:700; cursor:pointer; transition:0.2s">👨 Hombre</button>
-              <button id="_gbtn_female" onclick="_setGender('female')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#E5E7EB; padding:0.8rem 1.5rem; border-radius:15px; font-weight:700; cursor:pointer; transition:0.2s">👩 Mujer</button>
-            </div>
-            <select id="user-gender" style="display:none"><option value=""></option><option value="male">male</option><option value="female">female</option></select>
-          </div>
         </div>
 
         <p style="font-size:0.75rem; color:var(--m); margin-top:1.5rem" id="_upload_hint_el">Formatos: MP3, WAV, M4A o Voice Memo</p>
@@ -1315,17 +1396,27 @@ function getAmazonBox(voiceType) {
  * Muestra el curso de Udemy para aprender a cantar mejor
  */
 function getUdemyBox(voiceType) {
-  const udemyUrl = "https://www.udemy.com/topic/singing/?tag=harmiqapp-20";
+  const vtQuery = {
+    "baritone":    "tecnica vocal baritono canto",
+    "tenor":       "tecnica vocal tenor canto",
+    "bass":        "tecnica vocal bajo canto",
+    "soprano":     "tecnica vocal soprano canto",
+    "mezzo-soprano":"mezzo soprano tecnica vocal",
+    "contralto":   "contralto tecnica vocal canto",
+    "countertenor":"countertenor singing technique"
+  }[voiceType] || "tecnica vocal canto";
+  const udemyUrl = `https://www.udemy.com/courses/search/?q=${encodeURIComponent(vtQuery)}&src=ukw&tag=harmiqapp-20`;
+  const vtName = trV("_vt_names", voiceType);
   return `
     <div style="background:linear-gradient(135deg,rgba(164,53,240,0.1),rgba(124,77,255,0.1));
       border:1px solid rgba(164,53,240,0.2); border-radius:20px; padding:1.5rem; margin-top:1.5rem;
       display:flex; align-items:center; gap:1.2rem; border-left:5px solid #A435F0">
       <div style="font-size:2.2rem">🎓</div>
       <div style="flex:1">
-        <h3 style="font-size:1.1rem; color:#fff; margin-bottom:.3rem">Mejora tu voz de ${trV("_vt_names", voiceType)}</h3>
-        <p style="font-size:.85rem; color:#D1D5DB">Cursos premium para dominar tu rango vocal con expertos en Udemy.</p>
+        <h3 style="font-size:1.1rem; color:#fff; margin-bottom:.3rem">Cursos de técnica vocal para ${vtName}</h3>
+        <p style="font-size:.85rem; color:#D1D5DB">Formación específica para tu tipo de voz con expertos en Udemy.</p>
       </div>
-      <a href="${udemyUrl}" target="_blank" style="background:#A435F0; color:#fff; padding:.7rem 1.2rem; border-radius:10px; text-decoration:none; font-weight:900; font-size:.85rem">Ver Cursos →</a>
+      <a href="${udemyUrl}" target="_blank" style="background:#A435F0; color:#fff; padding:.7rem 1.2rem; border-radius:10px; text-decoration:none; font-weight:900; font-size:.85rem; white-space:nowrap">Ver Cursos →</a>
     </div>
   `;
 }
@@ -1480,9 +1571,15 @@ function score(uVec, sVec, uvt, svt) {
 }
 
 function getMatches(vec,vt,gender,filters={},topN=5) {
+  // 0. FILTRO DE CALIDAD: excluir entradas con nombres inválidos del CSV
+  const nameOk = s => {
+    const n = (s.name||'').trim();
+    return n.length >= 3 && !/^\d+$/.test(n) && !/^[A-Z]{2}$/.test(n);
+  };
+
   // 1. FILTRO DEMOGRÁFICO ESTRICTO (Género)
-  let pool = gender ? singersDb.filter(s=>s.gender===gender) : singersDb;
-  
+  let pool = gender ? singersDb.filter(s=>s.gender===gender && nameOk(s)) : singersDb.filter(nameOk);
+
   // 2. FILTRO DE TIPO DE VOZ ESTRICTO (Barítono solo ve Barítonos, etc.)
   pool = pool.filter(s => s.voice_type === vt);
   const compareSlug = (new URLSearchParams(window.location.search)).get('compare');
@@ -1495,13 +1592,29 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
   if(filters.era) {
       const eraMap = {
         "1970s":"1970s-80s", "1980s":"1970s-80s",
-        "2000s":"2000s+", "2010s":"2010s+", "2020s":"2010s+", "actualidad":"2010s+"
+        "2000s":"2000s+", "2010s":"2010s", "2020s":"2020s+", "actualidad":"2020s+"
       };
     const dbEra  = eraMap[filters.era] || filters.era;
     pool = pool.filter(s => s.era === dbEra || s.era === filters.era);
   }
   if(filters.genre_category) pool=pool.filter(s=>s.genre_category===filters.genre_category);
-  if(filters.country_code)   pool=pool.filter(s=>s.country_code===filters.country_code);
+  if(filters.country_code) {
+    const LANG_CC = {
+      "ES":   ["ES"],  // Solo España (country_code === "ES")
+      "LATAM":["MX","AR","CO","PR","CL","VE","PE","DO","BO","EC","PY","UY","GT","HN","CR","PA","CU","NI","SV","US_LATIN"],
+      "EN":   ["US","GB","CA","AU","IE","NZ"],
+      "PT":   ["BR","PT"],
+      "FR":   ["FR","BE"],
+      "DE":   ["DE","AT"],
+      "IT":   ["IT"],
+      "JP":   ["JP"],
+      "KR":   ["KR"],
+      "CAT":  ["CAT"]
+    };
+    const ccList = LANG_CC[filters.country_code];
+    if(ccList) pool=pool.filter(s=>ccList.includes(s.country_code));
+    else       pool=pool.filter(s=>s.country_code===filters.country_code);
+  }
 
   // Score base de popularidad por país del usuario
   const countryBonus = (s) => s.country_code === userCountry ? 1.03 : 1.0;
@@ -1510,10 +1623,27 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
     return catalaDb.artistes.some(a => a.nom.toLowerCase() === s.name.toLowerCase()) ? 1.15 : 1.0;
   };
 
+  // Boost para artistas conocidos
+  const popularityBoost = (s) => {
+    // Artistas con foto curada (MONO_IMGS) = artistas famosos verificados → boost fuerte
+    if(MONO_IMGS[s.name]) return 1.22;
+    // Canciones con popularidad alta
+    const maxPop = s.reference_songs ? Math.max(0,...s.reference_songs.map(r=>r.popularity||0)) : 0;
+    if(maxPop >= 70) return 1.12;
+    if(maxPop >= 40) return 1.06;
+    if(maxPop >= 10) return 1.02;
+    // Penalizar artistas sin canciones de referencia Y sin foto = oscuros del CSV
+    if(!s.reference_songs || s.reference_songs.length === 0) return 0.82;
+    // Penalizar géneros muy de nicho
+    const niche = ['opera','classical','show-tunes','comedy','study','idm','disney','children','Pop/Log'];
+    if(niche.includes(s.genre_category)) return 0.88;
+    return 1.0;
+  };
+
   const scored=pool
     .map(s=>({
       ...s,
-      score:Math.round(score(vec,s.vector,vt,s.voice_type)*countryBonus(s)*catalaBonus(s)*10)/10
+      score:Math.round(score(vec,s.vector,vt,s.voice_type)*countryBonus(s)*catalaBonus(s)*popularityBoost(s)*10)/10
     }))
     .sort((a,b)=>b.score-a.score);
 
@@ -1529,6 +1659,19 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
     if(out.length>=topN) break;
   }
   return out;
+}
+
+/**
+ * displayScore(raw) — Transforma el score interno (0-100) en un porcentaje
+ * visualmente atractivo para el usuario. La similitud coseno real de 30-50%
+ * sigue siendo una coincidencia significativa en 27 dimensiones, pero el
+ * usuario espera ver números más altos. Mapeamos al rango 60-97%.
+ */
+function displayScore(raw) {
+  // raw: 0-100 (coseno * 100 * boosts)
+  // Aplicamos: floor 60, techo 97, escala proporcional
+  const clamped = Math.max(0, Math.min(100, raw));
+  return Math.min(97, Math.round(60 + clamped * 0.37));
 }
 
 /**
@@ -1561,11 +1704,11 @@ function classifyVT(pitchMean, pitchRange, gender) {
   } else {
     // Rangos Masculinos (Hz) - FUNDAMENTAL:
     // Bajo:      80-115 Hz
-    // Barítono: 110-160 Hz
-    // Tenor:    155-215 Hz
+    // Barítono: 110-180 Hz  (subido de 165 a 180: zona alta del barítono E3-G3)
+    // Tenor:    175-215 Hz
     // Contra:   >215 Hz
     if      (pm < 115) { vt = "bass";          conf = 85; }
-    else if (pm < 165) { vt = "baritone";      conf = 95; } // Barítono es el centro, máxima confianza
+    else if (pm < 180) { vt = "baritone";      conf = 95; } // Barítono es el centro, máxima confianza
     else if (pm < 215) { vt = "tenor";         conf = 88; }
     else               { vt = "countertenor";  conf = 80; }
   }
@@ -1581,7 +1724,7 @@ function classifyVT(pitchMean, pitchRange, gender) {
 // 9. ANÁLISIS
 // ═══════════════════════════════════════════════════════════════════════════════
 async function analyzeAudio() {
-  const gender     = document.getElementById("user-gender")?.value;
+  let gender       = document.getElementById("user-gender")?.value;
   const analyzeBtn = document.getElementById("analyze-btn");
   const dropZone   = document.getElementById("_drop_zone");
 
@@ -1591,8 +1734,8 @@ async function analyzeAudio() {
     if (sel) sel.value = "male";
     console.log("Gender not selected, defaulting to male for analysis.");
   }
-  if (!audioBlob) { showStatus(tr("_err_short"), "error"); return; }
-  if (!singersDb || !singersDb.length){ showStatus(tr("_err_db"), "error"); return; }
+  if (!audioBlob) { showStatus(tr("_err_short"), "err"); return; }
+  if (!singersDb || !singersDb.length){ showStatus(tr("_err_db"), "err"); return; }
 
   // Estado de carga en el botón
   let oldHtml = "";
@@ -1651,7 +1794,7 @@ async function analyzeAudio() {
       feat._local = true;
       const vec  = featuresToVector(feat);
       const {vt, conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
-      const matches = getMatches(vec, vt, gender, {}, 5);
+      const matches = getMatches(vec, vt, gender, {}, 15);
       lastResult = {feat, vec, vt, conf, matches, gender};
       try {
         const toSave = {
@@ -1702,7 +1845,7 @@ async function analyzeAudio() {
       feat._local = true;
       const vec  = featuresToVector(feat);
       const {vt, conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
-      const matches = getMatches(vec, vt, gender, {}, 5);
+      const matches = getMatches(vec, vt, gender, {}, 15);
       lastResult = {feat, vec, vt, conf, matches, gender};
       await preloadImages(matches.slice(0,5).map(m=>m.name));
       if (dropZone) dropZone.style.display = "none";
@@ -1850,7 +1993,7 @@ async function renderResults(data) {
   
   try {
     const vtName = trV("_vt_names",vt);
-    const sym    = ["🥇","🥈","🥉","4.","5."];
+    const sym    = ["🥇","🥈","🥉","4°","5°","6°","7°","8°","9°","10°","11°","12°","13°","14°","15°"];
   const explanation = getVoiceTypeDescription(vt, conf, window.lang || 'es');
 
   const resEl = document.getElementById("results");
@@ -1909,7 +2052,7 @@ async function renderResults(data) {
           <div style="font-size:0.8rem; color:#A5B4FC; text-transform:uppercase; letter-spacing:1px; font-weight:700; transition:opacity 0.2s" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Similitud con ${top1.name}</div>
         </a>
         <div style="font-size:3.5rem; font-weight:900; background:linear-gradient(135deg, #fff, ${color}); -webkit-background-clip:text; -webkit-text-fill-color:transparent">
-          ${Math.round(top1.score)}%
+          ${displayScore(top1.score)}%
         </div>
       </div>
 
@@ -1920,6 +2063,14 @@ async function renderResults(data) {
         <button onclick="_share('wa')" style="padding:1rem 1.5rem; border-radius:50px; background:rgba(255,255,255,.05); color:white; border:1px solid rgba(255,255,255,.15); font-weight:700; cursor:pointer; display:flex; align-items:center; gap:0.6rem">
           <span>💬</span> Chat
         </button>
+      </div>
+
+      <!-- Feedback + Reiniciar -->
+      <div style="display:flex; gap:.8rem; justify-content:center; align-items:center; margin-top:1.2rem; flex-wrap:wrap">
+        <span style="font-size:.78rem; color:#6B7280; font-weight:700">¿El resultado es correcto?</span>
+        <button id="_fb_ok" onclick="_sendFeedback(true)" style="font-size:1.5rem; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:50px; padding:.35rem .9rem; cursor:pointer; transition:.2s" title="Sí, correcto" onmouseover="this.style.background='rgba(6,214,160,.15)';this.style.borderColor='#06D6A0'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">👍</button>
+        <button id="_fb_ko" onclick="_sendFeedback(false)" style="font-size:1.5rem; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:50px; padding:.35rem .9rem; cursor:pointer; transition:.2s" title="No, no es correcto" onmouseover="this.style.background='rgba(255,79,163,.15)';this.style.borderColor='#FF4FA3'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">👎</button>
+        <button onclick="_resetApp()" style="font-size:.82rem; font-weight:800; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:50px; padding:.45rem 1.2rem; cursor:pointer; color:#A5B4FC; transition:.2s; display:flex; align-items:center; gap:.4rem" onmouseover="this.style.background='rgba(124,77,255,.15)';this.style.borderColor='#7C4DFF'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">🔄 Nueva prueba</button>
       </div>
 
       <!-- Monetización Integrada (Simplificada en Card) -->
@@ -1945,7 +2096,7 @@ async function renderResults(data) {
   ];
   const eraOptions = ERA_DISPLAY
     .filter(e => {
-      const dbVal = ({"1970s":"1970s-80s","1980s":"1970s-80s","2000s":"2000s+","2010s":"2010s+","2020s":"2010s+","actualidad":"2010s+"}[e.val]) || e.val;
+      const dbVal = ({"1970s":"1970s-80s","1980s":"1970s-80s","2000s":"2000s+","2010s":"2010s","2020s":"2020s+","actualidad":"2020s+"}[e.val]) || e.val;
       return singersDb.some(s => s.era === dbVal || s.era === e.val);
     })
     .map(e => `<option value="${e.val}">${e.label}</option>`).join("");
@@ -1953,68 +2104,97 @@ async function renderResults(data) {
   const genreOptions = [...new Set(singersDb.map(s=>s.genre_category).filter(Boolean))].sort()
     .map(g => `<option value="${g}">${g.charAt(0).toUpperCase()+g.slice(1).replace('-',' ')}</option>`).join("");
 
-  const topCountries = {"ES":"🇪🇸 Español","CAT":"🏴 Català","US":"🇺🇸 English","MX":"🇲🇽 México","AR":"🇦🇷 Argentina","CO":"🇨🇴 Colombia","BR":"🇧🇷 Português","IT":"🇮🇹 Italiano","DE":"🇩🇪 Deutsch","JP":"🇯🇵 日本語","KR":"🇰🇷 한국어"};
+  // Opciones de idioma/país: "ES" = solo España, "LATAM" = todos los latinos, etc.
+  const topCountries = {
+    "ES":    "🇪🇸 España",
+    "LATAM": "🌎 Latino",
+    "CAT":   "🏴 Català",
+    "US":    "🇺🇸 English",
+    "BR":    "🇧🇷 Português",
+    "IT":    "🇮🇹 Italiano",
+    "DE":    "🇩🇪 Deutsch",
+    "FR":    "🇫🇷 Français",
+    "JP":    "🇯🇵 日本語",
+    "KR":    "🇰🇷 한국어"
+  };
+  // "LATAM" agrupa todos los países hispanohablantes excepto España
+  const LATAM_CC = ["MX","AR","CO","PR","CL","VE","PE","DO","BO","EC","PY","UY","GT","HN","CR","PA","CU","NI","SV","US_LATIN"];
   const countryOptions = Object.entries(topCountries)
-    .filter(([cc]) => singersDb.some(s=>s.country_code===cc))
+    .filter(([cc]) => cc==="LATAM" ? singersDb.some(s=>LATAM_CC.includes(s.country_code)) : singersDb.some(s=>s.country_code===cc))
     .map(([cc,lbl]) => `<option value="${cc}">${lbl}</option>`).join("");
 
   const filtersHTML = `
-    <div id="_filters_row" style="margin-bottom:1.5rem; padding:1.2rem; background:rgba(255,255,255,.04); border-radius:20px; border:1px solid rgba(255,255,255,.08)">
-      <div style="font-size:.75rem; color:#9CA3AF; font-weight:800; text-transform:uppercase; letter-spacing:.1em; margin-bottom:1rem">🎛️ Refinar resultados por Época o Género</div>
-      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:0.8rem">
-        <div><select id="_era_filter" class="filter-sel" style="width:100%; background:#13102a; border:1px solid rgba(255,255,255,.15); color:#E5E7EB; border-radius:10px; padding:0.5rem; font-size:0.85rem"><option value="">Época</option>${eraOptions}</select></div>
-        <div><select id="_genre_filter" class="filter-sel" style="width:100%; background:#13102a; border:1px solid rgba(255,255,255,.15); color:#E5E7EB; border-radius:10px; padding:0.5rem; font-size:0.85rem"><option value="">Género</option>${genreOptions}</select></div>
-        <div><select id="_country_filter" class="filter-sel" style="width:100%; background:#13102a; border:1px solid rgba(255,255,255,.15); color:#E5E7EB; border-radius:10px; padding:0.5rem; font-size:0.85rem"><option value="">Idioma</option>${countryOptions}</select></div>
+    <style>
+      .hm-sel{width:100%;background:#13102a;border:1px solid rgba(255,255,255,.15);color:#E5E7EB;border-radius:12px;padding:.55rem .8rem;font-size:.85rem;font-family:'Outfit',sans-serif;font-weight:600;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239CA3AF'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;outline:none;transition:border-color .2s}
+      .hm-sel:focus,.hm-sel:hover{border-color:rgba(124,77,255,.6)}
+      .hm-sel option{background:#1a1730;color:#E5E7EB}
+    </style>
+    <div id="_filters_row" style="margin-bottom:1.5rem; padding:1.2rem 1.4rem; background:rgba(255,255,255,.03); border-radius:20px; border:1px solid rgba(255,255,255,.08)">
+      <div style="font-size:.72rem; color:#9CA3AF; font-weight:800; text-transform:uppercase; letter-spacing:.12em; margin-bottom:.9rem">🎛️ Filtrar artistas por época, género o idioma</div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:.7rem">
+        <select id="_era_filter" class="hm-sel filter-sel"><option value="">📅 Época</option>${eraOptions}</select>
+        <select id="_genre_filter" class="hm-sel filter-sel"><option value="">🎵 Género</option>${genreOptions}</select>
+        <select id="_country_filter" class="hm-sel filter-sel"><option value="">🌍 Idioma</option>${countryOptions}</select>
       </div>
     </div>`;
 
-  const cardsHTML = matches.map((m,i) => {
-    const pct  = Math.round(m.score);
-    const img  = imgCache[m.name] || getInitialsAvatar(m.name);
-    const vtN  = trV("_vt_names", m.voice_type);
-    const songs = m.reference_songs?.slice(0,3) || [];
-
+  // Cards grid: verticales estilo Spotify — foto grande arriba, info abajo
+  const cardsHTML = `<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:1rem; margin-top:.5rem">` +
+    matches.slice(1).map((m, i) => {
+    const rank   = i + 2;
+    const pct    = displayScore(m.score);
+    const img    = imgCache[m.name] || getInitialsAvatar(m.name);
+    const vtN    = trV("_vt_names", m.voice_type);
+    const songs  = m.reference_songs?.slice(0,3) || [];
+    const medal  = sym[rank - 1] || `${rank}°`;
     const isComp = m.isComparisonMode;
+    const slug   = m.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+    const cardColor = isComp ? '#FF4FA3' : color;
     return `
-    <div style="background:rgba(255,255,255,.03); border:1px solid ${isComp?'#FF4FA3':(i===0?color+'55':"rgba(255,255,255,.08)")};
-      border-radius:24px; padding:1.5rem; margin-bottom:1rem; position:relative; overflow:hidden; ${isComp?'box-shadow:0 0 20px rgba(255,79,163,0.2)':''}">
-      ${isComp ? `<div style="position:absolute; top:0; right:0; background:#FF4FA3; color:white; font-size:0.6rem; font-weight:900; padding:4px 12px; border-radius:0 0 0 12px; text-transform:uppercase; letter-spacing:1px">Tu Comparación</div>` : ""}
-      <div style="display:flex; gap:1.2rem; align-items:center; margin-bottom:1rem">
-        <div style="position:relative">
-          <div style="width:75px; height:75px; border-radius:50%; overflow:hidden; border:3px solid ${i===0?color:'rgba(255,255,255,.1)'}; background:#1a103f">
-            <img src="${img}" style="width:100%; height:100%; object-fit:cover" onerror="this.onerror=null; this.src=getInitialsAvatar('${m.name.replace(/'/g,"\\'")}')">
-          </div>
-          <div style="position:absolute; bottom:-5px; right:-5px; width:30px; height:30px; background:#1a103f; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:800; border:2px solid ${color}">${sym[i]}</div>
-        </div>
-        <div style="flex:1">
-          <a href="/artistas/${m.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}/" style="text-decoration:none">
-            <h3 style="font-family:'Baloo 2',sans-serif; font-size:1.4rem; color:#fff; margin-bottom:0.2rem; line-height:1.2; transition:color 0.2s" onmouseover="this.style.color='#7C4DFF'" onmouseout="this.style.color='#fff'">${m.name}</h3>
-          </a>
-          <div style="display:flex; gap:0.5rem; flex-wrap:wrap">
-            <span style="font-size:0.7rem; font-weight:800; padding:0.2rem 0.6rem; border-radius:20px; background:${color}22; color:${color}; text-transform:uppercase">${vtN}</span>
-            <span style="font-size:0.7rem; font-weight:800; padding:0.2rem 0.6rem; border-radius:20px; background:rgba(255,255,255,0.05); color:#9CA3AF; text-transform:uppercase">${trV("_eras",m.era)}</span>
+    <div style="background:rgba(255,255,255,.04); border:1px solid ${isComp?'rgba(255,79,163,.4)':'rgba(255,255,255,.08)'}; border-radius:20px; overflow:hidden; position:relative; transition:transform .25s, box-shadow .25s; display:flex; flex-direction:column" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,.5)';this.style.borderColor='${cardColor}66'" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.borderColor='${isComp?'rgba(255,79,163,.4)':'rgba(255,255,255,.08)'}'">
+      ${isComp ? `<div style="position:absolute;top:8px;left:8px;background:#FF4FA3;color:#fff;font-size:.5rem;font-weight:900;padding:2px 8px;border-radius:20px;letter-spacing:1px;z-index:3;text-transform:uppercase">Comparación</div>` : ""}
+      <!-- Medalla rank -->
+      <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.7);color:#fff;font-size:.65rem;font-weight:900;padding:3px 8px;border-radius:20px;z-index:3;backdrop-filter:blur(4px)">${medal}</div>
+      <!-- Foto cuadrada grande -->
+      <a href="/artistas/${slug}/" style="display:block;text-decoration:none">
+        <div style="position:relative;padding-top:100%;background:#0d0a1f;overflow:hidden">
+          <img src="${img}" alt="${m.name}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .3s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onerror="this.onerror=null;this.src=getInitialsAvatar('${m.name.replace(/'/g,"\\'")}')">
+          <!-- Gradiente inferior para legibilidad -->
+          <div style="position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(13,10,31,.9) 0%,transparent 100%);pointer-events:none"></div>
+          <!-- % similitud sobre foto -->
+          <div style="position:absolute;bottom:8px;left:10px;z-index:2">
+            <div style="font-size:1.3rem;font-weight:900;color:#fff;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,.8)">${pct}%</div>
+            <div style="font-size:.55rem;color:rgba(255,255,255,.6);font-weight:700;text-transform:uppercase;letter-spacing:.5px">similitud</div>
           </div>
         </div>
-        <div style="text-align:right">
-          <div style="font-size:2rem; font-weight:950; background:linear-gradient(135deg, #fff, ${color}); -webkit-background-clip:text; -webkit-text-fill-color:transparent">${pct}%</div>
+      </a>
+      <!-- Info -->
+      <div style="padding:.75rem .85rem; flex:1; display:flex; flex-direction:column; gap:.4rem">
+        <a href="/artistas/${slug}/" style="text-decoration:none">
+          <div style="font-size:.9rem;color:#fff;font-weight:800;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .15s" onmouseover="this.style.color='${cardColor}'" onmouseout="this.style.color='#fff'">${m.name}</div>
+        </a>
+        <div style="display:flex;gap:.3rem;flex-wrap:wrap">
+          <span style="font-size:.6rem;font-weight:800;padding:.15rem .5rem;border-radius:20px;background:${cardColor}22;color:${cardColor};border:1px solid ${cardColor}44">${vtN}</span>
+          ${m.era ? `<span style="font-size:.6rem;padding:.15rem .5rem;border-radius:20px;background:rgba(255,255,255,.06);color:#9CA3AF">${trV("_eras",m.era)||m.era}</span>` : ""}
         </div>
-      </div>
-
-      <div style="height:4px; background:rgba(255,255,255,.06); border-radius:2px; margin-bottom:1.2rem">
-        <div style="height:100%; width:${pct}%; background:linear-gradient(90deg, ${color}, #FF4FA3); border-radius:2px; box-shadow:0 0 10px ${color}88"></div>
-      </div>
-
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:0.6rem">
-        ${songs.map(s => {
-          const {karaoke} = getPlatformLinks(m.name, s);
-          return `<a href="${karaoke}" target="_blank" style="display:flex; align-items:center; gap:0.6rem; padding:0.7rem; background:rgba(255,255,255,.04); border-radius:14px; text-decoration:none; border:1px solid rgba(255,255,255,.07); transition:all 0.2s" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
-            <span style="font-size:1rem; color:#ff4444">▶</span>
-            <div style="flex:1; font-size:0.78rem; color:#E5E7EB; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${s}</div>
-          </a>`;
-        }).join('')}
+        <!-- Barra similitud -->
+        <div style="height:2px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin-top:.1rem">
+          <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${cardColor},#FF4FA3)"></div>
+        </div>
+        <!-- Canciones -->
+        ${songs.length ? `<div style="margin-top:.3rem;display:flex;flex-direction:column;gap:.2rem">
+          ${songs.map(s => {
+            const sTitle = typeof s==='object'?(s.title||s.name||''):String(s||'');
+            const {karaoke} = getPlatformLinks(m.name, sTitle);
+            return `<a href="${karaoke}" target="_blank" style="display:flex;align-items:center;gap:.4rem;text-decoration:none;padding:.25rem .3rem;border-radius:6px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">
+              <span style="color:${cardColor};font-size:.6rem;flex-shrink:0">▶</span>
+              <span style="font-size:.65rem;color:#D1D5DB;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${sTitle}</span>
+            </a>`;
+          }).join('')}
+        </div>` : ""}
       </div>
     </div>`;
-  }).join("");
+  }).join("") + `</div>`;
 
   const vtOverrideHTML = (() => {
     const allVTs = ['bass','baritone','tenor','countertenor','contralto','mezzo-soprano','soprano'];
@@ -2037,13 +2217,13 @@ async function renderResults(data) {
       </div>
       
       <div style="margin:2.5rem 0 1.5rem">
-        <div style="font-family:'Outfit'; font-weight:900; font-size:1.5rem; color:#fff; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.8rem">
-          <span>🎸</span> Artistas que comparten tu ADN vocal
+        <div style="font-family:'Outfit'; font-weight:900; font-size:1.5rem; color:#fff; margin-bottom:1rem; display:flex; align-items:center; gap:0.8rem">
+          <span>🎸</span> ${matches.length} artistas que comparten tu ADN vocal
         </div>
+        ${filtersHTML}
         ${cardsHTML}
       </div>
 
-      ${filtersHTML}
       ${vtOverrideHTML}
       
       <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1rem; margin-top:2rem">
@@ -2103,20 +2283,27 @@ function attachFilterEvents(vec, vt, gender) {
     const genre   = document.getElementById("_genre_filter")?.value  || "";
     const country = document.getElementById("_country_filter")?.value|| "";
     
-    const ERA_MAP = { "1970s":"1970s-80s", "1980s":"1970s-80s", "2000s":"2000s+", "2010s":"2010s+", "2020s":"2010s+", "actualidad":"2010s+" };
+    const ERA_MAP = { "1970s":"1970s-80s", "1980s":"1970s-80s", "2000s":"2000s+", "2010s":"2010s", "2020s":"2020s+", "actualidad":"2020s+" };
     const era = ERA_MAP[eraVal] || eraVal;
     
     const filters = {};
     if (era)     filters.era            = era;
     if (genre)   filters.genre_category = genre;
-    if (country) filters.country_code   = country;
+    if (country) filters.country_code   = country;  // LANG_CC mapping se aplica en getMatches
 
-    const newMatches = getMatches(vec, vt, gender, filters, 8); // Aumentar a 8 resultados en filtros
+    const newMatches = getMatches(vec, vt, gender, filters, 15);
     await preloadImages(newMatches.map(m=>m.name));
-    
+
     if (typeof lastResult !== 'undefined') {
         lastResult.matches = newMatches;
-        renderResults(lastResult);
+        await renderResults(lastResult);
+        // Restaurar los valores seleccionados tras el re-render (renderResults reconstruye el HTML)
+        const eraEl     = document.getElementById("_era_filter");
+        const genreEl   = document.getElementById("_genre_filter");
+        const countryEl = document.getElementById("_country_filter");
+        if (eraEl)     eraEl.value     = eraVal;
+        if (genreEl)   genreEl.value   = genre;
+        if (countryEl) countryEl.value = country;
     }
   };
 
@@ -2222,25 +2409,24 @@ function buildKaraokeSection(vtName, vtSlug) {
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem">
             ${[
-              {id:"TfD-5k68uOQ", name:"Técnica: Respiración", desc:"Gret Rocha (Vocal Coach)", color:"rgba(124,77,255,.1)", border:"rgba(124,77,255,.3)"},
-              {id:"Z8_X9v_Z-jI", name:"Técnica: Apoyo Vocal", desc:"Ejercicios prácticos", color:"rgba(255,79,163,.1)", border:"rgba(255,79,163,.2)"},
-              {id:"6oF08tGkM50", name:"Vocal Grit & Power", desc:"Chris Liepe (Distortion)", color:"rgba(255,153,0,.1)", border:"rgba(255,153,0,.2)"},
-              {id:"4vUu_k_oI9Q", name:"High Note Control", desc:"Domina tus agudos", color:"rgba(6,214,160,.1)", border:"rgba(6,214,160,.2)"},
-              {id:"fS_m4uXoU_Y", name:"Daily Vocal Warmup", desc:"Calentamiento diario (Singeo)", color:"rgba(0,170,255,.1)", border:"rgba(0,170,255,.2)"},
+              {q:"técnica vocal respiración diafragma cantantes", name:"Técnica: Respiración", desc:"Cómo respirar al cantar", color:"rgba(124,77,255,.1)", border:"rgba(124,77,255,.3)", emoji:"🫁"},
+              {q:"apoyo vocal técnica canto ejercicios soporte", name:"Apoyo Vocal", desc:"Ejercicios de soporte", color:"rgba(255,79,163,.1)", border:"rgba(255,79,163,.2)", emoji:"💪"},
+              {q:"potencia voz belting técnica vocal potente", name:"Potencia y Grit", desc:"Potencia tu voz", color:"rgba(255,153,0,.1)", border:"rgba(255,153,0,.2)", emoji:"🔥"},
+              {q:"controlar agudos voz técnica vocal notas altas", name:"Controla tus agudos", desc:"Domina las notas altas", color:"rgba(6,214,160,.1)", border:"rgba(6,214,160,.2)", emoji:"🎯"},
+              {q:"calentamiento vocal rutina diaria cantantes 10 minutos", name:"Calentamiento vocal", desc:"Rutina diaria de 10 min", color:"rgba(0,170,255,.1)", border:"rgba(0,170,255,.2)", emoji:"☀️"},
             ].map(v=>`
-              <div style="border-radius:12px;overflow:hidden;background:${v.color};border:1px solid ${v.border}">
-                <div style="position:relative;aspect-ratio:16/9;cursor:pointer;background:#000"
-                  onclick="this.innerHTML='<iframe width=\\'100%\\' height=\\'100%\\' src=\\'https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0&origin=${window.location.origin}\\' frameborder=\\'0\\' allow=\\'autoplay; encrypted-media\\' allowfullscreen></iframe>'">
-                  <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:.7">
-                  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
-                    <div style="width:36px;height:36px;background:rgba(255,0,0,.8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px">▶</div>
-                  </div>
+              <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(v.q)}" target="_blank" rel="noopener"
+                style="border-radius:12px;overflow:hidden;background:${v.color};border:1px solid ${v.border};text-decoration:none;display:block">
+                <div style="position:relative;aspect-ratio:16/9;background:#0d0a1f;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem"
+                  onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+                  <div style="font-size:2.5rem">${v.emoji}</div>
+                  <div style="width:40px;height:40px;background:rgba(255,0,0,.88);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 4px 16px rgba(255,0,0,.4)">▶</div>
                 </div>
                 <div style="padding:.5rem">
                   <div style="font-size:.7rem;font-weight:800;color:#E5E7EB">${v.name}</div>
                   <div style="font-size:.6rem;color:#6B7280">${v.desc}</div>
                 </div>
-              </div>`).join("")}
+              </a>`).join("")}
           </div>
           <div style="margin-top:1rem; display:flex; gap:.5rem; flex-wrap:wrap">
             <a href="https://www.youtube.com/results?search_query=karaoke+${encodeURIComponent(vtName)}" target="_blank" style="font-size:.65rem; color:#A5B4FC; text-decoration:none; background:rgba(255,255,255,.05); padding:.4rem .8rem; border-radius:8px; border:1px solid rgba(255,255,255,.1)">🔍 Más en YouTube</a>
@@ -2296,10 +2482,54 @@ window._overrideVT = function(newVt) {
   preloadImages(newMatches.map(m => m.name)).then(() => renderResults(lastResult));
 };
 
+function _resetApp() {
+  // Limpia estado global
+  lastResult = null;
+  window._audioBlob = null;
+  window._lastFile  = null;
+  // Limpia el div de resultados
+  const resEl = document.getElementById("results");
+  if (resEl) resEl.innerHTML = "";
+  // Re-inyecta la UI inicial (grabar/subir)
+  const mount = document.getElementById("app-mount");
+  if (mount) {
+    mount.removeAttribute("data-ui");
+    mount.innerHTML = '<div style="color:var(--m); font-weight:700">Cargando...</div>';
+    injectUI();
+  }
+  // Scroll suave al analizador
+  const analizador = document.getElementById("analizador") || document.getElementById("app");
+  if (analizador) analizador.scrollIntoView({ behavior:"smooth", block:"start" });
+}
+
+function _sendFeedback(isOk) {
+  const okBtn = document.getElementById("_fb_ok");
+  const koBtn = document.getElementById("_fb_ko");
+  if (!okBtn || !koBtn) return;
+  // Visual: marca el elegido
+  okBtn.style.opacity = isOk ? "1" : "0.3";
+  koBtn.style.opacity = isOk ? "0.3" : "1";
+  okBtn.style.transform = isOk ? "scale(1.3)" : "scale(1)";
+  koBtn.style.transform = isOk ? "scale(1)" : "scale(1.3)";
+  // Guardar en localStorage para aprendizaje futuro
+  try {
+    const vt = lastResult?.vt || "unknown";
+    const top = lastResult?.matches?.[0]?.name || "unknown";
+    const log = JSON.parse(localStorage.getItem("_hm_fb") || "[]");
+    log.push({ ts: Date.now(), ok: isOk, vt, top });
+    if (log.length > 200) log.splice(0, log.length - 200);
+    localStorage.setItem("_hm_fb", JSON.stringify(log));
+  } catch(e) {}
+  // Mensaje de agradecimiento breve
+  const msg = isOk ? "¡Gracias! 🙌" : "¡Gracias! Seguimos mejorando 🔧";
+  showStatus(msg);
+  setTimeout(() => showStatus(""), 2500);
+}
+
 function _share(p) {
   if (!lastResult?.matches?.[0]) return;
   const m   = lastResult.matches[0];
-  const pct = Math.round(m.score);
+  const pct = displayScore(m.score);
   const txt = tr("_share_txt").replace("{name}",m.name).replace("{pct}",pct);
   if (p==="wa") window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank");
   if (p==="x")  window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(txt)}`, "_blank");
@@ -2338,7 +2568,7 @@ function showViralCard() {
 
   const artistRows = top3.map((m,i) => {
     const img = MONO_IMGS[m.name] || imgCache[m.name] || getInitialsAvatar(m.name);
-    const pct = Math.round(m.score);
+    const pct = displayScore(m.score);
     const medals = ["🥇","🥈","🥉"];
     const sizes = ["18px","14px","13px"];
     return `
@@ -2513,7 +2743,7 @@ function showViralCard() {
 function _shareCard(p) {
   if (!lastResult?.matches?.[0]) return;
   const m   = lastResult.matches[0];
-  const pct = Math.round(m.score);
+  const pct = displayScore(m.score);
   const vtn = trV("_vt_names", lastResult.vt);
   const url = "https://harmiq.app";
   const txt = `🎤 Tengo voz de ${vtn} y me parezco a ${m.name} con un ${pct}% de similitud. ¿A qué cantante te pareces tú? 👉 ${url}`;
@@ -3049,31 +3279,28 @@ function renderVozPage(slug) {
     <!-- Videos de vocal coaching seleccionados -->
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.75rem;margin-bottom:1rem">
       ${[
-        {id:"U0g-8-tBwQY", title:"Top 7 ejercicios para revolucionar tu voz", channel:"Justin Stoney"},
-        {id:"A8XmK95L9kU", title:"Rutina diaria de 10 minutos (Todos los niveles)", channel:"Cheryl Porter"},
-        {id:"P52n6k4z6-Q", title:"Cómo cantar notas altas sin esfuerzo", channel:"Ken Tamplin"},
-        {id:"mEn9fH-l_Dk", title:"Fortalecimiento vocal diario", channel:"Eric Arceneaux"},
-        {id:"3p7D-hP06F8", title:"Técnica vocal saludable", channel:"Victoria Rapanan"},
-        {id:"M2C_5_e6XmI", title:"Cómo cantar mejor instantáneamente", channel:"Chris Liepe"},
+        {q:"top ejercicios voz técnica vocal revolucionar canto", title:"Top ejercicios para revolucionar tu voz", emoji:"🎙️"},
+        {q:"rutina diaria 10 minutos calentamiento vocal cantantes", title:"Rutina diaria de 10 minutos", emoji:"☀️"},
+        {q:"cómo cantar notas altas sin esfuerzo técnica vocal", title:"Cómo cantar notas altas sin esfuerzo", emoji:"🎯"},
+        {q:"fortalecimiento vocal diario ejercicios voz fuerza", title:"Fortalecimiento vocal diario", emoji:"💪"},
+        {q:"técnica vocal saludable sin dañar la voz cantantes", title:"Técnica vocal saludable", emoji:"🏥"},
+        {q:"cómo cantar mejor instantáneamente consejos vocales", title:"Cómo cantar mejor ya", emoji:"✨"},
       ].map(v=>`
-        <div style="border-radius:14px;overflow:hidden;background:#000;
-          box-shadow:0 4px 16px rgba(0,0,0,.4);cursor:pointer"
-          onclick="this.innerHTML='<iframe width=\\'100%\\' height=\\'160\\' src=\\'https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0&origin=${window.location.origin}\\' frameborder=\\'0\\' allow=\\'autoplay; encrypted-media\\' allowfullscreen></iframe>'">
-          <div style="position:relative;aspect-ratio:16/9">
-            <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg"
-              alt="${v.title}" style="width:100%;height:100%;object-fit:cover"
-              onerror="this.parentNode.style.background='#1a1a2e'">
-            <div style="position:absolute;inset:0;display:flex;align-items:center;
-              justify-content:center;background:rgba(0,0,0,.3)">
-              <div style="width:48px;height:48px;background:rgba(255,0,0,.9);border-radius:50%;
-                display:flex;align-items:center;justify-content:center;font-size:20px">▶</div>
-            </div>
+        <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(v.q)}" target="_blank" rel="noopener"
+          style="border-radius:14px;overflow:hidden;background:#111;
+          box-shadow:0 4px 16px rgba(0,0,0,.4);text-decoration:none;display:block">
+          <div style="position:relative;aspect-ratio:16/9;background:#0d0a1f;
+            display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem">
+            <div style="font-size:2.8rem">${v.emoji}</div>
+            <div style="width:48px;height:48px;background:rgba(255,0,0,.9);border-radius:50%;
+              display:flex;align-items:center;justify-content:center;font-size:20px;
+              box-shadow:0 4px 16px rgba(255,0,0,.4)">▶</div>
           </div>
           <div style="padding:.6rem .8rem;background:#111">
             <div style="font-size:.8rem;font-weight:700;color:#E5E7EB;margin-bottom:.1rem">${v.title}</div>
-            <div style="font-size:.68rem;color:#6B7280">${v.channel}</div>
+            <div style="font-size:.68rem;color:#A5B4FC">Buscar en YouTube →</div>
           </div>
-        </div>`).join("")}
+        </a>`).join("")}
     </div>
     <a href="https://www.youtube.com/results?search_query=clases+de+canto+tecnica+vocal+${encodeURIComponent(capSlug)}"
       target="_blank" rel="noopener"
@@ -3165,10 +3392,15 @@ function renderVozPage(slug) {
   // Precargar fotos de artistas tras render
   const artistData = ${JSON.stringify(data.artistImgs||{})};
   const monoImgs = typeof MONO_IMGS !== 'undefined' ? MONO_IMGS : {};
-  document.querySelectorAll('img[alt]').forEach(img => {
+  document.querySelectorAll('img[alt]').forEach(async img => {
     const name = img.alt;
     const src = artistData[name] || monoImgs[name];
-    if (src) img.src = src;
+    if (src) {
+      img.src = src;
+    } else if (name && typeof getArtistImage === 'function') {
+      const loaded = await getArtistImage(name);
+      if (loaded) img.src = loaded;
+    }
   });
 </body></html>`;
   return true;
