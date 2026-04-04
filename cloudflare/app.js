@@ -464,7 +464,7 @@ async function detectCountry() {
     const tId = setTimeout(() => controller.abort(), 2000); // 2s timeout is enough for UX
     // 🌍 Fallback: usamos cloudflare edge header si está disponible (CF-IPCountry)
     // Pero como es cliente, dependemos de APIs. Intentamos ipapi.co y si hay CORS/error, saltamos a ip-api.com
-    const r = await fetch("https://ipapi.co/json/", { signal: controller.signal }).catch(() => fetch("http://ip-api.com/json/", { signal: controller.signal }));
+    const r = await fetch("https://ipapi.co/json/", { signal: controller.signal }).catch(() => fetch("https://ip-api.com/json/", { signal: controller.signal }));
     clearTimeout(tId);
     if (!r.ok) throw new Error();
     const d = await r.json();
@@ -1568,7 +1568,7 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
   if(filters.genre_category) pool=pool.filter(s=>s.genre_category===filters.genre_category);
   if(filters.country_code) {
     const LANG_CC = {
-      "ES":   ["ES"],  // Solo España (country_code === "ES")
+      "ES":   ["ES","ESP","es"],  // España (varios formatos posibles en el DB)
       "LATAM":["MX","AR","CO","PR","CL","VE","PE","DO","BO","EC","PY","UY","GT","HN","CR","PA","CU","NI","SV","US_LATIN"],
       "EN":   ["US","GB","CA","AU","IE","NZ"],
       "PT":   ["BR","PT"],
@@ -2205,6 +2205,7 @@ async function renderResults(data) {
           <span>🎸</span> ${matches.length} artistas que comparten tu ADN vocal
         </div>
         ${filtersHTML}
+        ${data._filtersRelaxedMsg ? `<div style="margin:-0.5rem 0 1rem; padding:0.7rem 1.1rem; background:rgba(124,77,255,0.12); border-radius:12px; border:1px solid rgba(124,77,255,0.3); font-size:0.82rem; color:#C4B5FD;">ℹ️ ${data._filtersRelaxedMsg}</div>` : ""}
         ${cardsHTML}
       </div>
 
@@ -2275,11 +2276,22 @@ function attachFilterEvents(vec, vt, gender) {
     if (genre)   filters.genre_category = genre;
     if (country) filters.country_code   = country;  // LANG_CC mapping se aplica en getMatches
 
-    const newMatches = getMatches(vec, vt, gender, filters, 15);
+    let newMatches = getMatches(vec, vt, gender, filters, 15);
+    let filtersRelaxed = false;
+    // Si era+país da 0 resultados → relajar filtro de época y avisar al usuario
+    if (newMatches.length === 0 && filters.era && filters.country_code) {
+      const filtersNoEra = { ...filters };
+      delete filtersNoEra.era;
+      newMatches = getMatches(vec, vt, gender, filtersNoEra, 15);
+      filtersRelaxed = newMatches.length > 0;
+    }
     await preloadImages(newMatches.map(m=>m.name));
 
     if (typeof lastResult !== 'undefined') {
         lastResult.matches = newMatches;
+        lastResult._filtersRelaxedMsg = filtersRelaxed
+          ? "No encontramos artistas de ese país en esa época. Mostrando todos los artistas del país seleccionado."
+          : "";
         await renderResults(lastResult);
         // Restaurar los valores seleccionados tras el re-render (renderResults reconstruye el HTML)
         const eraEl     = document.getElementById("_era_filter");
