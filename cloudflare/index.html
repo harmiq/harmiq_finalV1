@@ -41,6 +41,12 @@
           .analyzer-card .hero-badge{grid-column:1;grid-row:1}
           .analyzer-card h1{grid-column:1;grid-row:2;margin-bottom:0.8rem}
           .analyzer-card p{grid-column:1;grid-row:3;margin:0}
+          /* Cuando hay resultados → ancho completo, ocultar hero text */
+          .analyzer-card.has-results{display:block}
+          .analyzer-card.has-results .hero-badge,
+          .analyzer-card.has-results h1,
+          .analyzer-card.has-results p{display:none}
+          .analyzer-card.has-results #app{grid-column:auto}
         }
         
         /* ── MODULE HUB (THE CARDS) ── */
@@ -277,7 +283,7 @@
 <!-- Scripts -->
 <script src="/modul-catala-v3.js"></script>
 <script src="/config.js"></script>
-<script src="/app.js?v=10.10"></script>
+<script src="/app.js?v=10.11"></script>
 
 </body>
 </html>

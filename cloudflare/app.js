@@ -1980,6 +1980,9 @@ async function renderResults(data) {
   }
   const {feat,vec,vt,conf,matches,gender} = data;
   
+  // Activar layout de resultados a ancho completo
+  document.querySelector('.analyzer-card')?.classList.add('has-results');
+
   try {
     const vtName = trV("_vt_names",vt);
     const sym    = ["🥇","🥈","🥉","4°","5°","6°","7°","8°","9°","10°","11°","12°","13°","14°","15°"];
@@ -2505,6 +2508,8 @@ window._overrideVT = function(newVt) {
 };
 
 function _resetApp() {
+  // Restaurar layout hero (quitar modo resultados)
+  document.querySelector('.analyzer-card')?.classList.remove('has-results');
   // Limpia estado global
   lastResult = null;
   window._audioBlob = null;
