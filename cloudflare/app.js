@@ -1577,11 +1577,25 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
       "IT":   ["IT"],
       "JP":   ["JP"],
       "KR":   ["KR"],
-      "CAT":  ["CAT"]
+      "CAT":  ["CAT","ES","ESP","es"]  // Cataluña: country_code CAT + ES (la mayoría van como ES en la DB)
     };
     const ccList = LANG_CC[filters.country_code];
-    if(ccList) pool=pool.filter(s=>ccList.includes(s.country_code));
-    else       pool=pool.filter(s=>s.country_code===filters.country_code);
+    if(ccList) {
+      if(filters.country_code === "CAT") {
+        // Para Català: solo los que estén en catalaDb O tengan country_code CAT
+        const catNames = new Set(
+          (catalaDb?.artistes || []).map(a => a.nom.toLowerCase())
+        );
+        pool = pool.filter(s =>
+          s.country_code === "CAT" ||
+          catNames.has(s.name?.toLowerCase())
+        );
+      } else {
+        pool = pool.filter(s => ccList.includes(s.country_code));
+      }
+    } else {
+      pool = pool.filter(s => s.country_code === filters.country_code);
+    }
   }
 
   // Score base de popularidad por país del usuario
