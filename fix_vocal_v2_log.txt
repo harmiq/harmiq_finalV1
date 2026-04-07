@@ -1,0 +1,29 @@
+Corrección v2 - Tipos vocales verificados
+Corregidos: 26
+
+  ✅ aitana: Soprano → Soprano
+  ✅ alicia-keys: Mezzosoprano → Mezzosoprano
+  ✅ billie-eilish: Soprano → Mezzosoprano
+  ✅ celine-dion: Soprano → Soprano
+  ✅ donna-summer: Soprano → Soprano
+  ✅ dua-lipa: Mezzosoprano → Mezzosoprano
+  ✅ ella-fitzgerald: Mezzosoprano → Mezzosoprano
+  ✅ janis-joplin: Contralto → Contralto
+  ✅ juanes: Tenor → Tenor
+  ✅ karol-g: Soprano → Soprano
+  ✅ katy-perry: Contralto → Contralto
+  ✅ lady-gaga: Mezzosoprano → Mezzosoprano
+  ✅ lana-del-rey: Contralto → Contralto
+  ✅ lola-indigo: Mezzosoprano → Mezzosoprano
+  ✅ madonna: Mezzosoprano → Mezzosoprano
+  ✅ mariah-carey: Soprano → Soprano
+  ✅ melanie-martinez: Soprano → Soprano
+  ✅ nina-simone: Contralto → Contralto
+  ✅ norah-jones: Contralto → Contralto
+  ✅ olivia-rodrigo: Soprano → Soprano
+  ✅ peso-pluma: Tenor → Tenor
+  ✅ sabrina-carpenter: Soprano → Soprano
+  ✅ shakira: Mezzosoprano → Mezzosoprano
+  ✅ stevie-wonder: Tenor → Tenor
+  ✅ tove-lo: Mezzosoprano → Mezzosoprano
+  ✅ whitney-houston: Mezzosoprano → Mezzosoprano
