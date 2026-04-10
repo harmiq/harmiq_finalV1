@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Enciclopedia de Tipos de Voz | Harmiq Hub</title>
+    <meta name="description" content="Guía definitiva sobre los tipos de voz: Soprano, Mezzo, Contralto, Tenor, Barítono y Bajo. Historia de los Castrati, cambio de voz y análisis IA.">
+    <link rel="icon" type="image/png" href="/harmiq-logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root{--p:#7C4DFF;--a:#FF4FA3;--dark:#0A0818;--card:#130F2A;--t:#E5E7EB;--m:#6B7280;--glass:rgba(255,255,255,0.03);--glass-border:rgba(255,255,255,0.08)}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:var(--dark);color:var(--t);font-family:'Outfit',sans-serif;line-height:1.6;overflow-x:hidden}
+        .grad{background:linear-gradient(135deg,#7C4DFF,#FF4FA3);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        
+        nav{padding:1rem 5%;background:rgba(10,8,24,0.8);backdrop-filter:blur(10px);position:sticky;top:0;z-index:1000;border-bottom:1px solid var(--glass-border);display:flex;justify-content:space-between;align-items:center}
+        .container{max-width:1100px;margin:0 auto;padding:4rem 5%}
+        
+        .hero-title{text-align:center;margin-bottom:4rem}
+        .hero-title h1{font-size:clamp(2.5rem, 8vw, 4.5rem);font-weight:900;margin-bottom:1rem;letter-spacing:-0.03em}
+        
+        /* Interactive Grid */
+        .hub-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:2rem;margin-bottom:6rem}
+        .hub-card{background:var(--card);border-radius:32px;border:1px solid var(--glass-border);padding:2.5rem;text-decoration:none;transition:0.4s;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
+        .hub-card:hover{transform:translateY(-12px);border-color:var(--p);box-shadow:0 20px 40px rgba(124,77,255,0.15)}
+        .hub-card h2{font-size:1.8rem;margin-bottom:0.5rem;color:#fff}
+        .hub-card p{color:var(--m);font-size:0.95rem;margin-bottom:1.5rem}
+        .hub-card .badge{padding:4px 12px;border-radius:50px;font-size:0.7rem;font-weight:900;text-transform:uppercase;width:fit-content;background:rgba(255,255,255,0.05);color:var(--m)}
+        
+        .voice-female .badge{background:rgba(255,79,163,0.1);color:var(--a)}
+        .voice-male .badge{background:rgba(124,77,255,0.1);color:var(--p)}
+        
+        /* History Section */
+        .history-section{background:var(--glass);border:1px solid var(--glass-border);border-radius:40px;padding:4rem 3rem;margin-bottom:5rem}
+        .history-section h2{font-size:2.5rem;font-weight:900;margin-bottom:2rem}
+        .history-content{display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:3rem}
+        .history-item h3{color:var(--p);margin-bottom:1rem;font-size:1.4rem}
+        
+        .cta-box{text-align:center;background:linear-gradient(135deg,rgba(124,77,255,0.1),rgba(255,79,163,0.1));padding:5rem 2rem;border-radius:40px;border:1px solid var(--p)}
+        .btn-main{background:linear-gradient(135deg,var(--p),var(--a));color:#fff;padding:1.2rem 3rem;border-radius:50px;font-weight:900;font-size:1.2rem;display:inline-block;margin-top:2.5rem;text-decoration:none}
+
+        @media(max-width:768px){ .history-section{padding:2.5rem 1.5rem} }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" style="font-weight:900; font-size:1.5rem" class="grad">Harmiq</a>
+    <a href="/" style="font-weight:700; color:var(--m)">Inicio</a>
+</nav>
+
+<div class="container">
+    <div class="hero-title">
+        <h1>Enciclopedia de <span class="grad">Voces</span></h1>
+        <p style="color:var(--m); font-size:1.2rem">El mapa definitivo del registro vocal humano. Haz clic y explora.</p>
+    </div>
+
+    <div class="hub-grid">
+        <!-- Femeninas -->
+        <a href="/tipo-de-voz/soprano/" class="hub-card voice-female">
+            <div>
+                <span class="badge">Femenina · Alta</span>
+                <h2>Soprano</h2>
+                <p>La voz de cristal y las notas celestiales. ¿Eres una Ariana Grande?</p>
+            </div>
+            <span style="color:var(--a); font-weight:900">Ver Guía →</span>
+        </a>
+        <a href="/tipo-de-voz/mezzosoprano/" class="hub-card voice-female">
+            <div>
+                <span class="badge">Femenina · Media</span>
+                <h2>Mezzosoprano</h2>
+                <p>Cálida, densa y llena de alma. El registro de las grandes divas del soul.</p>
+            </div>
+            <span style="color:var(--a); font-weight:900">Ver Guía →</span>
+        </a>
+        <a href="/tipo-de-voz/contralto/" class="hub-card voice-female">
+            <div>
+                <span class="badge">Femenina · Grave</span>
+                <h2>Contralto</h2>
+                <p>La rareza absoluta. Un timbre profundo y misterioso que solo poseen el 2%.</p>
+            </div>
+            <span style="color:var(--a); font-weight:900">Ver Guía →</span>
+        </a>
+
+        <!-- Masculinas -->
+        <a href="/tipo-de-voz/tenor/" class="hub-card voice-male">
+            <div>
+                <span class="badge">Masculina · Alta</span>
+                <h2>Tenor</h2>
+                <p>Brillo, potencia y heroísmo. La voz que conquista los estadios.</p>
+            </div>
+            <span style="color:var(--p); font-weight:900">Ver Guía →</span>
+        </a>
+        <a href="/tipo-de-voz/baritono/" class="hub-card voice-male">
+            <div>
+                <span class="badge">Masculina · Media</span>
+                <h2>Barítono</h2>
+                <p>La elegancia y versatilidad personificada. El registro del hombre moderno.</p>
+            </div>
+            <span style="color:var(--p); font-weight:900">Ver Guía →</span>
+        </a>
+        <a href="/tipo-de-voz/bajo/" class="hub-card voice-male">
+            <div>
+                <span class="badge">Masculina · Grave</span>
+                <h2>Bajo</h2>
+                <p>Vibración pura y resonancia de pecho. El cimiento de todo grupo vocal.</p>
+            </div>
+            <span style="color:var(--p); font-weight:900">Ver Guía →</span>
+        </a>
+    </div>
+
+    <!-- Sección de Curiosidades e Historia -->
+    <section class="history-section">
+        <h2>Sabías que... <span class="grad">Historias Vocales</span></h2>
+        <div class="history-content">
+            <div class="history-item">
+                <h3>Los Castrati: El sacrificio por el arte</h3>
+                <p>En el siglo XVII y XVIII, existieron los *castrati*: cantantes varones que eran castrados antes de la pubertad para que su laringe no creciera. El resultado era una voz con el rango de una mujer pero con la potencia pulmonar de un hombre adulto. Eran las estrellas de rock de su época.</p>
+            </div>
+            <div class="history-item">
+                <h3>Voces Blancas: El tesoro antes del cambio</h3>
+                <p>Se llama "voz blanca" o infantil a la de los niños antes de la pubertad. No tienen hormonas que engrosen sus cuerdas vocales, lo que produce ese sonido puro y angélico que escuchamos en los coros infantiles de todo el mundo.</p>
+            </div>
+            <div class="history-item">
+                <h3>La "Muda" de la Voz</h3>
+                <p>Durante la adolescencia, el cartílago de la laringe crece (la famosa nuez de Adán en hombres). Esto hace que las cuerdas vocales se vuelvan más largas y gruesas, bajando el tono aproximadamente una octava en hombres y media en mujeres.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="cta-box">
+        <h2>¿Y tú? <span class="grad">Descubre tu lugar</span> en este mapa</h2>
+        <p style="color:var(--m); margin-top:1rem">No necesitas ser un castrati para tener una voz legendaria. Solo necesitas conocer tu potencial.</p>
+        <a href="/#app" class="btn-main">Analizar mi voz con IA →</a>
+    </div>
+</div>
+
+<footer style="padding:4rem; text-align:center; color:var(--m); font-size:0.85rem">
+    © 2026 Harmiq — Tu ADN Vocal Revelado
+</footer>
+
+</body>
+</html>

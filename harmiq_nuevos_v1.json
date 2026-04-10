@@ -1,0 +1,6680 @@
+{
+  "meta": {
+    "version": "nuevos_v1",
+    "total": 96
+  },
+  "singers": [
+    {
+      "id": "adam_levine",
+      "name": "Adam Levine",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2000s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "pop-rock",
+        "falsetto",
+        "radio"
+      ],
+      "reference_songs": [
+        {
+          "title": "Moves Like Jagger"
+        },
+        {
+          "title": "This Love"
+        },
+        {
+          "title": "She Will Be Loved"
+        },
+        {
+          "title": "Payphone"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 220,
+      "brillo": 2600,
+      "energy_rms": 0.088,
+      "range": {
+        "low_hz": 165,
+        "high_hz": 880
+      },
+      "vector": [
+        0.340659,
+        1.0,
+        1.0,
+        0.45283,
+        0.29097,
+        0.295294,
+        0.592,
+        0.34097,
+        0.58717,
+        0.34956,
+        0.358462,
+        0.367363,
+        0.471698,
+        0.75,
+        0.467396,
+        0.350936,
+        0.510769,
+        0.455849,
+        0.6,
+        0.342837,
+        0.502863,
+        0.374613,
+        0.4459,
+        0.38588,
+        0.585854,
+        0.467076,
+        0.590081
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "robbie_williams",
+      "name": "Robbie Williams",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2000s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "britpop",
+        "showman",
+        "nostalgic"
+      ],
+      "reference_songs": [
+        {
+          "title": "Angels"
+        },
+        {
+          "title": "Feel"
+        },
+        {
+          "title": "Rock DJ"
+        },
+        {
+          "title": "She's the One"
+        },
+        {
+          "title": "Let Me Entertain You"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 162,
+      "brillo": 1450,
+      "energy_rms": 0.082,
+      "range": {
+        "low_hz": 98,
+        "high_hz": 392
+      },
+      "vector": [
+        0.213187,
+        0.6125,
+        0.49,
+        0.235849,
+        0.270903,
+        0.281176,
+        0.300667,
+        0.270903,
+        0.764151,
+        0.261209,
+        0.269231,
+        0.297253,
+        0.341509,
+        0.495,
+        0.329614,
+        0.341906,
+        0.555385,
+        0.390755,
+        0.4725,
+        0.292689,
+        0.341132,
+        0.462613,
+        0.352723,
+        0.415933,
+        0.424714,
+        0.415281,
+        0.385783
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "lewis_capaldi",
+      "name": "Lewis Capaldi",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "emotional",
+        "ballad",
+        "confessional"
+      ],
+      "reference_songs": [
+        {
+          "title": "Someone You Loved"
+        },
+        {
+          "title": "Before You Go"
+        },
+        {
+          "title": "Wish You the Best"
+        },
+        {
+          "title": "Pointless"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 158,
+      "brillo": 1300,
+      "energy_rms": 0.078,
+      "range": {
+        "low_hz": 98,
+        "high_hz": 370
+      },
+      "vector": [
+        0.204396,
+        0.566667,
+        0.453333,
+        0.207547,
+        0.257525,
+        0.271765,
+        0.262667,
+        0.257525,
+        0.792453,
+        0.253736,
+        0.263077,
+        0.292418,
+        0.324528,
+        0.476667,
+        0.314777,
+        0.335886,
+        0.558462,
+        0.382264,
+        0.463333,
+        0.386241,
+        0.401554,
+        0.298001,
+        0.220564,
+        0.48389,
+        0.466651,
+        0.459679,
+        0.440366
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "james_arthur",
+      "name": "James Arthur",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "emotional",
+        "x-factor",
+        "pop-soul"
+      ],
+      "reference_songs": [
+        {
+          "title": "Say You Won't Let Go"
+        },
+        {
+          "title": "Recovery"
+        },
+        {
+          "title": "Impossible"
+        },
+        {
+          "title": "Can I Be Him"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 162,
+      "brillo": 1420,
+      "energy_rms": 0.086,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 380
+      },
+      "vector": [
+        0.213187,
+        0.583333,
+        0.466667,
+        0.230189,
+        0.284281,
+        0.290588,
+        0.293067,
+        0.284281,
+        0.769811,
+        0.261209,
+        0.269231,
+        0.297253,
+        0.338113,
+        0.483333,
+        0.32735,
+        0.347926,
+        0.555385,
+        0.389057,
+        0.466667,
+        0.388149,
+        0.464914,
+        0.390263,
+        0.361712,
+        0.568669,
+        0.422812,
+        0.399021,
+        0.424217
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "nick_jonas",
+      "name": "Nick Jonas",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "pop",
+        "r&b",
+        "falsetto"
+      ],
+      "reference_songs": [
+        {
+          "title": "Jealous"
+        },
+        {
+          "title": "Levels"
+        },
+        {
+          "title": "Burnin Up"
+        },
+        {
+          "title": "Close"
+        },
+        {
+          "title": "Chains"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 218,
+      "brillo": 2400,
+      "energy_rms": 0.085,
+      "range": {
+        "low_hz": 165,
+        "high_hz": 698
+      },
+      "vector": [
+        0.336264,
+        1.0,
+        0.888333,
+        0.415094,
+        0.280936,
+        0.288235,
+        0.541333,
+        0.330936,
+        0.624906,
+        0.345824,
+        0.355385,
+        0.364945,
+        0.449057,
+        0.694167,
+        0.450543,
+        0.346421,
+        0.512308,
+        0.444528,
+        0.572083,
+        0.280608,
+        0.358881,
+        0.247246,
+        0.346779,
+        0.274186,
+        0.370656,
+        0.345295,
+        0.421291
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "niall_horan",
+      "name": "Niall Horan",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "IE",
+      "style_tags": [
+        "folk-pop",
+        "1D",
+        "acoustic"
+      ],
+      "reference_songs": [
+        {
+          "title": "Slow Hands"
+        },
+        {
+          "title": "This Town"
+        },
+        {
+          "title": "Nice to Meet Ya"
+        },
+        {
+          "title": "Heaven"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 172,
+      "brillo": 1500,
+      "energy_rms": 0.074,
+      "range": {
+        "low_hz": 110,
+        "high_hz": 420
+      },
+      "vector": [
+        0.235165,
+        0.645833,
+        0.516667,
+        0.245283,
+        0.244147,
+        0.262353,
+        0.313333,
+        0.244147,
+        0.754717,
+        0.27989,
+        0.284615,
+        0.309341,
+        0.34717,
+        0.508333,
+        0.342179,
+        0.329866,
+        0.547692,
+        0.393585,
+        0.479167,
+        0.492646,
+        0.482477,
+        0.513046,
+        0.458507,
+        0.514555,
+        0.299465,
+        0.467991,
+        0.472249
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "louis_tomlinson",
+      "name": "Louis Tomlinson",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "indie-pop",
+        "1D",
+        "emotional"
+      ],
+      "reference_songs": [
+        {
+          "title": "Back to You"
+        },
+        {
+          "title": "Two of Us"
+        },
+        {
+          "title": "We Made It"
+        },
+        {
+          "title": "Walls"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 155,
+      "brillo": 1280,
+      "energy_rms": 0.071,
+      "range": {
+        "low_hz": 98,
+        "high_hz": 370
+      },
+      "vector": [
+        0.197802,
+        0.566667,
+        0.453333,
+        0.203774,
+        0.234114,
+        0.255294,
+        0.2576,
+        0.234114,
+        0.796226,
+        0.248132,
+        0.258462,
+        0.288791,
+        0.322264,
+        0.476667,
+        0.31063,
+        0.325351,
+        0.560769,
+        0.381132,
+        0.463333,
+        0.411203,
+        0.391417,
+        0.387556,
+        0.205479,
+        0.325437,
+        0.329156,
+        0.474597,
+        0.500368
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "olly_murs",
+      "name": "Olly Murs",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "pop",
+        "upbeat",
+        "british"
+      ],
+      "reference_songs": [
+        {
+          "title": "Troublemaker"
+        },
+        {
+          "title": "Heart Skips a Beat"
+        },
+        {
+          "title": "Dance With Me Tonight"
+        },
+        {
+          "title": "Wrapped Up"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 205,
+      "brillo": 2100,
+      "energy_rms": 0.08,
+      "range": {
+        "low_hz": 155,
+        "high_hz": 520
+      },
+      "vector": [
+        0.307692,
+        0.760417,
+        0.608333,
+        0.358491,
+        0.264214,
+        0.276471,
+        0.465333,
+        0.314214,
+        0.681509,
+        0.321538,
+        0.335385,
+        0.349231,
+        0.415094,
+        0.554167,
+        0.416473,
+        0.338896,
+        0.522308,
+        0.427547,
+        0.502083,
+        0.463565,
+        0.383638,
+        0.43435,
+        0.359416,
+        0.386903,
+        0.450076,
+        0.405946,
+        0.334035
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "james_morrison",
+      "name": "James Morrison",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2000s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "soul",
+        "acoustic",
+        "british"
+      ],
+      "reference_songs": [
+        {
+          "title": "You Give Me Something"
+        },
+        {
+          "title": "Broken Strings"
+        },
+        {
+          "title": "Please Don't Stop the Rain"
+        },
+        {
+          "title": "Up"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 208,
+      "brillo": 1900,
+      "energy_rms": 0.083,
+      "range": {
+        "low_hz": 155,
+        "high_hz": 540
+      },
+      "vector": [
+        0.314286,
+        0.802083,
+        0.641667,
+        0.320755,
+        0.274247,
+        0.283529,
+        0.414667,
+        0.324247,
+        0.719245,
+        0.327143,
+        0.34,
+        0.352857,
+        0.392453,
+        0.570833,
+        0.404016,
+        0.343411,
+        0.52,
+        0.416226,
+        0.510417,
+        0.343593,
+        0.450205,
+        0.255485,
+        0.453983,
+        0.442916,
+        0.484672,
+        0.43011,
+        0.4244
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "gavin_james",
+      "name": "Gavin James",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "IE",
+      "style_tags": [
+        "acoustic",
+        "emotional",
+        "irish"
+      ],
+      "reference_songs": [
+        {
+          "title": "Nervous"
+        },
+        {
+          "title": "Always"
+        },
+        {
+          "title": "Hearts on Fire"
+        },
+        {
+          "title": "Glow"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 160,
+      "brillo": 1350,
+      "energy_rms": 0.07,
+      "range": {
+        "low_hz": 98,
+        "high_hz": 380
+      },
+      "vector": [
+        0.208791,
+        0.5875,
+        0.47,
+        0.216981,
+        0.230769,
+        0.252941,
+        0.275333,
+        0.230769,
+        0.783019,
+        0.257473,
+        0.266154,
+        0.294835,
+        0.330189,
+        0.485,
+        0.320309,
+        0.323846,
+        0.556923,
+        0.385094,
+        0.4675,
+        0.319793,
+        0.398074,
+        0.305479,
+        0.534328,
+        0.323935,
+        0.422833,
+        0.397326,
+        0.442851
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "tom_grennan",
+      "name": "Tom Grennan",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "soul",
+        "indie",
+        "british"
+      ],
+      "reference_songs": [
+        {
+          "title": "Found What I've Been Looking For"
+        },
+        {
+          "title": "Little Bit of Love"
+        },
+        {
+          "title": "By Your Side"
+        },
+        {
+          "title": "Amen"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 168,
+      "brillo": 1450,
+      "energy_rms": 0.085,
+      "range": {
+        "low_hz": 105,
+        "high_hz": 400
+      },
+      "vector": [
+        0.226374,
+        0.614583,
+        0.491667,
+        0.235849,
+        0.280936,
+        0.288235,
+        0.300667,
+        0.280936,
+        0.764151,
+        0.272418,
+        0.278462,
+        0.304505,
+        0.341509,
+        0.495833,
+        0.334889,
+        0.346421,
+        0.550769,
+        0.390755,
+        0.472917,
+        0.381852,
+        0.376442,
+        0.442759,
+        0.411707,
+        0.591559,
+        0.402694,
+        0.319267,
+        0.409612
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "calum_scott",
+      "name": "Calum Scott",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "ballad",
+        "emotional",
+        "pop"
+      ],
+      "reference_songs": [
+        {
+          "title": "Dancing on My Own"
+        },
+        {
+          "title": "You Are the Reason"
+        },
+        {
+          "title": "Biblical"
+        },
+        {
+          "title": "If Our Love Is Wrong"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 210,
+      "brillo": 2000,
+      "energy_rms": 0.075,
+      "range": {
+        "low_hz": 155,
+        "high_hz": 523
+      },
+      "vector": [
+        0.318681,
+        0.766667,
+        0.613333,
+        0.339623,
+        0.247492,
+        0.264706,
+        0.44,
+        0.297492,
+        0.700377,
+        0.330879,
+        0.343077,
+        0.355275,
+        0.403774,
+        0.556667,
+        0.413322,
+        0.331371,
+        0.518462,
+        0.421887,
+        0.503333,
+        0.44035,
+        0.354542,
+        0.455107,
+        0.377176,
+        0.462319,
+        0.410234,
+        0.442067,
+        0.372784
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "giveon",
+      "name": "Giveon",
+      "voice_type": "bass-baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "r&b",
+      "genres": [
+        "r&b"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "deep",
+        "r&b",
+        "romantic",
+        "neo-soul"
+      ],
+      "reference_songs": [
+        {
+          "title": "Heartbreak Anniversary"
+        },
+        {
+          "title": "Like I Want You"
+        },
+        {
+          "title": "For Tonight"
+        },
+        {
+          "title": "Lies Again"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 112,
+      "brillo": 820,
+      "energy_rms": 0.058,
+      "range": {
+        "low_hz": 78,
+        "high_hz": 330
+      },
+      "vector": [
+        0.103297,
+        0.525,
+        0.42,
+        0.116981,
+        0.190635,
+        0.224706,
+        0.141067,
+        0.140635,
+        0.843019,
+        0.197802,
+        0.192308,
+        0.236813,
+        0.270189,
+        0.46,
+        0.238111,
+        0.305786,
+        0.593846,
+        0.355094,
+        0.455,
+        0.468909,
+        0.353923,
+        0.511576,
+        0.368779,
+        0.47642,
+        0.387097,
+        0.246285,
+        0.429449
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "daniel_caesar",
+      "name": "Daniel Caesar",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "r&b",
+      "genres": [
+        "r&b"
+      ],
+      "country_code": "CA",
+      "style_tags": [
+        "neo-soul",
+        "r&b",
+        "smooth"
+      ],
+      "reference_songs": [
+        {
+          "title": "Get You"
+        },
+        {
+          "title": "Best Part"
+        },
+        {
+          "title": "Peaches"
+        },
+        {
+          "title": "Blessed"
+        },
+        {
+          "title": "We Find Love"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 182,
+      "brillo": 1600,
+      "energy_rms": 0.065,
+      "range": {
+        "low_hz": 116,
+        "high_hz": 440
+      },
+      "vector": [
+        0.257143,
+        0.675,
+        0.54,
+        0.264151,
+        0.214047,
+        0.241176,
+        0.338667,
+        0.214047,
+        0.735849,
+        0.298571,
+        0.3,
+        0.321429,
+        0.358491,
+        0.52,
+        0.358518,
+        0.316321,
+        0.54,
+        0.399245,
+        0.485,
+        0.375592,
+        0.273033,
+        0.468727,
+        0.397696,
+        0.299048,
+        0.432831,
+        0.458959,
+        0.396816
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "khalid",
+      "name": "Khalid",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "r&b",
+      "genres": [
+        "r&b"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "r&b",
+        "teen",
+        "chill"
+      ],
+      "reference_songs": [
+        {
+          "title": "Location"
+        },
+        {
+          "title": "Young Dumb & Broke"
+        },
+        {
+          "title": "Talk"
+        },
+        {
+          "title": "Better"
+        },
+        {
+          "title": "Free Spirit"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 172,
+      "brillo": 1550,
+      "energy_rms": 0.068,
+      "range": {
+        "low_hz": 110,
+        "high_hz": 415
+      },
+      "vector": [
+        0.235165,
+        0.635417,
+        0.508333,
+        0.254717,
+        0.22408,
+        0.248235,
+        0.326,
+        0.22408,
+        0.745283,
+        0.27989,
+        0.284615,
+        0.309341,
+        0.35283,
+        0.504167,
+        0.345953,
+        0.320836,
+        0.547692,
+        0.396415,
+        0.477083,
+        0.501509,
+        0.329193,
+        0.340033,
+        0.359691,
+        0.357402,
+        0.333594,
+        0.508424,
+        0.359188
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "rex_orange_county",
+      "name": "Rex Orange County",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "indie",
+      "genres": [
+        "indie"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "indie",
+        "bedroom-pop",
+        "emotional"
+      ],
+      "reference_songs": [
+        {
+          "title": "Loving Is Easy"
+        },
+        {
+          "title": "Television / So Far So Good"
+        },
+        {
+          "title": "Best Friend"
+        },
+        {
+          "title": "Never Enough"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 200,
+      "brillo": 1850,
+      "energy_rms": 0.06,
+      "range": {
+        "low_hz": 150,
+        "high_hz": 480
+      },
+      "vector": [
+        0.296703,
+        0.6875,
+        0.55,
+        0.311321,
+        0.197324,
+        0.229412,
+        0.402,
+        0.247324,
+        0.728679,
+        0.312198,
+        0.327692,
+        0.343187,
+        0.386792,
+        0.525,
+        0.39321,
+        0.308796,
+        0.526154,
+        0.413396,
+        0.4875,
+        0.581928,
+        0.467502,
+        0.254145,
+        0.642085,
+        0.39357,
+        0.428698,
+        0.467621,
+        0.465862
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "jp_saxe",
+      "name": "JP Saxe",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "CA",
+      "style_tags": [
+        "acoustic",
+        "emotional",
+        "singer-songwriter"
+      ],
+      "reference_songs": [
+        {
+          "title": "If the World Was Ending"
+        },
+        {
+          "title": "Line by Line"
+        },
+        {
+          "title": "Like That"
+        },
+        {
+          "title": "3 Minutes"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 165,
+      "brillo": 1420,
+      "energy_rms": 0.064,
+      "range": {
+        "low_hz": 105,
+        "high_hz": 390
+      },
+      "vector": [
+        0.21978,
+        0.59375,
+        0.475,
+        0.230189,
+        0.210702,
+        0.238824,
+        0.293067,
+        0.210702,
+        0.769811,
+        0.266813,
+        0.273846,
+        0.300879,
+        0.338113,
+        0.4875,
+        0.329988,
+        0.314816,
+        0.553077,
+        0.389057,
+        0.46875,
+        0.477089,
+        0.505091,
+        0.503661,
+        0.368567,
+        0.380357,
+        0.444638,
+        0.47195,
+        0.383939
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "matt_shultz",
+      "name": "Matt Shultz",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "rock",
+      "genres": [
+        "rock"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "indie-rock",
+        "alternative",
+        "energetic"
+      ],
+      "reference_songs": [
+        {
+          "title": "Shake Me Down"
+        },
+        {
+          "title": "Ain't No Rest for the Wicked"
+        },
+        {
+          "title": "Come a Little Closer"
+        },
+        {
+          "title": "Mess Around"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 215,
+      "brillo": 2300,
+      "energy_rms": 0.11,
+      "range": {
+        "low_hz": 160,
+        "high_hz": 620
+      },
+      "vector": [
+        0.32967,
+        0.958333,
+        0.766667,
+        0.396226,
+        0.364548,
+        0.347059,
+        0.516,
+        0.414548,
+        0.643774,
+        0.34022,
+        0.350769,
+        0.361319,
+        0.437736,
+        0.633333,
+        0.440359,
+        0.384047,
+        0.514615,
+        0.438868,
+        0.541667,
+        0.325831,
+        0.38051,
+        0.444438,
+        0.420274,
+        0.494727,
+        0.293426,
+        0.383725,
+        0.496904
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "brandon_flowers",
+      "name": "Brandon Flowers",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2000s+",
+      "genre_category": "pop-rock",
+      "genres": [
+        "pop-rock"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "new-wave",
+        "indie-rock",
+        "glamour"
+      ],
+      "reference_songs": [
+        {
+          "title": "Mr. Brightside"
+        },
+        {
+          "title": "Somebody Told Me"
+        },
+        {
+          "title": "Human"
+        },
+        {
+          "title": "All These Things That I've Done"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 218,
+      "brillo": 2200,
+      "energy_rms": 0.095,
+      "range": {
+        "low_hz": 165,
+        "high_hz": 590
+      },
+      "vector": [
+        0.336264,
+        0.885417,
+        0.708333,
+        0.377358,
+        0.314381,
+        0.311765,
+        0.490667,
+        0.364381,
+        0.662642,
+        0.345824,
+        0.355385,
+        0.364945,
+        0.426415,
+        0.604167,
+        0.435449,
+        0.361472,
+        0.512308,
+        0.433208,
+        0.527083,
+        0.31057,
+        0.502113,
+        0.499878,
+        0.36857,
+        0.390494,
+        0.391611,
+        0.516219,
+        0.526901
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "dave_grohl",
+      "name": "Dave Grohl",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "1990s",
+      "genre_category": "rock",
+      "genres": [
+        "rock"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "rock",
+        "grunge",
+        "post-grunge",
+        "energetic"
+      ],
+      "reference_songs": [
+        {
+          "title": "Best of You"
+        },
+        {
+          "title": "Everlong"
+        },
+        {
+          "title": "Learn to Fly"
+        },
+        {
+          "title": "The Pretender"
+        },
+        {
+          "title": "These Days"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 158,
+      "brillo": 1650,
+      "energy_rms": 0.13,
+      "range": {
+        "low_hz": 98,
+        "high_hz": 420
+      },
+      "vector": [
+        0.204396,
+        0.670833,
+        0.536667,
+        0.273585,
+        0.431438,
+        0.394118,
+        0.351333,
+        0.431438,
+        0.726415,
+        0.253736,
+        0.263077,
+        0.292418,
+        0.364151,
+        0.518333,
+        0.341192,
+        0.414147,
+        0.558462,
+        0.402075,
+        0.484167,
+        0.415801,
+        0.339815,
+        0.35633,
+        0.437289,
+        0.503807,
+        0.32943,
+        0.370315,
+        0.434412
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "anthony_kiedis",
+      "name": "Anthony Kiedis",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "1990s",
+      "genre_category": "rock",
+      "genres": [
+        "rock"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "funk-rock",
+        "rap-rock",
+        "california"
+      ],
+      "reference_songs": [
+        {
+          "title": "Under the Bridge"
+        },
+        {
+          "title": "Californication"
+        },
+        {
+          "title": "Scar Tissue"
+        },
+        {
+          "title": "By the Way"
+        },
+        {
+          "title": "Soul to Squeeze"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 210,
+      "brillo": 2100,
+      "energy_rms": 0.108,
+      "range": {
+        "low_hz": 158,
+        "high_hz": 550
+      },
+      "vector": [
+        0.318681,
+        0.816667,
+        0.653333,
+        0.358491,
+        0.35786,
+        0.342353,
+        0.465333,
+        0.40786,
+        0.681509,
+        0.330879,
+        0.343077,
+        0.355275,
+        0.415094,
+        0.576667,
+        0.420869,
+        0.381037,
+        0.518462,
+        0.427547,
+        0.513333,
+        0.381901,
+        0.34975,
+        0.294996,
+        0.418039,
+        0.496149,
+        0.417145,
+        0.382984,
+        0.412699
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "scott_weiland",
+      "name": "Scott Weiland",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "1990s",
+      "genre_category": "rock",
+      "genres": [
+        "rock"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "grunge",
+        "alternative",
+        "90s"
+      ],
+      "reference_songs": [
+        {
+          "title": "Plush"
+        },
+        {
+          "title": "Creep"
+        },
+        {
+          "title": "Vasoline"
+        },
+        {
+          "title": "Tumble in the Rough"
+        },
+        {
+          "title": "Trippin on a Hole"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 162,
+      "brillo": 1700,
+      "energy_rms": 0.115,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 440
+      },
+      "vector": [
+        0.213187,
+        0.708333,
+        0.566667,
+        0.283019,
+        0.381271,
+        0.358824,
+        0.364,
+        0.381271,
+        0.716981,
+        0.261209,
+        0.269231,
+        0.297253,
+        0.369811,
+        0.533333,
+        0.348482,
+        0.391572,
+        0.555385,
+        0.404906,
+        0.491667,
+        0.372532,
+        0.361478,
+        0.238414,
+        0.410985,
+        0.511338,
+        0.454512,
+        0.356513,
+        0.43407
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "nick_cave",
+      "name": "Nick Cave",
+      "voice_type": "bass-baritone",
+      "gender": "male",
+      "era": "1980s",
+      "genre_category": "rock",
+      "genres": [
+        "rock"
+      ],
+      "country_code": "AU",
+      "style_tags": [
+        "post-punk",
+        "dark",
+        "poetic",
+        "literary"
+      ],
+      "reference_songs": [
+        {
+          "title": "Into My Arms"
+        },
+        {
+          "title": "Red Right Hand"
+        },
+        {
+          "title": "The Mercy Seat"
+        },
+        {
+          "title": "Push the Sky Away"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 108,
+      "brillo": 780,
+      "energy_rms": 0.055,
+      "range": {
+        "low_hz": 75,
+        "high_hz": 320
+      },
+      "vector": [
+        0.094505,
+        0.510417,
+        0.408333,
+        0.109434,
+        0.180602,
+        0.217647,
+        0.130933,
+        0.130602,
+        0.850566,
+        0.19033,
+        0.186154,
+        0.231978,
+        0.26566,
+        0.454167,
+        0.231576,
+        0.301271,
+        0.596923,
+        0.35283,
+        0.452083,
+        0.535727,
+        0.480675,
+        0.404067,
+        0.306038,
+        0.214835,
+        0.411094,
+        0.43128,
+        0.410337
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "tom_waits",
+      "name": "Tom Waits",
+      "voice_type": "bass",
+      "gender": "male",
+      "era": "1970s",
+      "genre_category": "blues",
+      "genres": [
+        "blues"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "jazz",
+        "blues",
+        "raspy",
+        "theatrical"
+      ],
+      "reference_songs": [
+        {
+          "title": "Downtown Train"
+        },
+        {
+          "title": "Tom Traubert's Blues"
+        },
+        {
+          "title": "Jersey Girl"
+        },
+        {
+          "title": "Ol' 55"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 98,
+      "brillo": 620,
+      "energy_rms": 0.048,
+      "range": {
+        "low_hz": 65,
+        "high_hz": 280
+      },
+      "vector": [
+        0.072527,
+        0.447917,
+        0.358333,
+        0.079245,
+        0.157191,
+        0.201176,
+        0.0904,
+        0.077191,
+        0.860755,
+        0.181648,
+        0.170769,
+        0.21989,
+        0.247547,
+        0.429167,
+        0.210709,
+        0.290736,
+        0.604615,
+        0.343774,
+        0.439583,
+        0.358365,
+        0.294031,
+        0.277113,
+        0.392177,
+        0.262884,
+        0.445818,
+        0.533577,
+        0.471547
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "sech",
+      "name": "Sech",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "reggaeton",
+      "genres": [
+        "reggaeton"
+      ],
+      "country_code": "PA",
+      "style_tags": [
+        "reggaeton",
+        "trap",
+        "panamanian"
+      ],
+      "reference_songs": [
+        {
+          "title": "Otro Trago"
+        },
+        {
+          "title": "11 PM"
+        },
+        {
+          "title": "Un Año"
+        },
+        {
+          "title": "Relación"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 170,
+      "brillo": 1580,
+      "energy_rms": 0.08,
+      "range": {
+        "low_hz": 108,
+        "high_hz": 415
+      },
+      "vector": [
+        0.230769,
+        0.639583,
+        0.511667,
+        0.260377,
+        0.264214,
+        0.276471,
+        0.3336,
+        0.264214,
+        0.739623,
+        0.276154,
+        0.281538,
+        0.306923,
+        0.356226,
+        0.505833,
+        0.346459,
+        0.338896,
+        0.549231,
+        0.398113,
+        0.477917,
+        0.377193,
+        0.290726,
+        0.453444,
+        0.387439,
+        0.473264,
+        0.345812,
+        0.343991,
+        0.336473
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "lunay",
+      "name": "Lunay",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "reggaeton",
+      "genres": [
+        "reggaeton"
+      ],
+      "country_code": "PR",
+      "style_tags": [
+        "reggaeton",
+        "latin-pop",
+        "young"
+      ],
+      "reference_songs": [
+        {
+          "title": "Soltera"
+        },
+        {
+          "title": "Perfecta"
+        },
+        {
+          "title": "El Apagón"
+        },
+        {
+          "title": "Tú Me Acostumbraste"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 198,
+      "brillo": 1950,
+      "energy_rms": 0.082,
+      "range": {
+        "low_hz": 148,
+        "high_hz": 495
+      },
+      "vector": [
+        0.292308,
+        0.722917,
+        0.578333,
+        0.330189,
+        0.270903,
+        0.281176,
+        0.427333,
+        0.320903,
+        0.709811,
+        0.308462,
+        0.324615,
+        0.340769,
+        0.398113,
+        0.539167,
+        0.398999,
+        0.341906,
+        0.527692,
+        0.419057,
+        0.494583,
+        0.455045,
+        0.386272,
+        0.399616,
+        0.49899,
+        0.482015,
+        0.476136,
+        0.310519,
+        0.42839
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "jhay_cortez",
+      "name": "Jhay Cortez",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "reggaeton",
+      "genres": [
+        "reggaeton"
+      ],
+      "country_code": "PR",
+      "style_tags": [
+        "urbano",
+        "reggaeton",
+        "melodic-trap"
+      ],
+      "reference_songs": [
+        {
+          "title": "No Me Conoce"
+        },
+        {
+          "title": "Dákiti"
+        },
+        {
+          "title": "Baila Baila Baila"
+        },
+        {
+          "title": "Vacío"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 202,
+      "brillo": 2000,
+      "energy_rms": 0.085,
+      "range": {
+        "low_hz": 150,
+        "high_hz": 510
+      },
+      "vector": [
+        0.301099,
+        0.75,
+        0.6,
+        0.339623,
+        0.280936,
+        0.288235,
+        0.44,
+        0.330936,
+        0.700377,
+        0.315934,
+        0.330769,
+        0.345604,
+        0.403774,
+        0.55,
+        0.406289,
+        0.346421,
+        0.524615,
+        0.421887,
+        0.5,
+        0.415126,
+        0.228901,
+        0.466083,
+        0.308042,
+        0.400824,
+        0.466955,
+        0.459776,
+        0.322663
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "paulo_londra",
+      "name": "Paulo Londra",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "trap",
+      "genres": [
+        "trap"
+      ],
+      "country_code": "AR",
+      "style_tags": [
+        "trap",
+        "argentino",
+        "melodic"
+      ],
+      "reference_songs": [
+        {
+          "title": "Adan y Eva"
+        },
+        {
+          "title": "Nena Maldición"
+        },
+        {
+          "title": "Tal Vez"
+        },
+        {
+          "title": "La Condena"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 162,
+      "brillo": 1480,
+      "energy_rms": 0.079,
+      "range": {
+        "low_hz": 102,
+        "high_hz": 400
+      },
+      "vector": [
+        0.213187,
+        0.620833,
+        0.496667,
+        0.241509,
+        0.26087,
+        0.274118,
+        0.308267,
+        0.26087,
+        0.758491,
+        0.261209,
+        0.269231,
+        0.297253,
+        0.344906,
+        0.498333,
+        0.331878,
+        0.337391,
+        0.555385,
+        0.392453,
+        0.474167,
+        0.42777,
+        0.332946,
+        0.354869,
+        0.266251,
+        0.407742,
+        0.42715,
+        0.428249,
+        0.41583
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "carlos_vives",
+      "name": "Carlos Vives",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2000s+",
+      "genre_category": "vallenato",
+      "genres": [
+        "vallenato"
+      ],
+      "country_code": "CO",
+      "style_tags": [
+        "vallenato",
+        "cumbia",
+        "colombiano"
+      ],
+      "reference_songs": [
+        {
+          "title": "La Bicicleta"
+        },
+        {
+          "title": "Volví a Nacer"
+        },
+        {
+          "title": "Fruta Fresca"
+        },
+        {
+          "title": "Corazón Profundo"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 168,
+      "brillo": 1520,
+      "energy_rms": 0.078,
+      "range": {
+        "low_hz": 106,
+        "high_hz": 405
+      },
+      "vector": [
+        0.226374,
+        0.622917,
+        0.498333,
+        0.249057,
+        0.257525,
+        0.271765,
+        0.3184,
+        0.257525,
+        0.750943,
+        0.272418,
+        0.278462,
+        0.304505,
+        0.349434,
+        0.499167,
+        0.340172,
+        0.335886,
+        0.550769,
+        0.394717,
+        0.474583,
+        0.322935,
+        0.46624,
+        0.316642,
+        0.353458,
+        0.317927,
+        0.422092,
+        0.400796,
+        0.35398
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "juan_luis_guerra",
+      "name": "Juan Luis Guerra",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "1990s",
+      "genre_category": "latin",
+      "genres": [
+        "latin"
+      ],
+      "country_code": "DO",
+      "style_tags": [
+        "bachata",
+        "merengue",
+        "romantic",
+        "dominicano"
+      ],
+      "reference_songs": [
+        {
+          "title": "Bachata Rosa"
+        },
+        {
+          "title": "Ojalá que Llueva Café"
+        },
+        {
+          "title": "Burbujas de Amor"
+        },
+        {
+          "title": "Frío Frío"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 208,
+      "brillo": 2050,
+      "energy_rms": 0.075,
+      "range": {
+        "low_hz": 155,
+        "high_hz": 520
+      },
+      "vector": [
+        0.314286,
+        0.760417,
+        0.608333,
+        0.349057,
+        0.247492,
+        0.264706,
+        0.452667,
+        0.297492,
+        0.690943,
+        0.327143,
+        0.34,
+        0.352857,
+        0.409434,
+        0.554167,
+        0.415337,
+        0.331371,
+        0.52,
+        0.424717,
+        0.502083,
+        0.339158,
+        0.381866,
+        0.444743,
+        0.389732,
+        0.318594,
+        0.512832,
+        0.359277,
+        0.51084
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "mora",
+      "name": "Mora",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "reggaeton",
+      "genres": [
+        "reggaeton"
+      ],
+      "country_code": "PR",
+      "style_tags": [
+        "urbano",
+        "trap",
+        "puerto-rico"
+      ],
+      "reference_songs": [
+        {
+          "title": "Porfa"
+        },
+        {
+          "title": "Ay Dios Mío"
+        },
+        {
+          "title": "Cuéntame"
+        },
+        {
+          "title": "Fantasía"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 165,
+      "brillo": 1500,
+      "energy_rms": 0.082,
+      "range": {
+        "low_hz": 104,
+        "high_hz": 395
+      },
+      "vector": [
+        0.21978,
+        0.60625,
+        0.485,
+        0.245283,
+        0.270903,
+        0.281176,
+        0.313333,
+        0.270903,
+        0.754717,
+        0.266813,
+        0.273846,
+        0.300879,
+        0.34717,
+        0.4925,
+        0.336025,
+        0.341906,
+        0.553077,
+        0.393585,
+        0.47125,
+        0.429813,
+        0.353444,
+        0.40455,
+        0.369038,
+        0.265502,
+        0.254762,
+        0.518797,
+        0.301259
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "blessd",
+      "name": "Blessd",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "urbano",
+      "genres": [
+        "urbano"
+      ],
+      "country_code": "CO",
+      "style_tags": [
+        "trap",
+        "colombiano",
+        "urbano"
+      ],
+      "reference_songs": [
+        {
+          "title": "Medallo"
+        },
+        {
+          "title": "Amor No Tiene Cura"
+        },
+        {
+          "title": "Medellín"
+        },
+        {
+          "title": "Antes de Que Salga el Sol"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 160,
+      "brillo": 1450,
+      "energy_rms": 0.085,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 390
+      },
+      "vector": [
+        0.208791,
+        0.604167,
+        0.483333,
+        0.235849,
+        0.280936,
+        0.288235,
+        0.300667,
+        0.280936,
+        0.764151,
+        0.257473,
+        0.266154,
+        0.294835,
+        0.341509,
+        0.491667,
+        0.327856,
+        0.346421,
+        0.556923,
+        0.390755,
+        0.470833,
+        0.415801,
+        0.339815,
+        0.35633,
+        0.437289,
+        0.503807,
+        0.32943,
+        0.370315,
+        0.434412
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "ryan_castro",
+      "name": "Ryan Castro",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "urbano",
+      "genres": [
+        "urbano"
+      ],
+      "country_code": "CO",
+      "style_tags": [
+        "urbano",
+        "trap-colombia"
+      ],
+      "reference_songs": [
+        {
+          "title": "Quien Soy Yo"
+        },
+        {
+          "title": "Tusa"
+        },
+        {
+          "title": "Feliz"
+        },
+        {
+          "title": "El Ganador"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 158,
+      "brillo": 1380,
+      "energy_rms": 0.083,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 385
+      },
+      "vector": [
+        0.204396,
+        0.59375,
+        0.475,
+        0.222642,
+        0.274247,
+        0.283529,
+        0.282933,
+        0.274247,
+        0.777358,
+        0.253736,
+        0.263077,
+        0.292418,
+        0.333585,
+        0.4875,
+        0.320815,
+        0.343411,
+        0.558462,
+        0.386792,
+        0.46875,
+        0.461936,
+        0.452667,
+        0.385933,
+        0.443449,
+        0.249065,
+        0.370984,
+        0.342483,
+        0.328441
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "boza",
+      "name": "Boza",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "reggaeton",
+      "genres": [
+        "reggaeton"
+      ],
+      "country_code": "PA",
+      "style_tags": [
+        "reggaeton",
+        "panamanian",
+        "melodic"
+      ],
+      "reference_songs": [
+        {
+          "title": "Hecha Pa Mi"
+        },
+        {
+          "title": "Siempre"
+        },
+        {
+          "title": "No Voy a Llorar"
+        },
+        {
+          "title": "Imagínate"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 196,
+      "brillo": 1900,
+      "energy_rms": 0.08,
+      "range": {
+        "low_hz": 145,
+        "high_hz": 485
+      },
+      "vector": [
+        0.287912,
+        0.708333,
+        0.566667,
+        0.320755,
+        0.264214,
+        0.276471,
+        0.414667,
+        0.314214,
+        0.719245,
+        0.304725,
+        0.321538,
+        0.338352,
+        0.392453,
+        0.533333,
+        0.393467,
+        0.338896,
+        0.529231,
+        0.416226,
+        0.491667,
+        0.482903,
+        0.490119,
+        0.419399,
+        0.392389,
+        0.446266,
+        0.412809,
+        0.322685,
+        0.376104
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "reik",
+      "name": "Reik",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2000s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "MX",
+      "style_tags": [
+        "pop",
+        "romantic",
+        "mexico"
+      ],
+      "reference_songs": [
+        {
+          "title": "Yo Quisiera"
+        },
+        {
+          "title": "Creo en Ti"
+        },
+        {
+          "title": "Noviembre Sin Ti"
+        },
+        {
+          "title": "Qué Vida La Mía"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 168,
+      "brillo": 1500,
+      "energy_rms": 0.074,
+      "range": {
+        "low_hz": 106,
+        "high_hz": 405
+      },
+      "vector": [
+        0.226374,
+        0.622917,
+        0.498333,
+        0.245283,
+        0.244147,
+        0.262353,
+        0.313333,
+        0.244147,
+        0.754717,
+        0.272418,
+        0.278462,
+        0.304505,
+        0.34717,
+        0.499167,
+        0.338663,
+        0.329866,
+        0.550769,
+        0.393585,
+        0.474583,
+        0.482073,
+        0.295614,
+        0.475497,
+        0.319975,
+        0.375136,
+        0.401634,
+        0.578668,
+        0.37157
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "piso_21",
+      "name": "Piso 21",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "latin-pop",
+      "genres": [
+        "latin-pop"
+      ],
+      "country_code": "CO",
+      "style_tags": [
+        "pop",
+        "latin",
+        "colombiano"
+      ],
+      "reference_songs": [
+        {
+          "title": "Sin Pijama"
+        },
+        {
+          "title": "Me Llamas"
+        },
+        {
+          "title": "Déjame Ir"
+        },
+        {
+          "title": "Contigo"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 165,
+      "brillo": 1480,
+      "energy_rms": 0.076,
+      "range": {
+        "low_hz": 104,
+        "high_hz": 400
+      },
+      "vector": [
+        0.21978,
+        0.616667,
+        0.493333,
+        0.241509,
+        0.250836,
+        0.267059,
+        0.308267,
+        0.250836,
+        0.758491,
+        0.266813,
+        0.273846,
+        0.300879,
+        0.344906,
+        0.496667,
+        0.334516,
+        0.332876,
+        0.553077,
+        0.392453,
+        0.473333,
+        0.363059,
+        0.402364,
+        0.294977,
+        0.312278,
+        0.317568,
+        0.459339,
+        0.541487,
+        0.449718
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "yandel",
+      "name": "Yandel",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2000s+",
+      "genre_category": "reggaeton",
+      "genres": [
+        "reggaeton"
+      ],
+      "country_code": "PR",
+      "style_tags": [
+        "reggaeton",
+        "duo",
+        "old-school"
+      ],
+      "reference_songs": [
+        {
+          "title": "Calentura"
+        },
+        {
+          "title": "Mayor que Yo"
+        },
+        {
+          "title": "Encantadora"
+        },
+        {
+          "title": "Moviendo Caderas"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 155,
+      "brillo": 1350,
+      "energy_rms": 0.088,
+      "range": {
+        "low_hz": 98,
+        "high_hz": 380
+      },
+      "vector": [
+        0.197802,
+        0.5875,
+        0.47,
+        0.216981,
+        0.29097,
+        0.295294,
+        0.275333,
+        0.29097,
+        0.783019,
+        0.248132,
+        0.258462,
+        0.288791,
+        0.330189,
+        0.485,
+        0.315913,
+        0.350936,
+        0.560769,
+        0.385094,
+        0.4675,
+        0.501719,
+        0.281678,
+        0.445958,
+        0.453655,
+        0.324952,
+        0.523199,
+        0.397031,
+        0.329621
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "los_planetas",
+      "name": "Los Planetas",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "1990s",
+      "genre_category": "indie-rock",
+      "genres": [
+        "indie-rock"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "indie",
+        "shoegaze",
+        "español"
+      ],
+      "reference_songs": [
+        {
+          "title": "Segundo Premio"
+        },
+        {
+          "title": "Corrientes Circulares del Tiempo"
+        },
+        {
+          "title": "Mi Hermana Pequeña"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 162,
+      "brillo": 1650,
+      "energy_rms": 0.095,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 400
+      },
+      "vector": [
+        0.213187,
+        0.625,
+        0.5,
+        0.273585,
+        0.314381,
+        0.311765,
+        0.351333,
+        0.314381,
+        0.726415,
+        0.261209,
+        0.269231,
+        0.297253,
+        0.364151,
+        0.5,
+        0.344709,
+        0.361472,
+        0.555385,
+        0.402075,
+        0.475,
+        0.424049,
+        0.42248,
+        0.39303,
+        0.462522,
+        0.473269,
+        0.314629,
+        0.426484,
+        0.371039
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "nathy_peluso",
+      "name": "Nathy Peluso",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "AR",
+      "style_tags": [
+        "avant-pop",
+        "jazz",
+        "argentina",
+        "experimental"
+      ],
+      "reference_songs": [
+        {
+          "title": "Calambre"
+        },
+        {
+          "title": "Bzrp Music Sessions #36"
+        },
+        {
+          "title": "Santa"
+        },
+        {
+          "title": "Sana Sana"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 248,
+      "brillo": 2600,
+      "energy_rms": 0.092,
+      "range": {
+        "low_hz": 175,
+        "high_hz": 700
+      },
+      "vector": [
+        0.402198,
+        1.0,
+        0.875,
+        0.45283,
+        0.304348,
+        0.304706,
+        0.592,
+        0.324348,
+        0.57717,
+        0.421868,
+        0.401538,
+        0.401209,
+        0.471698,
+        0.6875,
+        0.492011,
+        0.356957,
+        0.489231,
+        0.455849,
+        0.56875,
+        0.330022,
+        0.445394,
+        0.438858,
+        0.410273,
+        0.401395,
+        0.484772,
+        0.349363,
+        0.487647
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "el_kanka",
+      "name": "El Kanka",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "folk",
+        "acústico",
+        "español"
+      ],
+      "reference_songs": [
+        {
+          "title": "Tus Padres"
+        },
+        {
+          "title": "Querida Isabel"
+        },
+        {
+          "title": "Gracias"
+        },
+        {
+          "title": "Con Tu Amor"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 165,
+      "brillo": 1480,
+      "energy_rms": 0.07,
+      "range": {
+        "low_hz": 104,
+        "high_hz": 398
+      },
+      "vector": [
+        0.21978,
+        0.6125,
+        0.49,
+        0.241509,
+        0.230769,
+        0.252941,
+        0.308267,
+        0.230769,
+        0.758491,
+        0.266813,
+        0.273846,
+        0.300879,
+        0.344906,
+        0.495,
+        0.334516,
+        0.323846,
+        0.553077,
+        0.392453,
+        0.4725,
+        0.363059,
+        0.402364,
+        0.294977,
+        0.312278,
+        0.317568,
+        0.459339,
+        0.541487,
+        0.449718
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "coque_malla",
+      "name": "Coque Malla",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2000s+",
+      "genre_category": "rock",
+      "genres": [
+        "rock"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "pop-rock",
+        "indie",
+        "madrid"
+      ],
+      "reference_songs": [
+        {
+          "title": "Si Tú Me Dices Ven"
+        },
+        {
+          "title": "No Puedo Vivir Sin Ti"
+        },
+        {
+          "title": "El Demonio en el Ángel"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 160,
+      "brillo": 1600,
+      "energy_rms": 0.085,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 395
+      },
+      "vector": [
+        0.208791,
+        0.614583,
+        0.491667,
+        0.264151,
+        0.280936,
+        0.288235,
+        0.338667,
+        0.280936,
+        0.735849,
+        0.257473,
+        0.266154,
+        0.294835,
+        0.358491,
+        0.495833,
+        0.339177,
+        0.346421,
+        0.556923,
+        0.399245,
+        0.472917,
+        0.326024,
+        0.441792,
+        0.449606,
+        0.335885,
+        0.374329,
+        0.276242,
+        0.317776,
+        0.220871
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "mikel_erentxun",
+      "name": "Mikel Erentxun",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "1990s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "pop",
+        "acústico",
+        "vasco"
+      ],
+      "reference_songs": [
+        {
+          "title": "Sin Ti"
+        },
+        {
+          "title": "Un Año Más"
+        },
+        {
+          "title": "Pájaros en la Cabeza"
+        },
+        {
+          "title": "Para Siempre"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 162,
+      "brillo": 1520,
+      "energy_rms": 0.072,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 390
+      },
+      "vector": [
+        0.213187,
+        0.604167,
+        0.483333,
+        0.249057,
+        0.237458,
+        0.257647,
+        0.3184,
+        0.237458,
+        0.750943,
+        0.261209,
+        0.269231,
+        0.297253,
+        0.349434,
+        0.491667,
+        0.334897,
+        0.326856,
+        0.555385,
+        0.394717,
+        0.470833,
+        0.204953,
+        0.319015,
+        0.350461,
+        0.443201,
+        0.421876,
+        0.405334,
+        0.358647,
+        0.339952
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "bts__v_",
+      "name": "BTS (V)",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "k-pop",
+      "genres": [
+        "k-pop"
+      ],
+      "country_code": "KR",
+      "style_tags": [
+        "k-pop",
+        "baritone",
+        "deep",
+        "romantic"
+      ],
+      "reference_songs": [
+        {
+          "title": "Singularity"
+        },
+        {
+          "title": "Inner Child"
+        },
+        {
+          "title": "Blue & Grey"
+        },
+        {
+          "title": "Christmas Tree"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 148,
+      "brillo": 1350,
+      "energy_rms": 0.075,
+      "range": {
+        "low_hz": 94,
+        "high_hz": 390
+      },
+      "vector": [
+        0.182418,
+        0.616667,
+        0.493333,
+        0.216981,
+        0.247492,
+        0.264706,
+        0.275333,
+        0.247492,
+        0.783019,
+        0.235055,
+        0.247692,
+        0.28033,
+        0.330189,
+        0.496667,
+        0.309759,
+        0.331371,
+        0.566154,
+        0.385094,
+        0.473333,
+        0.3368,
+        0.30909,
+        0.425025,
+        0.448056,
+        0.4117,
+        0.430236,
+        0.476363,
+        0.336012
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "bts__jin_",
+      "name": "BTS (Jin)",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "k-pop",
+      "genres": [
+        "k-pop"
+      ],
+      "country_code": "KR",
+      "style_tags": [
+        "k-pop",
+        "ballad",
+        "clear-voice"
+      ],
+      "reference_songs": [
+        {
+          "title": "Epiphany"
+        },
+        {
+          "title": "Moon"
+        },
+        {
+          "title": "Awake"
+        },
+        {
+          "title": "Yours"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 218,
+      "brillo": 2300,
+      "energy_rms": 0.078,
+      "range": {
+        "low_hz": 164,
+        "high_hz": 580
+      },
+      "vector": [
+        0.336264,
+        0.866667,
+        0.693333,
+        0.396226,
+        0.257525,
+        0.271765,
+        0.516,
+        0.307525,
+        0.643774,
+        0.345824,
+        0.355385,
+        0.364945,
+        0.437736,
+        0.596667,
+        0.442996,
+        0.335886,
+        0.512308,
+        0.438868,
+        0.523333,
+        0.625959,
+        0.413951,
+        0.411303,
+        0.447584,
+        0.364857,
+        0.468405,
+        0.329035,
+        0.453729
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "bts__jimin_",
+      "name": "BTS (Jimin)",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "k-pop",
+      "genres": [
+        "k-pop"
+      ],
+      "country_code": "KR",
+      "style_tags": [
+        "k-pop",
+        "falsetto",
+        "dance"
+      ],
+      "reference_songs": [
+        {
+          "title": "Filter"
+        },
+        {
+          "title": "Lie"
+        },
+        {
+          "title": "Promise"
+        },
+        {
+          "title": "Set Me Free Pt.2"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 225,
+      "brillo": 2500,
+      "energy_rms": 0.08,
+      "range": {
+        "low_hz": 168,
+        "high_hz": 640
+      },
+      "vector": [
+        0.351648,
+        0.983333,
+        0.786667,
+        0.433962,
+        0.264214,
+        0.276471,
+        0.566667,
+        0.314214,
+        0.606038,
+        0.358901,
+        0.366154,
+        0.373407,
+        0.460377,
+        0.643333,
+        0.464244,
+        0.338896,
+        0.506923,
+        0.450189,
+        0.546667,
+        0.381238,
+        0.351231,
+        0.436097,
+        0.443992,
+        0.342087,
+        0.446746,
+        0.414931,
+        0.499396
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "exo__d_o__",
+      "name": "EXO (D.O.)",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "k-pop",
+      "genres": [
+        "k-pop"
+      ],
+      "country_code": "KR",
+      "style_tags": [
+        "k-pop",
+        "ballad",
+        "soulful"
+      ],
+      "reference_songs": [
+        {
+          "title": "That's Okay"
+        },
+        {
+          "title": "Crying Out"
+        },
+        {
+          "title": "What Is Love"
+        },
+        {
+          "title": "Mars"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 162,
+      "brillo": 1450,
+      "energy_rms": 0.074,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 392
+      },
+      "vector": [
+        0.213187,
+        0.608333,
+        0.486667,
+        0.235849,
+        0.244147,
+        0.262353,
+        0.300667,
+        0.244147,
+        0.764151,
+        0.261209,
+        0.269231,
+        0.297253,
+        0.341509,
+        0.493333,
+        0.329614,
+        0.329866,
+        0.555385,
+        0.390755,
+        0.471667,
+        0.292689,
+        0.341132,
+        0.462613,
+        0.352723,
+        0.415933,
+        0.424714,
+        0.415281,
+        0.385783
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "exo__chen_",
+      "name": "EXO (Chen)",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "k-pop",
+      "genres": [
+        "k-pop"
+      ],
+      "country_code": "KR",
+      "style_tags": [
+        "k-pop",
+        "r&b",
+        "ballad"
+      ],
+      "reference_songs": [
+        {
+          "title": "Beautiful Goodbye"
+        },
+        {
+          "title": "Make It Count"
+        },
+        {
+          "title": "Give Me a Chance"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 222,
+      "brillo": 2350,
+      "energy_rms": 0.078,
+      "range": {
+        "low_hz": 165,
+        "high_hz": 600
+      },
+      "vector": [
+        0.345055,
+        0.90625,
+        0.725,
+        0.40566,
+        0.257525,
+        0.271765,
+        0.528667,
+        0.307525,
+        0.63434,
+        0.353297,
+        0.361538,
+        0.36978,
+        0.443396,
+        0.6125,
+        0.450286,
+        0.335886,
+        0.509231,
+        0.441698,
+        0.53125,
+        0.476396,
+        0.403799,
+        0.3595,
+        0.208078,
+        0.557069,
+        0.248131,
+        0.447288,
+        0.562616
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "rosé__blackpink_",
+      "name": "Rosé (BLACKPINK)",
+      "voice_type": "soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "k-pop",
+      "genres": [
+        "k-pop"
+      ],
+      "country_code": "KR",
+      "style_tags": [
+        "k-pop",
+        "soprano",
+        "airy",
+        "sweet"
+      ],
+      "reference_songs": [
+        {
+          "title": "On The Ground"
+        },
+        {
+          "title": "Gone"
+        },
+        {
+          "title": "You & Me"
+        },
+        {
+          "title": "Hard to Love"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 318,
+      "brillo": 3200,
+      "energy_rms": 0.082,
+      "range": {
+        "low_hz": 220,
+        "high_hz": 880
+      },
+      "vector": [
+        0.556044,
+        1.0,
+        1.0,
+        0.566038,
+        0.270903,
+        0.281176,
+        0.744,
+        0.350903,
+        0.493962,
+        0.522637,
+        0.509231,
+        0.485824,
+        0.539623,
+        0.75,
+        0.598833,
+        0.341906,
+        0.435385,
+        0.489811,
+        0.6,
+        0.489017,
+        0.410288,
+        0.337999,
+        0.466417,
+        0.377501,
+        0.291115,
+        0.414248,
+        0.432756
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "jisoo__blackpink_",
+      "name": "Jisoo (BLACKPINK)",
+      "voice_type": "soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "k-pop",
+      "genres": [
+        "k-pop"
+      ],
+      "country_code": "KR",
+      "style_tags": [
+        "k-pop",
+        "soprano",
+        "breathy"
+      ],
+      "reference_songs": [
+        {
+          "title": "Flower"
+        },
+        {
+          "title": "MAN"
+        },
+        {
+          "title": "All Eyes on Me"
+        },
+        {
+          "title": "Clarity"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 330,
+      "brillo": 3100,
+      "energy_rms": 0.078,
+      "range": {
+        "low_hz": 220,
+        "high_hz": 900
+      },
+      "vector": [
+        0.582418,
+        1.0,
+        1.0,
+        0.54717,
+        0.257525,
+        0.271765,
+        0.718667,
+        0.337525,
+        0.51283,
+        0.545055,
+        0.527692,
+        0.50033,
+        0.528302,
+        0.75,
+        0.601835,
+        0.335886,
+        0.426154,
+        0.484151,
+        0.6,
+        0.399963,
+        0.428675,
+        0.315397,
+        0.272451,
+        0.31426,
+        0.406748,
+        0.452504,
+        0.379431
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "lisa__blackpink_",
+      "name": "Lisa (BLACKPINK)",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "k-pop",
+      "genres": [
+        "k-pop"
+      ],
+      "country_code": "TH",
+      "style_tags": [
+        "k-pop",
+        "rap",
+        "performer",
+        "thai"
+      ],
+      "reference_songs": [
+        {
+          "title": "LALISA"
+        },
+        {
+          "title": "Money"
+        },
+        {
+          "title": "Rockstar"
+        },
+        {
+          "title": "New Woman"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 265,
+      "brillo": 2900,
+      "energy_rms": 0.095,
+      "range": {
+        "low_hz": 190,
+        "high_hz": 720
+      },
+      "vector": [
+        0.43956,
+        1.0,
+        0.883333,
+        0.509434,
+        0.314381,
+        0.311765,
+        0.668,
+        0.334381,
+        0.520566,
+        0.453626,
+        0.427692,
+        0.421758,
+        0.50566,
+        0.691667,
+        0.529598,
+        0.361472,
+        0.476154,
+        0.47283,
+        0.570833,
+        0.45367,
+        0.310747,
+        0.351932,
+        0.438328,
+        0.561996,
+        0.402346,
+        0.306388,
+        0.326844
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "diana_krall",
+      "name": "Diana Krall",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2000s+",
+      "genre_category": "jazz",
+      "genres": [
+        "jazz"
+      ],
+      "country_code": "CA",
+      "style_tags": [
+        "jazz",
+        "piano",
+        "elegant",
+        "smooth"
+      ],
+      "reference_songs": [
+        {
+          "title": "The Look of Love"
+        },
+        {
+          "title": "Cry Me a River"
+        },
+        {
+          "title": "Just the Way You Are"
+        },
+        {
+          "title": "Feeling Good"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 252,
+      "brillo": 1900,
+      "energy_rms": 0.052,
+      "range": {
+        "low_hz": 175,
+        "high_hz": 660
+      },
+      "vector": [
+        0.410989,
+        1.0,
+        0.808333,
+        0.320755,
+        0.170569,
+        0.210588,
+        0.414667,
+        0.190569,
+        0.709245,
+        0.429341,
+        0.407692,
+        0.406044,
+        0.392453,
+        0.654167,
+        0.442697,
+        0.296756,
+        0.486154,
+        0.416226,
+        0.552083,
+        0.356535,
+        0.454911,
+        0.4134,
+        0.43301,
+        0.393569,
+        0.398877,
+        0.399174,
+        0.351386
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "kesha",
+      "name": "Kesha",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2010s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "pop",
+        "party",
+        "empowerment"
+      ],
+      "reference_songs": [
+        {
+          "title": "TiK ToK"
+        },
+        {
+          "title": "We R Who We R"
+        },
+        {
+          "title": "Blow"
+        },
+        {
+          "title": "Rainbow"
+        },
+        {
+          "title": "Woman"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 242,
+      "brillo": 2700,
+      "energy_rms": 0.1,
+      "range": {
+        "low_hz": 170,
+        "high_hz": 680
+      },
+      "vector": [
+        0.389011,
+        1.0,
+        0.85,
+        0.471698,
+        0.331104,
+        0.323529,
+        0.617333,
+        0.351104,
+        0.558302,
+        0.410659,
+        0.392308,
+        0.393956,
+        0.483019,
+        0.675,
+        0.494284,
+        0.368997,
+        0.493846,
+        0.461509,
+        0.5625,
+        0.29014,
+        0.354488,
+        0.236403,
+        0.382778,
+        0.343178,
+        0.326878,
+        0.359302,
+        0.422591
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "megan_thee_stallion",
+      "name": "Megan Thee Stallion",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "hip-hop",
+      "genres": [
+        "hip-hop"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "rap",
+        "hip-hop",
+        "texas",
+        "empowerment"
+      ],
+      "reference_songs": [
+        {
+          "title": "Savage"
+        },
+        {
+          "title": "Hot Girl Summer"
+        },
+        {
+          "title": "WAP"
+        },
+        {
+          "title": "Thot Shit"
+        },
+        {
+          "title": "Traumazine"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 238,
+      "brillo": 2650,
+      "energy_rms": 0.108,
+      "range": {
+        "low_hz": 168,
+        "high_hz": 660
+      },
+      "vector": [
+        0.38022,
+        1.0,
+        0.82,
+        0.462264,
+        0.35786,
+        0.342353,
+        0.604667,
+        0.37786,
+        0.567736,
+        0.403187,
+        0.386154,
+        0.389121,
+        0.477358,
+        0.66,
+        0.486994,
+        0.381037,
+        0.496923,
+        0.458679,
+        0.555,
+        0.405958,
+        0.533969,
+        0.404134,
+        0.344023,
+        0.310568,
+        0.488555,
+        0.297866,
+        0.311148
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "toni_braxton",
+      "name": "Toni Braxton",
+      "voice_type": "contralto",
+      "gender": "female",
+      "era": "1990s",
+      "genre_category": "r&b",
+      "genres": [
+        "r&b"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "r&b",
+        "soul",
+        "deep",
+        "sensual"
+      ],
+      "reference_songs": [
+        {
+          "title": "Un-Break My Heart"
+        },
+        {
+          "title": "He Wasn't Man Enough"
+        },
+        {
+          "title": "Breathe Again"
+        },
+        {
+          "title": "Babyface"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 182,
+      "brillo": 1200,
+      "energy_rms": 0.06,
+      "range": {
+        "low_hz": 130,
+        "high_hz": 480
+      },
+      "vector": [
+        0.257143,
+        0.729167,
+        0.583333,
+        0.188679,
+        0.197324,
+        0.229412,
+        0.237333,
+        0.157324,
+        0.791321,
+        0.318571,
+        0.3,
+        0.321429,
+        0.313208,
+        0.541667,
+        0.328329,
+        0.308796,
+        0.54,
+        0.376604,
+        0.495833,
+        0.358613,
+        0.355956,
+        0.318188,
+        0.50115,
+        0.408003,
+        0.531584,
+        0.372162,
+        0.401909
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "jennifer_lopez",
+      "name": "Jennifer Lopez",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2000s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "pop",
+        "latin",
+        "dance",
+        "performer"
+      ],
+      "reference_songs": [
+        {
+          "title": "On the Floor"
+        },
+        {
+          "title": "Love Don't Cost a Thing"
+        },
+        {
+          "title": "Jenny from the Block"
+        },
+        {
+          "title": "Waiting for Tonight"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 242,
+      "brillo": 2500,
+      "energy_rms": 0.088,
+      "range": {
+        "low_hz": 170,
+        "high_hz": 680
+      },
+      "vector": [
+        0.389011,
+        1.0,
+        0.85,
+        0.433962,
+        0.29097,
+        0.295294,
+        0.566667,
+        0.31097,
+        0.596038,
+        0.410659,
+        0.392308,
+        0.393956,
+        0.460377,
+        0.675,
+        0.479189,
+        0.350936,
+        0.493846,
+        0.450189,
+        0.5625,
+        0.473809,
+        0.337699,
+        0.469985,
+        0.29137,
+        0.4508,
+        0.428399,
+        0.453702,
+        0.318705
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "p_nk",
+      "name": "P!nk",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2000s+",
+      "genre_category": "pop-rock",
+      "genres": [
+        "pop-rock"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "pop-rock",
+        "powerful",
+        "feminist",
+        "raw"
+      ],
+      "reference_songs": [
+        {
+          "title": "Just Give Me a Reason"
+        },
+        {
+          "title": "Try"
+        },
+        {
+          "title": "Raise Your Glass"
+        },
+        {
+          "title": "So What"
+        },
+        {
+          "title": "Just Like a Pill"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 248,
+      "brillo": 2600,
+      "energy_rms": 0.115,
+      "range": {
+        "low_hz": 172,
+        "high_hz": 700
+      },
+      "vector": [
+        0.402198,
+        1.0,
+        0.88,
+        0.45283,
+        0.381271,
+        0.358824,
+        0.592,
+        0.401271,
+        0.57717,
+        0.421868,
+        0.401538,
+        0.401209,
+        0.471698,
+        0.69,
+        0.492011,
+        0.391572,
+        0.489231,
+        0.455849,
+        0.57,
+        0.330022,
+        0.445394,
+        0.438858,
+        0.410273,
+        0.401395,
+        0.484772,
+        0.349363,
+        0.487647
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "erykah_badu",
+      "name": "Erykah Badu",
+      "voice_type": "contralto",
+      "gender": "female",
+      "era": "1990s",
+      "genre_category": "r&b",
+      "genres": [
+        "r&b"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "neo-soul",
+        "r&b",
+        "soulful",
+        "spiritual"
+      ],
+      "reference_songs": [
+        {
+          "title": "On & On"
+        },
+        {
+          "title": "Bag Lady"
+        },
+        {
+          "title": "Tyrone"
+        },
+        {
+          "title": "Next Lifetime"
+        },
+        {
+          "title": "Didn't Cha Know"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 185,
+      "brillo": 1300,
+      "energy_rms": 0.055,
+      "range": {
+        "low_hz": 130,
+        "high_hz": 490
+      },
+      "vector": [
+        0.263736,
+        0.75,
+        0.6,
+        0.207547,
+        0.180602,
+        0.217647,
+        0.262667,
+        0.140602,
+        0.772453,
+        0.324176,
+        0.304615,
+        0.325055,
+        0.324528,
+        0.55,
+        0.338513,
+        0.301271,
+        0.537692,
+        0.382264,
+        0.5,
+        0.297309,
+        0.315467,
+        0.379231,
+        0.275342,
+        0.339218,
+        0.435886,
+        0.328853,
+        0.482922
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "india_arie",
+      "name": "India.Arie",
+      "voice_type": "contralto",
+      "gender": "female",
+      "era": "2000s+",
+      "genre_category": "r&b",
+      "genres": [
+        "r&b"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "neo-soul",
+        "acoustic",
+        "empowerment",
+        "natural"
+      ],
+      "reference_songs": [
+        {
+          "title": "Video"
+        },
+        {
+          "title": "I Am Not My Hair"
+        },
+        {
+          "title": "Ready for Love"
+        },
+        {
+          "title": "Testimony"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 192,
+      "brillo": 1380,
+      "energy_rms": 0.058,
+      "range": {
+        "low_hz": 135,
+        "high_hz": 500
+      },
+      "vector": [
+        0.279121,
+        0.760417,
+        0.608333,
+        0.222642,
+        0.190635,
+        0.224706,
+        0.282933,
+        0.150635,
+        0.757358,
+        0.337253,
+        0.315385,
+        0.333516,
+        0.333585,
+        0.554167,
+        0.350705,
+        0.305786,
+        0.532308,
+        0.386792,
+        0.502083,
+        0.488469,
+        0.280207,
+        0.276898,
+        0.34591,
+        0.404584,
+        0.473552,
+        0.386251,
+        0.346665
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "jhené_aiko",
+      "name": "Jhené Aiko",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "r&b",
+      "genres": [
+        "r&b"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "r&b",
+        "dream-pop",
+        "emotional",
+        "airy"
+      ],
+      "reference_songs": [
+        {
+          "title": "The Worst"
+        },
+        {
+          "title": "While We're Young"
+        },
+        {
+          "title": "Bed Peace"
+        },
+        {
+          "title": "Sativa"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 255,
+      "brillo": 2400,
+      "energy_rms": 0.058,
+      "range": {
+        "low_hz": 178,
+        "high_hz": 680
+      },
+      "vector": [
+        0.417582,
+        1.0,
+        0.836667,
+        0.415094,
+        0.190635,
+        0.224706,
+        0.541333,
+        0.210635,
+        0.614906,
+        0.434945,
+        0.412308,
+        0.40967,
+        0.449057,
+        0.668333,
+        0.483071,
+        0.305786,
+        0.483846,
+        0.444528,
+        0.559167,
+        0.328085,
+        0.48496,
+        0.489806,
+        0.418958,
+        0.268717,
+        0.336167,
+        0.455214,
+        0.325462
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "solange",
+      "name": "Solange",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2010s",
+      "genre_category": "r&b",
+      "genres": [
+        "r&b"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "r&b",
+        "avant-garde",
+        "art-pop",
+        "soulful"
+      ],
+      "reference_songs": [
+        {
+          "title": "Cranes in the Sky"
+        },
+        {
+          "title": "Don't Touch My Hair"
+        },
+        {
+          "title": "Mad"
+        },
+        {
+          "title": "Losing You"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 250,
+      "brillo": 2350,
+      "energy_rms": 0.065,
+      "range": {
+        "low_hz": 175,
+        "high_hz": 660
+      },
+      "vector": [
+        0.406593,
+        1.0,
+        0.808333,
+        0.40566,
+        0.214047,
+        0.241176,
+        0.528667,
+        0.234047,
+        0.62434,
+        0.425604,
+        0.404615,
+        0.403626,
+        0.443396,
+        0.654167,
+        0.474902,
+        0.316321,
+        0.487692,
+        0.441698,
+        0.552083,
+        0.38709,
+        0.423794,
+        0.399854,
+        0.427627,
+        0.474356,
+        0.368094,
+        0.336282,
+        0.443742
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "reneé_rapp",
+      "name": "Reneé Rapp",
+      "voice_type": "soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "pop",
+        "theatrical",
+        "broadway",
+        "powerful"
+      ],
+      "reference_songs": [
+        {
+          "title": "Too Well"
+        },
+        {
+          "title": "Pretty Girls"
+        },
+        {
+          "title": "Snow Angel"
+        },
+        {
+          "title": "Tummy Hurts"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 345,
+      "brillo": 3500,
+      "energy_rms": 0.082,
+      "range": {
+        "low_hz": 235,
+        "high_hz": 950
+      },
+      "vector": [
+        0.615385,
+        1.0,
+        1.0,
+        0.622642,
+        0.270903,
+        0.281176,
+        0.82,
+        0.350903,
+        0.437358,
+        0.573077,
+        0.550769,
+        0.518462,
+        0.573585,
+        0.75,
+        0.64521,
+        0.341906,
+        0.414615,
+        0.506792,
+        0.6,
+        0.346717,
+        0.480964,
+        0.459485,
+        0.444779,
+        0.2,
+        0.406086,
+        0.293894,
+        0.391866
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "victoria_monét",
+      "name": "Victoria Monét",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "r&b",
+      "genres": [
+        "r&b"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "r&b",
+        "neo-soul",
+        "retro",
+        "sensual"
+      ],
+      "reference_songs": [
+        {
+          "title": "On My Mama"
+        },
+        {
+          "title": "Smoke"
+        },
+        {
+          "title": "Alright"
+        },
+        {
+          "title": "Coastin"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 252,
+      "brillo": 2500,
+      "energy_rms": 0.072,
+      "range": {
+        "low_hz": 175,
+        "high_hz": 670
+      },
+      "vector": [
+        0.410989,
+        1.0,
+        0.825,
+        0.433962,
+        0.237458,
+        0.257647,
+        0.566667,
+        0.257458,
+        0.596038,
+        0.429341,
+        0.407692,
+        0.406044,
+        0.460377,
+        0.6625,
+        0.487981,
+        0.326856,
+        0.486154,
+        0.450189,
+        0.55625,
+        0.505666,
+        0.410192,
+        0.222371,
+        0.466093,
+        0.542268,
+        0.494318,
+        0.306291,
+        0.452442
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "doechii",
+      "name": "Doechii",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "hip-hop",
+      "genres": [
+        "hip-hop"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "rap",
+        "hip-hop",
+        "eccentric",
+        "art-rap"
+      ],
+      "reference_songs": [
+        {
+          "title": "Nissan Altima"
+        },
+        {
+          "title": "Anxiety"
+        },
+        {
+          "title": "Denial Is a River"
+        },
+        {
+          "title": "Booty"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 248,
+      "brillo": 2750,
+      "energy_rms": 0.102,
+      "range": {
+        "low_hz": 172,
+        "high_hz": 680
+      },
+      "vector": [
+        0.402198,
+        1.0,
+        0.846667,
+        0.481132,
+        0.337793,
+        0.328235,
+        0.63,
+        0.357793,
+        0.548868,
+        0.421868,
+        0.401538,
+        0.401209,
+        0.488679,
+        0.673333,
+        0.503332,
+        0.372007,
+        0.489231,
+        0.46434,
+        0.561667,
+        0.306891,
+        0.464041,
+        0.486973,
+        0.38997,
+        0.463796,
+        0.41397,
+        0.535726,
+        0.416376
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "tyla",
+      "name": "Tyla",
+      "voice_type": "soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "afrobeats",
+      "genres": [
+        "afrobeats"
+      ],
+      "country_code": "ZA",
+      "style_tags": [
+        "afrobeats",
+        "afropop",
+        "south-africa",
+        "dancehall"
+      ],
+      "reference_songs": [
+        {
+          "title": "Water"
+        },
+        {
+          "title": "ART"
+        },
+        {
+          "title": "On and On"
+        },
+        {
+          "title": "No. 1"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 325,
+      "brillo": 3100,
+      "energy_rms": 0.08,
+      "range": {
+        "low_hz": 225,
+        "high_hz": 875
+      },
+      "vector": [
+        0.571429,
+        1.0,
+        1.0,
+        0.54717,
+        0.264214,
+        0.276471,
+        0.718667,
+        0.344214,
+        0.51283,
+        0.535714,
+        0.52,
+        0.494286,
+        0.528302,
+        0.75,
+        0.597439,
+        0.338896,
+        0.43,
+        0.484151,
+        0.6,
+        0.313912,
+        0.458963,
+        0.567339,
+        0.328226,
+        0.507701,
+        0.429308,
+        0.426312,
+        0.272746
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "kali_uchis",
+      "name": "Kali Uchis",
+      "voice_type": "soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "r&b",
+      "genres": [
+        "r&b"
+      ],
+      "country_code": "CO",
+      "style_tags": [
+        "r&b",
+        "indie-pop",
+        "dream-pop",
+        "colombiana"
+      ],
+      "reference_songs": [
+        {
+          "title": "Telepatía"
+        },
+        {
+          "title": "After the Storm"
+        },
+        {
+          "title": "Feels Like Summer"
+        },
+        {
+          "title": "I Wish You Roses"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 320,
+      "brillo": 3150,
+      "energy_rms": 0.07,
+      "range": {
+        "low_hz": 222,
+        "high_hz": 862
+      },
+      "vector": [
+        0.56044,
+        1.0,
+        1.0,
+        0.556604,
+        0.230769,
+        0.252941,
+        0.731333,
+        0.310769,
+        0.503396,
+        0.526374,
+        0.512308,
+        0.488242,
+        0.533962,
+        0.75,
+        0.596817,
+        0.323846,
+        0.433846,
+        0.486981,
+        0.6,
+        0.338416,
+        0.460226,
+        0.43543,
+        0.412598,
+        0.276336,
+        0.317008,
+        0.394158,
+        0.48583
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "billy_corgan",
+      "name": "Billy Corgan",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "1990s",
+      "genre_category": "rock",
+      "genres": [
+        "rock"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "alternative",
+        "grunge",
+        "nasal",
+        "smashing-pumpkins"
+      ],
+      "reference_songs": [
+        {
+          "title": "1979"
+        },
+        {
+          "title": "Bullet with Butterfly Wings"
+        },
+        {
+          "title": "Tonight Tonight"
+        },
+        {
+          "title": "Zero"
+        },
+        {
+          "title": "Soma"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 215,
+      "brillo": 2200,
+      "energy_rms": 0.115,
+      "range": {
+        "low_hz": 162,
+        "high_hz": 580
+      },
+      "vector": [
+        0.32967,
+        0.870833,
+        0.696667,
+        0.377358,
+        0.381271,
+        0.358824,
+        0.490667,
+        0.431271,
+        0.662642,
+        0.34022,
+        0.350769,
+        0.361319,
+        0.426415,
+        0.598333,
+        0.432812,
+        0.391572,
+        0.514615,
+        0.433208,
+        0.524167,
+        0.354305,
+        0.352979,
+        0.331729,
+        0.42926,
+        0.375307,
+        0.381409,
+        0.4561,
+        0.504941
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "gavin_rossdale",
+      "name": "Gavin Rossdale",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "1990s",
+      "genre_category": "rock",
+      "genres": [
+        "rock"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "post-grunge",
+        "british-rock",
+        "90s"
+      ],
+      "reference_songs": [
+        {
+          "title": "Machinehead"
+        },
+        {
+          "title": "Everything Zen"
+        },
+        {
+          "title": "Glycerine"
+        },
+        {
+          "title": "Comedown"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 162,
+      "brillo": 1800,
+      "energy_rms": 0.115,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 430
+      },
+      "vector": [
+        0.213187,
+        0.6875,
+        0.55,
+        0.301887,
+        0.381271,
+        0.358824,
+        0.389333,
+        0.381271,
+        0.698113,
+        0.261209,
+        0.269231,
+        0.297253,
+        0.381132,
+        0.525,
+        0.356029,
+        0.391572,
+        0.555385,
+        0.410566,
+        0.4875,
+        0.429813,
+        0.353444,
+        0.40455,
+        0.369038,
+        0.265502,
+        0.254762,
+        0.518797,
+        0.301259
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "arctic_monkeys__alex_turner_",
+      "name": "Arctic Monkeys (Alex Turner)",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2000s+",
+      "genre_category": "indie-rock",
+      "genres": [
+        "indie-rock"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "indie-rock",
+        "british",
+        "post-punk"
+      ],
+      "reference_songs": [
+        {
+          "title": "R U Mine?"
+        },
+        {
+          "title": "Do I Wanna Know?"
+        },
+        {
+          "title": "505"
+        },
+        {
+          "title": "Fluorescent Adolescent"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 165,
+      "brillo": 1780,
+      "energy_rms": 0.095,
+      "range": {
+        "low_hz": 104,
+        "high_hz": 425
+      },
+      "vector": [
+        0.21978,
+        0.66875,
+        0.535,
+        0.298113,
+        0.314381,
+        0.311765,
+        0.384267,
+        0.314381,
+        0.701887,
+        0.266813,
+        0.273846,
+        0.300879,
+        0.378868,
+        0.5175,
+        0.357157,
+        0.361472,
+        0.553077,
+        0.409434,
+        0.48375,
+        0.468311,
+        0.511627,
+        0.37168,
+        0.384232,
+        0.522925,
+        0.415222,
+        0.38981,
+        0.37914
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "jesse_&_joy__joy_",
+      "name": "Jesse & Joy (Joy)",
+      "voice_type": "soprano",
+      "gender": "female",
+      "era": "2010s",
+      "genre_category": "latin-pop",
+      "genres": [
+        "latin-pop"
+      ],
+      "country_code": "MX",
+      "style_tags": [
+        "pop",
+        "folk",
+        "mexicana"
+      ],
+      "reference_songs": [
+        {
+          "title": "¡Corre!"
+        },
+        {
+          "title": "Llorar"
+        },
+        {
+          "title": "Tanto"
+        },
+        {
+          "title": "Un Besito Más"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 322,
+      "brillo": 3200,
+      "energy_rms": 0.076,
+      "range": {
+        "low_hz": 222,
+        "high_hz": 870
+      },
+      "vector": [
+        0.564835,
+        1.0,
+        1.0,
+        0.566038,
+        0.250836,
+        0.267059,
+        0.744,
+        0.330836,
+        0.493962,
+        0.53011,
+        0.515385,
+        0.490659,
+        0.539623,
+        0.75,
+        0.602349,
+        0.332876,
+        0.432308,
+        0.489811,
+        0.6,
+        0.297197,
+        0.443201,
+        0.370706,
+        0.414971,
+        0.536693,
+        0.441315,
+        0.442942,
+        0.358018
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "jesse_&_joy__jesse_",
+      "name": "Jesse & Joy (Jesse)",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "latin-pop",
+      "genres": [
+        "latin-pop"
+      ],
+      "country_code": "MX",
+      "style_tags": [
+        "pop",
+        "folk",
+        "mexicano"
+      ],
+      "reference_songs": [
+        {
+          "title": "¡Corre!"
+        },
+        {
+          "title": "Llorar"
+        },
+        {
+          "title": "Tanto"
+        },
+        {
+          "title": "Un Besito Más"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 165,
+      "brillo": 1500,
+      "energy_rms": 0.07,
+      "range": {
+        "low_hz": 104,
+        "high_hz": 398
+      },
+      "vector": [
+        0.21978,
+        0.6125,
+        0.49,
+        0.245283,
+        0.230769,
+        0.252941,
+        0.313333,
+        0.230769,
+        0.754717,
+        0.266813,
+        0.273846,
+        0.300879,
+        0.34717,
+        0.495,
+        0.336025,
+        0.323846,
+        0.553077,
+        0.393585,
+        0.4725,
+        0.429813,
+        0.353444,
+        0.40455,
+        0.369038,
+        0.265502,
+        0.254762,
+        0.518797,
+        0.301259
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "bunbury",
+      "name": "Bunbury",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "1990s",
+      "genre_category": "rock",
+      "genres": [
+        "rock"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "rock",
+        "spanish-rock",
+        "heroesdelsilencio"
+      ],
+      "reference_songs": [
+        {
+          "title": "Radical Sonora"
+        },
+        {
+          "title": "El Extranjero"
+        },
+        {
+          "title": "Lady Blue"
+        },
+        {
+          "title": "Cuna de Campeones"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 162,
+      "brillo": 1680,
+      "energy_rms": 0.09,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 410
+      },
+      "vector": [
+        0.213187,
+        0.645833,
+        0.516667,
+        0.279245,
+        0.297659,
+        0.3,
+        0.358933,
+        0.297659,
+        0.720755,
+        0.261209,
+        0.269231,
+        0.297253,
+        0.367547,
+        0.508333,
+        0.346973,
+        0.353946,
+        0.555385,
+        0.403774,
+        0.479167,
+        0.395325,
+        0.425982,
+        0.414369,
+        0.482128,
+        0.451186,
+        0.462109,
+        0.360754,
+        0.333847
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "kevin_roldán",
+      "name": "Kevin Roldán",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "reggaeton",
+      "genres": [
+        "reggaeton"
+      ],
+      "country_code": "CO",
+      "style_tags": [
+        "reggaeton",
+        "colombiano",
+        "melodic"
+      ],
+      "reference_songs": [
+        {
+          "title": "Un Poco Loco"
+        },
+        {
+          "title": "Más Sexy"
+        },
+        {
+          "title": "Quiero Más"
+        },
+        {
+          "title": "Obsesionada"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 198,
+      "brillo": 1900,
+      "energy_rms": 0.082,
+      "range": {
+        "low_hz": 148,
+        "high_hz": 495
+      },
+      "vector": [
+        0.292308,
+        0.722917,
+        0.578333,
+        0.320755,
+        0.270903,
+        0.281176,
+        0.414667,
+        0.320903,
+        0.719245,
+        0.308462,
+        0.324615,
+        0.340769,
+        0.392453,
+        0.539167,
+        0.395225,
+        0.341906,
+        0.527692,
+        0.416226,
+        0.494583,
+        0.401227,
+        0.384949,
+        0.342812,
+        0.340715,
+        0.279762,
+        0.397447,
+        0.377727,
+        0.382166
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "manuel_turizo",
+      "name": "Manuel Turizo",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "reggaeton",
+      "genres": [
+        "reggaeton"
+      ],
+      "country_code": "CO",
+      "style_tags": [
+        "bachata",
+        "reggaeton",
+        "colombiano"
+      ],
+      "reference_songs": [
+        {
+          "title": "La Bachata"
+        },
+        {
+          "title": "Una Lady Como Tú"
+        },
+        {
+          "title": "colombia"
+        },
+        {
+          "title": "Palmeras"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 168,
+      "brillo": 1560,
+      "energy_rms": 0.082,
+      "range": {
+        "low_hz": 106,
+        "high_hz": 408
+      },
+      "vector": [
+        0.226374,
+        0.629167,
+        0.503333,
+        0.256604,
+        0.270903,
+        0.281176,
+        0.328533,
+        0.270903,
+        0.743396,
+        0.272418,
+        0.278462,
+        0.304505,
+        0.353962,
+        0.501667,
+        0.343191,
+        0.341906,
+        0.550769,
+        0.396981,
+        0.475833,
+        0.445422,
+        0.431086,
+        0.38848,
+        0.301402,
+        0.378765,
+        0.438934,
+        0.376378,
+        0.28808
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "natanael_cano",
+      "name": "Natanael Cano",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "corridos",
+      "genres": [
+        "corridos"
+      ],
+      "country_code": "MX",
+      "style_tags": [
+        "corridos-tumbados",
+        "regional-mexicano"
+      ],
+      "reference_songs": [
+        {
+          "title": "Amor Tumbado"
+        },
+        {
+          "title": "Pacas de a Mil"
+        },
+        {
+          "title": "Con R de Reggaeton"
+        },
+        {
+          "title": "Yendo pa'la Cumbre"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 198,
+      "brillo": 1980,
+      "energy_rms": 0.085,
+      "range": {
+        "low_hz": 148,
+        "high_hz": 502
+      },
+      "vector": [
+        0.292308,
+        0.7375,
+        0.59,
+        0.335849,
+        0.280936,
+        0.288235,
+        0.434933,
+        0.330936,
+        0.704151,
+        0.308462,
+        0.324615,
+        0.340769,
+        0.401509,
+        0.545,
+        0.401263,
+        0.346421,
+        0.527692,
+        0.420755,
+        0.4975,
+        0.45674,
+        0.368929,
+        0.417956,
+        0.351081,
+        0.383776,
+        0.517251,
+        0.432947,
+        0.443309
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "xavi__cantante_",
+      "name": "Xavi (cantante)",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "corridos",
+      "genres": [
+        "corridos"
+      ],
+      "country_code": "MX",
+      "style_tags": [
+        "corridos",
+        "regional-mexicano",
+        "melodic"
+      ],
+      "reference_songs": [
+        {
+          "title": "La Diabla"
+        },
+        {
+          "title": "Suéltate"
+        },
+        {
+          "title": "De Madrugada"
+        },
+        {
+          "title": "Antes de Que te Vayas"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 195,
+      "brillo": 1960,
+      "energy_rms": 0.083,
+      "range": {
+        "low_hz": 146,
+        "high_hz": 498
+      },
+      "vector": [
+        0.285714,
+        0.733333,
+        0.586667,
+        0.332075,
+        0.274247,
+        0.283529,
+        0.429867,
+        0.324247,
+        0.707925,
+        0.302857,
+        0.32,
+        0.337143,
+        0.399245,
+        0.543333,
+        0.397116,
+        0.343411,
+        0.53,
+        0.419623,
+        0.496667,
+        0.394903,
+        0.339351,
+        0.453143,
+        0.413396,
+        0.244417,
+        0.331155,
+        0.381473,
+        0.41936
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "paco_de_lucía",
+      "name": "Paco de Lucía",
+      "voice_type": "bass-baritone",
+      "gender": "male",
+      "era": "1970s",
+      "genre_category": "flamenco",
+      "genres": [
+        "flamenco"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "flamenco",
+        "guitarra",
+        "instrumental"
+      ],
+      "reference_songs": [
+        {
+          "title": "Entre Dos Aguas"
+        },
+        {
+          "title": "Ríos Anados"
+        },
+        {
+          "title": "Recuerdos de la Alhambra"
+        },
+        {
+          "title": "Fuente y Caudal"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 128,
+      "brillo": 950,
+      "energy_rms": 0.065,
+      "range": {
+        "low_hz": 82,
+        "high_hz": 350
+      },
+      "vector": [
+        0.138462,
+        0.558333,
+        0.446667,
+        0.141509,
+        0.214047,
+        0.241176,
+        0.174,
+        0.164047,
+        0.818491,
+        0.227692,
+        0.216923,
+        0.256154,
+        0.284906,
+        0.473333,
+        0.261988,
+        0.316321,
+        0.581538,
+        0.362453,
+        0.461667,
+        0.39228,
+        0.297298,
+        0.349546,
+        0.340977,
+        0.449781,
+        0.442188,
+        0.549541,
+        0.390541
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "diego_el_cigala",
+      "name": "Diego El Cigala",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2000s+",
+      "genre_category": "flamenco",
+      "genres": [
+        "flamenco"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "flamenco",
+        "bolero",
+        "tropical"
+      ],
+      "reference_songs": [
+        {
+          "title": "Romance de la Luna"
+        },
+        {
+          "title": "Lágrimas Negras"
+        },
+        {
+          "title": "Indestructible"
+        },
+        {
+          "title": "Dos Gardenias"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 162,
+      "brillo": 1580,
+      "energy_rms": 0.085,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 415
+      },
+      "vector": [
+        0.213187,
+        0.65625,
+        0.525,
+        0.260377,
+        0.280936,
+        0.288235,
+        0.3336,
+        0.280936,
+        0.739623,
+        0.261209,
+        0.269231,
+        0.297253,
+        0.356226,
+        0.5125,
+        0.339426,
+        0.346421,
+        0.555385,
+        0.398113,
+        0.48125,
+        0.413645,
+        0.489227,
+        0.353675,
+        0.394616,
+        0.450763,
+        0.428588,
+        0.345287,
+        0.327605
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "mayte_martín",
+      "name": "Mayte Martín",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2000s+",
+      "genre_category": "flamenco",
+      "genres": [
+        "flamenco"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "flamenco",
+        "copla",
+        "jazz"
+      ],
+      "reference_songs": [
+        {
+          "title": "La Llorona"
+        },
+        {
+          "title": "Hay un Romance"
+        },
+        {
+          "title": "Corazones"
+        },
+        {
+          "title": "Encuentros"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 240,
+      "brillo": 1800,
+      "energy_rms": 0.08,
+      "range": {
+        "low_hz": 170,
+        "high_hz": 640
+      },
+      "vector": [
+        0.384615,
+        0.979167,
+        0.783333,
+        0.301887,
+        0.264214,
+        0.276471,
+        0.389333,
+        0.284214,
+        0.728113,
+        0.406923,
+        0.389231,
+        0.391538,
+        0.381132,
+        0.641667,
+        0.424601,
+        0.338896,
+        0.495385,
+        0.410566,
+        0.545833,
+        0.32369,
+        0.390715,
+        0.473177,
+        0.31681,
+        0.371823,
+        0.368766,
+        0.362264,
+        0.311909
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "enrique_morente",
+      "name": "Enrique Morente",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "1970s",
+      "genre_category": "flamenco",
+      "genres": [
+        "flamenco"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "flamenco",
+        "vanguardia",
+        "legend",
+        "andaluz"
+      ],
+      "reference_songs": [
+        {
+          "title": "Omega"
+        },
+        {
+          "title": "Pequeño Vals Vienés"
+        },
+        {
+          "title": "Lorca"
+        },
+        {
+          "title": "Nana de Sevilla"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 160,
+      "brillo": 1560,
+      "energy_rms": 0.09,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 405
+      },
+      "vector": [
+        0.208791,
+        0.635417,
+        0.508333,
+        0.256604,
+        0.297659,
+        0.3,
+        0.328533,
+        0.297659,
+        0.743396,
+        0.257473,
+        0.266154,
+        0.294835,
+        0.353962,
+        0.504167,
+        0.336158,
+        0.353946,
+        0.556923,
+        0.396981,
+        0.477083,
+        0.389117,
+        0.425459,
+        0.366284,
+        0.380672,
+        0.403961,
+        0.394343,
+        0.367401,
+        0.343091
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "phil_collins",
+      "name": "Phil Collins",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "1980s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "pop",
+        "soft-rock",
+        "drums",
+        "genesis"
+      ],
+      "reference_songs": [
+        {
+          "title": "In the Air Tonight"
+        },
+        {
+          "title": "Against All Odds"
+        },
+        {
+          "title": "You Can't Hurry Love"
+        },
+        {
+          "title": "Another Day in Paradise"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 162,
+      "brillo": 1500,
+      "energy_rms": 0.082,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 395
+      },
+      "vector": [
+        0.213187,
+        0.614583,
+        0.491667,
+        0.245283,
+        0.270903,
+        0.281176,
+        0.313333,
+        0.270903,
+        0.754717,
+        0.261209,
+        0.269231,
+        0.297253,
+        0.34717,
+        0.495833,
+        0.333388,
+        0.341906,
+        0.555385,
+        0.393585,
+        0.472917,
+        0.306408,
+        0.455564,
+        0.448236,
+        0.302197,
+        0.242356,
+        0.427673,
+        0.472822,
+        0.387289
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "sting",
+      "name": "Sting",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "1980s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "pop",
+        "jazz",
+        "the-police",
+        "eclectic"
+      ],
+      "reference_songs": [
+        {
+          "title": "Every Breath You Take"
+        },
+        {
+          "title": "Fields of Gold"
+        },
+        {
+          "title": "Roxanne"
+        },
+        {
+          "title": "Desert Rose"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 168,
+      "brillo": 1680,
+      "energy_rms": 0.085,
+      "range": {
+        "low_hz": 105,
+        "high_hz": 430
+      },
+      "vector": [
+        0.226374,
+        0.677083,
+        0.541667,
+        0.279245,
+        0.280936,
+        0.288235,
+        0.358933,
+        0.280936,
+        0.720755,
+        0.272418,
+        0.278462,
+        0.304505,
+        0.367547,
+        0.520833,
+        0.352248,
+        0.346421,
+        0.550769,
+        0.403774,
+        0.485417,
+        0.463715,
+        0.330395,
+        0.367808,
+        0.316171,
+        0.375549,
+        0.380656,
+        0.414198,
+        0.514574
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "peter_gabriel",
+      "name": "Peter Gabriel",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "1980s",
+      "genre_category": "art-rock",
+      "genres": [
+        "art-rock"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "art-rock",
+        "experimental",
+        "world-music"
+      ],
+      "reference_songs": [
+        {
+          "title": "Sledgehammer"
+        },
+        {
+          "title": "In Your Eyes"
+        },
+        {
+          "title": "Solsbury Hill"
+        },
+        {
+          "title": "Don't Give Up"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 160,
+      "brillo": 1580,
+      "energy_rms": 0.085,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 400
+      },
+      "vector": [
+        0.208791,
+        0.625,
+        0.5,
+        0.260377,
+        0.280936,
+        0.288235,
+        0.3336,
+        0.280936,
+        0.739623,
+        0.257473,
+        0.266154,
+        0.294835,
+        0.356226,
+        0.5,
+        0.337667,
+        0.346421,
+        0.556923,
+        0.398113,
+        0.475,
+        0.495105,
+        0.309797,
+        0.419478,
+        0.545082,
+        0.37342,
+        0.32269,
+        0.438741,
+        0.410249
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "logic",
+      "name": "Logic",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "hip-hop",
+      "genres": [
+        "hip-hop"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "hip-hop",
+        "conscious",
+        "pop-rap"
+      ],
+      "reference_songs": [
+        {
+          "title": "1-800-273-8255"
+        },
+        {
+          "title": "Homicide"
+        },
+        {
+          "title": "Under Pressure"
+        },
+        {
+          "title": "Everybody"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 162,
+      "brillo": 1720,
+      "energy_rms": 0.095,
+      "range": {
+        "low_hz": 100,
+        "high_hz": 415
+      },
+      "vector": [
+        0.213187,
+        0.65625,
+        0.525,
+        0.286792,
+        0.314381,
+        0.311765,
+        0.369067,
+        0.314381,
+        0.713208,
+        0.261209,
+        0.269231,
+        0.297253,
+        0.372075,
+        0.5125,
+        0.349992,
+        0.361472,
+        0.555385,
+        0.406038,
+        0.48125,
+        0.477089,
+        0.505091,
+        0.503661,
+        0.368567,
+        0.380357,
+        0.444638,
+        0.47195,
+        0.383939
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "davido",
+      "name": "Davido",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "afrobeats",
+      "genres": [
+        "afrobeats"
+      ],
+      "country_code": "NG",
+      "style_tags": [
+        "afrobeats",
+        "nigeria",
+        "party"
+      ],
+      "reference_songs": [
+        {
+          "title": "Fall"
+        },
+        {
+          "title": "If"
+        },
+        {
+          "title": "Fem"
+        },
+        {
+          "title": "Stand Strong"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 162,
+      "brillo": 1680,
+      "energy_rms": 0.092,
+      "range": {
+        "low_hz": 102,
+        "high_hz": 415
+      },
+      "vector": [
+        0.213187,
+        0.652083,
+        0.521667,
+        0.279245,
+        0.304348,
+        0.304706,
+        0.358933,
+        0.304348,
+        0.720755,
+        0.261209,
+        0.269231,
+        0.297253,
+        0.367547,
+        0.510833,
+        0.346973,
+        0.356957,
+        0.555385,
+        0.403774,
+        0.480417,
+        0.395325,
+        0.425982,
+        0.414369,
+        0.482128,
+        0.451186,
+        0.462109,
+        0.360754,
+        0.333847
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "ckay",
+      "name": "CKay",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2020s+",
+      "genre_category": "afrobeats",
+      "genres": [
+        "afrobeats"
+      ],
+      "country_code": "NG",
+      "style_tags": [
+        "afrobeats",
+        "melodic",
+        "guitar",
+        "ng"
+      ],
+      "reference_songs": [
+        {
+          "title": "Love Nwantiti"
+        },
+        {
+          "title": "Emiliana"
+        },
+        {
+          "title": "Watawi"
+        },
+        {
+          "title": "Felony"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 198,
+      "brillo": 1970,
+      "energy_rms": 0.082,
+      "range": {
+        "low_hz": 148,
+        "high_hz": 502
+      },
+      "vector": [
+        0.292308,
+        0.7375,
+        0.59,
+        0.333962,
+        0.270903,
+        0.281176,
+        0.4324,
+        0.320903,
+        0.706038,
+        0.308462,
+        0.324615,
+        0.340769,
+        0.400377,
+        0.545,
+        0.400508,
+        0.341906,
+        0.527692,
+        0.420189,
+        0.4975,
+        0.354862,
+        0.533059,
+        0.399546,
+        0.519803,
+        0.476752,
+        0.330037,
+        0.403851,
+        0.281
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "tems",
+      "name": "Tems",
+      "voice_type": "contralto",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "afrobeats",
+      "genres": [
+        "afrobeats"
+      ],
+      "country_code": "NG",
+      "style_tags": [
+        "afrobeats",
+        "r&b",
+        "deep",
+        "powerful",
+        "nigeria"
+      ],
+      "reference_songs": [
+        {
+          "title": "Free Mind"
+        },
+        {
+          "title": "Higher"
+        },
+        {
+          "title": "Try Me"
+        },
+        {
+          "title": "Essence"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 195,
+      "brillo": 1600,
+      "energy_rms": 0.072,
+      "range": {
+        "low_hz": 138,
+        "high_hz": 520
+      },
+      "vector": [
+        0.285714,
+        0.795833,
+        0.636667,
+        0.264151,
+        0.237458,
+        0.257647,
+        0.338667,
+        0.197458,
+        0.715849,
+        0.342857,
+        0.32,
+        0.337143,
+        0.358491,
+        0.568333,
+        0.369946,
+        0.326856,
+        0.53,
+        0.399245,
+        0.509167,
+        0.539706,
+        0.444025,
+        0.511786,
+        0.361598,
+        0.467678,
+        0.38602,
+        0.328661,
+        0.376785
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "amaarae",
+      "name": "Amaarae",
+      "voice_type": "soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "afrobeats",
+      "genres": [
+        "afrobeats"
+      ],
+      "country_code": "GH",
+      "style_tags": [
+        "afrobeats",
+        "pop",
+        "ghana",
+        "airy"
+      ],
+      "reference_songs": [
+        {
+          "title": "SAD GIRLZ LUV MONEY"
+        },
+        {
+          "title": "Fancy"
+        },
+        {
+          "title": "Angels in Tibet"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 318,
+      "brillo": 3100,
+      "energy_rms": 0.075,
+      "range": {
+        "low_hz": 220,
+        "high_hz": 860
+      },
+      "vector": [
+        0.556044,
+        1.0,
+        1.0,
+        0.54717,
+        0.247492,
+        0.264706,
+        0.718667,
+        0.327492,
+        0.51283,
+        0.522637,
+        0.509231,
+        0.485824,
+        0.528302,
+        0.75,
+        0.591286,
+        0.331371,
+        0.435385,
+        0.484151,
+        0.6,
+        0.369574,
+        0.416001,
+        0.473733,
+        0.5437,
+        0.247702,
+        0.421153,
+        0.477142,
+        0.309665
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "how_to_dress_well",
+      "name": "How to Dress Well",
+      "voice_type": "baritone",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "r&b",
+      "genres": [
+        "r&b"
+      ],
+      "country_code": "US",
+      "style_tags": [
+        "r&b",
+        "indie",
+        "experimental"
+      ],
+      "reference_songs": [
+        {
+          "title": "Ready for the World"
+        },
+        {
+          "title": "Words I Don't Remember"
+        },
+        {
+          "title": "Cold Nites"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 168,
+      "brillo": 1500,
+      "energy_rms": 0.055,
+      "range": {
+        "low_hz": 105,
+        "high_hz": 412
+      },
+      "vector": [
+        0.226374,
+        0.639583,
+        0.511667,
+        0.245283,
+        0.180602,
+        0.217647,
+        0.313333,
+        0.180602,
+        0.754717,
+        0.272418,
+        0.278462,
+        0.304505,
+        0.34717,
+        0.505833,
+        0.338663,
+        0.301271,
+        0.550769,
+        0.393585,
+        0.477917,
+        0.482073,
+        0.295614,
+        0.475497,
+        0.319975,
+        0.375136,
+        0.401634,
+        0.578668,
+        0.37157
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "blood_orange",
+      "name": "Blood Orange",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "r&b",
+      "genres": [
+        "r&b"
+      ],
+      "country_code": "GB",
+      "style_tags": [
+        "r&b",
+        "art-pop",
+        "experimental",
+        "dev-hynes"
+      ],
+      "reference_songs": [
+        {
+          "title": "You're Not Good Enough"
+        },
+        {
+          "title": "Chamakay"
+        },
+        {
+          "title": "Thank You"
+        },
+        {
+          "title": "But You"
+        },
+        {
+          "title": "Augustine"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 205,
+      "brillo": 2050,
+      "energy_rms": 0.068,
+      "range": {
+        "low_hz": 153,
+        "high_hz": 548
+      },
+      "vector": [
+        0.307692,
+        0.822917,
+        0.658333,
+        0.349057,
+        0.22408,
+        0.248235,
+        0.452667,
+        0.27408,
+        0.690943,
+        0.321538,
+        0.335385,
+        0.349231,
+        0.409434,
+        0.579167,
+        0.4127,
+        0.320836,
+        0.522308,
+        0.424717,
+        0.514583,
+        0.273032,
+        0.573654,
+        0.352206,
+        0.355495,
+        0.524692,
+        0.381447,
+        0.526675,
+        0.528295
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "pablo_lópez",
+      "name": "Pablo López",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2010s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "pop",
+        "piano",
+        "español",
+        "emotional"
+      ],
+      "reference_songs": [
+        {
+          "title": "El Patio"
+        },
+        {
+          "title": "Camino"
+        },
+        {
+          "title": "Caramelo"
+        },
+        {
+          "title": "Lo Saben Mis Zapatos"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 208,
+      "brillo": 2100,
+      "energy_rms": 0.078,
+      "range": {
+        "low_hz": 156,
+        "high_hz": 558
+      },
+      "vector": [
+        0.314286,
+        0.8375,
+        0.67,
+        0.358491,
+        0.257525,
+        0.271765,
+        0.465333,
+        0.307525,
+        0.681509,
+        0.327143,
+        0.34,
+        0.352857,
+        0.415094,
+        0.585,
+        0.419111,
+        0.335886,
+        0.52,
+        0.427547,
+        0.5175,
+        0.431424,
+        0.478232,
+        0.4121,
+        0.572686,
+        0.556033,
+        0.294195,
+        0.52814,
+        0.389329
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "david_bustamante",
+      "name": "David Bustamante",
+      "voice_type": "tenor",
+      "gender": "male",
+      "era": "2000s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "pop",
+        "español",
+        "ot"
+      ],
+      "reference_songs": [
+        {
+          "title": "Me Sabe a Poco"
+        },
+        {
+          "title": "Corazón de Madera"
+        },
+        {
+          "title": "Dos Hombres y un Destino"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 205,
+      "brillo": 2000,
+      "energy_rms": 0.08,
+      "range": {
+        "low_hz": 154,
+        "high_hz": 545
+      },
+      "vector": [
+        0.307692,
+        0.814583,
+        0.651667,
+        0.339623,
+        0.264214,
+        0.276471,
+        0.44,
+        0.314214,
+        0.700377,
+        0.321538,
+        0.335385,
+        0.349231,
+        0.403774,
+        0.575833,
+        0.408926,
+        0.338896,
+        0.522308,
+        0.421887,
+        0.512917,
+        0.419734,
+        0.371307,
+        0.252764,
+        0.357493,
+        0.401717,
+        0.527074,
+        0.309999,
+        0.324003
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "anni_b_sweet",
+      "name": "Anni B Sweet",
+      "voice_type": "soprano",
+      "gender": "female",
+      "era": "2010s",
+      "genre_category": "indie-pop",
+      "genres": [
+        "indie-pop"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "indie-pop",
+        "dream-pop",
+        "española"
+      ],
+      "reference_songs": [
+        {
+          "title": "Chasing Clouds"
+        },
+        {
+          "title": "I Won't Be Your Nothing"
+        },
+        {
+          "title": "Silver Car"
+        },
+        {
+          "title": "Pongámonos a Tono"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 315,
+      "brillo": 3050,
+      "energy_rms": 0.07,
+      "range": {
+        "low_hz": 218,
+        "high_hz": 848
+      },
+      "vector": [
+        0.549451,
+        1.0,
+        1.0,
+        0.537736,
+        0.230769,
+        0.252941,
+        0.706,
+        0.310769,
+        0.522264,
+        0.517033,
+        0.504615,
+        0.482198,
+        0.522642,
+        0.75,
+        0.584875,
+        0.323846,
+        0.437692,
+        0.481321,
+        0.6,
+        0.394472,
+        0.316467,
+        0.398969,
+        0.478917,
+        0.311514,
+        0.401337,
+        0.304836,
+        0.350519
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "zahara",
+      "name": "Zahara",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2010s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "indie",
+        "pop",
+        "folk-pop",
+        "española"
+      ],
+      "reference_songs": [
+        {
+          "title": "Merichane"
+        },
+        {
+          "title": "Perseveranda"
+        },
+        {
+          "title": "Quédate en el Fin del Mundo"
+        },
+        {
+          "title": "Los Primeros Días"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 250,
+      "brillo": 2500,
+      "energy_rms": 0.075,
+      "range": {
+        "low_hz": 175,
+        "high_hz": 668
+      },
+      "vector": [
+        0.406593,
+        1.0,
+        0.821667,
+        0.433962,
+        0.247492,
+        0.264706,
+        0.566667,
+        0.267492,
+        0.596038,
+        0.425604,
+        0.404615,
+        0.403626,
+        0.460377,
+        0.660833,
+        0.486222,
+        0.331371,
+        0.487692,
+        0.450189,
+        0.555417,
+        0.355484,
+        0.356694,
+        0.54055,
+        0.230572,
+        0.514874,
+        0.48852,
+        0.466711,
+        0.37145
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "rozalén",
+      "name": "Rozalén",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2010s",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "pop",
+        "folk",
+        "española",
+        "social"
+      ],
+      "reference_songs": [
+        {
+          "title": "La Puerta Violeta"
+        },
+        {
+          "title": "Que el Cielo Espere Sentao"
+        },
+        {
+          "title": "El Mundo Es Tuyo"
+        },
+        {
+          "title": "En Un Lugar"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 245,
+      "brillo": 2400,
+      "energy_rms": 0.072,
+      "range": {
+        "low_hz": 172,
+        "high_hz": 655
+      },
+      "vector": [
+        0.395604,
+        1.0,
+        0.805,
+        0.415094,
+        0.237458,
+        0.257647,
+        0.541333,
+        0.257458,
+        0.614906,
+        0.416264,
+        0.396923,
+        0.397582,
+        0.449057,
+        0.6525,
+        0.474279,
+        0.326856,
+        0.491538,
+        0.444528,
+        0.55125,
+        0.29014,
+        0.354488,
+        0.236403,
+        0.382778,
+        0.343178,
+        0.326878,
+        0.359302,
+        0.422591
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "valeria_castro",
+      "name": "Valeria Castro",
+      "voice_type": "mezzo-soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "folk-pop",
+        "española",
+        "canaria"
+      ],
+      "reference_songs": [
+        {
+          "title": "Volver"
+        },
+        {
+          "title": "Ojos Verdes"
+        },
+        {
+          "title": "Antes de Nada"
+        },
+        {
+          "title": "Cariño"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 248,
+      "brillo": 2420,
+      "energy_rms": 0.068,
+      "range": {
+        "low_hz": 174,
+        "high_hz": 660
+      },
+      "vector": [
+        0.402198,
+        1.0,
+        0.81,
+        0.418868,
+        0.22408,
+        0.248235,
+        0.5464,
+        0.24408,
+        0.611132,
+        0.421868,
+        0.401538,
+        0.401209,
+        0.451321,
+        0.655,
+        0.478426,
+        0.320836,
+        0.489231,
+        0.44566,
+        0.5525,
+        0.352814,
+        0.399636,
+        0.334206,
+        0.358436,
+        0.297774,
+        0.355694,
+        0.427192,
+        0.484225
+      ],
+      "source": "expandir_v1"
+    },
+    {
+      "id": "elvira_sastre__feat_",
+      "name": "Elvira Sastre (feat)",
+      "voice_type": "soprano",
+      "gender": "female",
+      "era": "2020s+",
+      "genre_category": "pop",
+      "genres": [
+        "pop"
+      ],
+      "country_code": "ES",
+      "style_tags": [
+        "poet",
+        "indie",
+        "española"
+      ],
+      "reference_songs": [
+        {
+          "title": "Mil Versiones de Ti"
+        },
+        {
+          "title": "Antes de Que Salga el Sol"
+        }
+      ],
+      "difficulty": "intermediate",
+      "pitch_hz": 318,
+      "brillo": 3100,
+      "energy_rms": 0.068,
+      "range": {
+        "low_hz": 220,
+        "high_hz": 855
+      },
+      "vector": [
+        0.556044,
+        1.0,
+        1.0,
+        0.54717,
+        0.22408,
+        0.248235,
+        0.718667,
+        0.30408,
+        0.51283,
+        0.522637,
+        0.509231,
+        0.485824,
+        0.528302,
+        0.75,
+        0.591286,
+        0.320836,
+        0.435385,
+        0.484151,
+        0.6,
+        0.369574,
+        0.416001,
+        0.473733,
+        0.5437,
+        0.247702,
+        0.421153,
+        0.477142,
+        0.309665
+      ],
+      "source": "expandir_v1"
+    }
+  ]
+}

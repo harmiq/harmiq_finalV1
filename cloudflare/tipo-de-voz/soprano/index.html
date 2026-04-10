@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Soprano: Ariana Grande, Mariah Carey y 78 Cantantes Famosas | Harmiq</title>
+    <meta name="description" content="Ariana Grande, Mariah Carey y Celine Dion son soprano. Descubre qué es la voz soprano, sus agudos extremos, cantantes famosas y analiza tu voz con IA.">
+    <meta name="keywords" content="soprano famosas, cantantes soprano, voz soprano, ariana grande soprano, mariah carey soprano, que es soprano, cantantes con voz soprano, soprano ejemplos">
+    <link rel="canonical" href="https://harmiq.app/tipo-de-voz/soprano/">
+    <link rel="icon" type="image/png" href="/harmiq-logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root{--p:#7C4DFF;--a:#FF4FA3;--dark:#05040d;--card:#110f21;--t:#FFFFFF;--m:#8E8CA7;--glass:rgba(255,255,255,0.03);--glass-border:rgba(255,255,255,0.1)}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:var(--dark);color:var(--t);font-family:'Outfit',sans-serif;line-height:1.6;overflow-x:hidden}
+        .grad{background:linear-gradient(135deg,#7C4DFF,#FF4FA3);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        
+        nav{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 5%;background:rgba(5,4,13,0.9);backdrop-filter:blur(20px);position:sticky;top:0;z-index:1000;border-bottom:1px solid var(--glass-border)}
+        .container{max-width:1100px;margin:0 auto;padding:4rem 5%}
+        
+        .hero-hub{text-align:center;margin-bottom:6rem; position:relative;}
+        .hero-hub h1{font-size:clamp(3rem, 10vw, 5.5rem);font-weight:900;margin-bottom:1rem;letter-spacing:-0.05em; line-height:1}
+        .hero-hub p{font-size:1.3rem;color:var(--m);max-width:750px;margin:0 auto 2.5rem}
+        
+        /* Pink Glass Cards V5 */
+        .info-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:2rem;margin-bottom:6rem}
+        .info-card{background:linear-gradient(165deg, #1A121A 0%, #05040D 100%); padding:3rem;border-radius:40px;border:1px solid rgba(255,79,163,0.1);position:relative;overflow:hidden; transition:0.4s;}
+        .info-card:hover{border-color:var(--a); transform:translateY(-10px); box-shadow:0 30px 60px rgba(255,79,163,0.1)}
+        .info-card h2{font-size:2rem;margin-bottom:1.2rem;font-weight:900}
+        
+        /* Vocal Range Visualizer Soprano */
+        .range-viz{background:var(--glass); border-radius:30px; padding:2rem; margin:4rem 0; text-align:center; border:1px solid var(--glass-border)}
+        .piano-mini{display:flex; justify-content:center; gap:2px; margin:2rem 0; height:80px;}
+        .pk{width:30px; background:#fff; border-radius:0 0 5px 5px; position:relative;}
+        .pk.active{background:var(--a); box-shadow:0 0 20px var(--a);}
+        .pk.active::after{content:'SOPRANO'; position:absolute; bottom:-25px; left:50%; transform:translateX(-50%); font-size:0.5rem; font-weight:900; color:var(--a)}
+
+        .artist-gallery{display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:1.5rem;margin:4rem 0}
+        .artist-card{background:var(--card);border-radius:32px;padding:2rem;text-align:center;border:1px solid var(--glass-border);transition:0.4s; cursor:pointer;}
+        .artist-card:hover{transform:translateY(-15px); border-color:var(--a); box-shadow:0 25px 50px rgba(255,79,163,0.15)}
+        .artist-card img{width:130px;height:130px;border-radius:35px;object-fit:cover;margin-bottom:1.5rem; border:4px solid rgba(255,255,255,0.05); transition:0.4s;}
+        .artist-card:hover img{border-color:var(--a); transform:rotate(-3deg) scale(1.1);}
+        
+        /* Whistle Register Module */
+        .whistle-box{background:rgba(124,77,255,0.05); padding:4rem; border-radius:48px; border:1px solid rgba(124,77,255,0.2); margin:6rem 0; text-align:center;}
+        .whistle-badge{display:inline-block; padding:8px 20px; background:var(--p); color:#fff; border-radius:100px; font-weight:900; margin-bottom:1.5rem; font-size:0.8rem;}
+
+        /* Hardware V5 Soprano */
+        .hw-section{margin:6rem 0; padding:4rem; background:rgba(255,79,163,0.03); border-radius:48px; border:1px solid rgba(255,79,163,0.1);}
+        .hw-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem; margin-top:3rem;}
+        .hw-card{background:var(--dark); padding:2.5rem; border-radius:30px; border:1px solid var(--glass-border); display:flex; flex-direction:column; align-items:center; text-align:center;}
+        .hw-card img{width:100px; height:120px; object-fit:contain; margin-bottom:1.5rem; filter:drop-shadow(0 10px 20px rgba(0,0,0,0.5)); transition:0.3s;}
+        .hw-card:hover img{transform:scale(1.1);}
+        .hw-card h4{font-weight:900; font-size:1.2rem;}
+
+        .btn-main{background:linear-gradient(135deg,var(--p),var(--a));color:#fff;padding:1.4rem 3.5rem;border-radius:100px;font-weight:900;font-size:1.3rem;display:inline-block;margin-top:2.5rem;box-shadow:0 20px 45px rgba(255,79,163,0.3);transition:0.4s; text-decoration:none;}
+        .btn-main:hover{transform:scale(1.05) translateY(-5px);box-shadow:0 25px 55px rgba(255,79,163,0.4)}
+
+        @media(max-width:768px){ .info-grid{grid-template-columns:1fr} }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="grad" style="font-weight:900; font-size:1.8rem; display:flex; align-items:center; gap:10px">
+        <img src="/harmiq-logo.png" style="height:35px; border-radius:8px"> Harmiq
+    </a>
+    <a href="/tipos-de-voz/" style="font-weight:800; color:var(--m); font-size:0.9rem">← HUB DE VOCES</a>
+</nav>
+
+<div class="container">
+    <div class="hero-hub">
+        <div style="position:absolute; top:-100px; left:50%; transform:translateX(-50%); width:300px; height:300px; background:var(--a); filter:blur(150px); opacity:0.1; pointer-events:none"></div>
+        <span style="background:rgba(255,107,107,0.1); color:var(--a); padding:8px 20px; border-radius:100px; font-weight:900; font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:2rem; display:inline-block">Luz, Brillo y Agudos Celestiales</span>
+        <h1>Voz <span class="grad">Soprano</span></h1>
+        <p>La voz más aguda y etérea del registro humano. Capaz de las melodías más épicas del pop y las notas silbato más impresionantes.</p>
+        <a href="/#app" class="btn-main">¿ERES SOPRANO? ANALIZAR →</a>
+    </div>
+
+    <!-- Visualizador de Rango Vocal Soprano -->
+    <div class="range-viz">
+        <h3>Tu Registro en el <span class="grad">Teclado</span></h3>
+        <p style="color:var(--m); margin-top:0.5rem">Rango estándar: <b>DO4 - DO6</b> (C4 - C6)</p>
+        <div class="piano-mini">
+            <div class="pk"></div><div class="pk"></div><div class="pk"></div><div class="pk"></div>
+            <div class="pk"></div><div class="pk active"></div><div class="pk active"></div><div class="pk active"></div>
+            <div class="pk active"></div><div class="pk active"></div><div class="pk active"></div><div class="pk active"></div>
+        </div>
+        <p style="font-size:0.85rem; max-width:640px; margin:0 auto; color:var(--m)">*El legendario "Do de Pecho" femenino (C6) es la frontera de la soprano, aunque algunas alcanzan el Sol6 en coloratura.</p>
+    </div>
+
+    <div class="info-grid">
+        <div class="info-card">
+            <h4 style="color:var(--a); font-weight:900; font-size:0.8rem; text-transform:uppercase; margin-bottom:1rem">Bio-Mecánica</h4>
+            <h2>¿Qué es ser Soprano?</h2>
+            <p>Es la voz femenina con las cuerdas vocales más finas y tensas. Su timbre es luminoso y penetrante, permitiéndole destacar sobre cualquier orquesta o base de trap moderna.</p>
+        </div>
+        <div class="info-card">
+            <h4 style="color:var(--p); font-weight:900; font-size:0.8rem; text-transform:uppercase; margin-bottom:1rem">Curiosidad Técnica</h4>
+            <h2>Notas de Cabeza</h2>
+            <p>La soprano basa su poder en la resonancia craneal. Es donde el sonido se vuelve "estrellado" y flota sobre la música. Dominar esto es la clave de su magia.</p>
+        </div>
+    </div>
+
+    <!-- MÓDULO SEO: REGISTRO DE SILBATO -->
+    <section class="whistle-box">
+        <span class="whistle-badge">MÓDULO DE EXPERTO</span>
+        <h2 style="font-size:2.8rem; font-weight:900; margin-bottom:1.5rem">El Enigmático <span style="color:var(--p)">Registro de Silbato</span></h2>
+        <p style="color:var(--m); font-size:1.1rem; max-width:850px; margin:0 auto 2.5rem">Es el registro más alto de la voz humana, por encima del registro de cabeza. Se produce por una vibración de los bordes de las cuerdas vocales. Si te gusta <b>Ariana Grande</b> o <b>Mariah Carey</b>, dominas el arte de sonar como un instrumento puro.</p>
+        <a href="/academia" style="color:var(--a); font-weight:900; text-decoration:none; font-size:1.2rem">APRENDER SILBATO EN LA ACADEMIA →</a>
+    </section>
+
+    <h2 style="text-align:center; font-size:3rem; font-weight:900; margin-bottom:1rem">Sopranos <span class="grad">Icónicas</span></h2>
+    <p style="text-align:center; color:var(--m); margin-bottom:3rem; font-size:1.1rem">Las divas que han llevado el brillo al infinito:</p>
+
+    <div class="artist-gallery">
+        <a href="/artistas/ariana-grande/" class="artist-card" style="text-decoration:none; color:inherit">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Ariana_Grande_in_2019.jpg/220px-Ariana_Grande_in_2019.jpg" alt="Ariana Grande">
+            <h3>Ariana Grande</h3>
+            <p style="font-size:0.85rem; color:var(--m); margin-top:0.5rem">La maestra del whistle register.</p>
+        </a>
+        <a href="/artistas/celine-dion/" class="artist-card" style="text-decoration:none; color:inherit">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Celine_dion_2017.jpg/220px-Celine_dion_2017.jpg" alt="Celine Dion">
+            <h3>Celine Dion</h3>
+            <p style="font-size:0.85rem; color:var(--m); margin-top:0.5rem">5 octavas de potencia pura.</p>
+        </a>
+        <a href="/artistas/mariah-carey/" class="artist-card" style="text-decoration:none; color:inherit">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Mariah_Carey_2019_by_Glenn_Francis.jpg/220px-Mariah_Carey_2019_by_Glenn_Francis.jpg" alt="Mariah Carey">
+            <h3>Mariah Carey</h3>
+            <p style="font-size:0.85rem; color:var(--m); margin-top:0.5rem">La voz de las 5 octavas.</p>
+        </a>
+        <a href="/artistas/maria-callas/" class="artist-card" style="text-decoration:none; color:inherit">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Maria_Callas_1958.jpg/220px-Maria_Callas_1958.jpg" alt="Maria Callas">
+            <h3>Maria Callas</h3>
+            <p style="font-size:0.85rem; color:var(--m); margin-top:0.5rem">La Divina de la ópera mundial.</p>
+        </a>
+    </div>
+
+    <!-- SUBTIPOS DE SOPRANO -->
+    <section style="margin:5rem 0">
+      <h2 style="font-size:2.2rem; font-weight:900; margin-bottom:0.5rem; text-align:center">Los <span class="grad">4 Tipos</span> de Soprano</h2>
+      <p style="color:var(--m); text-align:center; margin-bottom:2.5rem">No todas las sopranos son iguales. Cada subtipo tiene un timbre, rango y estilo diferente:</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.2rem">
+        <div style="background:linear-gradient(145deg,rgba(255,79,163,0.08),rgba(255,79,163,0.02)); border:1px solid rgba(255,79,163,0.2); border-radius:24px; padding:1.8rem">
+          <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:1rem">
+            <span style="background:rgba(255,79,163,0.15); color:#FF4FA3; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:900">MÁS COMÚN</span>
+          </div>
+          <h3 style="font-size:1.15rem; font-weight:900; color:#fff; margin-bottom:0.5rem">🎵 Soprano Lírica</h3>
+          <p style="color:#9CA3AF; font-size:0.85rem; line-height:1.6; margin-bottom:1rem">Voz cálida, suave y flexible. La más versátil: funciona en ópera romántica, pop y música de autor. Rango Do4–Sol5.</p>
+          <p style="color:#FF4FA3; font-size:0.78rem; font-weight:700">Ejemplos: Celine Dion, Sarah Brightman, Ana Belén</p>
+        </div>
+        <div style="background:linear-gradient(145deg,rgba(124,77,255,0.08),rgba(124,77,255,0.02)); border:1px solid rgba(124,77,255,0.2); border-radius:24px; padding:1.8rem">
+          <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:1rem">
+            <span style="background:rgba(124,77,255,0.15); color:#7C4DFF; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:900">MÁS TÉCNICA</span>
+          </div>
+          <h3 style="font-size:1.15rem; font-weight:900; color:#fff; margin-bottom:0.5rem">🎯 Soprano Coloratura</h3>
+          <p style="color:#9CA3AF; font-size:0.85rem; line-height:1.6; margin-bottom:1rem">La voz más ágil y virtuosa. Capaz de trinos, escalas rapidísimas y el whistle register. Rango Do4–Do7 o más.</p>
+          <p style="color:#7C4DFF; font-size:0.78rem; font-weight:700">Ejemplos: Mariah Carey, Ariana Grande, Montserrat Caballé</p>
+        </div>
+        <div style="background:linear-gradient(145deg,rgba(255,153,0,0.08),rgba(255,153,0,0.02)); border:1px solid rgba(255,153,0,0.2); border-radius:24px; padding:1.8rem">
+          <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:1rem">
+            <span style="background:rgba(255,153,0,0.15); color:#FF9900; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:900">MÁS POTENTE</span>
+          </div>
+          <h3 style="font-size:1.15rem; font-weight:900; color:#fff; margin-bottom:0.5rem">⚡ Soprano Dramática</h3>
+          <p style="color:#9CA3AF; font-size:0.85rem; line-height:1.6; margin-bottom:1rem">Gran volumen y cuerpo oscuro. Ideal para ópera wagneriana y grandes teatros. Menos ágil, pero devastadora en potencia. Rango Si3–Do6.</p>
+          <p style="color:#FF9900; font-size:0.78rem; font-weight:700">Ejemplos: María Callas, Birgit Nilsson, Ghena Dimitrova</p>
+        </div>
+        <div style="background:linear-gradient(145deg,rgba(6,214,160,0.08),rgba(6,214,160,0.02)); border:1px solid rgba(6,214,160,0.2); border-radius:24px; padding:1.8rem">
+          <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:1rem">
+            <span style="background:rgba(6,214,160,0.15); color:#06D6A0; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:900">POP / MODERNA</span>
+          </div>
+          <h3 style="font-size:1.15rem; font-weight:900; color:#fff; margin-bottom:0.5rem">🎤 Soprano Pop</h3>
+          <p style="color:#9CA3AF; font-size:0.85rem; line-height:1.6; margin-bottom:1rem">Entrena para el belting y el mix voice en lugar del bel canto clásico. Prioriza el impacto emocional y la grabación sobre la proyección acústica. Rango Mi3–La5.</p>
+          <p style="color:#06D6A0; font-size:0.78rem; font-weight:700">Ejemplos: Whitney Houston, Demi Lovato, Christina Aguilera</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin:5rem 0; padding:3rem; background:rgba(255,255,255,0.02); border-radius:40px; border:1px solid rgba(255,255,255,0.06)">
+      <h2 style="font-size:2.2rem; font-weight:900; margin-bottom:2rem">Curiosidades <span class="grad">Técnicas</span></h2>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem">
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:1.8rem">
+          <div style="font-size:1.8rem; margin-bottom:0.8rem">🎯</div>
+          <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:0.6rem; color:#fff">El Do de Pecho vs Do de Cabeza</h3>
+          <p style="color:#9CA3AF; font-size:0.9rem; line-height:1.7">Existe una diferencia técnica crucial: el Do5 de pecho (chest C5) requiere una vibración completa de las cuerdas, mientras que el Do5 de cabeza usa solo los bordes. Mariah Carey utiliza ambos en la misma canción, lo que explica los cambios de timbre súbitos que hacen su voz tan reconocible. El famoso "whistle register" de Mariah alcanza el Sol7 — más agudo que muchos instrumentos.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:1.8rem">
+          <div style="font-size:1.8rem; margin-bottom:0.8rem">🎭</div>
+          <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:0.6rem; color:#fff">El Secreto de María Callas</h3>
+          <p style="color:#9CA3AF; font-size:0.9rem; line-height:1.7">La Divina entrenó durante años con Elvira de Hidalgo en Atenas. Callas tenía un defecto vocal congénito: sus cuerdas no cerraban completamente, lo que daba su timbre "velado" característico. Lejos de ocultarlo, lo convirtió en su mayor arma expresiva. Murió en 1977 a los 53 años y se sospecha que los años de esfuerzo extremo deterioraron su voz prematuramente.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:1.8rem">
+          <div style="font-size:1.8rem; margin-bottom:0.8rem">🔬</div>
+          <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:0.6rem; color:#fff">Fisiología de la Soprano</h3>
+          <p style="color:#9CA3AF; font-size:0.9rem; line-height:1.7">Las cuerdas vocales de una soprano típica vibran entre 1047 Hz (Do6) y 262 Hz (Do4). Son más finas y largas que las de una mezzo, lo que las hace más ágiles pero también más frágiles. Por eso las sopranos deben extremar el cuidado vocal: evitar gritar, no cantar con resfriado y no empezar el registro agudo en frío.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:1.8rem">
+          <div style="font-size:1.8rem; margin-bottom:0.8rem">🌟</div>
+          <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:0.6rem; color:#fff">Ariana y el Whistle Register</h3>
+          <p style="color:#9CA3AF; font-size:0.9rem; line-height:1.7">Ariana Grande posee uno de los registros de silbato más desarrollados del pop contemporáneo. Su nota más alta documentada es el Mi7 (E7), producida en un concierto en 2019. Curiosidad: el whistle register no usa las cuerdas vocales de forma convencional — los científicos aún debaten si es puro aire, vibración parcial o resonancia del tracto vocal.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN HARDWARE PRO SOPRANO -->
+    <section class="hw-section">
+        <h2 style="font-size:2.5rem; font-weight:900; margin-bottom:1rem">Micrófonos para <span class="grad">Brillar</span></h2>
+        <p style="color:var(--m); max-width:600px">Una soprano necesita capturar el aire y el detalle de sus agudos sin distorsión:</p>
+        
+        <div class="hw-grid">
+            <div class="hw-card">
+                <img src="/baby-bottle.jpg" alt="Blue Baby Bottle">
+                <h4>Blue Baby Bottle</h4>
+                <p>Cálido pero extremadamente detallado en las frecuencias altas. Ideal para sopranos.</p>
+            </div>
+            <div class="hw-card">
+                <img src="/nt1.jpg" alt="Rode NT1">
+                <h4>Rode NT1 5th Gen</h4>
+                <p>El micro más silencioso del mundo. Captura hasta el suspiro más agudo.</p>
+            </div>
+            <div class="hw-card">
+                <img src="/scarlett-solo.jpg" alt="Scarlett Solo">
+                <h4>Focusrite Scarlett</h4>
+                <p>Nitidez total para tus grabaciones de estudio en casa.</p>
+            </div>
+        </div>
+    </section>
+
+    <div 
+    <!-- SECCIÓN BIO-HACKING VOCAL (GADGETS AMAZON) -->
+    <section style="margin:6rem 0; padding:4rem; background:rgba(124,77,255,0.03); border-radius:48px; border:1px solid rgba(124,77,255,0.1);">
+        <h2 style="font-size:2.5rem; font-weight:900; margin-bottom:1rem;">Vocal <span class="grad">Bio-Hacking</span> Kit</h2>
+        <p style="color:var(--m); margin-bottom:3rem; max-width:650px;">Acelera tu progreso vocal con las herramientas que usan los profesionales en sus giras mundiales:</p>
+        
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem;">
+            <div style="background:var(--dark); padding:2rem; border-radius:32px; border:1px solid var(--glass-border); border-bottom:4px solid var(--p);">
+                <span style="font-size:2.5rem;">🥤</span>
+                <h4 style="font-size:1.4rem; margin-top:1rem;">Lax Vox (Terapia de Pajita)</h4>
+                <p style="color:var(--m); font-size:0.9rem; margin:1rem 0;">Relaja y alinea tus cuerdas vocales bajo el agua. Vital para recuperación rápida.</p>
+                <a href="https://www.amazon.es/s?k=Lax+Vox+pajita+silicona+entrenamiento+vocal" target="_blank" style="color:var(--p); font-weight:900; text-decoration:none;">VER EN AMAZON →</a>
+            </div>
+            <div style="background:var(--dark); padding:2rem; border-radius:32px; border:1px solid var(--glass-border); border-bottom:4px solid var(--a);">
+                <span style="font-size:2.5rem;">🎭</span>
+                <h4 style="font-size:1.4rem; margin-top:1rem;">Beltbox (Máscara Vocal)</h4>
+                <p style="color:var(--m); font-size:0.9rem; margin:1rem 0;">Calienta tu voz en cualquier lugar sin molestar a nadie. Silencia tu volumen un 90%.</p>
+                <a href="https://www.amazon.es/s?k=Beltbox+vocal+dampener+mask" target="_blank" style="color:var(--a); font-weight:900; text-decoration:none;">VER EN AMAZON →</a>
+            </div>
+            <div style="background:var(--dark); padding:2rem; border-radius:32px; border:1px solid var(--glass-border); border-bottom:4px solid #fff;">
+                <span style="font-size:2.5rem;">💨</span>
+                <h4 style="font-size:1.4rem; margin-top:1rem;">Nebulizador Vocal</h4>
+                <p style="color:var(--m); font-size:0.9rem; margin:1rem 0;">Hidratación celular directa en las cuerdas vocales con micro-vaporización.</p>
+                <a href="https://www.amazon.es/s?k=Vocal+Mist+Nebulizador+portatil" target="_blank" style="color:#fff; font-weight:900; text-decoration:none;">VER EN AMAZON →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DIETA VOCAL -->
+    <section style="margin:6rem 0; padding:4rem; background:linear-gradient(135deg, rgba(0,255,136,0.05), rgba(124,77,255,0.05)); border-radius:48px; border:1px solid rgba(0,255,136,0.1);">
+        <h2 style="font-size:2.5rem; font-weight:900; margin-bottom:1rem;">Tu Dieta <span style="color:#00FF88;">Vocal</span></h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:2rem; margin-top:2rem;">
+            <div style="background:rgba(255,255,255,0.02); padding:2rem; border-radius:32px; border:1px solid rgba(255,255,255,0.05);">
+                <h4 style="color:#00FF88; text-transform:uppercase; font-size:0.8rem; margin-bottom:1rem;">✅ Alimentos Aliados</h4>
+                <ul style="list-style:none; line-height:2.5;">
+                    <li>🥥 Agua a temperatura ambiente</li>
+                    <li>🍯 Té de Jengibre con Miel silvestre</li>
+                    <li>🍉 Frutas con alto contenido de agua</li>
+                </ul>
+            </div>
+            <div style="background:rgba(255,255,255,0.02); padding:2rem; border-radius:32px; border:1px solid rgba(255,255,255,0.05);">
+                <h4 style="color:var(--a); text-transform:uppercase; font-size:0.8rem; margin-bottom:1rem;">❌ Evitar antes de cantar</h4>
+                <ul style="list-style:none; line-height:2.5;">
+                    <li>🍦 Lácteos (generan mucosa densa)</li>
+                    <li>☕ Cafeína (deshidrata los pliegues)</li>
+                    <li>🌶️ Picante (riesgo de reflujo vocal)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIRECTORIO DINAMICO Soprano -->
+    <section style="margin:6rem 0">
+        <div style="text-align:center; margin-bottom:3rem">
+            <span style="background:rgba(255,79,163,0.15); color:#FF4FA3; padding:6px 18px; border-radius:100px; font-weight:900; font-size:0.8rem; text-transform:uppercase; letter-spacing:1px">Directorio Completo</span>
+            <h2 style="font-size:2.8rem; font-weight:900; margin:1rem 0">Los <span style="color:#FF4FA3">19</span> Sopranos</h2>
+            <p style="color:var(--m); font-size:1.1rem; max-width:620px; margin:0 auto 2rem">Todos los artistas de nuestra base de datos clasificados como <strong>Soprano</strong>. Haz clic en cualquiera para ver su perfil vocal completo con ejercicios, rango y comparativa de voz.</p>
+            <a href="/artistas/" style="color:#FF4FA3; font-weight:900; text-decoration:none; font-size:0.95rem; border:2px solid #FF4FA344; padding:0.6rem 1.8rem; border-radius:100px; transition:.3s">Ver directorio completo &rarr;</a>
+        </div>
+
+        <div id="vtGrid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:0.9rem; margin-bottom:2rem"></div>
+
+        <div id="vtNoResults" style="display:none; text-align:center; color:var(--m); padding:2rem">Cargando artistas...</div>
+
+        <div id="vtLoadMore" style="text-align:center; margin:2rem 0; display:none">
+            <button onclick="vtMore()" style="padding:1rem 2.5rem; background:#FF4FA322; color:#FF4FA3; border:2px solid #FF4FA355; border-radius:100px; font-weight:900; font-size:1rem; cursor:pointer">Cargar mas Sopranos &darr;</button>
+        </div>
+    </section>
+
+    <script>
+    (function(){
+        var VT_FILTER = 'Soprano';
+        var allArtists = [], currentPage = 0, PAGE_SIZE = 48;
+        function stripAccents(s){ return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+        function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+        function renderPage(){
+            var grid = document.getElementById('vtGrid');
+            var slice = allArtists.slice(currentPage*PAGE_SIZE, (currentPage+1)*PAGE_SIZE);
+            var frag = document.createDocumentFragment();
+            slice.forEach(function(a){
+                var link = document.createElement('a');
+                link.href = '/artistas/'+escH(a.s)+'/';
+                link.setAttribute('title', a.n+' - Perfil Vocal '+escH(VT_FILTER));
+                link.style.cssText = 'display:block;background:#110f21;border-radius:18px;padding:1rem 0.8rem;text-align:center;border:1px solid rgba(255,255,255,0.07);text-decoration:none;color:#fff;font-size:0.82rem;font-weight:700;line-height:1.3;word-break:break-word;';
+                link.textContent = a.n;
+                frag.appendChild(link);
+            });
+            grid.appendChild(frag);
+            currentPage++;
+            var shown = Math.min(currentPage*PAGE_SIZE, allArtists.length);
+            document.getElementById('vtLoadMore').style.display = shown < allArtists.length ? 'block' : 'none';
+        }
+        window.vtMore = renderPage;
+        document.getElementById('vtNoResults').style.display = 'block';
+        document.getElementById('vtNoResults').textContent = 'Cargando artistas...';
+        fetch('/artistas/index.json')
+            .then(function(r){ return r.json(); })
+            .then(function(data){
+                allArtists = data.filter(function(a){ return stripAccents((a.v||'').toLowerCase()) === stripAccents(VT_FILTER.toLowerCase()); });
+                document.getElementById('vtNoResults').style.display = 'none';
+                if(allArtists.length === 0){ document.getElementById('vtNoResults').style.display='block'; document.getElementById('vtNoResults').textContent='No se encontraron artistas.'; return; }
+                renderPage();
+            })
+            .catch(function(){ document.getElementById('vtNoResults').textContent='Error al cargar artistas.'; });
+    })();
+    </script>
+
+    <div class="cta-section" style="margin-bottom:6rem">
+        <h2>¿Tienes ese <span class="grad">Brillo Celestial</span>?</h2>
+        <p>No te quedes con la duda. Nuestra IA analiza tu tesitura y timbre exactos en segundos.</p>
+        <a href="/#app" class="btn-main">ANALIZAR MI VOZ YA</a>
+    </div>
+
+</div>
+
+<footer style="padding:5rem 5% 3rem; background:#030208; border-top:1px solid var(--glass-border); text-align:center">
+    <p style="color:var(--m); font-size:0.8rem">© 2026 Harmiq — El ADN Vocal de las Próximas Divas</p>
+</footer>
+
+</body>
+</html>
+
+</body>
+</html>
