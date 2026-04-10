@@ -793,12 +793,16 @@ function startSpectrum(stream) {
   wrap.style.display = "block";
 
   const dpr = window.devicePixelRatio || 1;
-  canvas.width  = canvas.offsetWidth  * dpr || 300 * dpr;
-  canvas.height = canvas.offsetHeight * dpr || 72  * dpr;
+  // Force reflow then use wrapper width for reliable dimensions
+  const cw = wrap.getBoundingClientRect().width || 300;
+  canvas.width  = Math.round(cw * dpr);
+  canvas.height = Math.round(72 * dpr);
   const ctx = canvas.getContext("2d");
   const W = canvas.width, H = canvas.height;
 
   actx    = new (window.AudioContext || window.webkitAudioContext)();
+  // iOS Safari requires explicit resume after creation
+  if (actx.state === "suspended") actx.resume();
   const src = actx.createMediaStreamSource(stream);
   analyser = actx.createAnalyser();
   analyser.fftSize = 256;
@@ -1399,11 +1403,11 @@ function classifyVT(pitchMean, pitchRange, gender) {
     else               { vt = "soprano";       conf = 90; }
   } else {
     // Rangos Masculinos (Hz) - FUNDAMENTAL:
-    // Bajo:      80-115 Hz
-    // Barítono: 110-160 Hz
-    // Tenor:    155-215 Hz
+    // Bajo:      80-100 Hz
+    // Barítono: 100-165 Hz
+    // Tenor:    165-215 Hz
     // Contra:   >215 Hz
-    if      (pm < 115) { vt = "bass";          conf = 85; }
+    if      (pm < 100) { vt = "bass";          conf = 85; }
     else if (pm < 165) { vt = "baritone";      conf = 95; } // Barítono es el centro, máxima confianza
     else if (pm < 215) { vt = "tenor";         conf = 88; }
     else               { vt = "countertenor";  conf = 80; }
@@ -1449,8 +1453,9 @@ async function analyzeAudio() {
       feat._local = true;
       const vec  = featuresToVector(feat);
       const {vt, conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
-      const matches = getMatches(vec, vt, gender, {}, 5);
-      lastResult = {feat, vec, vt, conf, matches, gender};
+      const _g1 = (gender==="auto"||!gender) ? (["soprano","mezzo-soprano","contralto"].includes(vt)?"female":"male") : gender;
+      const matches = getMatches(vec, vt, _g1, {}, 5);
+      lastResult = {feat, vec, vt, conf, matches, gender: _g1};
       try {
         const toSave = {
           feat: lastResult.feat, vt: lastResult.vt, conf: lastResult.conf,
@@ -1498,8 +1503,9 @@ async function analyzeAudio() {
       feat._local = true;
       const vec  = featuresToVector(feat);
       const {vt, conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
-      const matches = getMatches(vec, vt, gender, {}, 5);
-      lastResult = {feat, vec, vt, conf, matches, gender};
+      const _g2 = (gender==="auto"||!gender) ? (["soprano","mezzo-soprano","contralto"].includes(vt)?"female":"male") : gender;
+      const matches = getMatches(vec, vt, _g2, {}, 5);
+      lastResult = {feat, vec, vt, conf, matches, gender: _g2};
       await preloadImages(matches.slice(0,5).map(m=>m.name));
       renderResults(lastResult);
       showStatus("");
@@ -1513,9 +1519,10 @@ async function analyzeAudio() {
     const feat = data.features;
     
     const {vt,conf} = classifyVT(feat.pitchMean, feat.pitchRange, gender);
-    const matches = getMatches(vec, vt, gender, {}, 5);
-    
-    lastResult = {feat, vec, vt, conf, matches, gender};
+    const _g3 = (gender==="auto"||!gender) ? (["soprano","mezzo-soprano","contralto"].includes(vt)?"female":"male") : gender;
+    const matches = getMatches(vec, vt, _g3, {}, 5);
+
+    lastResult = {feat, vec, vt, conf, matches, gender: _g3};
     await preloadImages(matches.slice(0,5).map(m=>m.name));
     renderResults(lastResult);
     
