@@ -691,23 +691,49 @@ async function getArtistImage(name) {
   const backendImg = await getSpotifyImageFromBackend(name);
   if (backendImg) { imgCache[name] = backendImg; return backendImg; }
 
-  // 3. iTunes Search API pública (CORS friendly, rápido y alta calidad)
+  // 3. Wikipedia Summary API (CORS-friendly, sin auth, fotos reales de artistas)
+  const wikiNames = [name, name.split(/[(&]/)[0].trim()]; // Probar nombre exacto y nombre base
+  for (const wn of wikiNames) {
+    try {
+      const slug = encodeURIComponent(wn.replace(/\s+/g, '_'));
+      const r = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${slug}`);
+      if (r.ok) {
+        const d = await r.json();
+        if (d.thumbnail?.source) {
+          const img = d.thumbnail.source.replace(/\/\d+px-/, '/300px-');
+          imgCache[name] = img;
+          return img;
+        }
+      }
+    } catch(_) {}
+    // Intentar también Wikipedia en español
+    try {
+      const slug = encodeURIComponent(wn.replace(/\s+/g, '_'));
+      const r = await fetch(`https://es.wikipedia.org/api/rest_v1/page/summary/${slug}`);
+      if (r.ok) {
+        const d = await r.json();
+        if (d.thumbnail?.source) {
+          const img = d.thumbnail.source.replace(/\/\d+px-/, '/300px-');
+          imgCache[name] = img;
+          return img;
+        }
+      }
+    } catch(_) {}
+  }
+
+  // 4. iTunes musicArtist (fotos de artista, no carátulas de álbum)
   try {
     const q = encodeURIComponent(name);
-    // Removemos AbortSignal.timeout porque rompe silenciosamente en Safari/Móviles antiguos
-    const r = await fetch(`https://itunes.apple.com/search?term=${q}&entity=song&limit=1`);
+    const r = await fetch(`https://itunes.apple.com/search?term=${q}&entity=musicArtist&limit=1`);
     const d = await r.json();
-    if (d.results && d.results.length > 0) {
-      const art = d.results[0].artworkUrl100;
-      if (art) {
-        const img = art.replace('100x100bb', '600x600bb');
-        imgCache[name] = img;
-        return img;
-      }
+    if (d.results?.[0]?.artworkUrl100) {
+      const img = d.results[0].artworkUrl100.replace('100x100bb', '600x600bb');
+      imgCache[name] = img;
+      return img;
     }
-  } catch(e) { console.error("iTunes Error:", e); }
+  } catch(_) {}
 
-  // 4. Fallback: avatar con iniciales coloreadas
+  // 5. Fallback: avatar con iniciales coloreadas
   const initImg = getInitialsAvatar(name);
   imgCache[name] = initImg;
   return initImg;
@@ -1632,6 +1658,16 @@ async function renderResults({feat,vec,vt,conf,matches,gender}) {
 
   const resEl = document.getElementById("results");
   if (!resEl) return;
+
+  // Sin resultados para este filtro — mostrar aviso en vez de crashear
+  if (!matches || matches.length === 0) {
+    resEl.innerHTML = `<div style="text-align:center;padding:3rem 1rem;color:#9CA3AF">
+      <div style="font-size:2rem;margin-bottom:1rem">🔍</div>
+      <div style="font-weight:700;color:#fff;margin-bottom:.5rem">No hay artistas con estos filtros</div>
+      <div style="font-size:.9rem">Prueba con otro idioma, época o género musical</div>
+    </div>`;
+    return;
+  }
 
   const colorMap = {
     "baritone":"#7C4DFF","bass":"#1E3A5F","tenor":"#118AB2",
