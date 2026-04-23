@@ -26,7 +26,7 @@
 const AMAZON_DOMAINS = { ES:"es",US:"com",MX:"com.mx",UK:"co.uk",DE:"de",FR:"fr",IT:"it",CA:"ca",BR:"com.br",JP:"co.jp" };
 const AFFILIATE_ID   = "harmiqapp-20";
 const HF_API_URL     = "https://hamiq-harmiq-backend1.hf.space";
-const APP_VERSION    = "10.3";
+const APP_VERSION    = "10.5";
 const DB_PATH        = "/harmiq_db_vectores.json";
 
 // ── Security: HTML escaping to prevent XSS when inserting external data into innerHTML ──
@@ -51,6 +51,7 @@ function getPremiumHeaderHTML() {
                 <li><a href="/tipo-de-voz/mezzosoprano/" style="color:#7C4DFF; font-weight:700; font-size:0.85rem; text-decoration:none; padding:0.4rem 0.8rem; border-radius:10px; background:rgba(124,77,255,0.1)">Mezzo</a></li>
                 <li><a href="/tipo-de-voz/tenor/" style="color:#1DB954; font-weight:700; font-size:0.85rem; text-decoration:none; padding:0.4rem 0.8rem; border-radius:10px; background:rgba(29,185,84,0.1)">Tenor</a></li>
                 <li><a href="/artistas/" style="color:#A5B4FC; font-weight:700; font-size:0.85rem; text-decoration:none; padding:0.4rem 0.8rem; border-radius:10px; background:rgba(124,77,255,0.1)">Artistas</a></li>
+                <li><a href="/modul-catala" style="color:#FCDD09; font-weight:700; font-size:0.85rem; text-decoration:none; padding:0.4rem 0.8rem; border-radius:10px; background:rgba(252,221,9,0.1)">🏴 Català</a></li>
                 <li><a href="/comunidad" style="color:#FF9900; font-weight:700; font-size:0.85rem; text-decoration:none; padding:0.4rem 1.2rem; border-radius:10px; background:rgba(255,153,0,0.1); border:1px solid rgba(255,153,0,0.2)">Comunidad</a></li>
             </ul>
         </div>
@@ -68,6 +69,27 @@ function getPremiumFooterHTML() {
         </div>
         <p style="color:#9CA3AF; font-size:0.85rem">© 2026 Harmiq · Inteligencia Artificial Vocal · <a href="/politica-privacidad.html" style="color:#7C4DFF; text-decoration:none">Privacidad</a> · <a href="/terminos.html" style="color:#7C4DFF; text-decoration:none">Términos</a></p>
     </footer>`;
+}
+
+/**
+ * getEventsModuleHTML(city)
+ * Genera el HTML del módulo de eventos y mapa interactivo.
+ */
+function getEventsModuleHTML(city = "Madrid") {
+    const enc = encodeURIComponent(city);
+    return `
+    <div style="background:rgba(255,255,255,.03); border-radius:30px; border:1px solid rgba(255,255,255,.08); padding:2rem; margin-bottom:2rem">
+        <h2 style="font-family:'Baloo 2',sans-serif; font-size:1.8rem; margin-bottom:1rem">🎤 Eventos y Karaoke en ${city}</h2>
+        <div style="display:flex; gap:1rem; margin-bottom:1.5rem">
+            <input type="text" id="_karaoke_city" placeholder="Escribe tu ciudad..." style="flex:1; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,0.1); padding:.8rem; border-radius:12px; color:#fff">
+            <button onclick="_searchKaraoke()" style="background:#7C4DFF; color:#fff; border:none; padding:0 1.5rem; border-radius:12px; font-weight:700; cursor:pointer">Buscar</button>
+        </div>
+        <div id="_karaoke_map_wrap" style="width:100%; height:400px; border-radius:20px; overflow:hidden; border:1px solid rgba(255,255,255,0.1)">
+            <iframe id="_google_map" width="100%" height="100%" frameborder="0" style="border:0" 
+                src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d1500000!2d-3.7!3d40.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1skaraoke+${enc}!5e0!3m2!1ses!2ses!4v1711100000000!5m2!1ses!2ses" allowfullscreen>
+            </iframe>
+        </div>
+    </div>`;
 }
 
 // Plataformas musicales por país (geolocalización)
@@ -975,22 +997,38 @@ function startSpectrum(stream) {
   function draw() {
     rafId = requestAnimationFrame(draw);
     analyser.getByteFrequencyData(buf);
-    ctx.fillStyle = "rgba(13,13,26,.35)";
+    
+    // Fondo con rastro suave (motion blur)
+    ctx.fillStyle = "rgba(10, 8, 28, 0.2)";
     ctx.fillRect(0, 0, W, H);
-    const bw = W / buf.length * 1.8;
-    buf.forEach((v, i) => {
+    
+    const barCount = buf.length;
+    const barWidth = (W / barCount) * 2.5;
+    let x = 0;
+
+    for (let i = 0; i < barCount; i++) {
+      const v = buf[i];
       const pct = v / 255;
-      const h   = pct * H;
-      const r   = Math.round(124 + (255-124)*pct);
-      const g   = Math.round(77  * (1-pct));
-      const b   = Math.round(255 * (1-pct*.6));
-      ctx.fillStyle = `rgb(${r},${g},${b})`;
-      ctx.fillRect(i * bw, H - h, bw - 1, h);
-      if (pct > .05) {
-        ctx.fillStyle = `rgba(255,255,255,${pct*.7})`;
-        ctx.fillRect(i * bw, H - h - 2*dpr, bw - 1, 2*dpr);
+      const barHeight = pct * H * 0.9;
+      
+      // Degradado neon basado en la intensidad
+      const hue = 260 + (pct * 40); // De violeta a rosa
+      ctx.fillStyle = `hsla(${hue}, 80%, 60%, ${pct + 0.3})`;
+      
+      // Dibujar barra con bordes redondeados (simulado)
+      ctx.fillRect(x, H - barHeight, barWidth - 2, barHeight);
+      
+      // Brillo en la punta
+      if (pct > 0.4) {
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = `hsla(${hue}, 100%, 70%, 1)`;
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(x, H - barHeight, barWidth - 2, 2);
+        ctx.shadowBlur = 0;
       }
-    });
+      
+      x += barWidth;
+    }
   }
   draw();
 }
@@ -1629,13 +1667,14 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
 
   // Boost para artistas conocidos
   const popularityBoost = (s) => {
-    // Artistas con foto curada (MONO_IMGS) = artistas famosos verificados → boost fuerte
-    if(MONO_IMGS[s.name]) return 1.22;
+    // Artistas con foto curada (MONO_IMGS) = artistas famosos verificados → boost equilibrado
+    // Reducido de 1.22 a 1.08 para que la similitud técnica pese más que la fama en el desempate
+    if(MONO_IMGS[s.name]) return 1.08;
     // Canciones con popularidad alta
     const maxPop = s.reference_songs ? Math.max(0,...s.reference_songs.map(r=>r.popularity||0)) : 0;
-    if(maxPop >= 70) return 1.12;
-    if(maxPop >= 40) return 1.06;
-    if(maxPop >= 10) return 1.02;
+    if(maxPop >= 80) return 1.06;
+    if(maxPop >= 60) return 1.04;
+    if(maxPop >= 30) return 1.02;
     // Géneros muy de nicho
     const niche = ['opera','classical','show-tunes','comedy','study','idm','disney','children','Pop/Log'];
     const isNiche = niche.includes(s.genre_category);
@@ -1647,26 +1686,43 @@ function getMatches(vec,vt,gender,filters={},topN=5) {
     return 1.0;
   };
 
-  const scored=pool
-    .map(s=>({
-      ...s,
-      score:Math.round(score(vec,s.vector,vt,s.voice_type)*countryBonus(s)*catalaBonus(s)*popularityBoost(s)*10)/10
-    }))
-    .sort((a,b)=>b.score-a.score);
+  const scored = pool
+    .map(s => {
+      const sim = score(vec, s.vector, vt, s.voice_type);
+      const combinedScore = Math.round(sim * countryBonus(s) * catalaBonus(s) * popularityBoost(s) * 10) / 10;
+      return {
+        ...s,
+        score: combinedScore,
+        // Tier 1=Superstar, 2=Famous, 3=Catalog, 4=Niche
+        tier: s.tier || 3
+      };
+    })
+    .sort((a, b) => {
+      // 1. Prioridad por Similitud vocal (Acoustic Match)
+      // Si la diferencia es de más de 3 puntos, el que tenga más score gana
+      if (Math.abs(a.score - b.score) > 3) return b.score - a.score;
+      // 2. Si son muy parecidos acústicamente, desempatar por Tier (Fama/Popularidad)
+      return a.tier - b.tier;
+    });
 
-  if(!scored[0]) return [];
+  if (!scored[0]) return [];
 
   // Diversidad de resultados (limitado a topN)
-  const out=[scored[0]]; const seen=new Set([scored[0]?.voice_type]);
-  for(const s of scored.slice(1)){
-    const e={...s};
-    if(seen.has(e.voice_type)&&(out[out.length-1].score-e.score)<3)
-      e.score=Math.round(e.score*.92*10)/10;
-    out.push(e); seen.add(e.voice_type);
-    if(out.length>=topN) break;
+  const out = [scored[0]];
+  const seen = new Set([scored[0]?.voice_type]);
+  for (const s of scored.slice(1)) {
+    const e = { ...s };
+    // Ajuste de puntuación para diversidad visual, pero respetando el orden de Tiers
+    if (seen.has(e.voice_type) && out[out.length - 1].tier === e.tier && (out[out.length - 1].score - e.score) < 3) {
+      e.score = Math.round(e.score * 0.92 * 10) / 10;
+    }
+    out.push(e);
+    seen.add(e.voice_type);
+    if (out.length >= topN) break;
   }
   return out;
 }
+
 
 /**
  * displayScore(raw) — Transforma el score interno (0-100) en un porcentaje
@@ -1931,7 +1987,7 @@ const PIANO_FREQS = {
 function getVoiceTypeDescription(vt, conf, lang) {
   const desc = {
     es: {
-      "baritone":      "Tu voz de barítono es la más versátil del espectro vocal masculino. Warm, oscura y expresiva, es el tipo de voz más común entre cantantes profesionales. Freddie Mercury, Elvis Presley y Frank Sinatra eran barítonos.",
+      "baritone":      "Tu voz de barítono es la más versátil del espectro vocal masculino. Cálida, oscura y expresiva, es el tipo de voz más común entre cantantes profesionales. Freddie Mercury, Elvis Presley y Frank Sinatra eran barítonos.",
       "bass":          "La voz de bajo es la más grave y poderosa de todas. Aporta una profundidad única que pocas voces pueden alcanzar. Johnny Cash y Barry White son ejemplos icónicos de este registro incomparable.",
       "tenor":         "El tenor es el tipo de voz masculina más agudo y brillante. Su capacidad para alcanzar el Do de pecho lo convierte en el protagonista de óperas y baladas épicas. Pavarotti y Freddie Mercury (en sus agudos) eran tenores.",
       "soprano":       "La soprano posee el registro más agudo de las voces femeninas. Clara, luminosa y poderosa en los agudos, es la voz protagonista de la ópera y los grandes musicales. Celine Dion y Ariana Grande son sopranos.",
@@ -1940,13 +1996,13 @@ function getVoiceTypeDescription(vt, conf, lang) {
       "countertenor":  "El contratenor es la voz masculina más aguda, que utiliza la voz de cabeza o falsetto para alcanzar registros de soprano o mezzo. Una rareza extraordinaria con un sonido único e inconfundible.",
     },
     en: {
-      "baritone":      "Your baritone voice is the most versatile in the male vocal spectrum. Warm, dark and expressive, it's the most common voice type among professional singers. Freddie Mercury, Elvis Presley and Frank Sinatra were all baritones.",
-      "bass":          "The bass is the deepest and most powerful of all voices. It brings a unique depth that few voices can reach. Johnny Cash and Barry White are iconic examples of this incomparable register.",
+      "baritone":      "Your baritone voice is the most versatile in the male vocal spectrum. Warm, dark and expressive, it's the most common voice type among professional singers.",
+      "bass":          "The bass is the deepest and most powerful of all voices. It brings a unique depth that few voices can reach.",
       "tenor":         "The tenor is the highest and brightest male voice type. Its ability to hit the chest high C makes it the protagonist of operas and epic ballads.",
-      "soprano":       "The soprano has the highest register of female voices. Clear, luminous and powerful in the high notes, it's the leading voice of opera and great musicals.",
-      "mezzo-soprano": "The mezzo-soprano combines the power of lower notes with the brilliance of the upper range. It's the most common female voice, with a warm and intensely expressive timbre.",
-      "contralto":     "The contralto is the lowest female voice and a true vocal rarity. Dark, powerful and with a hypnotic depth, it's an extraordinary musical gift.",
-      "countertenor":  "The countertenor is the highest male voice, using head voice or falsetto to reach soprano or mezzo-soprano ranges. An extraordinary rarity with a unique and unmistakable sound.",
+      "soprano":       "The soprano has the highest register of female voices. Clear, luminous and powerful in the high notes.",
+      "mezzo-soprano": "The mezzo-soprano combines the power of lower notes with the brilliance of the upper range.",
+      "contralto":     "The contralto is the lowest female voice and a true vocal rarity.",
+      "countertenor":  "The countertenor is the highest male voice, using head voice or falsetto to reach soprano ranges.",
     }
   };
   const d = desc[lang] || desc.es;
@@ -1964,47 +2020,26 @@ const VOCAL_RANGES_PIANO = {
   "soprano":       ["C4","E4","G4","C5"]
 };
 
-
 async function playVocalSequence(vt) {
     const notes = VOCAL_RANGES_PIANO[vt] || ["C3", "E3", "G3"];
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
     let time = audioCtx.currentTime + 0.1;
-
-    notes.forEach((note, i) => {
+    notes.forEach((note) => {
         const freq = PIANO_FREQS[note] || 261.63;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        
-        osc.type = 'triangle'; // Sonido suave tipo piano eléctrico/flauta
+        osc.type = "triangle";
         osc.frequency.setValueAtTime(freq, time);
-        
         gain.gain.setValueAtTime(0, time);
         gain.gain.linearRampToValueAtTime(0.3, time + 0.05);
         gain.gain.exponentialRampToValueAtTime(0.01, time + 0.8);
-        
         osc.connect(gain);
         gain.connect(audioCtx.destination);
-        
-        // Animación visual del piano roll
-        setTimeout(() => {
-            const keyEl = document.getElementById(`pk-${note}`);
-            if (keyEl) {
-                keyEl.style.background = 'var(--a)';
-                keyEl.style.boxShadow = '0 0 15px var(--a)';
-                setTimeout(() => {
-                    keyEl.style.background = 'rgba(255,255,255,0.1)';
-                    keyEl.style.boxShadow = 'none';
-                }, 500);
-            }
-        }, (time - audioCtx.currentTime) * 1000);
-
         osc.start(time);
         osc.stop(time + 0.8);
         time += 0.4;
     });
-
-    setTimeout(() => audioCtx.close(), time * 1000 + 1000);
+    setTimeout(() => audioCtx.close(), time * 1000 + 500);
 }
 
 async function renderResults(data) {
@@ -2018,365 +2053,104 @@ async function renderResults(data) {
     return;
   }
   const {feat,vec,vt,conf,matches,gender} = data;
-  
-  // Activar layout de resultados a ancho completo
   document.querySelector('.analyzer-card')?.classList.add('has-results');
 
   try {
     const vtName = trV("_vt_names",vt);
     const sym    = ["🥇","🥈","🥉","4°","5°","6°","7°","8°","9°","10°","11°","12°","13°","14°","15°"];
-  const explanation = getVoiceTypeDescription(vt, conf, window.lang || 'es');
+    const explanation = getVoiceTypeDescription(vt, conf, window.lang || 'es');
+    const resEl = document.getElementById("results");
+    if (!resEl) return;
 
-  const resEl = document.getElementById("results");
-  if (!resEl) return;
+    const colorMap = {"baritone":"#7C4DFF","bass":"#1E3A5F","tenor":"#118AB2","soprano":"#FF4FA3","mezzo-soprano":"#FF9F1C","contralto":"#80B918","countertenor":"#06D6A0"};
+    const color = colorMap[vt] || "#7C4DFF";
 
-  const colorMap = {
-    "baritone":"#7C4DFF","bass":"#1E3A5F","tenor":"#118AB2",
-    "soprano":"#FF4FA3","mezzo-soprano":"#FF9F1C","contralto":"#80B918",
-    "countertenor":"#06D6A0"
-  };
-  const color = colorMap[vt] || "#7C4DFF";
+    const top1 = matches[0];
+    const top1Img = MONO_IMGS[top1?.name] || imgCache[top1?.name] || getInitialsAvatar(top1?.name||"?");
 
-  // ── 1. PREMIUM STORY CARD (Viral) ──────────────────────────────────
-  const top1 = matches[0];
-  const top1Img = MONO_IMGS[top1?.name] || imgCache[top1?.name] || getInitialsAvatar(top1?.name||"?");
-  
-  const phrases = {
-    "baritone":["Tu voz tiene el poder de un clásico 🎭","Freddie Mercury era barítono. ¿Y tú? 🤘","La voz más versátil del mundo. Úsala 🎤"],
-    "tenor":   ["Tu voz llega donde otros no pueden ✨","El Do de pecho es tu territorio 🏆","Los tenores hacen historia 🎼"],
-    "soprano": ["Tu voz es pura magia celestial ✨","Mariah Carey empezó como tú 🌟","Las sopranos conquistan el mundo 👑"],
-    "mezzo-soprano":["Adele cambió el mundo con esta voz 💜","La más expresiva del espectro 🎶","Tu timbre es único e irrepetible 🔥"],
-    "contralto":["Una rareza vocal privilegiada 🌿","Nina Simone tenía tu voz 🎹","Tu registro grave es tu superpoder 💚"],
-    "bass":    ["Los graves más poderosos del mundo 🎸","Johnny Cash tenía tu voz 🖤","Tu voz hace temblar el escenario ⚡"],
-    "countertenor":["La voz más sorprendente del mundo 🌈","Tu falsetto es tu mayor tesoro 💎","Una rareza vocal extraordinaria ⭐"],
-  };
-  const phraseArr = phrases[vt] || ["Tu voz es única 🎤","Nadie canta como tú 🌟","El mundo necesita tu voz 🎵"];
-  const phrase = phraseArr[Math.floor(Math.random() * phraseArr.length)];
-
-  const storyCardHTML = `
-    <div id="_premium_story_card" style="
-      background: linear-gradient(170deg,#0f0820 0%,#1a0a35 35%,#0a1228 70%);
-      border-radius: 40px; padding: 3rem 2rem; color: #fff; margin-bottom: 3rem;
-      border: 1px solid rgba(255,255,255,.15); position: relative; overflow: hidden;
-      box-shadow: 0 40px 120px rgba(0,0,0,0.8), 0 0 50px ${color}44; text-align:center;">
-      
-      <!-- Destellos de fondo -->
-      <div style="position:absolute; top:-20%; left:-10%; width:200px; height:200px; background:${color}; filter:blur(100px); opacity:0.25; pointer-events:none"></div>
-      <div style="position:absolute; bottom:-10%; right:-5%; width:150px; height:150px; background:#FF4FA3; filter:blur(80px); opacity:0.15; pointer-events:none"></div>
-
-      <div style="font-family:'Outfit',sans-serif; text-transform:uppercase; letter-spacing:3px; font-size:0.72rem; color:${color}; font-weight:800; margin-bottom:0.6rem">
-        Tu voz se parece a
-      </div>
-
-      <a href="/artistas/${top1.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}/" style="text-decoration:none">
-        <h2 style="font-family:'Baloo 2',sans-serif; font-size:clamp(2.4rem,9vw,4rem); font-weight:900; margin:0 0 1rem; line-height:1.05; background:linear-gradient(135deg,#fff,${color}); -webkit-background-clip:text; -webkit-text-fill-color:transparent; cursor:pointer" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">${escHtml(top1.name)}</h2>
-      </a>
-
-      <div style="width:130px; height:130px; margin:0 auto 1.2rem; position:relative;">
-        <div style="position:absolute; inset:-5px; border-radius:50%; background:linear-gradient(135deg, ${color}, #FF4FA3); padding:3px; animation:rotate-glow 4s linear infinite">
-          <div style="width:100%; height:100%; background:#0f0820; border-radius:50%"></div>
-        </div>
-        <img src="${escHtml(top1Img)}" style="width:100%; height:100%; border-radius:50%; object-fit:cover; position:relative; z-index:2; border:4px solid #0f0820" onerror="_imgFallback(this,'${escHtml(top1.name)}')" onload="this.style.opacity='1'" style="opacity:0;transition:opacity .3s">
-      </div>
-
-      <div style="display:inline-flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:50px; padding:0.4rem 1.1rem; margin-bottom:1rem">
-        <span style="font-size:0.85rem; font-weight:800; color:#fff">${vtName}</span>
-      </div>
-
-      <div style="font-size:1rem; color:#D1D5DB; margin-bottom:1.5rem; font-style:italic">"${phrase}"</div>
-
-      <div style="display:inline-block; background:rgba(255,255,255,0.05); padding:0.8rem 2.2rem; border-radius:20px; border:1px solid rgba(255,255,255,0.1); margin-bottom:2rem">
-        <div style="font-size:0.72rem; color:#A5B4FC; text-transform:uppercase; letter-spacing:1.5px; font-weight:700; margin-bottom:0.2rem">Similitud vocal</div>
-        <div style="font-size:3.5rem; font-weight:900; background:linear-gradient(135deg, #fff, ${color}); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1">
-          ${displayScore(top1.score)}%
-        </div>
-      </div>
-
-      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap">
-        <button onclick="showViralCard()" style="padding:1rem 2rem; border-radius:50px; background:linear-gradient(135deg, #7C4DFF, #FF4FA3); color:white; border:none; font-weight:800; cursor:pointer; box-shadow:0 10px 30px rgba(124,77,255,0.4); display:flex; align-items:center; gap:0.6rem">
-          <span>🌟</span> Compartir tarjeta viral
-        </button>
-        <button onclick="_share('wa')" style="padding:1rem 1.5rem; border-radius:50px; background:rgba(255,255,255,.05); color:white; border:1px solid rgba(255,255,255,.15); font-weight:700; cursor:pointer; display:flex; align-items:center; gap:0.6rem">
-          <span>💬</span> Chat
-        </button>
-      </div>
-
-      <!-- Feedback + Reiniciar -->
-      <div style="display:flex; gap:.8rem; justify-content:center; align-items:center; margin-top:1.2rem; flex-wrap:wrap">
-        <span style="font-size:.78rem; color:#6B7280; font-weight:700">¿El resultado es correcto?</span>
-        <button id="_fb_ok" onclick="_sendFeedback(true)" style="font-size:1.5rem; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:50px; padding:.35rem .9rem; cursor:pointer; transition:.2s" title="Sí, correcto" onmouseover="this.style.background='rgba(6,214,160,.15)';this.style.borderColor='#06D6A0'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">👍</button>
-        <button id="_fb_ko" onclick="_sendFeedback(false)" style="font-size:1.5rem; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:50px; padding:.35rem .9rem; cursor:pointer; transition:.2s" title="No, no es correcto" onmouseover="this.style.background='rgba(255,79,163,.15)';this.style.borderColor='#FF4FA3'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">👎</button>
-        <button onclick="_resetApp()" style="font-size:.82rem; font-weight:800; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:50px; padding:.45rem 1.2rem; cursor:pointer; color:#A5B4FC; transition:.2s; display:flex; align-items:center; gap:.4rem" onmouseover="this.style.background='rgba(124,77,255,.15)';this.style.borderColor='#7C4DFF'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">🔄 Nueva prueba</button>
-      </div>
-
-      <!-- Monetización Integrada (Simplificada en Card) -->
-      <div style="margin-top:2rem; border-top:1px solid rgba(255,255,255,0.05); padding-top:1.5rem">
-        <div style="font-size:0.75rem; color:#9CA3AF; font-weight:700; text-transform:uppercase; letter-spacing:1px">Sugerencia Profesional</div>
-        <div style="font-size:0.9rem; margin-top:0.3rem">${trV("_vt_names", vt)}: El equipo ideal para tu rango.</div>
-      </div>
-
-    </div>
-  `;
-
-  // ── 2. FILTROS Y CONTENIDO ──────────────────────────────────────────
-  const ERA_DISPLAY = [
-    {val:"pre-1960s",  label:"Clásicos"},
-    {val:"1960s",      label:"60"},
-    {val:"1970s",      label:"70"},
-    {val:"1980s",      label:"80"},
-    {val:"1990s",      label:"90"},
-    {val:"2000s",      label:"2000"},
-    {val:"2010s",      label:"2010"},
-    {val:"2020s",      label:"2020"},
-    {val:"actualidad", label:"Actual"}
-  ];
-  const eraOptions = ERA_DISPLAY
-    .filter(e => {
-      const dbVal = ({"1970s":"1970s-80s","1980s":"1970s-80s","2000s":"2000s+","2010s":"2010s","2020s":"2020s+","actualidad":"2020s+"}[e.val]) || e.val;
-      return singersDb.some(s => s.era === dbVal || s.era === e.val);
-    })
-    .map(e => `<option value="${e.val}">${e.label}</option>`).join("");
-
-  const genreOptions = [...new Set(singersDb.map(s=>s.genre_category).filter(Boolean))].sort()
-    .map(g => `<option value="${g}">${g.charAt(0).toUpperCase()+g.slice(1).replace('-',' ')}</option>`).join("");
-
-  // Opciones de idioma/país: "ES" = solo España, "LATAM" = todos los latinos, etc.
-  const topCountries = {
-    "ES":    "🇪🇸 España",
-    "LATAM": "🌎 Latino",
-    "CAT":   "🏴 Català",
-    "US":    "🇺🇸 English",
-    "BR":    "🇧🇷 Português",
-    "IT":    "🇮🇹 Italiano",
-    "DE":    "🇩🇪 Deutsch",
-    "FR":    "🇫🇷 Français",
-    "JP":    "🇯🇵 日本語",
-    "KR":    "🇰🇷 한국어"
-  };
-  // "LATAM" agrupa todos los países hispanohablantes excepto España
-  const LATAM_CC = ["MX","AR","CO","PR","CL","VE","PE","DO","BO","EC","PY","UY","GT","HN","CR","PA","CU","NI","SV","US_LATIN"];
-  const countryOptions = Object.entries(topCountries)
-    .filter(([cc]) => cc==="LATAM" ? singersDb.some(s=>LATAM_CC.includes(s.country_code)) : singersDb.some(s=>s.country_code===cc))
-    .map(([cc,lbl]) => `<option value="${cc}">${lbl}</option>`).join("");
-
-  const filtersHTML = `
-    <style>
-      .hm-sel{width:100%;background:#13102a;border:1px solid rgba(255,255,255,.15);color:#E5E7EB;border-radius:12px;padding:.55rem .8rem;font-size:.85rem;font-family:'Outfit',sans-serif;font-weight:600;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239CA3AF'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;outline:none;transition:border-color .2s}
-      .hm-sel:focus,.hm-sel:hover{border-color:rgba(124,77,255,.6)}
-      .hm-sel option{background:#1a1730;color:#E5E7EB}
-    </style>
-    <div id="_filters_row" style="margin-bottom:1.5rem; padding:1.2rem 1.4rem; background:rgba(255,255,255,.03); border-radius:20px; border:1px solid rgba(255,255,255,.08)">
-      <div style="font-size:.72rem; color:#9CA3AF; font-weight:800; text-transform:uppercase; letter-spacing:.12em; margin-bottom:.9rem">🎛️ Filtrar artistas por época, género o idioma</div>
-      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:.7rem">
-        <select id="_era_filter" class="hm-sel filter-sel"><option value="">📅 Época</option>${eraOptions}</select>
-        <select id="_genre_filter" class="hm-sel filter-sel"><option value="">🎵 Género</option>${genreOptions}</select>
-        <select id="_country_filter" class="hm-sel filter-sel"><option value="">🌍 Idioma</option>${countryOptions}</select>
-      </div>
-    </div>`;
-
-  // Cards grid: verticales estilo Spotify — foto grande arriba, info abajo
-  const cardsHTML = `<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:1rem; margin-top:.5rem">` +
-    matches.slice(1).map((m, i) => {
-    const rank   = i + 2;
-    const pct    = displayScore(m.score);
-    const img    = imgCache[m.name] || getInitialsAvatar(m.name);
-    const vtN    = trV("_vt_names", m.voice_type);
-    const songs  = m.reference_songs?.slice(0,3) || [];
-    const medal  = sym[rank - 1] || `${rank}°`;
-    const isComp = m.isComparisonMode;
-    const slug   = m.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-    const cardColor = isComp ? '#FF4FA3' : color;
-    return `
-    <div style="background:rgba(255,255,255,.04); border:1px solid ${isComp?'rgba(255,79,163,.4)':'rgba(255,255,255,.08)'}; border-radius:20px; overflow:hidden; position:relative; transition:transform .25s, box-shadow .25s; display:flex; flex-direction:column" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,.5)';this.style.borderColor='${cardColor}66'" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.borderColor='${isComp?'rgba(255,79,163,.4)':'rgba(255,255,255,.08)'}'">
-      ${isComp ? `<div style="position:absolute;top:8px;left:8px;background:#FF4FA3;color:#fff;font-size:.5rem;font-weight:900;padding:2px 8px;border-radius:20px;letter-spacing:1px;z-index:3;text-transform:uppercase">Comparación</div>` : ""}
-      <!-- Medalla rank -->
-      <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.7);color:#fff;font-size:.65rem;font-weight:900;padding:3px 8px;border-radius:20px;z-index:3;backdrop-filter:blur(4px)">${medal}</div>
-      <!-- Foto cuadrada grande -->
-      <a href="/artistas/${slug}/" style="display:block;text-decoration:none">
-        <div style="position:relative;padding-top:100%;background:#0d0a1f;overflow:hidden">
-          <img src="${escHtml(img)}" alt="${escHtml(m.name)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .3s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onerror="_imgFallback(this,'${escHtml(m.name)}')">
-          <!-- Gradiente inferior para legibilidad -->
-          <div style="position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(13,10,31,.9) 0%,transparent 100%);pointer-events:none"></div>
-          <!-- % similitud sobre foto -->
-          <div style="position:absolute;bottom:8px;left:10px;z-index:2">
-            <div style="font-size:1.3rem;font-weight:900;color:#fff;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,.8)">${pct}%</div>
-            <div style="font-size:.55rem;color:rgba(255,255,255,.6);font-weight:700;text-transform:uppercase;letter-spacing:.5px">similitud</div>
-          </div>
-        </div>
-      </a>
-      <!-- Info -->
-      <div style="padding:.75rem .85rem; flex:1; display:flex; flex-direction:column; gap:.4rem">
-        <a href="/artistas/${slug}/" style="text-decoration:none">
-          <div style="font-size:1.05rem;color:#fff;font-weight:800;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .15s" onmouseover="this.style.color='${cardColor}'" onmouseout="this.style.color='#fff'">${escHtml(m.name)}</div>
+    const storyCardHTML = `
+      <div id="_premium_story_card" style="background: linear-gradient(170deg,#0f0820 0%,#1a0a35 35%,#0a1228 70%); border-radius: 40px; padding: 3rem 2rem; color: #fff; margin-bottom: 3rem; border: 1px solid rgba(255,255,255,.15); position: relative; overflow: hidden; box-shadow: 0 40px 120px rgba(0,0,0,0.8), 0 0 50px ${color}44; text-align:center;">
+        <div style="font-family:'Outfit',sans-serif; text-transform:uppercase; letter-spacing:3px; font-size:0.72rem; color:${color}; font-weight:800; margin-bottom:0.6rem">Tu voz se parece a</div>
+        <a href="/artistas/${top1.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}/" style="text-decoration:none">
+          <h2 style="font-family:'Baloo 2',sans-serif; font-size:clamp(2.4rem,9vw,4rem); font-weight:900; margin:0 0 1rem; color:#fff">${escHtml(top1.name)}</h2>
         </a>
-        <div style="display:flex;gap:.3rem;flex-wrap:wrap">
-          <span style="font-size:.6rem;font-weight:800;padding:.15rem .5rem;border-radius:20px;background:${cardColor}22;color:${cardColor};border:1px solid ${cardColor}44">${vtN}</span>
-          ${m.era ? `<span style="font-size:.6rem;padding:.15rem .5rem;border-radius:20px;background:rgba(255,255,255,.06);color:#9CA3AF">${trV("_eras",m.era)||m.era}</span>` : ""}
+        <div style="width:130px; height:130px; margin:0 auto 1.2rem; border-radius:50%; overflow:hidden; border:4px solid ${color}">
+          <img src="${escHtml(top1Img)}" style="width:100%; height:100%; object-fit:cover" onerror="_imgFallback(this,'${escHtml(top1.name)}')">
         </div>
-        <!-- Barra similitud -->
-        <div style="height:2px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin-top:.1rem">
-          <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${cardColor},#FF4FA3)"></div>
+        <div style="font-size:3.5rem; font-weight:900; color:#fff">${displayScore(top1.score)}%</div>
+        <div style="display:flex; justify-content:center; gap:1rem; margin-top:1.5rem">
+           <button onclick="exportToPDF()" style="padding:.8rem 1.5rem; border-radius:30px; background:${color}; color:#fff; border:none; font-weight:800; cursor:pointer">📄 Informe PDF</button>
+           <button onclick="_resetApp()" style="padding:.8rem 1.5rem; border-radius:30px; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); font-weight:800; cursor:pointer">🔄 Reintentar</button>
         </div>
-        <!-- Canciones -->
-        ${songs.length ? `<div style="margin-top:.3rem;display:flex;flex-direction:column;gap:.2rem">
-          ${songs.map(s => {
-            const sTitle = typeof s==='object'?(s.title||s.name||''):String(s||'');
-            const {karaoke} = getPlatformLinks(m.name, sTitle);
-            return `<a href="${karaoke}" target="_blank" style="display:flex;align-items:center;gap:.4rem;text-decoration:none;padding:.25rem .3rem;border-radius:6px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">
-              <span style="color:${cardColor};font-size:.6rem;flex-shrink:0">▶</span>
-              <span style="font-size:.65rem;color:#D1D5DB;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${sTitle}</span>
-            </a>`;
-          }).join('')}
-        </div>` : ""}
       </div>
-    </div>`;
-  }).join("") + `</div>`;
+    `;
 
-  const vtOverrideHTML = (() => {
-    const allVTs = ['bass','baritone','tenor','countertenor','contralto','mezzo-soprano','soprano'];
-    const btns = allVTs.map(v => {
-      const n = trV('_vt_names', v) || v;
-      const isActive = v === vt;
-      return `<button onclick="_overrideVT('${v}')" style="font-size:.75rem; font-weight:800; padding:.4rem .9rem; border-radius:30px; cursor:pointer; transition:.2s; border:1px solid ${isActive ? color : 'rgba(255,255,255,.15)'}; background:${isActive ? color+'33' : 'rgba(255,255,255,.05)'}; color:${isActive ? '#fff' : '#9CA3AF'}">${n}</button>`;
-    }).join('');
-    return `<div style="margin:2rem 0; padding:1.2rem; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:20px">
-      <div style="font-size:.8rem; color:#9CA3AF; margin-bottom:0.8rem; font-weight:700">¿Crees que el resultado no es exacto? Ajusta tu tipo de voz:</div>
-      <div style="display:flex; gap:0.5rem; flex-wrap:wrap">${btns}</div>
-    </div>`;
-  })();
-
-  resEl.innerHTML = `
-    <div style="animation: appear 0.6s ease-out">
-      ${storyCardHTML}
-      <div style="text-align:center; padding: 0 1rem 2rem; border-bottom:1px solid rgba(255,255,255,.1)">
-        <p style="color:#D1D5DB; font-size:1.1rem; line-height:1.6; max-width:800px; margin:0 auto">${explanation}</p>
-      </div>
-
-      <!-- 🎹 PIANO ROLL — sección independiente -->
-      <div style="margin:2.5rem auto; max-width:520px; background:rgba(255,255,255,0.03); padding:2rem 1.5rem 2.2rem; border-radius:28px; border:1px solid rgba(255,255,255,0.08); text-align:center">
-        <div style="font-size:0.7rem; color:${color}; font-weight:800; text-transform:uppercase; letter-spacing:2px; margin-bottom:0.3rem">Tu rango vocal</div>
-        <div style="font-size:1.35rem; font-weight:900; color:#fff; margin-bottom:1.4rem">${vtName}</div>
-        <div style="display:flex; justify-content:center; align-items:flex-end; gap:4px; padding-bottom:24px; overflow-x:auto">
-          ${["C2","D2","E2","F2","G2","A2","B2","C3","D3","E3","F3","G3","A3","B3","C4","D4","E4","F4","G4","A4","B4","C5"].map(n => {
-            const isRange = (VOCAL_RANGES_PIANO[vt]||[]).includes(n);
-            const isC = n.startsWith("C");
-            return "<div id='pk-"+n+"' style='flex-shrink:0; width:"+(isC?"16px":"11px")+"; height:"+(isRange?"64px":"40px")+"; background:"+(isRange ? color : "rgba(255,255,255,0.1)")+"; border-radius:4px; transition:all 0.3s; position:relative; box-shadow:"+(isRange ? "0 6px 16px "+color+"66" : "none")+"'>"+(isC?"<span style='position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:8px;color:#6B7280;white-space:nowrap'>"+n+"</span>":"")+"</div>";
-          }).join("")}
+    const filtersHTML = `
+      <div id="_filters_row" style="margin-bottom:1.5rem; padding:1.2rem 1.4rem; background:rgba(255,255,255,.03); border-radius:20px; border:1px solid rgba(255,255,255,.08)">
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:.7rem">
+          <select id="_era_filter" class="hm-sel filter-sel"><option value="">📅 Época</option><option value="2020s">Actual</option><option value="2000s">2000s</option><option value="1980s">80s</option><option value="1960s">60s</option></select>
+          <select id="_genre_filter" class="hm-sel filter-sel"><option value="">🎵 Género</option></select>
+          <select id="_country_filter" class="hm-sel filter-sel"><option value="">🌍 Idioma</option><option value="ES">España</option><option value="LATAM">Latino</option><option value="US">English</option></select>
         </div>
-        <button onclick="playVocalSequence('${vt}')" style="background:linear-gradient(135deg,${color},#FF4FA3); color:#fff; border:none; padding:.85rem 2.4rem; border-radius:50px; font-weight:800; cursor:pointer; font-size:.88rem; display:inline-flex; align-items:center; gap:.6rem; transition:.2s; box-shadow:0 8px 24px ${color}55" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform=''">
-          🎹 Escuchar mi rango vocal
-        </button>
       </div>
+    `;
 
-      <div style="margin:2.5rem 0 1.5rem">
-        <div style="font-family:'Outfit'; font-weight:900; font-size:1.5rem; color:#fff; margin-bottom:1rem; display:flex; align-items:center; gap:0.8rem">
-          <span>🎸</span> ${matches.length} artistas que comparten tu ADN vocal
+    const cardsHTML = `<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:1rem">` +
+      matches.slice(1).map((m, i) => {
+        const pct = displayScore(m.score);
+        const img = imgCache[m.name] || getInitialsAvatar(m.name);
+        return `
+        <div style="background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:20px; overflow:hidden">
+          <div style="position:relative; padding-top:100%">
+            <img src="${escHtml(img)}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover" onerror="_imgFallback(this,'${escHtml(m.name)}')">
+          </div>
+          <div style="padding:.75rem">
+            <div style="font-weight:800; color:#fff">${escHtml(m.name)}</div>
+            <div style="color:${color}; font-size:.8rem">${pct}% similitud</div>
+          </div>
+        </div>`;
+      }).join("") + `</div>`;
+
+    resEl.innerHTML = `
+      <div style="animation: appear 0.6s ease-out">
+        ${storyCardHTML}
+        <div style="text-align:center; padding: 2rem 0; border-top:1px solid rgba(255,255,255,0.1)">
+          <p style="color:#D1D5DB; font-size:1.1rem; max-width:800px; margin:0 auto">${explanation}</p>
         </div>
         ${filtersHTML}
-        ${data._filtersRelaxedMsg ? `<div style="margin:-0.5rem 0 1rem; padding:0.7rem 1.1rem; background:rgba(124,77,255,0.12); border-radius:12px; border:1px solid rgba(124,77,255,0.3); font-size:0.82rem; color:#C4B5FD;">ℹ️ ${data._filtersRelaxedMsg}</div>` : ""}
         ${cardsHTML}
       </div>
+    `;
 
-      ${vtOverrideHTML}
-      
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1rem; margin-top:2rem">
-        <a href="/home-studio" style="padding:1.5rem; background:rgba(124,77,255,.1); border-radius:20px; border:1px solid rgba(124,77,255,.25); text-decoration:none; text-align:center">
-          <div style="font-size:2rem; margin-bottom:.5rem">🎛️</div>
-          <div style="font-weight:800; color:#fff">Montar Home Studio</div>
-          <div style="font-size:.8rem; color:#A5B4FC">Guía técnica para sonar pro</div>
-        </a>
-        <a href="/ejercicios-de-canto" style="padding:1.5rem; background:rgba(255,209,102,.1); border-radius:20px; border:1px solid rgba(255,209,102,.25); text-decoration:none; text-align:center">
-          <div style="font-size:2rem; margin-bottom:.5rem">🎯</div>
-          <div style="font-weight:800; color:#fff">Ejercicios de Canto</div>
-          <div style="font-size:.8rem; color:#FFD166">Mejora tu rango y control</div>
-        </a>
-      </div>
-
-      <!-- 🎓 SECCIÓN DEDICADA DE CURSOS (Solicitud Usuario) -->
-      <div id="_courses_section" style="margin-top:3rem; animation: appear 0.8s ease-out">
-        <div style="font-family:'Outfit'; font-weight:900; font-size:1.5rem; color:#fff; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.8rem">
-          <span>🎓</span> Formación y Cursos Premium
-        </div>
-        ${getUdemyBox(vt)}
-        
-        <div style="margin-top:1.5rem; padding:1.5rem; background:rgba(255,255,255,.03); border-radius:24px; border:1px solid rgba(255,255,255,.08); display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap">
-          <div style="flex:1; min-width:200px">
-            <h4 style="font-size:1rem; color:#fff; margin-bottom:0.4rem">Masterclass: Técnica Vocal Avanzada</h4>
-            <p style="font-size:0.85rem; color:#9CA3AF">Aprende a dominar los armónicos y el control de aire con profesionales.</p>
-          </div>
-          <a href="https://www.udemy.com/topic/singing/?tag=harmiqapp-20" target="_blank" style="background:rgba(255,255,255,0.08); color:#fff; padding:0.8rem 1.5rem; border-radius:12px; text-decoration:none; font-weight:700; font-size:0.85rem; border:1px solid rgba(255,255,255,0.1)">Ver más cursos →</a>
-        </div>
-      </div>
-
-    </div>
-  `;
-
-  // Re-vincular eventos de filtros
-  attachFilterEvents(vec, vt, gender);
-  
-    // Scroll suave al inicio del resultado
-    setTimeout(() => resEl.scrollIntoView({ behavior:"smooth", block:"start" }), 150);
-
-    // ── Sección karaoke personalizada ──────────────────────────────────
-    const evEl = document.getElementById("events-area");
-    if (evEl) {
-      const vtSlug = {"baritone":"baritono","bass":"bajo","tenor":"tenor","soprano":"soprano","mezzo-soprano":"mezzosoprano","contralto":"contralto","countertenor":"tenor"}[vt] || "baritono";
-      evEl.innerHTML = buildKaraokeSection(vtName, vtSlug);
-    }
-  } catch (renderErr) {
-    console.error("Error in renderResults:", renderErr);
-    const resEl = document.getElementById("results");
-    if (resEl) resEl.innerHTML = `<div style="padding:2rem; text-align:center; color:#9CA3AF">Hubo un problema al generar la tarjeta de resultados. Por favor, intenta analizar de nuevo.</div>`;
-  }
+    attachFilterEvents(vec, vt, gender);
+  } catch (err) { console.error(err); }
 }
 
 function attachFilterEvents(vec, vt, gender) {
-  const applyFilters = async () => {
-    const eraVal  = document.getElementById("_era_filter")?.value    || "";
-    const genre   = document.getElementById("_genre_filter")?.value  || "";
-    const country = document.getElementById("_country_filter")?.value|| "";
-    
-    const ERA_MAP = { "1970s":"1970s-80s", "1980s":"1970s-80s", "2000s":"2000s+", "2010s":"2010s", "2020s":"2020s+", "actualidad":"2020s+" };
-    const era = ERA_MAP[eraVal] || eraVal;
-    
-    const filters = {};
-    if (era)     filters.era            = era;
-    if (genre)   filters.genre_category = genre;
-    if (country) filters.country_code   = country;  // LANG_CC mapping se aplica en getMatches
-
-    let newMatches = getMatches(vec, vt, gender, filters, 15);
-    let filtersRelaxed = false;
-    // Si era+país da 0 resultados → relajar filtro de época y avisar al usuario
-    if (newMatches.length === 0 && filters.era && filters.country_code) {
-      const filtersNoEra = { ...filters };
-      delete filtersNoEra.era;
-      newMatches = getMatches(vec, vt, gender, filtersNoEra, 15);
-      filtersRelaxed = newMatches.length > 0;
-    }
-    await preloadImages(newMatches.map(m=>m.name));
-
-    if (typeof lastResult !== 'undefined') {
-        lastResult.matches = newMatches;
-        lastResult._filtersRelaxedMsg = filtersRelaxed
-          ? "No encontramos artistas de ese país en esa época. Mostrando todos los artistas del país seleccionado."
-          : "";
-        await renderResults(lastResult);
-        // Restaurar los valores seleccionados tras el re-render (renderResults reconstruye el HTML)
-        const eraEl     = document.getElementById("_era_filter");
-        const genreEl   = document.getElementById("_genre_filter");
-        const countryEl = document.getElementById("_country_filter");
-        if (eraEl)     eraEl.value     = eraVal;
-        if (genreEl)   genreEl.value   = genre;
-        if (countryEl) countryEl.value = country;
-    }
-  };
-
   const sels = ["_era_filter", "_genre_filter", "_country_filter"];
   sels.forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.addEventListener("change", applyFilters);
+    if (el) {
+      el.addEventListener("change", async () => {
+        const era = document.getElementById("_era_filter").value;
+        const gen = document.getElementById("_genre_filter").value;
+        const cou = document.getElementById("_country_filter").value;
+        const f = {}; if(era) f.era=era; if(gen) f.genre_category=gen; if(cou) f.country_code=cou;
+        const newMatches = getMatches(vec, vt, gender, f, 15);
+        if (typeof lastResult !== 'undefined') {
+          lastResult.matches = newMatches;
+          await renderResults(lastResult);
+          setTimeout(() => {
+            if(document.getElementById("_era_filter")) document.getElementById("_era_filter").value = era;
+            if(document.getElementById("_genre_filter")) document.getElementById("_genre_filter").value = gen;
+            if(document.getElementById("_country_filter")) document.getElementById("_country_filter").value = cou;
+          }, 50);
+        }
+      });
+    }
   });
 }
+
 
 // ── Constructor de sección karaoke (reutilizable en resultado y páginas SEO) ──
 function buildKaraokeSection(vtName, vtSlug) {
@@ -2830,6 +2604,89 @@ function _shareCard(p) {
     showStatus("✅ Texto copiado al portapapeles");
     setTimeout(()=>showStatus(""),2500);
   });
+}
+
+/**
+ * exportToPDF()
+ * Genera un reporte profesional en PDF con los resultados del análisis.
+ * Utiliza la librería jsPDF cargada vía CDN.
+ */
+async function exportToPDF() {
+  if (!lastResult) return;
+  const { jspdf } = window;
+  if (!jspdf) {
+    showStatus("⚠️ Cargando generador de PDF...", "ok");
+    return;
+  }
+
+  const {vt, conf, matches, feat} = lastResult;
+  const doc = new jspdf.jsPDF();
+  const vtName = trV("_vt_names", vt);
+  const date = new Date().toLocaleDateString();
+
+  // --- Header ---
+  doc.setFillColor(15, 12, 31);
+  doc.rect(0, 0, 210, 40, "F");
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(24);
+  doc.text("HARMIQ VOCAL REPORT", 20, 25);
+  doc.setFontSize(10);
+  doc.text(`Generado el: ${date} | v${APP_VERSION}`, 140, 25);
+
+  // --- Perfil Vocal ---
+  doc.setTextColor(15, 12, 31);
+  doc.setFontSize(18);
+  doc.text("Resumen de Perfil Vocal", 20, 55);
+  
+  doc.setFontSize(12);
+  doc.text(`Tipo de voz detectado: ${vtName.toUpperCase()}`, 20, 65);
+  doc.text(`Nivel de confianza: ${conf}%`, 20, 72);
+
+  // --- Datos Técnicos ---
+  doc.setFillColor(243, 244, 246);
+  doc.rect(20, 80, 170, 45, "F");
+  doc.setTextColor(55, 65, 81);
+  doc.setFontSize(11);
+  doc.text("Métricas Técnicas Analizadas:", 25, 88);
+  doc.setFontSize(10);
+  doc.text(`• Frecuencia Fundamental (Pitch Mean): ${Math.round(feat.pitchMean)} Hz`, 30, 95);
+  doc.text(`• Rango Dinámico Detectado: ${Math.round(feat.pitchRange)} Hz`, 30, 102);
+  doc.text(`• Centroide Espectral (Brillo): ${Math.round(feat.centroid)} Hz`, 30, 109);
+  doc.text(`• Estabilidad Vocal (Std Dev): ${feat.pitchStd.toFixed(2)}`, 30, 116);
+
+  // --- Comparativa de Artistas ---
+  doc.setTextColor(15, 12, 31);
+  doc.setFontSize(16);
+  doc.text("Artistas con Vocalidad Similar", 20, 140);
+  
+  doc.setFontSize(10);
+  let y = 150;
+  matches.slice(0, 5).forEach((m, i) => {
+    const score = displayScore(m.score);
+    doc.setFont("helvetica", "bold");
+    doc.text(`${i + 1}. ${m.name}`, 25, y);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Similitud: ${score}% | Tipo: ${trV("_vt_names", m.voice_type)}`, 70, y);
+    y += 10;
+  });
+
+  // --- Recomendación ---
+  doc.setFillColor(124, 77, 255);
+  doc.rect(20, 210, 170, 30, "F");
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(12);
+  const desc = getVoiceTypeDescription(vt, conf, "es");
+  const splitDesc = doc.splitTextToSize(desc, 160);
+  doc.text(splitDesc, 25, 220);
+
+  // --- Footer ---
+  doc.setTextColor(156, 163, 175);
+  doc.setFontSize(9);
+  doc.text("Análisis realizado mediante el motor de Inteligencia Artificial de Harmiq.app", 105, 280, null, null, "center");
+
+  doc.save(`Harmiq_Report_Profile_${vt.replace(' ','_')}.pdf`);
+  showStatus("✅ Reporte descargado");
+  setTimeout(() => showStatus(""), 3000);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
