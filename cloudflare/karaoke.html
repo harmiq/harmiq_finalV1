@@ -619,7 +619,7 @@ uploadZone.addEventListener('drop', e => {
 fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFileUpload(e.target.files[0]); });
 
 async function handleFileUpload(file) {
-  if (file.size > 100 * 1024 * 1024) { showToast('❌ Archivo demasiado grande (máx 100 MB)'); return; }
+  if (file.size > 10 * 1024 * 1024) { showToast('❌ Archivo demasiado grande (máx 10 MB para la capa gratuita)'); return; }
   uploadZone.innerHTML = `<div class="upload-icon">✅</div><p><strong>${file.name}</strong></p><p style="margin-top:4px;font-size:12px;">${(file.size/1024/1024).toFixed(1)} MB</p>`;
   state.audioBlob = file;
   state.audioHash = await generateAudioHash(file);
