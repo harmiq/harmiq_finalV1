@@ -943,7 +943,7 @@ function startKaraoke() {
     
     if (state.ytPlayer && state.ytPlayer.loadVideoById) {
       state.ytPlayer.loadVideoById(vd.videoId);
-    } else if (state.ytApiReady) {
+    } else if (window.YT && window.YT.Player) {
       state.ytPlayer = new YT.Player('ytPlayerContainer', {
         videoId: vd.videoId,
         playerVars: { 'autoplay': 0, 'controls': 0, 'disablekb': 1, 'fs': 0, 'modestbranding': 1, 'rel': 0 },
