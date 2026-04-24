@@ -341,12 +341,17 @@
   </div>
 
   <div class="tab-content active" id="tab-url">
-    <div class="url-input-wrap">
-      <input class="url-input" id="videoUrl" type="url"
-        placeholder="https://youtube.com/watch?v=... o Vevo, SoundCloud..."
-        autocomplete="off" spellcheck="false">
-      <button class="btn-primary" id="btnProcess">
-        <span>▶</span> Procesar
+    <div class="url-input-wrap" style="display:flex; flex-direction:column; gap:10px;">
+      <div style="display:flex; gap:10px;">
+        <input class="url-input" id="videoUrl" type="url"
+          placeholder="https://youtube.com/watch?v=... o Vevo, SoundCloud..."
+          autocomplete="off" spellcheck="false" style="flex:1;">
+        <button class="btn-primary" id="btnProcess">
+          <span>▶</span> Procesar
+        </button>
+      </div>
+      <button id="btnCobalt" class="btn-stem" style="align-self:flex-start; font-size:12px; opacity:0.8; background:var(--bg3); border-color:var(--border2);">
+        📥 Descargar MP3 desde YouTube (Para Separar Pistas)
       </button>
     </div>
     <p style="font-size:12px;color:var(--text3);margin-top:8px;padding-left:4px;">
@@ -621,6 +626,12 @@ document.getElementById('btnProcess').addEventListener('click', async () => {
 
 document.getElementById('videoUrl').addEventListener('keydown', e => {
   if (e.key === 'Enter') document.getElementById('btnProcess').click();
+});
+
+document.getElementById('btnCobalt')?.addEventListener('click', () => {
+  const url = document.getElementById('videoUrl').value.trim();
+  if (!url) { showToast('⚠️ Pega una URL primero'); return; }
+  window.open('https://cobalt.tools/?u=' + encodeURIComponent(url), '_blank');
 });
 
 // ── PIPELINE PRINCIPAL ────────────────────────────────────────────────────
