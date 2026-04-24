@@ -8,6 +8,7 @@
   <link rel="icon" href="https://harmiq.app/harmiq-logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     /* ── TOKENS ── */
     :root {
@@ -280,6 +281,33 @@
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
+    /* ── PREMIUM BUTTONS ── */
+    .btn-stem {
+      background: var(--bg2); border: 1px solid var(--border);
+      color: var(--text2); padding: 10px 18px; border-radius: 12px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+    }
+    .btn-stem:hover { background: var(--bg3); border-color: var(--accent); color: var(--text); transform: translateY(-2px); }
+    .btn-stem i { font-style: normal; font-size: 16px; }
+
+    .pitch-btn {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--bg2); border: 1px solid var(--border);
+      color: var(--text); cursor: pointer; display: flex;
+      align-items: center; justify-content: center; font-weight: bold;
+      transition: all 0.2s;
+    }
+    .pitch-btn:hover { background: var(--accent); border-color: var(--accent); }
+    
+    #downloadPanel {
+      animation: slideDown 0.4s ease-out;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 500px) {
       .lyric-line.active { font-size: 22px; }
@@ -411,10 +439,16 @@
       <div class="structure-list" id="structureList">
         <div style="color:var(--text3);font-size:13px;">Procesando estructura...</div>
       </div>
+      
+      <h3 style="font-size: 14px; font-weight: 600; margin-top: 20px; margin-bottom: 14px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.6px;">✍️ Editar Letra (Repasar Whisper)</h3>
+      <textarea id="manualLyrics" style="width:100%; height:150px; background:var(--bg2); border:1px solid var(--border); border-radius:var(--r); color:var(--text); padding:10px; font-family:var(--font); font-size:14px; resize:vertical; outline:none; transition:border-color 0.2s;" placeholder="Aquí aparecerá la letra para que puedas corregirla..."></textarea>
     </div>
   </div>
 
-  <div style="margin-top:16px;display:flex;justify-content:flex-end">
+  <div style="margin-top:16px;display:flex;justify-content:flex-end;gap:12px;">
+    <button class="btn-primary" id="btnSeparate" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text);">
+      🎚️ Separar Pistas (Drums/Bass/etc)
+    </button>
     <button class="btn-primary" id="btnStartKaraoke" style="gap:10px">
       🎤 Iniciar Karaoke
     </button>
@@ -455,6 +489,21 @@
       <span>🔊</span>
       <input class="volume-slider" type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.8">
     </div>
+    <!-- Transposer -->
+    <div style="margin-left:12px; display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.03); padding:6px 12px; border-radius:14px; border:1px solid var(--border);">
+      <span style="font-size:10px; font-weight:800; color:var(--text3); letter-spacing:1px;">TRANSPOSE</span>
+      <button class="pitch-btn" onclick="changePitch(-1)">-</button>
+      <span id="pitchDisplay" style="font-size:14px; font-weight:700; min-width:26px; text-align:center; color:var(--accent2);">0</span>
+      <button class="pitch-btn" onclick="changePitch(1)">+</button>
+    </div>
+  </div>
+
+  <!-- Panel de Descargas Multi-pista -->
+  <div id="downloadPanel" style="display:none; background:var(--card); border:1px solid var(--border); border-radius:var(--r2); padding:16px; margin-bottom:16px;">
+    <h3 style="font-size:12px; color:var(--text2); margin-bottom:12px; text-transform:uppercase;">📥 Descargar Pistas Separadas (MP3)</h3>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;" id="stemButtons">
+      <!-- Se llenará dinámicamente -->
+    </div>
   </div>
 
   <!-- Pantalla de letra -->
@@ -477,11 +526,15 @@
 <!-- FOOTER -->
 <div class="footer-note">
   Powered by <a href="https://harmiq.app">Harmiq</a> · IA de separación vocal: Demucs · Transcripción: Whisper
+  <br><br>
+  <div style="max-width:600px; margin:0 auto; opacity:0.6; line-height:1.4;">
+    <strong>Aviso Legal:</strong> Harmiq Karaoke es una herramienta de procesamiento de audio por IA. El usuario es el único responsable del uso que haga de la herramienta y de los archivos resultantes. No almacenamos copias públicas ni distribuimos material con copyright; facilitamos un servicio técnico de procesamiento efímero para uso personal y creativo.
+  </div>
 </div>
 
 <script>
 // ── CONFIG ────────────────────────────────────────────────────────────────
-const API_BASE = 'https://harmiq-karaoke-api.dapuig2.workers.dev';
+const API_BASE = 'https://harmiq.app/api/karaoke';
 // Para desarrollo local: const API_BASE = 'http://localhost:8787';
 
 // ── STATE ─────────────────────────────────────────────────────────────────
@@ -494,6 +547,10 @@ const state = {
   karaokeMode: 'scrolling',
   isPlaying: false,
   currentLine: -1,
+  pitch: 0,
+  audioContext: null,
+  sourceNode: null,
+  stems: {}
 };
 
 const audio = document.getElementById('audioPlayer');
@@ -582,6 +639,7 @@ async function processAudio(videoUrl, file) {
     }
 
     state.karaokeLines = transcribeResult.karaokeLines || [];
+    document.getElementById('manualLyrics').value = state.karaokeLines.map(l => l.text).join('\n');
     updateStep(1, 'done', '✅ Letra transcrita', `${state.karaokeLines.length} líneas detectadas`);
 
     // PASO 3: Analizar estructura (coros, voces)
@@ -617,6 +675,114 @@ async function processAudio(videoUrl, file) {
   }
 
   document.getElementById('btnProcess').disabled = false;
+}
+
+// ── SEPARACIÓN DE PISTAS ──────────────────────────────────────────────────
+document.getElementById('btnSeparate')?.addEventListener('click', async () => {
+  const btn = document.getElementById('btnSeparate');
+  btn.disabled = true;
+  btn.textContent = '⏳ Separando...';
+  showToast('🛰️ Enviando a la nube para separación multi-pista...');
+
+  try {
+    const vd = state.videoData;
+    const body = { mode: 'all' };
+    if (state.audioBlob) {
+      body.audioBase64 = await fileToBase64(state.audioBlob);
+    } else if (vd?.audioExtractUrl) {
+      body.audioUrl = vd.audioExtractUrl;
+    } else {
+      throw new Error('No hay audio para separar');
+    }
+
+    const res = await apiCallWithRetry('/api/karaoke/separate', body, 3, 30000);
+    if (res.ok && res.stems?.zip) {
+      await processStemsZip(res.stems.zip);
+      showToast('✅ Pistas separadas con éxito');
+    }
+  } catch (err) {
+    showToast('❌ Error en separación: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🎚️ Separar Pistas (Reintentar)';
+  }
+});
+
+async function processStemsZip(zipB64) {
+  const jszip = new JSZip();
+  const zip = await jszip.loadAsync(zipB64, { base64: true });
+  const stemButtons = document.getElementById('stemButtons');
+  const panel = document.getElementById('downloadPanel');
+  panel.style.display = 'block';
+  stemButtons.innerHTML = '';
+
+  state.stems = {};
+
+  for (const filename of Object.keys(zip.files)) {
+    if (!filename.endsWith('.wav')) continue;
+    
+    const blob = await zip.files[filename].async('blob');
+    const name = filename.replace('.wav', '');
+    state.stems[name] = blob;
+
+    const btn = document.createElement('button');
+    btn.className = 'mode-chip';
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#fff';
+    btn.innerHTML = `⬇️ ${translateStemName(name)} (MP3)`;
+    btn.onclick = () => downloadBlob(blob, `${state.videoData.title}_${name}.wav`);
+    stemButtons.appendChild(btn);
+  }
+}
+
+function translateStemName(n) {
+  const m = { vocals:'Voz', drums:'Batería', bass:'Bajo', other:'Guitarras/Otros' };
+  return m[n] || n;
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── CONTROL DE TONO (PITCH) ───────────────────────────────────────────────
+function changePitch(delta) {
+  state.pitch = Math.max(-6, Math.min(6, state.pitch + delta));
+  document.getElementById('pitchDisplay').textContent = (state.pitch > 0 ? '+' : '') + state.pitch;
+  applyPitch();
+}
+
+function applyPitch() {
+  // Usamos el Web Audio API para detune
+  if (!state.audioContext) {
+    state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    state.sourceNode = state.audioContext.createMediaElementSource(audio);
+    state.sourceNode.connect(state.audioContext.destination);
+  }
+  
+  // El detune se mide en cents (100 cents = 1 semitono)
+  // Nota: MediaElementSourceNode no tiene detune directo, 
+  // pero podemos usar playbackRate y corregir la velocidad después? 
+  // O usar un Worklet. Para simplicidad en esta versión, usamos playbackRate 
+  // que es lo que soporta el navegador nativamente con preservesPitch=false
+  
+  const factor = Math.pow(2, state.pitch / 12);
+  audio.playbackRate = factor;
+  
+  // Si queremos preservar la duración (pitch shift real), los navegadores no lo soportan nativo sin cambiar velocidad
+  // a menos que preservesPitch = true, pero eso mantiene el tono original al cambiar velocidad.
+  // Aquí el usuario quiere CAMBIAR EL TONO. 
+  // Si preservesPitch = false (default), cambiar playbackRate cambia tono y velocidad.
+  // Intentamos un truco:
+  if ('preservesPitch' in audio) {
+    audio.preservesPitch = false; 
+  }
+  
+  showToast(`Tono ajustado a ${state.pitch} semitonos`);
 }
 
 // ── SHOW CONTROLS ─────────────────────────────────────────────────────────
@@ -665,6 +831,30 @@ function selectVoiceMode(el) {
 document.getElementById('btnStartKaraoke').addEventListener('click', startKaraoke);
 
 function startKaraoke() {
+  // Guardar cambios en la letra manual
+  const manualText = document.getElementById('manualLyrics').value.trim();
+  if (manualText) {
+    const newLines = manualText.split('\n');
+    if (newLines.length === state.karaokeLines.length) {
+      // Mismo número de líneas, preservamos tiempos
+      state.karaokeLines.forEach((l, i) => {
+        l.text = newLines[i];
+      });
+    } else {
+      // Cambio el número de líneas, redistribuimos el tiempo de forma equitativa como aproximación
+      const totalTime = state.karaokeLines.length > 0 ? (state.karaokeLines[state.karaokeLines.length-1].endTime || audio.duration || 180) : 180;
+      const step = totalTime / newLines.length;
+      state.karaokeLines = newLines.map((text, i) => ({
+        id: i,
+        text: text,
+        startTime: i * step,
+        endTime: (i + 1) * step,
+        words: [{ text, start: i * step, end: (i + 1) * step }]
+      }));
+      showToast('⚠️ La sincronización se ha recalculado al cambiar líneas');
+    }
+  }
+
   const vd = state.videoData;
   document.getElementById('stageTitle').textContent = vd?.title || 'Karaoke';
   document.getElementById('stageArtist').textContent = vd?.author || '';

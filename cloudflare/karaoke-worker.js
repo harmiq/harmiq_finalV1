@@ -114,7 +114,7 @@ async function handleSeparate(request, env) {
   }
 
   // HF Inference API — audio-source-separation
-  const hfRes = await fetch(
+  const hfRes = await fetchWithRetry(
     'https://api-inference.huggingface.co/models/facebook/demucs',
     {
       method: 'POST',
@@ -123,28 +123,36 @@ async function handleSeparate(request, env) {
         'Content-Type': 'audio/wav',
       },
       body: audioData,
-    }
+    },
+    3, 10000
   );
 
-  if (!hfRes.ok) {
-    const err = await hfRes.text();
-    // Si el modelo está cargando devolvemos estado intermedio
-    if (hfRes.status === 503) {
-      return json({ status: 'loading', message: 'Modelo cargando, reintenta en 20 segundos', retryAfter: 20 });
-    }
-    return json({ error: `HF API error: ${err}` }, 500);
-  }
-
-  // Demucs devuelve un ZIP con stems
+  // Demucs devuelve un ZIP con los stems: drums, bass, other, vocals
   const zipBuffer = await hfRes.arrayBuffer();
   const zipBase64 = bufferToBase64(zipBuffer);
 
   return json({
     ok: true,
-    stems: { zip: zipBase64 },
+    stems: {
+      zip: zipBase64,
+      filenames: ['drums.wav', 'bass.wav', 'other.wav', 'vocals.wav']
+    },
     mode,
-    message: 'Separación completada. Los stems están en el ZIP.'
+    message: 'Separación completada con éxito.'
   });
+}
+
+// Helper para reintentos con backoff exponencial
+async function fetchWithRetry(url, options, retries = 3, backoff = 2000) {
+  for (let i = 0; i < retries; i++) {
+    const res = await fetch(url, options);
+    if (res.ok) return res;
+    if (res.status === 503 && i < retries - 1) { // 503 = Loading model
+      await new Promise(r => setTimeout(r, backoff * (i + 1)));
+      continue;
+    }
+    throw new Error(`API Error ${res.status}: ${await res.text()}`);
+  }
 }
 
 // ── 3. TRANSCRIBE: Whisper con timestamps para karaoke ────────────────────
