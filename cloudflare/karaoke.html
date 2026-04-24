@@ -496,6 +496,9 @@
       <span id="pitchDisplay" style="font-size:14px; font-weight:700; min-width:26px; text-align:center; color:var(--accent2);">0</span>
       <button class="pitch-btn" onclick="changePitch(1)">+</button>
     </div>
+    <button id="btnRecord" class="btn-stem" style="margin-left:auto; background:var(--bg2); color:#fff; padding:6px 14px; border:1px solid var(--border2); border-radius:10px; cursor:pointer;">
+      🔴 Grabar & Descargar
+    </button>
   </div>
 
   <!-- Panel de Descargas Multi-pista -->
@@ -550,10 +553,22 @@ const state = {
   pitch: 0,
   audioContext: null,
   sourceNode: null,
-  stems: {}
+  stems: {},
+  ytPlayer: null,
+  ytApiReady: false
 };
 
 const audio = document.getElementById('audioPlayer');
+
+// ── YOUTUBE IFRAME API ────────────────────────────────────────────────────
+const tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+const firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+window.onYouTubeIframeAPIReady = function() {
+  state.ytApiReady = true;
+};
 
 // ── TABS ──────────────────────────────────────────────────────────────────
 document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -564,6 +579,13 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
   });
 });
+
+// Create youtube background container
+const ytBg = document.createElement('div');
+ytBg.innerHTML = `<div id="ytBackgroundOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; opacity:0.3; pointer-events:none; display:none; overflow:hidden;">
+  <div id="ytPlayerContainer" style="width:100vw; height:56.25vw; min-height:100vh; min-width:177.77vh; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);"></div>
+</div>`;
+document.body.appendChild(ytBg.firstElementChild);
 
 // ── UPLOAD ZONE ───────────────────────────────────────────────────────────
 const uploadZone = document.getElementById('uploadZone');
@@ -679,20 +701,23 @@ async function processAudio(videoUrl, file) {
 
 // ── SEPARACIÓN DE PISTAS ──────────────────────────────────────────────────
 document.getElementById('btnSeparate')?.addEventListener('click', async () => {
+  const vd = state.videoData;
+  if (!state.audioBlob && (!vd || vd.videoId)) {
+    showToast('⚠️ Para separar pistas por IA, sube el archivo de audio directamente en la pestaña "Subir Audio".');
+    return;
+  }
+
   const btn = document.getElementById('btnSeparate');
   btn.disabled = true;
   btn.textContent = '⏳ Separando...';
   showToast('🛰️ Enviando a la nube para separación multi-pista...');
 
   try {
-    const vd = state.videoData;
     const body = { mode: 'all' };
     if (state.audioBlob) {
       body.audioBase64 = await fileToBase64(state.audioBlob);
     } else if (vd?.audioExtractUrl) {
       body.audioUrl = vd.audioExtractUrl;
-    } else {
-      throw new Error('No hay audio para separar');
     }
 
     const res = await apiCallWithRetry('/api/karaoke/separate', body, 3, 30000);
@@ -705,6 +730,51 @@ document.getElementById('btnSeparate')?.addEventListener('click', async () => {
   } finally {
     btn.disabled = false;
     btn.textContent = '🎚️ Separar Pistas (Reintentar)';
+  }
+});
+
+// ── GRABACIÓN (DESCAGAR AL FINALIZAR) ─────────────────────────────────────
+let mediaRecorder = null;
+let recordedChunks = [];
+
+document.getElementById('btnRecord')?.addEventListener('click', async () => {
+  if (mediaRecorder && mediaRecorder.state === 'recording') {
+    mediaRecorder.stop();
+    document.getElementById('btnRecord').innerHTML = '🔴 Grabar & Descargar';
+    document.getElementById('btnRecord').style.background = 'var(--bg2)';
+    document.getElementById('btnRecord').style.color = '#fff';
+    return;
+  }
+  
+  try {
+    const stream = await navigator.mediaDevices.getDisplayMedia({ 
+      video: { displaySurface: "browser" }, 
+      audio: true 
+    });
+    
+    mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+    recordedChunks = [];
+    
+    mediaRecorder.ondataavailable = e => {
+      if (e.data.size > 0) recordedChunks.push(e.data);
+    };
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+      downloadBlob(blob, `Harmiq_Karaoke_${state.videoData?.title || 'Mi_Grabacion'}.webm`);
+      showToast('✅ Video descargado con éxito');
+      
+      // Stop all tracks to clean up the screen sharing icon
+      stream.getTracks().forEach(track => track.stop());
+    };
+    
+    mediaRecorder.start();
+    document.getElementById('btnRecord').innerHTML = '⏹️ Finalizar Grabación';
+    document.getElementById('btnRecord').style.background = '#e11d48'; // red
+    document.getElementById('btnRecord').style.color = '#fff';
+    showToast('🔴 Grabación iniciada. Asegúrate de compartir "Pestaña de Chrome" con Audio.');
+    
+  } catch (e) {
+    showToast('⚠️ No se pudo iniciar la grabación: ' + e.message);
   }
 });
 
@@ -865,12 +935,31 @@ function startKaraoke() {
 
   // Configurar audio
   if (state.audioBlob) {
+    document.getElementById('ytBackgroundOverlay').style.display = 'none';
     audio.src = URL.createObjectURL(state.audioBlob);
-  } else if (vd?.audioExtractUrl) {
-    audio.src = vd.audioExtractUrl;
   } else if (vd?.videoId) {
-    // YouTube: usamos el embed con mute en la page, y referimos al audio
-    audio.src = `https://harmiq-karaoke-audio.harmiq.workers.dev/yt/${vd.videoId}`;
+    // YouTube: Iniciar IFrame en el fondo
+    document.getElementById('ytBackgroundOverlay').style.display = 'block';
+    
+    if (state.ytPlayer && state.ytPlayer.loadVideoById) {
+      state.ytPlayer.loadVideoById(vd.videoId);
+    } else if (state.ytApiReady) {
+      state.ytPlayer = new YT.Player('ytPlayerContainer', {
+        videoId: vd.videoId,
+        playerVars: { 'autoplay': 0, 'controls': 0, 'disablekb': 1, 'fs': 0, 'modestbranding': 1, 'rel': 0 },
+        events: {
+          'onReady': window.onPlayerReady,
+          'onStateChange': window.onPlayerStateChange
+        }
+      });
+    } else {
+       showToast("Cargando reproductor de YouTube, un instante...");
+       setTimeout(startKaraoke, 500);
+       return;
+    }
+  } else if (vd?.audioExtractUrl) {
+    document.getElementById('ytBackgroundOverlay').style.display = 'none';
+    audio.src = vd.audioExtractUrl;
   }
   audio.volume = 0.8;
 
@@ -955,30 +1044,15 @@ function updateActiveLine(idx) {
 }
 
 // ── PLAYER CONTROLS ───────────────────────────────────────────────────────
-document.getElementById('playBtn').addEventListener('click', () => {
-  if (audio.paused) { audio.play(); document.getElementById('playBtn').textContent = '⏸'; state.isPlaying = true; }
-  else { audio.pause(); document.getElementById('playBtn').textContent = '▶'; state.isPlaying = false; }
-});
+let ytInterval = null;
 
-document.getElementById('volumeSlider').addEventListener('input', e => { audio.volume = e.target.value; });
-
-document.getElementById('timeline').addEventListener('click', e => {
-  const rect = e.currentTarget.getBoundingClientRect();
-  const pct = (e.clientX - rect.left) / rect.width;
-  audio.currentTime = pct * (audio.duration || 0);
-});
-
-audio.addEventListener('timeupdate', () => {
-  const t = audio.currentTime;
-  const d = audio.duration || 0;
+function updatePlayerUI(t, d) {
   const pct = d ? (t / d) * 100 : 0;
-
   document.getElementById('timelineFill').style.width = pct + '%';
   document.getElementById('timelineThumb').style.left = pct + '%';
   document.getElementById('timeElapsed').textContent = formatTime(t);
   document.getElementById('timeDuration').textContent = formatTime(d);
 
-  // Sincronizar letra
   const lines = state.karaokeLines;
   if (!lines.length) return;
 
@@ -991,7 +1065,6 @@ audio.addEventListener('timeupdate', () => {
     updateActiveLine(newLine);
   }
 
-  // Word highlight
   if (state.karaokeMode === 'word' && newLine !== -1) {
     const line = lines[newLine];
     const words = line.words || [];
@@ -1001,12 +1074,58 @@ audio.addEventListener('timeupdate', () => {
       else el.classList.remove('lit');
     });
   }
+}
+
+document.getElementById('playBtn').addEventListener('click', () => {
+  if (state.ytPlayer) {
+    if (!state.isPlaying) { 
+      state.ytPlayer.playVideo(); document.getElementById('playBtn').textContent = '⏸'; state.isPlaying = true;
+      ytInterval = setInterval(() => { if (state.ytPlayer && state.ytPlayer.getCurrentTime) updatePlayerUI(state.ytPlayer.getCurrentTime(), state.ytPlayer.getDuration()); }, 50);
+    } else { 
+      state.ytPlayer.pauseVideo(); document.getElementById('playBtn').textContent = '▶'; state.isPlaying = false;
+      clearInterval(ytInterval);
+    }
+  } else {
+    if (audio.paused) { audio.play(); document.getElementById('playBtn').textContent = '⏸'; state.isPlaying = true; }
+    else { audio.pause(); document.getElementById('playBtn').textContent = '▶'; state.isPlaying = false; }
+  }
 });
+
+document.getElementById('volumeSlider').addEventListener('input', e => { 
+  const v = e.target.value;
+  audio.volume = v; 
+  if (state.ytPlayer) state.ytPlayer.setVolume(v * 100);
+});
+
+document.getElementById('timeline').addEventListener('click', e => {
+  const rect = e.currentTarget.getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  if (state.ytPlayer) {
+    state.ytPlayer.seekTo(pct * state.ytPlayer.getDuration());
+    updatePlayerUI(state.ytPlayer.getCurrentTime(), state.ytPlayer.getDuration());
+  } else {
+    audio.currentTime = pct * (audio.duration || 0);
+  }
+});
+
+audio.addEventListener('timeupdate', () => updatePlayerUI(audio.currentTime, audio.duration || 0));
 
 audio.addEventListener('ended', () => {
   document.getElementById('playBtn').textContent = '▶';
   state.isPlaying = false;
 });
+
+window.onPlayerStateChange = function(event) {
+  if (event.data === YT.PlayerState.ENDED) {
+    document.getElementById('playBtn').textContent = '▶';
+    state.isPlaying = false;
+    clearInterval(ytInterval);
+  }
+};
+
+window.onPlayerReady = function(event) {
+  // ready to play
+};
 
 // ── PROGRESS UI ───────────────────────────────────────────────────────────
 const STEPS = [
