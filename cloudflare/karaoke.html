@@ -351,9 +351,18 @@
           <span>▶</span> Procesar
         </button>
       </div>
-      <button id="btnCobalt" class="btn-stem" style="align-self:flex-start; font-size:12px; opacity:0.8; background:var(--bg3); border-color:var(--border2);">
-        📥 Descargar MP3 desde YouTube (Para Separar Pistas)
-      </button>
+      <div style="position:relative; align-self:flex-start;">
+        <button id="btnDownloadMp3" class="btn-stem" style="font-size:12px; opacity:0.8; background:var(--bg3); border-color:var(--border2);">
+          📥 Descargar MP3 desde YouTube ▾
+        </button>
+        <div id="mp3DropdownMenu" style="display:none; position:absolute; top:100%; left:0; margin-top:4px; background:var(--card); border:1px solid var(--border2); border-radius:10px; padding:6px; min-width:280px; z-index:100; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+          <a class="mp3-option" data-service="yt1s" style="display:block; padding:8px 12px; color:var(--text); text-decoration:none; border-radius:8px; font-size:12px; cursor:pointer;">🔵 YT1s.com (Rápido)</a>
+          <a class="mp3-option" data-service="y2mate" style="display:block; padding:8px 12px; color:var(--text); text-decoration:none; border-radius:8px; font-size:12px; cursor:pointer;">🟢 Y2Mate.is</a>
+          <a class="mp3-option" data-service="ssyoutube" style="display:block; padding:8px 12px; color:var(--text); text-decoration:none; border-radius:8px; font-size:12px; cursor:pointer;">🟣 SSYouTube.com</a>
+          <div style="border-top:1px solid var(--border); margin:4px 0;"></div>
+          <span style="display:block; padding:4px 12px; font-size:10px; color:var(--text3);">Descarga el MP3 → súbelo en "Subir Audio" → ¡IA elimina la voz!</span>
+        </div>
+      </div>
     </div>
     <p style="font-size:12px;color:var(--text3);margin-top:8px;padding-left:4px;">
       Compatible: YouTube · Vevo · SoundCloud · URLs directas de MP3/MP4
@@ -738,10 +747,39 @@ document.getElementById('videoUrl').addEventListener('keydown', e => {
   if (e.key === 'Enter') document.getElementById('btnProcess').click();
 });
 
-document.getElementById('btnCobalt')?.addEventListener('click', () => {
-  const url = document.getElementById('videoUrl').value.trim();
-  if (!url) { showToast('⚠️ Pega una URL primero'); return; }
-  window.open('https://cobalt.tools/?u=' + encodeURIComponent(url), '_blank');
+// ── MP3 DOWNLOAD DROPDOWN ─────────────────────────────────────────────────
+document.getElementById('btnDownloadMp3')?.addEventListener('click', () => {
+  const menu = document.getElementById('mp3DropdownMenu');
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+});
+
+document.addEventListener('click', e => {
+  const menu = document.getElementById('mp3DropdownMenu');
+  if (menu && !e.target.closest('#btnDownloadMp3') && !e.target.closest('#mp3DropdownMenu')) {
+    menu.style.display = 'none';
+  }
+});
+
+document.querySelectorAll('.mp3-option').forEach(opt => {
+  opt.addEventListener('mouseenter', () => { opt.style.background = 'var(--bg3)'; });
+  opt.addEventListener('mouseleave', () => { opt.style.background = 'transparent'; });
+  opt.addEventListener('click', () => {
+    const rawUrl = document.getElementById('videoUrl').value.trim();
+    if (!rawUrl) { showToast('⚠️ Pega una URL de YouTube primero'); return; }
+    
+    // Limpiar URL: extraer solo el videoId
+    const ytMatch = rawUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    const cleanUrl = ytMatch ? `https://www.youtube.com/watch?v=${ytMatch[1]}` : rawUrl;
+    
+    const service = opt.dataset.service;
+    const urls = {
+      yt1s: `https://yt1s.com/en?q=${encodeURIComponent(cleanUrl)}`,
+      y2mate: `https://www.y2mate.com/youtube-mp3/${ytMatch ? ytMatch[1] : ''}`,
+      ssyoutube: cleanUrl.replace('youtube.com', 'ssyoutube.com'),
+    };
+    window.open(urls[service], '_blank');
+    document.getElementById('mp3DropdownMenu').style.display = 'none';
+  });
 });
 
 // ── PIPELINE PRINCIPAL ────────────────────────────────────────────────────
