@@ -26,7 +26,7 @@
 const AMAZON_DOMAINS = { ES:"es",US:"com",MX:"com.mx",UK:"co.uk",DE:"de",FR:"fr",IT:"it",CA:"ca",BR:"com.br",JP:"co.jp" };
 const AFFILIATE_ID   = "harmiqapp-20";
 const HF_API_URL     = "https://hamiq-harmiq-backend1.hf.space";
-const APP_VERSION    = "10.5";
+const APP_VERSION    = "10.6";
 const DB_PATH        = "/harmiq_db_vectores.json";
 
 // ── Security: HTML escaping to prevent XSS when inserting external data into innerHTML ──
@@ -2078,8 +2078,9 @@ async function renderResults(data) {
           <img src="${escHtml(top1Img)}" style="width:100%; height:100%; object-fit:cover" onerror="_imgFallback(this,'${escHtml(top1.name)}')">
         </div>
         <div style="font-size:3.5rem; font-weight:900; color:#fff">${displayScore(top1.score)}%</div>
-        <div style="display:flex; justify-content:center; gap:1rem; margin-top:1.5rem">
-           <button onclick="exportToPDF()" style="padding:.8rem 1.5rem; border-radius:30px; background:${color}; color:#fff; border:none; font-weight:800; cursor:pointer">📄 Informe PDF</button>
+        <div style="display:flex; justify-content:center; gap:1rem; margin-top:1.5rem; flex-wrap:wrap">
+           <button onclick="exportToPDF()" style="padding:.8rem 1.5rem; border-radius:30px; background:${color}; color:#fff; border:none; font-weight:800; cursor:pointer">📄 Informe PDF Pro</button>
+           <button onclick="_share('card')" style="padding:.8rem 1.5rem; border-radius:30px; background:#FF9F1C; color:#fff; border:none; font-weight:800; cursor:pointer; box-shadow:0 0 15px rgba(255,159,28,0.4)">📸 Compartir Viral</button>
            <button onclick="_resetApp()" style="padding:.8rem 1.5rem; border-radius:30px; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); font-weight:800; cursor:pointer">🔄 Reintentar</button>
         </div>
       </div>
@@ -2088,9 +2089,42 @@ async function renderResults(data) {
     const filtersHTML = `
       <div id="_filters_row" style="margin-bottom:1.5rem; padding:1.2rem 1.4rem; background:rgba(255,255,255,.03); border-radius:20px; border:1px solid rgba(255,255,255,.08)">
         <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:.7rem">
-          <select id="_era_filter" class="hm-sel filter-sel"><option value="">📅 Época</option><option value="2020s">Actual</option><option value="2000s">2000s</option><option value="1980s">80s</option><option value="1960s">60s</option></select>
-          <select id="_genre_filter" class="hm-sel filter-sel"><option value="">🎵 Género</option></select>
-          <select id="_country_filter" class="hm-sel filter-sel"><option value="">🌍 Idioma</option><option value="ES">España</option><option value="LATAM">Latino</option><option value="US">English</option></select>
+          <select id="_era_filter" class="hm-sel filter-sel">
+            <option value="">📅 Todas las épocas</option>
+            <option value="2020s">Actual y 2020s</option>
+            <option value="2010s">Años 2010s</option>
+            <option value="2000s">Años 2000s</option>
+            <option value="1990s">Años 1990s</option>
+            <option value="1980s">Años 1980s</option>
+            <option value="1970s">Años 1970s</option>
+            <option value="1960s">Años 1960s</option>
+          </select>
+          <select id="_genre_filter" class="hm-sel filter-sel">
+            <option value="">🎵 Todos los géneros</option>
+            <option value="Pop">Pop</option>
+            <option value="Rock">Rock</option>
+            <option value="R&B">R&B / Soul</option>
+            <option value="Hip-Hop">Urban / Hip-Hop</option>
+            <option value="Reggaeton">Reggaeton</option>
+            <option value="Jazz">Jazz</option>
+            <option value="Indie">Indie / Alternative</option>
+            <option value="Flamenco">Flamenco / Folklore</option>
+            <option value="Country">Country</option>
+            <option value="Metal">Metal</option>
+          </select>
+          <select id="_country_filter" class="hm-sel filter-sel">
+            <option value="">🌍 Cualquier idioma</option>
+            <option value="ES">🇪🇸 Español</option>
+            <option value="LATAM">🌎 Latino</option>
+            <option value="EN">🇺🇸 English</option>
+            <option value="CAT">🏴 Català</option>
+            <option value="FR">🇫🇷 Français</option>
+            <option value="IT">🇮🇹 Italiano</option>
+            <option value="PT">🇧🇷 Português</option>
+            <option value="DE">🇩🇪 Deutsch</option>
+            <option value="JP">🇯🇵 日本語 (J-Pop)</option>
+            <option value="KR">🇰🇷 한국어 (K-Pop)</option>
+          </select>
         </div>
       </div>
     `;
@@ -2654,30 +2688,54 @@ async function exportToPDF() {
   doc.text(`• Centroide Espectral (Brillo): ${Math.round(feat.centroid)} Hz`, 30, 109);
   doc.text(`• Estabilidad Vocal (Std Dev): ${feat.pitchStd.toFixed(2)}`, 30, 116);
 
+  // --- Espectrograma Vocal (Visualización de MFCCs) ---
+  doc.setTextColor(15, 12, 31);
+  doc.setFontSize(14);
+  doc.text("Espectrograma y Análisis MFCC", 20, 135);
+  doc.setFillColor(243, 244, 246);
+  doc.rect(20, 140, 170, 35, "F");
+  
+  let barX = 25;
+  const mfccData = lastResult.vec ? lastResult.vec.slice(0, 24) : new Array(24).fill(0.5);
+  mfccData.forEach((val, i) => {
+    const h = Math.max(2, val * 25);
+    // Gradient effect color
+    doc.setFillColor(124, 77, 255);
+    if(i%2===0) doc.setFillColor(255, 79, 163);
+    doc.rect(barX, 170 - h, 4, h, "F");
+    barX += 6.5;
+  });
+
   // --- Comparativa de Artistas ---
   doc.setTextColor(15, 12, 31);
   doc.setFontSize(16);
-  doc.text("Artistas con Vocalidad Similar", 20, 140);
+  doc.text("Afinidad Vocal Artística", 20, 190);
   
   doc.setFontSize(10);
-  let y = 150;
-  matches.slice(0, 5).forEach((m, i) => {
+  let y = 198;
+  matches.slice(0, 4).forEach((m, i) => {
     const score = displayScore(m.score);
     doc.setFont("helvetica", "bold");
     doc.text(`${i + 1}. ${m.name}`, 25, y);
     doc.setFont("helvetica", "normal");
-    doc.text(`Similitud: ${score}% | Tipo: ${trV("_vt_names", m.voice_type)}`, 70, y);
-    y += 10;
+    doc.text(`Similitud: ${score}% | Tipo: ${trV("_vt_names", m.voice_type)}`, 85, y);
+    
+    // Barra de progreso visual
+    doc.setFillColor(229, 231, 235);
+    doc.rect(145, y - 3, 40, 4, "F");
+    doc.setFillColor(124, 77, 255);
+    doc.rect(145, y - 3, 40 * (score/100), 4, "F");
+    y += 8;
   });
 
   // --- Recomendación ---
   doc.setFillColor(124, 77, 255);
-  doc.rect(20, 210, 170, 30, "F");
+  doc.rect(20, 240, 170, 35, "F");
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(12);
   const desc = getVoiceTypeDescription(vt, conf, "es");
   const splitDesc = doc.splitTextToSize(desc, 160);
-  doc.text(splitDesc, 25, 220);
+  doc.text(splitDesc, 25, 250);
 
   // --- Footer ---
   doc.setTextColor(156, 163, 175);
