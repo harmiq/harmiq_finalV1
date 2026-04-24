@@ -3954,7 +3954,7 @@ function injectNewsBanner() {
   if (document.getElementById("_news_banner")) return;
   const b = document.createElement("a");
   b.id = "_news_banner";
-  b.href = "/exitos-decada";
+  b.href = "/karaoke.html";
   b.style.cssText = `
     display: block;
     background: linear-gradient(90deg, #06D6A0, #7C4DFF, #06D6A0);
@@ -3970,7 +3970,7 @@ function injectNewsBanner() {
     z-index: 10000;
     box-shadow: 0 4px 15px rgba(6,214,160,0.4);
   `;
-  b.innerHTML = `🔥 <span style="text-transform:uppercase; letter-spacing:1px">¡Harmiq v10.3 Live!</span> Análisis Vocal con IA y Equipamiento Profesional →`;
+  b.innerHTML = `🔥 <span style="text-transform:uppercase; letter-spacing:1px">¡Harmiq v10.6 Live!</span> Nuevo Karaoke Inteligente con Separación Vocal por IA →`;
   
   const style = document.createElement("style");
   style.textContent = `
