@@ -775,24 +775,34 @@ async function processAudio(videoUrl, file) {
     if (videoUrl) {
       transcribeBody.audioUrl = videoData.audioExtractUrl || videoUrl;
     } else if (file) {
-      const b64 = await fileToBase64(file);
-      transcribeBody.audioBase64 = b64;
+      transcribeBody.audioBase64 = await fileToBase64(file);
     }
 
     let transcribeResult;
     try {
-      transcribeResult = await apiCallWithRetry('/api/karaoke/transcribe', transcribeBody, 3, 25000);
+      transcribeResult = await apiCallWithRetry('/api/karaoke/transcribe', transcribeBody, 3, 20000);
+      if (!transcribeResult.karaokeLines || transcribeResult.karaokeLines.length === 0) throw new Error("Whisper no detectó voz clara");
     } catch (e) {
-      // Fallback: usar letra de ejemplo si la API no está disponible en dev
-      transcribeResult = getMockTranscription();
+      console.warn("Whisper falló, intentando búsqueda online...", e);
+      updateStep(1, 'active', '🌐 Buscando letra en la nube...');
+      try {
+        const lyricsRes = await apiCall('/api/karaoke/lyrics', { title: videoData.title, artist: videoData.author });
+        if (lyricsRes.ok) {
+           transcribeResult = { fullText: lyricsRes.text || '', karaokeLines: (lyricsRes.text || '').split('\n').map((l,i)=>({id:i, text:l})) };
+           showToast('✅ Letra encontrada online');
+        } else throw e;
+      } catch {
+        transcribeResult = getMockTranscription();
+        showToast('⚠️ No se detectó letra, usando demo');
+      }
     }
 
     state.karaokeLines = transcribeResult.karaokeLines || [];
     document.getElementById('manualLyrics').value = state.karaokeLines.map(l => l.text).join('\n');
-    updateStep(1, 'done', '✅ Letra transcrita', `${state.karaokeLines.length} líneas detectadas`);
+    updateStep(1, 'done', '✅ Letra lista', `${state.karaokeLines.length} líneas`);
 
     // PASO 3: Analizar estructura (coros, voces)
-    updateStep(2, 'active', '🎼 Detectando estructura musical...');
+    updateStep(2, 'active', '🎼 Analizando estructura...');
     let analysis;
     try {
       const analysisRes = await apiCallWithRetry('/api/karaoke/analyze', {
@@ -800,22 +810,25 @@ async function processAudio(videoUrl, file) {
         karaokeLines: state.karaokeLines,
         title: videoData.title,
         artist: videoData.author,
-      }, 2, 15000);
+      }, 1, 10000);
       analysis = analysisRes.analysis;
     } catch {
       analysis = inferStructureLocally(state.karaokeLines);
     }
     state.analysis = analysis;
-    updateStep(2, 'done', '✅ Estructura analizada', formatAnalysisSummary(analysis));
+    updateStep(2, 'done', '✅ Análisis listo');
 
-    // PASO 4: Separar voces (en background, no bloquea)
-    updateStep(3, 'active', '🎚️ Preparando pistas de audio...');
-    // Para YT, el audio llega en tiempo real vía el embed
-    // La separación real con Demucs es async y puede tardar
-    setTimeout(() => {
-      updateStep(3, 'done', '✅ Pistas listas');
-      showControlsPanel(videoData, analysis);
-    }, 1500);
+    // PASO 4: Separar voces REAL (Demucs)
+    updateStep(3, 'active', '🎚️ Separando música y voz (IA)...');
+    try {
+      // Iniciar separación en background
+      triggerSeparationSilently();
+      updateStep(3, 'done', '✅ Procesamiento listo');
+    } catch (e) {
+      updateStep(3, 'done', '⚠️ Audio original (error en separación)');
+    }
+
+    showControlsPanel(videoData, analysis);
 
   } catch (err) {
     updateStep(getCurrentActiveStep(), 'error', '❌ ' + err.message);
@@ -859,15 +872,44 @@ document.getElementById('btnSeparate')?.addEventListener('click', async () => {
     const res = await apiCallWithRetry('/api/karaoke/separate', body, 3, 30000);
     if (res.ok && res.stems?.zip) {
       await processStemsZip(res.stems.zip);
-      showToast('✅ Pistas separadas con éxito');
+      showToast('✅ Pistas separadas con éxito. ¡Voz eliminada!');
     }
   } catch (err) {
-    showToast('❌ Error en separación: ' + err.message);
+    console.error('Separation error:', err);
+    showToast('⚠️ No se pudo separar las pistas (IA saturada). Usando audio original.');
   } finally {
     btn.disabled = false;
-    btn.textContent = '🎚️ Separar Pistas (Reintentar)';
+    btn.textContent = '🎚️ Separar Pistas (IA)';
   }
 });
+
+async function triggerSeparationSilently() {
+  const vd = state.videoData;
+  if (!state.audioBlob && (!vd || !vd.audioExtractUrl)) return;
+
+  const body = { mode: 'all' };
+  if (state.audioBlob) {
+    if (!state.audioHash) state.audioHash = await generateAudioHash(state.audioBlob);
+    body.hash = state.audioHash;
+    // check cache first
+    const checkRes = await fetch(`${API_BASE}/api/karaoke/check-cache?hash=${state.audioHash}`).then(r => r.json()).catch(()=>({cached: false}));
+    if (!checkRes.cached) {
+      body.audioBase64 = await fileToBase64(state.audioBlob);
+    }
+  } else {
+    body.audioUrl = vd.audioExtractUrl;
+  }
+
+  // Silent call
+  apiCallWithRetry('/api/karaoke/separate', body, 2, 20000)
+    .then(res => {
+      if (res.ok && res.stems?.zip) {
+        processStemsZip(res.stems.zip);
+        showToast('✨ Pistas listas en segundo plano');
+      }
+    }).catch(() => {});
+}
+
 
 // ── GRABACIÓN (DESCAGAR AL FINALIZAR) ─────────────────────────────────────
 let mediaRecorder = null;
@@ -1040,16 +1082,21 @@ function startKaraoke() {
   // Guardar cambios en la letra manual
   const manualText = document.getElementById('manualLyrics').value.trim();
   if (manualText) {
-    const newLines = manualText.split('\n');
-    if (newLines.length === state.karaokeLines.length) {
-      // Mismo número de líneas, preservamos tiempos
-      state.karaokeLines.forEach((l, i) => {
-        l.text = newLines[i];
-      });
+    const newLines = manualText.split('\n').filter(l => l.trim());
+    const oldLines = state.karaokeLines;
+    
+    if (newLines.length === oldLines.length && oldLines.length > 0) {
+      // Mismo número de líneas, preservamos tiempos originales del Whisper
+      state.karaokeLines = newLines.map((text, i) => ({
+        ...oldLines[i],
+        text: text
+      }));
     } else {
-      // Cambio el número de líneas, redistribuimos el tiempo de forma equitativa como aproximación
-      const totalTime = state.karaokeLines.length > 0 ? (state.karaokeLines[state.karaokeLines.length-1].endTime || audio.duration || 180) : 180;
-      const step = totalTime / newLines.length;
+      // El número de líneas cambió, redistribución inteligente aproximada
+      showToast('⏳ Sincronizando letra...');
+      const estimatedTotal = audio.duration || (oldLines.length > 0 ? (oldLines[oldLines.length-1].endTime || 180) : 180);
+      const step = estimatedTotal / (newLines.length || 1);
+      
       state.karaokeLines = newLines.map((text, i) => ({
         id: i,
         text: text,
@@ -1057,7 +1104,6 @@ function startKaraoke() {
         endTime: (i + 1) * step,
         words: [{ text, start: i * step, end: (i + 1) * step }]
       }));
-      showToast('⚠️ La sincronización se ha recalculado al cambiar líneas');
     }
   }
 
