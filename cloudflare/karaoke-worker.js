@@ -20,6 +20,14 @@ export default {
     const url = new URL(request.url);
 
     try {
+      if (url.pathname === '/api/karaoke/check-cache' && request.method === 'GET') {
+        const hash = url.searchParams.get('hash');
+        if (hash && env.KARAOKE_BUCKET) {
+          const cached = await env.KARAOKE_BUCKET.head(`stems/${hash}.zip`);
+          if (cached) return json({ ok: true, cached: true });
+        }
+        return json({ ok: true, cached: false });
+      }
       if (url.pathname === '/api/karaoke/process' && request.method === 'POST') {
         return await handleProcess(request, env);
       }
@@ -96,13 +104,47 @@ async function extractVideoInfo(videoUrl, env) {
 // ── 2. SEPARATE: separa vocal e instrumental con Demucs en HF ──────────────
 async function handleSeparate(request, env) {
   const body = await request.json();
-  const { audioBase64, audioUrl, mode } = body;
+  const { audioBase64, audioUrl, mode, hash } = body;
   // mode: 'remove_all' | 'remove_male' | 'remove_female' | 'keep_instrumental' | 'keep_vocals'
+
+  if (hash && env.KARAOKE_BUCKET) {
+    const cachedZip = await env.KARAOKE_BUCKET.get(`stems/${hash}.zip`);
+    if (cachedZip) {
+      const zipBase64 = bufferToBase64(await cachedZip.arrayBuffer());
+      return json({ ok: true, stems: { zip: zipBase64, filenames: ['drums.wav', 'bass.wav', 'other.wav', 'vocals.wav'] }, mode, message: 'Recuperado de la caché R2 ⚡' });
+    }
+  }
+  
+  // OBLIGATORY CHECKS: Zero-cost Protection
+  const MAX_GB_R2 = 8;
+  const MAX_BYTES = MAX_GB_R2 * 1024 * 1024 * 1024;
+  const MAX_USES_PER_DAY = 5;
+  let totalBytes = 0;
+  let ipUses = 0;
+  let ipKey = null;
+
+  if (env.KARAOKE_CACHE) {
+    try {
+      const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+      const dateStr = new Date().toISOString().split('T')[0];
+      ipKey = `limit_${ip}_${dateStr}`;
+      
+      totalBytes = parseInt((await env.KARAOKE_CACHE.get('r2_used_bytes')) || '0');
+      ipUses = parseInt((await env.KARAOKE_CACHE.get(ipKey)) || '0');
+      
+      if (totalBytes > MAX_BYTES) {
+        return json({ error: 'Límite global de almacenamiento gratuito (8GB) alcanzado en el sistema D: las nuevas separaciones están bloqueadas temporalmente.' }, 403);
+      }
+      
+      if (ipUses >= MAX_USES_PER_DAY) {
+        return json({ error: `Has superado tu límite diario (${MAX_USES_PER_DAY} pistas/día). Inténtalo mañana o usa canciones que ya estén en caché.` }, 429);
+      }
+    } catch(e) {}
+  }
 
   if (!env.HF_TOKEN) return json({ error: 'HF_TOKEN no configurado' }, 500);
 
   // Llamar a Demucs en Hugging Face Inference API
-  // Modelo: facebook/demucs — separa en drums, bass, other, vocals
   let audioData;
   if (audioBase64) {
     audioData = base64ToBuffer(audioBase64);
@@ -127,8 +169,20 @@ async function handleSeparate(request, env) {
     3, 10000
   );
 
-  // Demucs devuelve un ZIP con los stems: drums, bass, other, vocals
   const zipBuffer = await hfRes.arrayBuffer();
+  
+  // Guardar en caché R2 en background sin bloquear y actualizar trackers
+  if (hash && env.KARAOKE_BUCKET) {
+    env.KARAOKE_BUCKET.put(`stems/${hash}.zip`, zipBuffer).catch(e => console.error("R2 Error:", e));
+    if (env.KARAOKE_CACHE) {
+      env.KARAOKE_CACHE.put('r2_used_bytes', (totalBytes + zipBuffer.byteLength).toString());
+      if (ipKey) {
+        // Expirar en 48 horas para autolimpieza 
+        env.KARAOKE_CACHE.put(ipKey, (ipUses + 1).toString(), { expirationTtl: 86400 * 2 });
+      }
+    }
+  }
+  
   const zipBase64 = bufferToBase64(zipBuffer);
 
   return json({
@@ -173,20 +227,20 @@ async function handleTranscribe(request, env) {
   }
 
   // Whisper large-v3 con timestamps de palabras
+  // Para obtener chunks (timestamps), debemos usar el payload JSON
   const hfRes = await fetch(
     'https://api-inference.huggingface.co/models/openai/whisper-large-v3',
     {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${env.HF_TOKEN}`,
-        'Content-Type': 'audio/wav',
-        'X-Use-Cache': 'false',
+        'Content-Type': 'application/json',
+        'X-Wait-For-Model': 'true',
       },
       body: JSON.stringify({
-        inputs: audioBase64 || await blobToBase64(audioData),
+        inputs: (audioBase64 || bufferToBase64(audioData)).replace(/^data:[^;]+;base64,/, ''),
         parameters: {
           return_timestamps: 'word',
-          language: language || null,
           task: 'transcribe',
         }
       }),
@@ -194,11 +248,11 @@ async function handleTranscribe(request, env) {
   );
 
   if (!hfRes.ok) {
-    if (hfRes.status === 503) {
-      return json({ status: 'loading', message: 'Whisper cargando, reintenta en 30s', retryAfter: 30 });
+    const errText = await hfRes.text();
+    if (hfRes.status === 503 || errText.includes('currently loading')) {
+      return json({ status: 'loading', message: 'Whisper cargando...', retryAfter: 20 });
     }
-    const err = await hfRes.text();
-    return json({ error: `Whisper error: ${err}` }, 500);
+    return json({ error: `Whisper error: ${errText}` }, 500);
   }
 
   const result = await hfRes.json();
@@ -239,19 +293,31 @@ Artista: ${artist || 'desconocido'}
 
 Responde SOLO con el JSON, sin texto adicional.`;
 
-  // Cloudflare Workers AI — llama3 (gratis)
-  const aiRes = await env.AI.run('@cf/meta/llama-3-8b-instruct', {
-    messages: [{ role: 'user', content: analysisPrompt }],
-    max_tokens: 1000,
-  });
-
-  let analysis;
+  // Cloudflare Workers AI — llama-3 (gratis en plan free)
+  let analysis = { structure: [], voices: [], choruses: [], language: 'unknown' };
+  
   try {
+    const aiRes = await env.AI.run('@cf/meta/llama-3-8b-instruct', {
+      messages: [{ role: 'user', content: analysisPrompt }],
+      max_tokens: 1000,
+    });
+    
     const rawText = aiRes.response || aiRes.result?.response || '';
     const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-    analysis = jsonMatch ? JSON.parse(jsonMatch[0]) : {};
-  } catch {
-    analysis = { structure: [], voices: [], choruses: [], language: 'unknown' };
+    if (jsonMatch) {
+      analysis = JSON.parse(jsonMatch[0]);
+    }
+  } catch (e) {
+    console.error("AI Analysis failed:", e);
+    // Fallback: Heurística básica si la IA falla
+    analysis.structure = [
+      { type: 'verse', startLine: 0, endLine: karaokeLines.length - 1, label: 'Canción' }
+    ];
+  }
+
+  // Sanitización final
+  if (!analysis.structure || analysis.structure.length === 0) {
+     analysis.structure = [{ type: 'verse', startLine: 0, endLine: karaokeLines.length - 1, label: 'Letra' }];
   }
 
   return json({ ok: true, analysis });

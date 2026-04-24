@@ -1,0 +1,24 @@
+name = "harmiq-karaoke-api"
+main = "karaoke-worker.js"
+compatibility_date = "2026-01-01"
+
+# Configuración para desplegar el worker de karaoke.
+# Mantén los secrets fuera de este archivo y configúralos con wrangler secret put.
+# Ejemplo:
+# npx wrangler secret put HF_TOKEN
+# npx wrangler secret put GENIUS_TOKEN
+
+# Si quieres desplegarlo en producción bajo harmiq.app, añade la ruta en el dashboard
+# o configura un `route` aquí si gestionas rutas desde wrangler.
+
+[vars]
+# HF_TOKEN = ""
+# GENIUS_TOKEN = ""
+
+[[kv_namespaces]]
+binding = "KARAOKE_CACHE"
+id = "7c64581ca5f54cae91c3873131e0ffbb"
+
+[[r2_buckets]]
+binding = "KARAOKE_BUCKET"
+bucket_name = "harmiq-audio"
