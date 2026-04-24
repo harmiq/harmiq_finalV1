@@ -552,6 +552,7 @@ const state = {
   analysis: null,
   voiceMode: 'keep_instrumental',
   audioBlob: null,
+  audioHash: null,
   karaokeMode: 'scrolling',
   isPlaying: false,
   currentLine: -1,
@@ -592,6 +593,17 @@ ytBg.innerHTML = `<div id="ytBackgroundOverlay" style="position:fixed; top:0; le
 </div>`;
 document.body.appendChild(ytBg.firstElementChild);
 
+// ── AUDIO HASH (R2 CACHE) ─────────────────────────────────────────────────
+async function generateAudioHash(blob) {
+  try {
+    const slice = blob.slice(0, Math.min(blob.size, 102400)); // hash first 100KB
+    const arrayBuffer = await slice.arrayBuffer();
+    const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  } catch(e) { return null; }
+}
+
 // ── UPLOAD ZONE ───────────────────────────────────────────────────────────
 const uploadZone = document.getElementById('uploadZone');
 const fileInput = document.getElementById('fileInput');
@@ -610,6 +622,7 @@ async function handleFileUpload(file) {
   if (file.size > 100 * 1024 * 1024) { showToast('❌ Archivo demasiado grande (máx 100 MB)'); return; }
   uploadZone.innerHTML = `<div class="upload-icon">✅</div><p><strong>${file.name}</strong></p><p style="margin-top:4px;font-size:12px;">${(file.size/1024/1024).toFixed(1)} MB</p>`;
   state.audioBlob = file;
+  state.audioHash = await generateAudioHash(file);
   state.videoData = { title: file.name.replace(/\.[^.]+$/, ''), author: 'Archivo local', thumbnail: null };
 
   // Iniciar procesamiento
@@ -726,7 +739,16 @@ document.getElementById('btnSeparate')?.addEventListener('click', async () => {
   try {
     const body = { mode: 'all' };
     if (state.audioBlob) {
-      body.audioBase64 = await fileToBase64(state.audioBlob);
+      if (!state.audioHash) state.audioHash = await generateAudioHash(state.audioBlob);
+      
+      const checkRes = await fetch(`${API_BASE}/api/karaoke/check-cache?hash=${state.audioHash}`).then(r => r.json()).catch(()=>({cached: false}));
+      body.hash = state.audioHash;
+      
+      if (checkRes.cached) {
+        showToast('⚡ Recuperando de caché rápida (Cloudflare R2)...');
+      } else {
+        body.audioBase64 = await fileToBase64(state.audioBlob);
+      }
     } else if (vd?.audioExtractUrl) {
       body.audioUrl = vd.audioExtractUrl;
     }
