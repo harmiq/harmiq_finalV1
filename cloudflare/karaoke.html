@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
   <style>
     /* ── TOKENS ── */
     :root {
@@ -619,14 +620,110 @@ uploadZone.addEventListener('drop', e => {
 fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFileUpload(e.target.files[0]); });
 
 async function handleFileUpload(file) {
-  if (file.size > 10 * 1024 * 1024) { showToast('❌ Archivo demasiado grande (máx 10 MB para la capa gratuita)'); return; }
-  uploadZone.innerHTML = `<div class="upload-icon">✅</div><p><strong>${file.name}</strong></p><p style="margin-top:4px;font-size:12px;">${(file.size/1024/1024).toFixed(1)} MB</p>`;
-  state.audioBlob = file;
-  state.audioHash = await generateAudioHash(file);
-  state.videoData = { title: file.name.replace(/\.[^.]+$/, ''), author: 'Archivo local', thumbnail: null };
+  const MAX_UPLOAD_MB = 20;
+  const MAX_DURATION_S = 360; // 6 minutos
+  const TARGET_BITRATE = 128;
 
-  // Iniciar procesamiento
-  await processAudio(null, file);
+  if (file.size > MAX_UPLOAD_MB * 1024 * 1024) {
+    showToast(`❌ Archivo demasiado grande (máx ${MAX_UPLOAD_MB} MB)`);
+    return;
+  }
+
+  const validTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg', 'audio/flac', 'audio/aac', 'audio/mp4', 'audio/x-m4a', 'audio/webm', ''];
+  if (file.type && !validTypes.includes(file.type) && !file.name.match(/\.(mp3|wav|ogg|flac|aac|m4a|wma|webm)$/i)) {
+    showToast('❌ Formato de audio no soportado');
+    return;
+  }
+
+  uploadZone.innerHTML = `<div class="upload-icon">⏳</div><p>Validando audio...</p>`;
+  showToast('🔍 Analizando formato y duración...');
+
+  try {
+    // 1. Decodificar para validar duración
+    const arrayBuf = await file.arrayBuffer();
+    const actx = new (window.AudioContext || window.webkitAudioContext)();
+    const decoded = await actx.decodeAudioData(arrayBuf.slice(0)); // slice to copy
+    actx.close();
+
+    if (decoded.duration > MAX_DURATION_S) {
+      showToast(`❌ Audio demasiado largo (${Math.ceil(decoded.duration/60)} min). Máx ${MAX_DURATION_S/60} minutos.`);
+      uploadZone.innerHTML = `<div class="upload-icon">🎵</div><p>Arrastra tu archivo de audio aquí</p><p style="font-size:12px; color:var(--text3);">MP3, WAV, OGG · Máx ${MAX_UPLOAD_MB}MB · Máx ${MAX_DURATION_S/60} min</p>`;
+      return;
+    }
+
+    // 2. Re-encode a 128kbps MP3 para optimizar espacio
+    let optimizedBlob = file;
+    const originalSizeKB = file.size / 1024;
+    const estimatedOptKB = (decoded.duration * TARGET_BITRATE * 1000 / 8) / 1024;
+
+    if (typeof lamejs !== 'undefined' && originalSizeKB > estimatedOptKB * 1.3) {
+      showToast('🔄 Optimizando audio a 128kbps...');
+      uploadZone.innerHTML = `<div class="upload-icon">🔄</div><p>Optimizando audio...</p><p style="font-size:12px; color:var(--text3);">Reduciendo tamaño para almacenamiento eficiente</p>`;
+      optimizedBlob = await encodeToMp3(decoded, TARGET_BITRATE);
+    }
+
+    const savedPct = optimizedBlob.size < file.size ? Math.round((1 - optimizedBlob.size / file.size) * 100) : 0;
+    const sizeInfo = savedPct > 5 ? `${(optimizedBlob.size/1024/1024).toFixed(1)} MB (${savedPct}% reducido)` : `${(optimizedBlob.size/1024/1024).toFixed(1)} MB`;
+
+    uploadZone.innerHTML = `<div class="upload-icon">✅</div><p><strong>${file.name}</strong></p><p style="margin-top:4px;font-size:12px;">${sizeInfo} · ${Math.floor(decoded.duration/60)}:${String(Math.floor(decoded.duration%60)).padStart(2,'0')}</p>`;
+    if (savedPct > 5) showToast(`✅ Audio optimizado: ${savedPct}% más ligero`);
+
+    state.audioBlob = optimizedBlob;
+    state.audioHash = await generateAudioHash(optimizedBlob);
+    state.videoData = { title: file.name.replace(/\.[^.]+$/, ''), author: 'Archivo local', thumbnail: null };
+
+    await processAudio(null, optimizedBlob);
+
+  } catch (err) {
+    console.error('Audio validation error:', err);
+    // Fallback: usar el archivo original sin optimizar
+    showToast('⚠️ No se pudo optimizar, usando archivo original');
+    uploadZone.innerHTML = `<div class="upload-icon">✅</div><p><strong>${file.name}</strong></p><p style="margin-top:4px;font-size:12px;">${(file.size/1024/1024).toFixed(1)} MB</p>`;
+    state.audioBlob = file;
+    state.audioHash = await generateAudioHash(file);
+    state.videoData = { title: file.name.replace(/\.[^.]+$/, ''), author: 'Archivo local', thumbnail: null };
+    await processAudio(null, file);
+  }
+}
+
+// ── MP3 ENCODER (lamejs - 100% browser, 0 coste) ─────────────────────────
+async function encodeToMp3(audioBuffer, kbps) {
+  const channels = audioBuffer.numberOfChannels;
+  const sampleRate = audioBuffer.sampleRate;
+  const mp3encoder = new lamejs.Mp3Encoder(channels, sampleRate, kbps);
+  const blockSize = 1152;
+  const mp3Data = [];
+
+  // Get raw PCM data
+  const left = audioBuffer.getChannelData(0);
+  const right = channels > 1 ? audioBuffer.getChannelData(1) : left;
+
+  // Convert Float32 [-1,1] to Int16 [-32768,32767]
+  const toInt16 = (float32Arr) => {
+    const int16 = new Int16Array(float32Arr.length);
+    for (let i = 0; i < float32Arr.length; i++) {
+      const s = Math.max(-1, Math.min(1, float32Arr[i]));
+      int16[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+    }
+    return int16;
+  };
+
+  const leftI16 = toInt16(left);
+  const rightI16 = toInt16(right);
+
+  for (let i = 0; i < leftI16.length; i += blockSize) {
+    const leftChunk = leftI16.subarray(i, i + blockSize);
+    const rightChunk = rightI16.subarray(i, i + blockSize);
+    const mp3buf = channels > 1
+      ? mp3encoder.encodeBuffer(leftChunk, rightChunk)
+      : mp3encoder.encodeBuffer(leftChunk);
+    if (mp3buf.length > 0) mp3Data.push(mp3buf);
+  }
+
+  const tail = mp3encoder.flush();
+  if (tail.length > 0) mp3Data.push(tail);
+
+  return new Blob(mp3Data, { type: 'audio/mpeg' });
 }
 
 // ── PROCESS BUTTON ────────────────────────────────────────────────────────
