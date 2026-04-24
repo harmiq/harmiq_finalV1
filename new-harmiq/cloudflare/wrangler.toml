@@ -22,3 +22,6 @@ id = "7c64581ca5f54cae91c3873131e0ffbb"
 [[r2_buckets]]
 binding = "KARAOKE_BUCKET"
 bucket_name = "harmiq-audio"
+
+[ai]
+binding = "AI"

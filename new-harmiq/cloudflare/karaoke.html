@@ -783,23 +783,31 @@ async function processAudio(videoUrl, file) {
       transcribeResult = await apiCallWithRetry('/api/karaoke/transcribe', transcribeBody, 3, 20000);
       if (!transcribeResult.karaokeLines || transcribeResult.karaokeLines.length === 0) throw new Error("Whisper no detectó voz clara");
     } catch (e) {
-      console.warn("Whisper falló, intentando búsqueda online...", e);
+      console.warn("Whisper falló:", e);
+      // Intentar búsqueda online
       updateStep(1, 'active', '🌐 Buscando letra en la nube...');
       try {
         const lyricsRes = await apiCall('/api/karaoke/lyrics', { title: videoData.title, artist: videoData.author });
-        if (lyricsRes.ok) {
-           transcribeResult = { fullText: lyricsRes.text || '', karaokeLines: (lyricsRes.text || '').split('\n').map((l,i)=>({id:i, text:l})) };
+        if (lyricsRes.ok && lyricsRes.text) {
+           transcribeResult = { fullText: lyricsRes.text, karaokeLines: lyricsRes.text.split('\n').map((l,i)=>({id:i, text:l})) };
            showToast('✅ Letra encontrada online');
         } else throw e;
-      } catch {
-        transcribeResult = getMockTranscription();
-        showToast('⚠️ No se detectó letra, usando demo');
+      } catch (err2) {
+        // En lugar de mock, dejar vacío y avisar de fallo
+        console.error("Fallo total al obtener letra:", err2);
+        transcribeResult = { fullText: "", karaokeLines: [] };
+        showToast('⚠️ No se detectó letra. Escríbela tú mismo para sincronizar.');
       }
     }
 
     state.karaokeLines = transcribeResult.karaokeLines || [];
     document.getElementById('manualLyrics').value = state.karaokeLines.map(l => l.text).join('\n');
-    updateStep(1, 'done', '✅ Letra lista', `${state.karaokeLines.length} líneas`);
+    
+    if (state.karaokeLines.length === 0) {
+      updateStep(1, 'done', '✍️ Introduce la letra manual', 'Escribe o pega la letra abajo');
+    } else {
+      updateStep(1, 'done', '✅ Letra lista', `${state.karaokeLines.length} líneas`);
+    }
 
     // PASO 3: Analizar estructura (coros, voces)
     updateStep(2, 'active', '🎼 Analizando estructura...');
