@@ -61,3 +61,7 @@ Object.freeze(CONFIG);
 if (typeof module !== 'undefined') {
     module.exports = CONFIG;
 }
+
+// El conversor Karaoke experimental ya no forma parte de Harmiq.
+// Eliminamos cualquier tarjeta/enlace antiguo que pudiera seguir presente en la portada.
+document.querySelectorAll('a[href="/karaoke.html"]').forEach(el => el.remove());
